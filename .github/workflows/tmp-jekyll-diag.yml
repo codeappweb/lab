@@ -11,47 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: validate yaml json front matter
-        run: |
-          mkdir -p _tmpchunks
-          {
-            echo '=== YAML data files ==='
-            for f in data/*.yml _config.yml; do
-              if python3 -c "import yaml; yaml.safe_load(open('$f'))" 2>/tmp/yerr; then
-                echo "$f: OK"
-              else
-                echo "$f: YAML-FAIL"
-                head -5 /tmp/yerr | sed "s|^|    |"
-              fi
-            done
-            echo '=== JSON data files ==='
-            for f in data/*.json; do
-              if python3 -c "import json; json.load(open('$f'))" 2>/dev/null; then
-                echo "$f: OK"
-              else
-                echo "$f: JSON-FAIL"
-              fi
-            done
-            echo '=== markdown front matter ==='
-            find . -name '*.md' -not -path './.git/*' | while read -r f; do
-              if [ "$(head -n1 "$f")" = "---" ]; then
-                awk 'NR==1{next} /^---$/ {exit} {print}' "$f" > /tmp/fm.yml
-                if python3 -c "import yaml; yaml.safe_load(open('/tmp/fm.yml'))" 2>/dev/null; then
-                  echo "$f: OK"
-                else
-                  echo "$f: FM-FAIL"
-                fi
-              fi
-            done
-            echo '=== large files ==='
-            find . -not -path './.git/*' -type f -size +3M -exec ls -la {} \;
-            echo '=== done ==='
-          } > _tmpchunks/VALIDATE.txt 2>&1 || true
       - name: jekyll build
         run: |
+          export GEM_HOME="$HOME/.gems"
+          export PATH="$GEM_HOME/bin:$PATH"
           {
+            echo '=== ruby ==='
+            ruby -v
             echo '=== gem install ==='
             gem install jekyll jekyll-sitemap jekyll-feed --no-document 2>&1
+            echo '=== jekyll version ==='
+            jekyll -v 2>&1
             echo '=== jekyll build ==='
             jekyll build --trace -d /tmp/site 2>&1
             echo "JEKYLL_EXIT=$?"
@@ -61,5 +31,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A _tmpchunks
-          git commit -m "tmp: jekyll diag results"
+          git commit -m "tmp: jekyll diag v2 results"
           git push

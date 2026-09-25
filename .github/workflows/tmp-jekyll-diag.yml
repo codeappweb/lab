@@ -1,5 +1,4 @@
 name: tmp-jekyll-diag
-# v5 trigger after entities.json fix (fd6464f)
 on:
   push:
     branches: [main]
@@ -12,16 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: jekyll build
+      - name: diag
         run: |
           export GEM_HOME="$HOME/.gems"
           export PATH="$GEM_HOME/bin:$PATH"
           {
+            echo '=== entities.json ground truth ==='
+            git log -1 --format='%H %s'
+            wc -c data/entities.json
+            sha256sum data/entities.json
+            echo '--- lines 560-580 ---'
+            sed -n '560,580p' data/entities.json
+            echo '--- control chars? ---'
+            grep -cP '[\x00-\x08\x0b\x0c\x0e-\x1f]' data/entities.json || echo none
+            echo '=== jekyll build ==='
             if [ -f Gemfile ]; then mv Gemfile Gemfile.diagbak; fi
             if [ -f Gemfile.lock ]; then mv Gemfile.lock Gemfile.lock.diagbak; fi
             gem install jekyll jekyll-sitemap jekyll-feed --no-document > /dev/null 2>&1
-            echo '=== jekyll build ==='
-            jekyll build --trace -d /tmp/site 2>&1
+            jekyll build --trace -d /tmp/site 2>&1 | head -60
             echo "JEKYLL_EXIT=$?"
             if [ -f /tmp/site/index.html ]; then echo SITE_OK; fi
             echo '=== generated url count ==='
@@ -34,7 +41,7 @@ jobs:
           for i in 1 2 3 4 5; do
             git pull --rebase --autostash origin main 2>/dev/null || true
             git add BUILD-DIAG.txt
-            git commit -m "tmp: jekyll diag v4 results" 2>/dev/null || true
+            git commit -m "tmp: jekyll diag v6 results (ground truth entities)" 2>/dev/null || true
             if git push; then exit 0; fi
             sleep 10
           done

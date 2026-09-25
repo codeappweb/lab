@@ -1,0 +1,23 @@
+# Nguồn pháp lý đã kiểm chứng — mọi con số pháp lý trên site phải có mục ở đây.
+# Quy tắc: KHÔNG ghi "đã kiểm chứng" nếu chưa ghi rõ nguồn và ngày kiểm tra.
+sources:
+  - id: "nd168-helmet-fine"
+    source_title: "Nghị định 168/2024/NĐ-CP — Quy định xử phạt vi phạm hành chính trong lĩnh vực giao thông đường bộ"
+    source_url: "https://vanban.chinhphu.vn/nghi-dinh-168-2024-nd-cp-559701.html"
+    publisher: "Chính phủ (Văn bản hợp nhất trên Cổng thông tin điện tử Chính phủ)"
+    published_or_effective_date: "2024-12-26"
+    fact: "Mức phạt người điều khiển xe máy không đội mũ bảo hiểm: 400.000–600.000 đồng (Điều 7, khoản 2)"
+    last_verified: "2026-09-25"
+    applies_to: "danh-muc/phap-ly.md, danh-muc/phap-ly/muc-phat/"
+  - id: "nd238-amendment"
+    source_title: "Nghị định 238/2026/NĐ-CP — Sửa đổi, bổ sung một số điều khoản của Nghị định 168/2024/NĐ-CP"
+    source_url: "https://vanban.chinhphu.vn/"
+    publisher: "Chính phủ"
+    published_or_effective_date: "2026-06-26 (ban hành), 2026-08-15 (hiệu lực)"
+    fact: "Sửa đổi, bổ sung Nghị định 168/2024/NĐ-CP; không tăng mức phạt tiền và không nâng mức trừ điểm giấy phép lái xe so với Nghị định 168"
+    last_verified: "2026-09-25"
+    applies_to: "danh-muc/phap-ly.md, danh-muc/phap-ly/muc-phat/"
+verification_rules:
+  - "Không đưa con số pháp lý lên site nếu chưa có mục nguồn tương ứng."
+  - "Khi văn bản bị sửa đổi, cập nhật fact + last_verified hoặc gỡ con số."
+  - "Ưu tiên nguồn: Công báo điện tử, Cổng thông tin điện tử Chính phủ, Bộ Công an."

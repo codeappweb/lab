@@ -6,4 +6,6 @@ cslug: sac-nhanh
 title: "Sạc nhanh"
 description: "Sạc nhanh — nguyên lý, ảnh hưởng pin, khi nào nên dùng."
 permalink: /danh-muc/cong-nghe/sac-nhanh/
+noindex: true
+sitemap: false
 ---

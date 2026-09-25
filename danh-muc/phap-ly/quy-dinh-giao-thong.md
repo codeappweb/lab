@@ -6,4 +6,6 @@ cslug: quy-dinh-giao-thong
 title: "Luật giao thông"
 description: "Luật và quy tắc giao thông đường bộ cần nhớ."
 permalink: /danh-muc/phap-ly/quy-dinh-giao-thong/
+noindex: true
+sitemap: false
 ---

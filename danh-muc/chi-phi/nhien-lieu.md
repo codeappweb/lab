@@ -6,4 +6,6 @@ cslug: nhien-lieu
 title: "Nhiên liệu"
 description: "Chi phí xăng và cách tiết kiệm nhiên liệu."
 permalink: /danh-muc/chi-phi/nhien-lieu/
+noindex: true
+sitemap: false
 ---

@@ -6,4 +6,6 @@ cslug: scooter-dien
 title: "Scooter điện"
 description: "Dòng scooter điện — tính năng, trải nghiệm và cách so sánh."
 permalink: /danh-muc/xe-dien/scooter-dien/
+noindex: true
+sitemap: false
 ---

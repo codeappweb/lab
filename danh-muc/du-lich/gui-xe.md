@@ -6,4 +6,6 @@ cslug: gui-xe
 title: "Gửi xe"
 description: "Gửi xe tại điểm tham quan — vị trí bãi, lưu ý an toàn."
 permalink: /danh-muc/du-lich/gui-xe/
+noindex: true
+sitemap: false
 ---

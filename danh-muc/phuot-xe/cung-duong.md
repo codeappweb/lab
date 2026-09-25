@@ -6,4 +6,6 @@ cslug: cung-duong
 title: "Cung đường"
 description: "Các cung đường phượt nổi tiếng xuất phát từ Hà Nội."
 permalink: /danh-muc/phuot-xe/cung-duong/
+noindex: true
+sitemap: false
 ---

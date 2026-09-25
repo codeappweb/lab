@@ -6,4 +6,6 @@ cslug: thue-xe-dap
 title: "Thuê xe đạp"
 description: "Thuê xe đạp phục vụ đi lại và dã ngoại."
 permalink: /danh-muc/thue-xe/thue-xe-dap/
+noindex: true
+sitemap: false
 ---

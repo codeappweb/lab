@@ -6,4 +6,6 @@ cslug: bugi
 title: "Bugi"
 description: "Bugi — khi nào thay, chọn loại, đọc màu điện cực."
 permalink: /danh-muc/phu-tung/bugi/
+noindex: true
+sitemap: false
 ---

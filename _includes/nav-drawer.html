@@ -7,54 +7,89 @@
     </button>
   </div>
   <div class="nav-drawer__body">
-    <nav class="nav-drawer__main nav-grid" aria-label="Trang">
-      {% for item in site.data.navigation.main %}
-      <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
-      {% endfor %}
-    </nav>
-    <div class="nav-drawer__divider" role="separator" aria-hidden="true"></div>
-    <nav class="nav-drawer__cats" aria-label="Danh mục">
-      <p class="nav-drawer__title">Danh mục</p>
-      {% comment %} 6 nhóm điều hướng (chỉ trình bày, không phải taxonomy SEO) {% endcomment %}
-      {% assign g1 = 'xe-may,xe-dien,xe-dap' | split: ',' %}
-      {% assign g2 = 'thue-xe' | split: ',' %}
-      {% assign g3 = 'du-lich,phuot-xe' | split: ',' %}
-      {% assign g4 = 'sua-chua,phu-tung,cong-nghe' | split: ',' %}
-      {% assign g5 = 'an-toan,chi-phi' | split: ',' %}
-      {% assign g6 = 'phap-ly' | split: ',' %}
-      {% assign groups = 'Phương tiện:xe-may,xe-dien,xe-dap|Thuê xe:thue-xe|Hành trình:du-lich,phuot-xe|Kỹ thuật:sua-chua,phu-tung,cong-nghe|Kinh nghiệm:an-toan,chi-phi|Pháp lý:phap-ly' | split: '|' %}
-      {% for g in groups %}
-      {% assign gname = g | split: ':' | first %}
-      {% assign gslugs = g | split: ':' | last | split: ',' %}
-      <details class="nav-acc" data-acc>
-        <summary class="nav-acc__summary">
-          <span class="nav-acc__label"><span>{{ gname }}</span></span>
-          <svg class="nav-acc__chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-        </summary>
-        <div class="nav-acc__panel">
-          {% for slug in gslugs %}
-          {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-          {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
-          <details class="nav-sub" data-nav-sub>
-            <summary class="nav-sub__summary">
-              <span class="nav-sub__label">
-                <span class="nav-drawer__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
-                <span>{{ p.name }}</span>
-              </span>
-              <svg class="nav-sub__chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-            </summary>
-            <div class="nav-sub__panel">
-              <a class="nav-sub__child nav-sub__child--all" href="{{ purl | relative_url }}">Tất cả {{ p.name }}</a>
-              {% for c in p.children %}
-              {% capture curl %}/danh-muc/{{ p.slug }}/{{ c.slug }}/{% endcapture %}
-              <a class="nav-sub__child" href="{{ curl | relative_url }}">{{ c.name }}</a>
-              {% endfor %}
-            </div>
-          </details>
-          {% endfor %}
-        </div>
-      </details>
-      {% endfor %}
-    </nav>
+    {% comment %} ---------- MÀN HÌNH 1: app menu ---------- {% endcomment %}
+    <div class="nav-scr" id="navScrHome">
+      <div class="nav-actions" aria-label="Nhanh">
+        <button type="button" class="nav-action" data-qa="search">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <span>Tìm kiếm</span>
+        </button>
+        <button type="button" class="nav-action" data-qa="assistant">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.6-.8L3 20l1-4.9a8.4 8.4 0 1 1 17-3.6z"/></svg>
+          <span>Trợ lý AI</span>
+        </button>
+        <button type="button" class="nav-action" data-qa="saved">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
+          <span>Đã lưu</span>
+        </button>
+        <button type="button" class="nav-action" data-qa="latest">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span>Mới nhất</span>
+        </button>
+        <button type="button" class="nav-action" data-qa="topics">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span>Chủ đề</span>
+        </button>
+        <a class="nav-action" href="{{ '/danh-muc/' | relative_url }}">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <span>Danh mục</span>
+        </a>
+      </div>
+
+      <p class="nav-title">Khám phá</p>
+      <div class="nav-cats" aria-label="Khám phá danh mục">
+        {% assign cat_primary = 'xe-may,xe-dien,xe-dap,thue-xe,du-lich,sua-chua' | split: ',' %}
+        {% assign cat_more = 'phu-tung,phuot-xe,phap-ly,an-toan,chi-phi,cong-nghe' | split: ',' %}
+        {% for slug in cat_primary %}
+        {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+        <button type="button" class="nav-cat" data-nav-cat="{{ p.slug }}">
+          <span class="nav-cat__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
+          <span class="nav-cat__label">{{ p.name }}</span>
+          <svg class="nav-cat__chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        {% endfor %}
+        {% for slug in cat_more %}
+        {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+        <button type="button" class="nav-cat nav-cat--more" data-nav-cat="{{ p.slug }}" hidden>
+          <span class="nav-cat__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
+          <span class="nav-cat__label">{{ p.name }}</span>
+          <svg class="nav-cat__chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        {% endfor %}
+        <button type="button" class="nav-more-toggle" id="navMoreToggle" aria-expanded="false">
+          <span>Xem thêm</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+
+      <p class="nav-title">Thông tin</p>
+      <nav class="nav-info" aria-label="Thông tin">
+        {% for item in site.data.navigation.main %}
+        <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+        {% endfor %}
+      </nav>
+    </div>
+
+    {% comment %} ---------- MÀN HÌNH 2: chuyên mục ---------- {% endcomment %}
+    {% for p in site.data.taxonomy.parents %}
+    <div class="nav-scr" id="navScr-{{ p.slug }}" hidden>
+      <button type="button" class="nav-back" data-nav-back>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+        <span>Khám phá</span>
+      </button>
+      <p class="nav-subhead">
+        <span class="nav-subhead__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
+        {{ p.name | upcase }}
+      </p>
+      <div class="nav-kids">
+        {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+        <a class="nav-kid nav-kid--all" href="{{ purl | relative_url }}">Tất cả {{ p.name }}</a>
+        {% for c in p.children %}
+        {% capture curl %}/danh-muc/{{ p.slug }}/{{ c.slug }}/{% endcapture %}
+        <a class="nav-kid" href="{{ curl | relative_url }}">{{ c.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
   </div>
 </aside>

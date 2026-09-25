@@ -2,9 +2,6 @@
   <div class="container app-bar__inner">
     {% include logo.html %}
     <nav class="main-nav" aria-label="Điều hướng chính">
-      {% for item in site.data.navigation.main %}
-      <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
-      {% endfor %}
       <div class="mega-wrap">
         <button type="button" class="mega-trigger" aria-haspopup="true" aria-expanded="false">
           Danh mục
@@ -32,10 +29,16 @@
       </div>
     </nav>
     <div class="app-bar__actions">
-      <button type="button" class="search-btn" data-search-open aria-label="Tìm kiếm (Ctrl K)">
+      <button type="button" class="icon-btn" data-search-open aria-label="Tìm kiếm (Ctrl K)">
         {% include icon.html name="search" %}
-        <span class="search-btn__label">Tìm kiếm</span>
-        <kbd class="kbd">Ctrl K</kbd>
+      </button>
+      <button type="button" class="icon-btn icon-btn--labeled" data-qa="assistant" aria-label="Trợ lý AI">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.6-.8L3 20l1-4.9a8.4 8.4 0 1 1 17-3.6z"/></svg>
+        <span class="icon-btn__label">AI</span>
+      </button>
+      <button type="button" class="icon-btn icon-btn--labeled" data-qa="saved" aria-label="Bài đã lưu">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
+        <span class="icon-btn__label">Đã lưu</span>
       </button>
       {% include theme-toggle.html %}
       <button type="button" class="menu-btn" data-nav-open aria-controls="navDrawer" aria-expanded="false" aria-label="Mở menu">

@@ -3,11 +3,11 @@
   "phase": "smart-blog-app",
   "content_budget_total": 3000,
   "articles": {
-    "planned": 179,
+    "planned": 193,
     "researching": 0,
     "drafted": 0,
     "qa": 0,
-    "published": 22,
+    "published": 8,
     "merged": 0,
     "skipped": 0,
     "update_needed": 0
@@ -228,7 +228,7 @@
     }
   ],
   "next_actions": [
-    "Batch 003: chọn cụm tiếp theo từ data/article-manifest.jsonl (C01 thuê xe hoặc C03 xe điện), viết bài với parent_category/child_category theo data/taxonomy.yml. Trước mỗi push: chạy node scripts/validate-content-quality.mjs — fail thì KHÔNG push.",
+    "Batch 002 (article production): viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml, ưu tiên C05 (sua-chua). Trước mỗi push: chạy node scripts/validate-content-quality.mjs — fail thì KHÔNG push.",
     "Khi một con sua-chua khác đạt >= 3 bài chất lượng + nội dung standalone, nâng status trong taxonomy.yml và gỡ noindex theo quy tắc README (không chỉ theo số bài).",
     "Theo dõi NĐ 238/2026/NĐ-CP và các nghị định sau — cập nhật data/legal-sources.yml + last_verified trước khi dùng số liệu pháp lý mới."
   ],
@@ -240,5 +240,14 @@
     "scripts/build-sitemap.mjs lỗi thời (sitemap do jekyll-sitemap sinh) — không chạy.",
     "92/98 con chưa có bài → noindex + khỏi sitemap cho tới khi đạt quy tắc indexable (README \"Content hardening\").",
     "Pháp lý: khung phạt hiện hành theo NĐ 168/2024/NĐ-CP (được NĐ 238/2026/NĐ-CP sửa đổi, hiệu lực 15/08/2026, không tăng mức phạt tiền) — nguồn ghi trong data/legal-sources.yml; bài viết con muc-phat phải đối chiếu nguồn chính thống trước khi xuất bản."
-  ]
+  ],
+  "run_state": {
+    "current_batch": "batch-002",
+    "batch_status": "COMPLETE",
+    "last_run": "2026-09-25",
+    "last_successful_commit": "dabefa1d4272219f4d602324ea3a0fa1d5b99264",
+    "last_completed_row": "C05-0022",
+    "next_row": "Batch 003 — chọn cụm kế tiếp từ data/article-manifest.jsonl (C01 hoặc C03)",
+    "remaining_in_batch": 0
+  }
 }

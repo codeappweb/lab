@@ -8,15 +8,19 @@
 {"title": {{ i.title | jsonify }},"url": {{ i.url | relative_url | jsonify }},"description": {{ i.description | default: '' | strip_html | strip | jsonify }},"category": {{ i.cluster | default: '' | jsonify }},"kind": "bai","parent": {{ i.parent_category | default: t.parent | default: '' | jsonify }},"child": {{ i.child_category | default: t.child | default: '' | jsonify }},"headings": [{% assign parts = i.content | split: '<h' %}{% for part in parts offset: 1 %}{{ part | split: '</h' | first | split: '>' | last | strip | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}],"keywords": [{{ i.cluster | jsonify }}]}
 {% endfor %}
 {% for c in site.pages %}
-{% if c.layout == 'parent-category' and c.noindex != true and c.url contains 'undefined' == false %}
+{% if c.layout == 'parent-category' and c.noindex != true %}
+{% unless c.url contains 'undefined' %}
 {% if found %},{% endif %}{% assign found = true %}
 {"title": {{ c.title | jsonify }},"url": {{ c.url | relative_url | jsonify }},"description": {{ c.description | default: '' | strip_html | strip | jsonify }},"category": "","kind": "danh-muc","parent": {{ c.pslug | default: '' | jsonify }},"child": "","headings": [],"keywords": [{{ c.pslug | default: '' | jsonify }}]}
+{% endunless %}
 {% endif %}
 {% endfor %}
 {% for c in site.pages %}
-{% if c.layout == 'child-category' and c.noindex != true and c.url contains 'undefined' == false %}
+{% if c.layout == 'child-category' and c.noindex != true %}
+{% unless c.url contains 'undefined' %}
 {% if found %},{% endif %}{% assign found = true %}
 {"title": {{ c.title | jsonify }},"url": {{ c.url | relative_url | jsonify }},"description": {{ c.description | default: '' | strip_html | strip | jsonify }},"category": "","kind": "danh-muc","parent": {{ c.pslug | default: '' | jsonify }},"child": {{ c.cslug | default: '' | jsonify }},"headings": [],"keywords": [{{ c.cslug | default: '' | jsonify }}]}
+{% endunless %}
 {% endif %}
 {% endfor %}
 ]

@@ -35,7 +35,9 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull --rebase --autostash origin main 2>/dev/null || true
           git add DIAG-V8.txt
-          git commit -m "tmp: diag v8 results (canonical entities)" 2>/dev/null || true
+          git commit -m "tmp: jekyll diag v9 results" 2>/dev/null || true
           git push
 
 # diag v8 trigger: entities.json repaired from HEAD (3 stray newlines stripped inside string tokens)
+
+# diag v9 trigger: entities.json fully canonicalized (JSON.stringify) — removes ALL stray newlines incl. key/colon YAML-breaking ones

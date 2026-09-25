@@ -96,7 +96,7 @@
       "cluster": "infra (navigation + taxonomy)",
       "created": [
         "data/navigation.yml — menu trung tâm duy nhất, 7 mục dùng chung header/footer/drawer",
-        "data/taxonomy.yml — 12 parent (P01-P12) + 98 child, icon + cluster mapping",
+        "data/taxonomy.yml — 12 parent + 98 child, icon + cluster mapping",
         "data/article-taxonomy.yml — mapping 8 bài C05 sang sua-chua/<child>, không sửa file bài",
         "_includes/nav-drawer.html + drawer JS (Esc, focus trap, aria-expanded)",
         "6 trang tĩnh: gioi-thieu, lien-he, faq, dich-vu, bao-mat, dieu-khoan",
@@ -113,18 +113,42 @@
       ],
       "updated_manifest": [],
       "status": "done"
+    },
+    {
+      "batch_id": "taxonomy-rebalance-001",
+      "date": "2026-09-25",
+      "cluster": "infra (taxonomy + navigation UX)",
+      "created": [
+        "data/taxonomy.yml: thứ tự cha theo hành trình người dùng (Thuê xe lên #4, Chi phí #11, Công nghệ #12) + planned_capacity cha/con tổng ~2.000 bài",
+        "assets/css/app4.css + assets/js/nav2.js: accordion drawer, body scroll lock, mega menu CSS",
+        "12 stub chuyên mục con mới: khoi-dong, bao-duong xe điện, chon-xe đạp, truyen-dong phụ tùng, thue ngắn/dài hạn, chon-xe-thue, trung-tam-ha-noi, tuyen-tham-quan, tay-bac, dong-bac, chi-phi sua-chua"
+      ],
+      "updated": [
+        "data/article-taxonomy.yml: bài de-yeu-de remap ac-quy -> khoi-dong",
+        "nav-drawer: divider + accordion 12 cha (một mở tại một thời điểm, tự mở mục hiện tại)",
+        "header: thêm mega menu Danh mục 12 cột (ẩn <900px)",
+        "footer: mục danh mục đổi tên Khám phá, chỉ 12 cha",
+        "layouts child/parent/category-index: breadcrumb thêm bước Danh mục, thẻ cha hiển thị 5 con + Xem tất cả",
+        "19 stub đổi nhãn theo taxonomy mới (giữ nguyên slug/URL)"
+      ],
+      "deleted": [
+        "12 stub gộp/loại: su-dung-xe-dien, cung-duong-xe-dap, sua-chua/ac-quy, he-thong-sang, day-curoa, nhong-sen-dia, thue-theo-ngay/tuan/thang, am-thuc-hanh-trinh, mien-bac, chi-phi/phu-tung"
+      ],
+      "updated_manifest": [],
+      "status": "done"
     }
   ],
   "next_actions": [
-    "QA trực tiếp trang live sau deploy: menu, drawer, footer, 7 link tĩnh, danh mục cha/con, breadcrumb, Ctrl K, trợ lý AI, light/dark.",
-    "Chuyển 8 bài qa -> published sau khi taxonomy deploy chạy ổn.",
-    "Batch 002: viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml."
+    "QA live sau deploy: drawer accordion (một mở, Esc, active), mega menu desktop, footer Khám phá, /danh-muc/ thẻ 5 con, breadcrumb 4 cấp, Ctrl K, trợ lý AI.",
+    "Chuyển 8 bài qa -> published sau khi taxonomy-rebalance deploy chạy ổn.",
+    "Batch 002: viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml mới (đặc biệt sua-chua/khoi-dong cho bài de-yeu-de liên kết cùng chuyên mục)."
   ],
   "open_issues": [
     "Đã xác nhận: Pages build thành công sau khi canonicalize data/entities.json (commit bbbe6d7); smart-blog-app đã deploy live.",
     "GitHub App không có quyền Administration — không thể tạo repo mới; site ở repo lab, base path /lab/.",
     "Không có trình duyệt trong sandbox — console errors, light/dark, tương tác chỉ kiểm tra tĩnh qua HTML/render text.",
     "Lưu ý: GitHub Pages build có thể kẹt queue nhiều phút — nếu deploy không cập nhật, retrigger bằng commit nhỏ.",
-    "scripts/build-sitemap.mjs là bản cũ theo manifest — đã lỗi thời, sitemap do jekyll-sitemap plugin sinh; không chạy lại script này."
+    "scripts/build-sitemap.mjs là bản cũ theo manifest — đã lỗi thời, sitemap do jekyll-sitemap plugin sinh; không chạy lại script này.",
+    "11/12 danh mục cha chưa có bài (hiển thị trung thực \"Nội dung đang được chuẩn bị\"); không sinh filler để lấp khoảng trống."
   ]
 }

@@ -22,13 +22,14 @@ jobs:
       - name: build
         run: |
           set +e
+          export BUNDLE_GEMFILE=/dev/null
           {
             git rev-parse HEAD
             echo '=== jekyll build ==='
             jekyll build --destination /tmp/site 2>&1
             echo "JEKYLL_EXIT=$?"
             echo '=== url count ==='
-            if [ -f /tmp/site/sitemap.xml ]; then grep -c '<loc>' /tmp/site/sitemap.xml; ls /tmp/site/sitemap.xml; else echo no-sitemap; fi
+            if [ -f /tmp/site/sitemap.xml ]; then grep -c '<loc>' /tmp/site/sitemap.xml; else echo no-sitemap; fi
           } > DIAG-V9.txt 2>&1
           cat DIAG-V9.txt
       - name: commit results

@@ -1,0 +1,1070 @@
+[
+  {
+    "name": "xe điện",
+    "cluster_usage": 10
+  },
+  {
+    "name": "Hà Nội",
+    "cluster_usage": 7
+  },
+  {
+    "name": "gửi xe",
+    "cluster_usage": 7
+  },
+  {
+    "name": "bằng lái",
+    "cluster_usage": 6
+  },
+  {
+    "name": "xe 50cc",
+    "cluster_usage": 5
+  },
+  {
+    "name": "pin",
+    "cluster_usage": 5
+  },
+  {
+    "name": "xe ga",
+    "cluster_usage": 4
+  },
+  {
+    "name": "xe số",
+    "cluster_usage": 4
+  },
+  {
+    "name": "xe cũ",
+    "cluster_usage": 4
+  },
+  {
+    "name": "xe đạp điện",
+    "cluster_usage": 4
+  },
+  {
+    "name": "mũ bảo hiểm",
+    "cluster_usage": 4
+  },
+  {
+    "name": "bugi",
+    "cluster_usage": 4
+  },
+  {
+    "name": "ắc quy",
+    "cluster_usage": 4
+  },
+  {
+    "name": "chi phí",
+    "cluster_usage": 3
+  },
+  {
+    "name": "thuê xe",
+    "cluster_usage": 3
+  },
+  {
+    "name": "Hồ Tây",
+    "cluster_usage": 3
+  },
+  {
+    "name": "hao xăng",
+    "cluster_usage": 3
+  },
+  {
+    "name": "xe máy",
+    "cluster_usage": 3
+  },
+  {
+    "name": "xe máy điện",
+    "cluster_usage": 3
+  },
+  {
+    "name": "BMS",
+    "cluster_usage": 3
+  },
+  {
+    "name": "mùa mưa",
+    "cluster_usage": 3
+  },
+  {
+    "name": "giấy tờ",
+    "cluster_usage": 2
+  },
+  {
+    "name": "Tây Hồ",
+    "cluster_usage": 2
+  },
+  {
+    "name": "Cầu Giấy",
+    "cluster_usage": 2
+  },
+  {
+    "name": "kiểm tra xe",
+    "cluster_usage": 2
+  },
+  {
+    "name": "CVT",
+    "cluster_usage": 2
+  },
+  {
+    "name": "ngập nước",
+    "cluster_usage": 2
+  },
+  {
+    "name": "phanh đĩa",
+    "cluster_usage": 2
+  },
+  {
+    "name": "xăng",
+    "cluster_usage": 2
+  },
+  {
+    "name": "chi phí điện",
+    "cluster_usage": 2
+  },
+  {
+    "name": "đi làm",
+    "cluster_usage": 2
+  },
+  {
+    "name": "tốc độ",
+    "cluster_usage": 2
+  },
+  {
+    "name": "bảo dưỡng",
+    "cluster_usage": 2
+  },
+  {
+    "name": "xe điện cũ",
+    "cluster_usage": 2
+  },
+  {
+    "name": "sửa chữa",
+    "cluster_usage": 2
+  },
+  {
+    "name": "an toàn",
+    "cluster_usage": 2
+  },
+  {
+    "name": "metro",
+    "cluster_usage": 2
+  },
+  {
+    "name": "xích",
+    "cluster_usage": 2
+  },
+  {
+    "name": "phanh",
+    "cluster_usage": 2
+  },
+  {
+    "name": "nước làm mát",
+    "cluster_usage": 2
+  },
+  {
+    "name": "lọc gió",
+    "cluster_usage": 2
+  },
+  {
+    "name": "nhông sên dĩa",
+    "cluster_usage": 2
+  },
+  {
+    "name": "má phanh",
+    "cluster_usage": 2
+  },
+  {
+    "name": "lốp xe",
+    "cluster_usage": 2
+  },
+  {
+    "name": "sạc",
+    "cluster_usage": 2
+  },
+  {
+    "name": "mức phạt",
+    "cluster_usage": 2
+  },
+  {
+    "name": "Hồ Gươm",
+    "cluster_usage": 2
+  },
+  {
+    "name": "lịch trình",
+    "cluster_usage": 2
+  },
+  {
+    "name": "phố cổ",
+    "cluster_usage": 2
+  },
+  {
+    "name": "Văn Miếu",
+    "cluster_usage": 2
+  },
+  {
+    "name": "xe đạp",
+    "cluster_usage": 2
+  },
+  {
+    "name": "Ba Vì",
+    "cluster_usage": 2
+  },
+  {
+    "name": "phượt",
+    "cluster_usage": 2
+  },
+  {
+    "name": "Tây Bắc",
+    "cluster_usage": 2
+  },
+  {
+    "name": "quy định",
+    "cluster_usage": 2
+  },
+  {
+    "name": "thuê xe máy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thuê theo giờ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thuê theo ngày",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thuê dài hạn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chi phí thuê xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Nội Bài",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sân bay",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Mỹ Đình",
+    "cluster_usage": 1
+  },
+  {
+    "name": "ga Hà Nội",
+    "cluster_usage": 1
+  },
+  {
+    "name": "ga Ngọc Hồi",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đặt xe online",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giao xe tận nơi",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tiền cọc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hợp đồng thuê xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "checklist",
+    "cluster_usage": 1
+  },
+  {
+    "name": "trả xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tranh chấp thuê xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "người nước ngoài",
+    "cluster_usage": 1
+  },
+  {
+    "name": "IDP",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giá thuê xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chất lượng dịch vụ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chở hàng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chuyển nhà",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sự kiện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thuê xe theo ngày",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chi phí vận hành",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đường dài",
+    "cluster_usage": 1
+  },
+  {
+    "name": "bộ truyền",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tiết kiệm xăng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "dung tích xi lanh",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đánh giá xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tai nạn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "110cc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tang trăng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xu hướng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chi phí lăn bánh",
+    "cluster_usage": 1
+  },
+  {
+    "name": "scooter",
+    "cluster_usage": 1
+  },
+  {
+    "name": "150cc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "rà máy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đi mưa",
+    "cluster_usage": 1
+  },
+  {
+    "name": "IP rating",
+    "cluster_usage": 1
+  },
+  {
+    "name": "quãng đường",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xe điện đi xa",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thuê xe điện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "học sinh",
+    "cluster_usage": 1
+  },
+  {
+    "name": "công suất động cơ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "scooter điện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phanh tái tạo",
+    "cluster_usage": 1
+  },
+  {
+    "name": "kiểm tra pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "pin lithium",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nhiệt độ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đồ dự phòng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "shipper",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giao hàng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cháy pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "leo dốc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "mô-men xoắn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "city bike",
+    "cluster_usage": 1
+  },
+  {
+    "name": "folding bike",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xe gấp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xe buýt",
+    "cluster_usage": 1
+  },
+  {
+    "name": "size khung",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chiều cao",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tầm đi",
+    "cluster_usage": 1
+  },
+  {
+    "name": "MTB",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xe đạp leo núi",
+    "cluster_usage": 1
+  },
+  {
+    "name": "road bike",
+    "cluster_usage": 1
+  },
+  {
+    "name": "touring",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hành trình",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thuê xe đạp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đường sá",
+    "cluster_usage": 1
+  },
+  {
+    "name": "lốp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "líp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "lốp xe đạp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giỏ xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đèn xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "kỹ năng lái",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vỉa hè",
+    "cluster_usage": 1
+  },
+  {
+    "name": "không nổ máy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "côn đề",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nóng máy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giảm xóc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "biên",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vòng bi",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vá lốp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phuộc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vành xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cầu chì",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hệ thống điện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "curoa",
+    "cluster_usage": 1
+  },
+  {
+    "name": "dầu máy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sạc không nhận",
+    "cluster_usage": 1
+  },
+  {
+    "name": "pin nóng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "an toàn pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tự bảo dưỡng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "áp suất lốp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "dầu nhớt",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nhớt",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nhớt tay ga",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nhớt xe số",
+    "cluster_usage": 1
+  },
+  {
+    "name": "ổ phanh",
+    "cluster_usage": 1
+  },
+  {
+    "name": "dầu phanh",
+    "cluster_usage": 1
+  },
+  {
+    "name": "dung lượng ắc quy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "ắc quy khô",
+    "cluster_usage": 1
+  },
+  {
+    "name": "ắc quy nước",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tiêu chuẩn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "găng tay",
+    "cluster_usage": 1
+  },
+  {
+    "name": "áo mưa",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hộp xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cốp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giá đỡ điện thoại",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đèn pha",
+    "cluster_usage": 1
+  },
+  {
+    "name": "độ đèn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phụ kiện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "GPLX",
+    "cluster_usage": 1
+  },
+  {
+    "name": "A1",
+    "cluster_usage": 1
+  },
+  {
+    "name": "A2",
+    "cluster_usage": 1
+  },
+  {
+    "name": "bằng A1",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hồ sơ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phân loại xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đăng ký xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cục đăng kiểm",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sang tên",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chuyển nhượng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "biển số",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phạt nguội",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nộp phạt",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nồng độ cồn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "bảo hiểm TNDS",
+    "cluster_usage": 1
+  },
+  {
+    "name": "trước bạ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phí đường bộ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giấy tờ xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "trẻ em",
+    "cluster_usage": 1
+  },
+  {
+    "name": "dừng đỗ",
+    "cluster_usage": 1
+  },
+  {
+    "name": "kéo xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tham quan",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Lăng Bác",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Ba Đình",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Chợ Đồng Xuân",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Hoàng Thành",
+    "cluster_usage": 1
+  },
+  {
+    "name": "bảo tàng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Cầu Long Biên",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sông Hồng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đường sắt",
+    "cluster_usage": 1
+  },
+  {
+    "name": "lịch trình nửa ngày",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chặng đường",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thời điểm",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thời tiết",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Ninh Bình",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Tràng An",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Tam Đảo",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Mai Châu",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Mộc Châu",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Hà Giang",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cung đá",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Cao Bằng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Bản Giốc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Ba Bể",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Bắc Kạn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Lạng Sơn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Mẫu Sơn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Tuyên Quang",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Mù Cang Chải",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Thác Bà",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Sa Pa",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Lào Cai",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Sơn La",
+    "cluster_usage": 1
+  },
+  {
+    "name": "Hòa Bình",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vòng cung",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chuẩn bị",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xe phượt",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sự cố",
+    "cluster_usage": 1
+  },
+  {
+    "name": "kỹ năng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "giao thông",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nắng nóng",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sương mù",
+    "cluster_usage": 1
+  },
+  {
+    "name": "trượt ngã",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chết máy",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cháy xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "điện thoại",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chở người",
+    "cluster_usage": 1
+  },
+  {
+    "name": "khoảng cách",
+    "cluster_usage": 1
+  },
+  {
+    "name": "xe tải",
+    "cluster_usage": 1
+  },
+  {
+    "name": "lái đêm",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sơ cứu",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vết thương",
+    "cluster_usage": 1
+  },
+  {
+    "name": "bảo hiểm tai nạn",
+    "cluster_usage": 1
+  },
+  {
+    "name": "mua xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chi phí sở hữu",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chi phí mỗi km",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tuổi xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "trả góp",
+    "cluster_usage": 1
+  },
+  {
+    "name": "lãi suất",
+    "cluster_usage": 1
+  },
+  {
+    "name": "nguồn gốc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chuyển xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "phí",
+    "cluster_usage": 1
+  },
+  {
+    "name": "bán xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "định giá",
+    "cluster_usage": 1
+  },
+  {
+    "name": "LFP",
+    "cluster_usage": 1
+  },
+  {
+    "name": "lithium-ion",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tuổi thọ pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "suy giảm pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sạc tại nhà",
+    "cluster_usage": 1
+  },
+  {
+    "name": "an toàn điện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "sạc nhanh",
+    "cluster_usage": 1
+  },
+  {
+    "name": "thói quen sạc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "trạm sạc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "đổi pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "công nghệ pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hạ tầng sạc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "tháo pin",
+    "cluster_usage": 1
+  },
+  {
+    "name": "chung cư",
+    "cluster_usage": 1
+  }
+]

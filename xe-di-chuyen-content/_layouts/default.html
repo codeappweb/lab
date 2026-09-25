@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+</head>
+<body>
+  <header><a href="{{ '/' | relative_url }}">{{ site.title }}</a></header>
+  <main>{{ content }}</main>
+  <footer><p>Cập nhật: {{ page.date | default: site.time | date: "%d/%m/%Y" }}</p></footer>
+</body>
+</html>

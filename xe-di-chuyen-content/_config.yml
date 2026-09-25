@@ -1,0 +1,17 @@
+title: "Xe & Di Chuyển"
+description: "Kiến thức về xe, giao thông và di chuyển tại Hà Nội: thuê xe, xe điện, xe đạp, sửa chữa, pháp lý, du lịch bằng xe."
+lang: vi
+locale: vi_VN
+url: ""
+baseurl: ""
+permalink: /:title/
+markdown: kramdown
+theme: null
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+defaults:
+  - scope: { path: "", type: posts }
+    values: { layout: post }
+  - scope: { path: "hub", type: pages }
+    values: { layout: hub }

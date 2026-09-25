@@ -1,5 +1,6 @@
 title: "Xe & Di Chuyển"
 description: "Kiến thức về xe, giao thông và di chuyển tại Hà Nội: thuê xe, xe điện, xe đạp, sửa chữa, pháp lý, du lịch bằng xe."
+data_dir: data
 lang: vi
 locale: vi_VN
 url: "https://codeappweb.github.io"

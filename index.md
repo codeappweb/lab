@@ -26,7 +26,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="section container" id="danh-muc">
   <h2 class="section-title">Khám phá phương tiện</h2>
   <div class="topic-grid--xl">
-    {% for slug in 'xe-may,xe-dien,xe-dap' | split: ',' %}
+    {% assign slugs = 'xe-may,xe-dien,xe-dap' | split: ',' %}{% for slug in slugs %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
@@ -47,7 +47,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="section container">
   <h2 class="section-title">Thuê &amp; Di chuyển</h2>
   <div class="topic-grid">
-    {% for slug in 'thue-xe' | split: ',' %}
+    {% assign slugs = 'thue-xe' | split: ',' %}{% for slug in slugs %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
@@ -68,7 +68,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="section container">
   <h2 class="section-title">Hành trình</h2>
   <div class="topic-grid">
-    {% for slug in 'du-lich,phuot-xe' | split: ',' %}
+    {% assign slugs = 'du-lich,phuot-xe' | split: ',' %}{% for slug in slugs %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
@@ -89,7 +89,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="section container">
   <h2 class="section-title">Chăm sóc xe</h2>
   <div class="topic-grid">
-    {% for slug in 'sua-chua,phu-tung' | split: ',' %}
+    {% assign slugs = 'sua-chua,phu-tung' | split: ',' %}{% for slug in slugs %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
@@ -110,7 +110,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="section container">
   <h2 class="section-title">Kiến thức</h2>
   <div class="topic-grid">
-    {% for slug in 'phap-ly,an-toan,chi-phi,cong-nghe' | split: ',' %}
+    {% assign slugs = 'phap-ly,an-toan,chi-phi,cong-nghe' | split: ',' %}{% for slug in slugs %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}

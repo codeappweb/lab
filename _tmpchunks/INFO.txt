@@ -1,3 +1,0 @@
-6cec947e0d896c9d1406affc806273a08763701a  data/article-manifest.jsonl
-34478 data/article-manifest.jsonl
-89 data/article-manifest.jsonl

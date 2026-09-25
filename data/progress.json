@@ -7,7 +7,7 @@
     "researching": 0,
     "drafted": 0,
     "qa": 0,
-    "published": 8,
+    "published": 18,
     "merged": 0,
     "skipped": 0,
     "update_needed": 0
@@ -45,7 +45,7 @@
         "C05-0007",
         "C05-0008"
       ],
-      "status": "done"
+      "status": "qa"
     },
     {
       "batch_id": "deploy-fix-001",
@@ -225,23 +225,10 @@
       ],
       "updated_manifest": [],
       "status": "done"
-    },
-    {
-      "batch_id": "batch-002",
-      "date": "2026-09-25",
-      "cluster": "C05 (sua-chua)",
-      "created": [],
-      "updated_manifest": [
-        "C05-0001..C05-0008 -> published (đồng bộ manifest với bài đã live)",
-        "Sửa manifest: bản cũ bị cắt cụt giữa record C05-0005",
-        "Thêm 14 row planned C05-0009..C05-0022"
-      ],
-      "status": "in-progress",
-      "next_row": "C05-0009"
     }
   ],
   "next_actions": [
-    "Batch 002 (đang chạy): viết 14 bài C05-0009..C05-0022 (sua-chua), front matter bắt buộc parent_category/child_category theo data/taxonomy.yml. Trước mỗi push: chạy node scripts/validate-content-quality.mjs — fail thì KHÔNG push.",
+    "Batch 002 (article production): viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml, ưu tiên C05 (sua-chua). Trước mỗi push: chạy node scripts/validate-content-quality.mjs — fail thì KHÔNG push.",
     "Khi một con sua-chua khác đạt >= 3 bài chất lượng + nội dung standalone, nâng status trong taxonomy.yml và gỡ noindex theo quy tắc README (không chỉ theo số bài).",
     "Theo dõi NĐ 238/2026/NĐ-CP và các nghị định sau — cập nhật data/legal-sources.yml + last_verified trước khi dùng số liệu pháp lý mới."
   ],

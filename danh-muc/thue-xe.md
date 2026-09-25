@@ -60,4 +60,22 @@ Cẩn thận với các khoản trong hợp đồng: mức trừ mỗi ngày tr�
 
 ---
 
-Thuê xe là cách rẻ nhất để có xe nhanh — với điều kiện hợp đồng rõ và bạn kiểm tra xe đúng cách. Nếu bạn đi xa bằng xe thuê, đọc thêm phần chuẩn bị chuyến đi trong [Phượt xe](/danh-muc/phuot-xe/chuan-bi-phuot/); nếu quyết định mua thay thuê, bắt đầu từ [Xe máy](/danh-muc/xe-may/) hoặc [Xe điện](/danh-muc/xe-dien/).
+Thuê xe là cách rẻ nhất để có xe nhanh — với điều kiện hợp đồng rõ và bạn kiểm tra xe đúng cách. Nếu bạn đi xa bằng xe thuê, đọc thêm phần chuẩn bị chuyến đi trong [Phượt xe](/danh-muc/phuot-xe/chuan-bi-phuot/); nếu quyết định mua thay thuê, bắt đầu từ [Xe máy](/danh-muc/xe-may/) hoặc [Xe điện](/danh-muc/xe-dien/
+
+## Quy trình thuê chuẩn, từ đặt xe đến trả xe
+
+Một lần thuê suôn sẻ đi qua bốn bước. Trước khi đến: xác nhận rõ loại xe, giá theo ngày hoặc theo giờ, tiền cọc và giấy tờ cần để lại. Khi nhận xe: kiểm tra cùng chủ xe — chụp ảnh xe cả hai phía, ghi lại mức xăng hoặc lượng pin, thử phanh, còi, đèn và đề máy. Trong thời gian thuê: giữ xe như xe mình, không cho người khác mượn. Khi trả xe: đối chiếu lại ảnh nhận xe, nhận lại đủ giấy tờ và cọc.
+
+Bước kiểm tra khi nhận là quan trọng nhất: gần như mọi tranh chấp khi trả xe đều xuất phát từ vết trầy hoặc hư hỏng không ai ghi nhận lúc nhận. Một album ảnh ba phút lúc nhận xe là thứ rẻ nhất bảo vệ bạn khỏi phải đền oan. Checklist đầy đủ nằm ở [thủ tục thuê](/danh-muc/thue-xe/thu-tuc-thue/).
+
+## Đặt cọc và xử lý tranh chấp
+
+Vấn đề tài chính khi thuê chỉ có hai loại: cọc và đền bù. Với cọc, nên hỏi trước ba điều: số tiền, hình thức (tiền mặt hay khóa thẻ), và thời điểm trả lại. Chủ xe uy tín trả cọc ngay khi nhận lại xe nguyên vẹn; nếu cọc bị giữ lại mà không có bằng chứng hư hỏng, yêu cầu chủ xe đưa ra ảnh chụp so sánh với ảnh nhận xe.
+
+Với đền bù, nguyên tắc hợp lý là bạn đền phần hư hỏng do lỗi sử dụng của mình, không đền hao mòn tự nhiên như lốp mòn sau chuyến đi dài. Khi hai bên không thống nhất, mức tham chiếu là báo giá sửa tại tiệm trung lập, không phải mức do một bên tự đưa ra. Các tình huống thực tế và cách xử lý nằm ở [kinh nghiệm thuê](/danh-muc/thue-xe/kinh-nghiem-thue/).
+
+## Thuê dài hạn hay mua xe
+
+Ngưỡng quyết định giữa thuê dài hạn và mua thường nằm ở tần suất dùng và thời gian ở lại. Thuê theo tháng hợp với người ở Hà Nội thời gian ngắn (dưới một năm), người chưa chắc nhu cầu, hoặc người muốn thử dòng xe trước khi mua. Mua hợp khi bạn ở dài hạn và quãng chạy ổn định: sau khoảng một năm, tổng chi thuê thường đã vượt mức hao mòn của một chiếc xe đã qua sử dụng.
+
+Một lưu ý với thuê xe điện: pin và quãng đường của xe thuê thường đã qua thời kỳ tốt nhất, nên hỏi kỹ pin còn bao nhiêu phần trăm dung lượng thiết kế trước khi nhận — chi tiết tại [thuê xe điện](/danh-muc/thue-xe/thue-xe-dien/). Với so sánh chi phí thuê và nuôi xe theo hạng mục, xem [Chi phí](/danh-muc/chi-phi/nuoi-xe/).

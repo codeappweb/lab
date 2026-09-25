@@ -61,3 +61,23 @@ Chất liệu khung: thép bền và rẻ nhưng nặng, nhôm nhẹ và phổ b
 Xe đạp rẻ nhất để sở hữu nhưng dễ bị bỏ quên nhất — chỉ vì chọn sai loại xe ban đầu. Chọn đúng, bảo dưỡng 30 phút mỗi tháng, và một chiếc xe đạp tốt sẽ đi cùng bạn nhiều năm.
 
 Cân nhắc xe đạp điện cho quãng đường dài hơn? Xem [Xe điện](/danh-muc/xe-dien/xe-dap-dien/).
+
+## Chọn khung xe và cỡ xe đúng người
+
+Hai quyết định kỹ thuật quan trọng nhất khi mua xe đạp: chất liệu khung và cỡ khung. Về chất liệu, khung thép bền và rẻ nhưng nặng; khung nhôm nhẹ và không rỉ, hợp người đi lại hằng ngày; khung carbon nhẹ nhất nhưng đắt và cần cẩn trọng khi va chạm. Người đi phố trong điều kiện Việt Nam thường hợp nhất với khung nhôm: đủ nhẹ để leo cầu vượt, đủ bền cho vỉa hè xấu.
+
+Về cỡ khung, chiều cao người lái quyết định cỡ khung. Khung quá to khiến người lái phải với tay, mỏi lưng và khó xử lý khi gấp rẽ; khung quá nhỏ làm khớp gối gập quá, đau đầu gối sau vài chục km. Cách đo nhanh: đứng vượt qua khung, khoảng hở giữa khung và thân người cỡ một bàn tay; khi ngồi lên yên, mũi bàn chân chạm đất. Hướng dẫn chọn chi tiết nằm ở [chọn xe](/danh-muc/xe-dap/chon-xe/).
+
+## Vận hành an toàn trong đô thị
+
+Xe đạp trong đô thị Việt Nam có một đặc thù: người đi xe đạp thường đi chung làn với xe máy, không có làn riêng. Vì thế ba kỹ năng quan trọng nhất là giữ hướng đi ổn định, ra hiệu bằng tay trước khi rẽ, và không len qua khoảng hẹp giữa xe máy và lề đường — nơi người lái xe máy ít ngờ tới xe đạp.
+
+Về trang bị, đèn trước và sau cùng đồ phản quang không phải tùy chọn khi chạy tối: người lái xe máy rất khó thấy xe đạp không có đèn trong đêm. Nhóm phụ kiện cần thiết cho chạy phố có trong [phụ kiện](/danh-muc/xe-dap/phu-kien-xe-dap/), còn kỹ năng xử lý đường đông ở chuyên mục [An toàn](/danh-muc/an-toan/).
+
+## Bảo dưỡng tại nhà
+
+Xe đạp là phương tiện dễ tự bảo dưỡng nhất: gần như toàn bộ bảo dưỡng định kỳ làm được tại nhà với bộ dụng cụ cơ bản. Ba hạng mục nên làm đều đặn: bôi trơn xích sau mỗi tuần chạy ướt hoặc bụi, kiểm tra áp suất lốp mỗi tuần (lốp non làm đạp nặng và mau mòn), và siết bu-long sau 200km đầu với xe mới.
+
+Hai tín hiệu cần xử lý sớm: xích có tiếng lách cách dù đã bôi trơn (xích giãn, cần cắt hoặc thay), và phanh kêu dù đã chỉnh (má phanh mòn hoặc vành bánh lệch). Chi tiết các hạng mục nằm ở [bảo dưỡng](/danh-muc/xe-dap/bao-duong-xe-dap/).
+
+Về độ bền tổng thể, cách giữ xe đơn giản nhất là để trong nhà có mái che: mưa và nắng gắt là hai tác nhân làm mục ổ trục và làm giòn cao su nhanh nhất. Một chiếc xe phố được để trong nhà dễ dàng bền gấp đôi so với xe phơi ngoài trời.

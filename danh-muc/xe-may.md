@@ -56,4 +56,26 @@ Về pháp lý, mọi xe máy đều cần đăng ký, biển số, bảo hiểm
 
 ---
 
-Danh mục Xe máy là điểm bắt đầu của hành trình dài — khi bạn đã có xe, các danh mục [Sửa chữa](/danh-muc/sua-chua/), [Phụ tùng](/danh-muc/phu-tung/) và [An toàn](/danh-muc/an-toan/) sẽ là nơi bạn quay lại thường xuyên nhất.
+Danh mục Xe máy là điểm bắt đầu của hành trình dài — khi bạn đã có xe, các danh mục [Sửa chữa](/danh-muc/sua-chua/), [Phụ tùng](/danh-muc/phu-tung/) và [An toàn](/danh-muc/an-toan/) sẽ là nơi bạn quay lại thường xuyên nhất
+
+## Chọn xe theo nhu cầu thực tế
+
+Câu hỏi đúng khi mua xe máy không phải "xe nào tốt nhất" mà "xe nào khớp với phần lớn tình huống chạy của tôi". Một người đi lại 10km mỗi ngày trong phố nhỏ nên ưu tiên xe gọn, dễ đẩy khi hết xăng và gửi xe rẻ; người chở gia đình cần khoảng để chân rộng và lực đề mạnh; người chạy đường trường nhiều lần trong tháng nên cân nhắc xe có dung tích xy-lanh lớn hơn để giữ độ bền khi chạy liên tục ở tốc độ cao. Chọn sai phân khúc là lỗi mua đắt nhất: xe to quá thì tốn xăng và khó len phố, xe nhỏ quá thì nhanh hao mòn khi chở nặng.
+
+Về dòng xe, xe số bền và rẻ bảo dưỡng nhất nhưng đòi hỏi thao tác; xe ga tiện trong phố nhưng chi phí bảo dưỡng bộ nồi cao hơn; xe côn chỉ hợp người chạy thể thao hoặc phượt chuyên. Nhóm so sánh các dòng xe phổ biến có trong mục [so sánh](/danh-muc/xe-may/so-sanh-xe/).
+
+Một nguyên tắc đáng nhớ: giá mua chỉ là một phần chi phí. Hai xe cùng mức giá có thể khác nhau rõ về mức tiêu hao nhiên liệu, chu kỳ thay phụ tùng và giá bảo dưỡng — tổng chi vài năm thường chênh lớn hơn chênh lệch giá mua ban đầu. Phân tích theo hạng mục nằm ở chuyên mục [Chi phí](/danh-muc/chi-phi/).
+
+## Vận hành hằng ngày và tiết kiệm nhiên liệu
+
+Thói quen vận hành quyết định mức tiêu hao nhiều hơn nhiều người nghĩ. Ba thói quen tiết kiệm xăng rõ nhất: giữ tốc độ đều thay vì tăng – giảm ga liên tục, dùng đúng loại nhiên liệu nhà xe khuyến nghị, và không chở tải vượt thiết kế. Ngược lại, chạy quá chậm cũng không tiết kiệm thêm mà khiến động cơ làm việc trong vùng không tối ưu.
+
+Việc ra số đúng lúc trên xe số và để bộ nồi xe ga được bảo dưỡng theo chu kỳ cũng ảnh hưởng trực tiếp: xích quá khô hoặc bộ nồi mòn đều làm một phần công suất bị tiêu hao thành ma sát, biểu hiện bằng xe đuối và hao xăng. Các dấu hiệu này được phân tích trong [sử dụng xe](/danh-muc/xe-may/su-dung-xe/) và nhóm chẩn đoán ở [Sửa chữa](/danh-muc/sua-chua/chan-doan-loi/).
+
+Cách đề máy buổi sáng cũng đáng chuẩn hóa: để máy không tải khoảng nửa phút trước khi chạy giúp dầu bôi trơn phủ đủ các chi tiết, giảm mòn lúc máy nguội — đặc biệt vào mùa đông.
+
+## Lịch bảo dưỡng cơ bản theo quãng đường
+
+Xe máy có ba mốc bảo dưỡng nên nhớ. Mốc 1.000km đầu: kiểm tra và siết toàn bộ sau khi xe mới hoặc sau khi vừa mua xe cũ. Mốc mỗi 2.000–3.000km: thay dầu nhớt, vệ sinh lọc gió, kiểm tra bugi, siết xích và tra dầu xích. Mốc mỗi 10.000km: kiểm tra dầu hộp số (xe số), vệ sinh bộ nồi (xe ga), kiểm tra má phanh và lốp.
+
+Chạy điều kiện khắc nghiệt — kẹt xe liên tục, đường bụi, chở nặng — nên rút ngắn các chu kỳ này chứ không kéo dài. Chi tiết từng hạng mục và cách tự kiểm tra nằm ở chuyên mục [Sửa chữa](/danh-muc/sua-chua/), phần bảo dưỡng định kỳ.

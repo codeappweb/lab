@@ -60,4 +60,22 @@ Về pháp lý: xe máy điện trên ngưỡng công suất cần bằng lái, 
 
 ---
 
-Xe điện phù hợp người đi quãng ngắn, ổn định hằng ngày và có chỗ sạc tiện. Nếu bạn thường đi xa liên tục, cân nhắc thêm [Xe máy](/danh-muc/xe-may/) hoặc kết hợp thuê xe cho những chuyến dài trong [Thuê xe](/danh-muc/thue-xe/).
+Xe điện phù hợp người đi quãng ngắn, ổn định hằng ngày và có chỗ sạc tiện. Nếu bạn thường đi xa liên tục, cân nhắc thêm [Xe máy](/danh-muc/xe-may/) hoặc kết hợp thuê xe cho những chuyến dài trong [Thuê xe](/danh-muc/thue-xe/
+
+## Đọc hiểu thông số xe điện
+
+Ba thông số quyết định trải nghiệm xe điện: dung lượng pin, công suất động cơ và quãng đường công bố. Trong đó quãng đường là con số dễ hiểu sai nhất: nhà sản xuất công bố theo điều kiện chuẩn (người nhẹ, tốc độ đều, đường phẳng, thời tiết dễ chịu), còn điều kiện thực tế ở phố — phanh và tăng ga liên tục, chở thêm người, trời quá nóng hoặc quá lạnh — có thể khiến quãng đường thực thấp hơn đáng kể. Cách quy đổi thực tế được giải thích trong [pin xe](/danh-muc/xe-dien/pin-xe-dien/).
+
+Với pin, hóa học quyết định tính cách: pin lithium-ion thông thường cho gọn nhẹ, pin LFP bền chu kỳ sạc và an toàn nhiệt hơn — chi tiết hai loại pin nằm ở [công nghệ pin](/danh-muc/xe-dien/cong-nghe-pin/) và chuyên mục [Công nghệ](/danh-muc/cong-nghe/). Người mua không cần hiểu sâu kỹ thuật, nhưng nên biết xe mình dùng pin gì để đúng thói quen sạc.
+
+## Sạc đúng cách và giữ pin khỏe
+
+Ba thói quen quyết định tuổi thọ pin. Thứ nhất, tránh để pin cạn kiệt thường xuyên — sạc khi còn khoảng hai đến ba mươi phần trăm thay vì chờ gần hết. Thứ hai, tránh sạc ngay sau khi xe vừa chạy xa dưới nắng: để bộ pin nguội rồi mới cắm sạc. Thứ ba, không để xe phơi nắng gắt dài hạn ở bãi đỗ — nhiệt là kẻ thù lớn nhất của pin lithium.
+
+Về tần suất, sạc hằng ngày cho quãng chạy ngắn không hại pin như nhiều người lo — pin lithium không bị hiệu ứng nhớ như các loại pin cũ. Điều cần tránh là sạc liên tục lên đầy rồi để xe đứng lâu không dùng. Chi tiết thói quen sạc nằm ở [sạc điện](/danh-muc/xe-dien/sac-xe-dien/).
+
+## Xe điện hợp với ai
+
+Xe máy điện hợp rõ rệt với ba nhóm: người đi lại quãng ngắn và trung bình hằng ngày có chỗ sạc ổn định, người muốn cắt chi phí nhiên liệu vì tiền sạc rẻ hơn xăng nhiều lần ở cùng quãng đường, và người ở khu vực hạn chế xe xăng. Nhóm nên cân nhắc: người thường chạy quãng dài không chắc chắn có điểm sạc, và người không có chỗ cắm sạc qua đêm — vì trạm sạc công cộng chưa phủ rộng như trạm xăng. So sánh chi phí xăng và điện theo từng quãng đường nằm ở [Chi phí](/danh-muc/chi-phi/tien-dien/).
+
+Một điểm đáng lưu ý khi mua: chất lượng hệ thống quản lý pin (BMS) và dịch vụ hậu mãi quan trọng hơn con số quãng đường trên giấy tờ. Xe có pin lớn nhưng BMS kém sẽ xuống cấp nhanh; xe có đại lý gần nhà sẽ đỡ tốn công khi cần bảo hành. Cách kiểm tra khi mua nằm ở nhóm [xe máy điện](/danh-muc/xe-dien/xe-may-dien/).

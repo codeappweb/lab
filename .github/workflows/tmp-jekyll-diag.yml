@@ -11,32 +11,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: jekyll build
+      - name: diag
         run: |
           export GEM_HOME="$HOME/.gems"
           export PATH="$GEM_HOME/bin:$PATH"
           {
+            git rev-parse HEAD
+            wc -c data/entities.json
+            sha256sum data/entities.json
+            echo '=== jekyll build ==='
             if [ -f Gemfile ]; then mv Gemfile Gemfile.diagbak; fi
             if [ -f Gemfile.lock ]; then mv Gemfile.lock Gemfile.lock.diagbak; fi
             gem install jekyll jekyll-sitemap jekyll-feed --no-document > /dev/null 2>&1
-            echo '=== jekyll build ==='
-            jekyll build --trace -d /tmp/site 2>&1
+            jekyll build --trace -d /tmp/site 2>&1 | head -60
             echo "JEKYLL_EXIT=$?"
             if [ -f /tmp/site/index.html ]; then echo SITE_OK; fi
-            echo '=== generated url count ==='
+            echo '=== url count ==='
             grep -c '<loc>' /tmp/site/sitemap.xml 2>/dev/null || echo no-sitemap
-          } > BUILD-DIAG.txt 2>&1 || true
+          } > DIAG-V8.txt 2>&1 || true
       - name: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for i in 1 2 3 4 5; do
-            git pull --rebase --autostash origin main 2>/dev/null || true
-            git add BUILD-DIAG.txt
-            git commit -m "tmp: jekyll diag v7 results" 2>/dev/null || true
-            if git push; then exit 0; fi
-            sleep 10
-          done
-          exit 1
-
-# diag v7 trigger: entities.json full repair (strip injected newlines in string tokens)
+          git pull --rebase --autostash origin main 2>/dev/null || true
+          git add DIAG-V8.txt
+          git commit -m "tmp: diag v8 results (canonical entities)" 2>/dev/null || true
+          git push

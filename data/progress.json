@@ -7,7 +7,7 @@
     "researching": 0,
     "drafted": 0,
     "qa": 0,
-    "published": 8,
+    "published": 22,
     "merged": 0,
     "skipped": 0,
     "update_needed": 0
@@ -225,6 +225,34 @@
       ],
       "updated_manifest": [],
       "status": "done"
+    },
+    {
+      "batch_id": "batch-002",
+      "date": "2026-09-25",
+      "cluster": "C05 sua-chua (article production)",
+      "created": [
+        "14 bài C05-0009..C05-0022 (_posts/2026-09-25-*.md), front matter parent_category: sua-chua + child_category theo taxonomy"
+      ],
+      "updated_manifest": [
+        "C05-0001..C05-0022 → published (khớp 22 post live)"
+      ],
+      "status": "done"
+    },
+    {
+      "batch_id": "pages-build-fix-002",
+      "date": "2026-09-25",
+      "cluster": "infra (Pages build recovery)",
+      "created": [],
+      "updated": [
+        "_includes/nav-drawer.html: gộp Liquid tag bị chèn newline giữa token tại dòng 93 ({% endfor %\\n} → {% endfor %}) — nguyên nhân chính Pages build failure",
+        "index.md: sửa 5 vòng lặp Liquid không hợp lệ (filter trong for tag) + bỏ 3 newline chèn giữa token",
+        "data/entities.json: canonicalize (267 entities, JSON hợp lệ) — công của phiên trước, đã xác nhận ở HEAD"
+      ],
+      "deleted": [
+        "File chẩn đoán tạm: BUILD-DIAG.txt, ENTITIES-TRUTH.txt, DIAG-V8.txt, DIAG-V9.txt, .github/workflows/tmp-jekyll-diag.yml"
+      ],
+      "updated_manifest": [],
+      "status": "done"
     }
   ],
   "next_actions": [
@@ -233,7 +261,7 @@
     "Theo dõi NĐ 238/2026/NĐ-CP và các nghị định sau — cập nhật data/legal-sources.yml + last_verified trước khi dùng số liệu pháp lý mới."
   ],
   "open_issues": [
-    "Đã xác nhận: Pages build thành công sau khi canonicalize data/entities.json; site deploy live tại /lab/.",
+    "Đã xác nhận: Pages build thành công (Jekyll green trong môi trường github-pages gem); deploy live tại /lab/ đã kiểm chứng (sitemap 43 URL, search index 35 entry, 22 bài hiển thị).",
     "GitHub App không có quyền Administration — site ở repo lab, base path /lab/.",
     "Không có trình duyệt trong sandbox — console errors, light/dark, tương tác chỉ kiểm tra tĩnh qua HTML/render text.",
     "Lưu ý: GitHub Pages build có thể kẹt queue nhiều phút — nếu deploy không cập nhật, retrigger bằng commit nhỏ.",
@@ -245,9 +273,10 @@
     "current_batch": "batch-002",
     "batch_status": "COMPLETE",
     "last_run": "2026-09-25",
-    "last_successful_commit": "dabefa1d4272219f4d602324ea3a0fa1d5b99264",
+    "last_successful_commit": "f332108a2e2d2cfcde87124b256104501a18d1ac",
     "last_completed_row": "C05-0022",
     "next_row": "Batch 003 — chọn cụm kế tiếp từ data/article-manifest.jsonl (C01 hoặc C03)",
-    "remaining_in_batch": 0
+    "remaining_in_batch": 0,
+    "publish_verification": "sitemap 43 URL (có 22 post + danh mục), assets/search.json 35 entry, homepage hiển thị 22 bài — deploy live đã xác nhận"
   }
 }

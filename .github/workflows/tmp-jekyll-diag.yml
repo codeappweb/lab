@@ -1,0 +1,38 @@
+name: tmp-jekyll-diag
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tmp-jekyll-diag.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: jekyll build
+        run: |
+          export GEM_HOME="$HOME/.gems"
+          export PATH="$GEM_HOME/bin:$PATH"
+          {
+            echo '=== gem install ==='
+            gem install jekyll jekyll-sitemap jekyll-feed --no-document 2>&1
+            echo '=== jekyll build ==='
+            jekyll build --trace -d /tmp/site 2>&1
+            echo "JEKYLL_EXIT=$?"
+            echo '=== site file count ==='
+            find /tmp/site -type f | wc -l
+          } > BUILD-DIAG.txt 2>&1 || true
+      - name: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for i in 1 2 3 4 5; do
+            git pull --rebase --autostash origin main 2>/dev/null || true
+            git add BUILD-DIAG.txt
+            git commit -m "tmp: jekyll diag v3 results" 2>/dev/null || true
+            if git push; then exit 0; fi
+            sleep 10
+          done
+          exit 1

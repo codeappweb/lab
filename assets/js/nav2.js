@@ -1,52 +1,104 @@
-/* nav2.js — nav UX cho taxonomy-rebalance-001 + menu-compaction-001.
-   - Drawer: 6 nhóm accordion (một nhóm mở tại một thời điểm), mỗi cha là accordion con cấp 2.
-   - Tự mở nhóm + chuyên mục chứa trang hiện tại, highlight active.
-   - Khóa cuộn body khi drawer mở. Mega menu aria. */
+/* nav2.js — hybrid app menu: two-screen drawer, active states, footer accordion */
 (function () {
   'use strict';
-  function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function () {
-    var drawer = document.getElementById('navDrawer');
-    if (drawer) {
-      var mo = new MutationObserver(function () {
-        document.body.classList.toggle('nav-lock', !drawer.hidden);
-      });
-      mo.observe(drawer, { attributes: true, attributeFilter: ['hidden'] });
-    }
-    var norm = function (u) { return (u || '').replace(/\/index\.html$/, ''); };
-    var path = norm(location.pathname);
-    var groups = Array.prototype.slice.call(document.querySelectorAll('details.nav-acc'));
-    groups.forEach(function (g) {
-      g.addEventListener('toggle', function () {
-        if (g.open) groups.forEach(function (o) { if (o !== g) o.open = false; });
-      });
-      // một chuyên mục con mở tại một thời điểm trong cùng nhóm
-      var subs = Array.prototype.slice.call(g.querySelectorAll('details.nav-sub'));
-      subs.forEach(function (s) {
-        s.addEventListener('toggle', function () {
-          if (s.open) subs.forEach(function (o) { if (o !== s) o.open = false; });
-        });
-      });
-    });
-    // active state: mở nhóm + cha chứa link hiện tại
-    var links = document.querySelectorAll('.nav-sub__panel a, .nav-acc__panel > a');
-    Array.prototype.forEach.call(links, function (a) {
-      if (norm(a.getAttribute('href')) === path) {
-        a.classList.add('is-active');
-        a.setAttribute('aria-current', 'page');
-        var sub = a.closest('details.nav-sub');
-        var grp = a.closest('details.nav-acc');
-        if (sub) sub.open = true;
-        if (grp) grp.open = true;
+  var drawer = document.getElementById('navDrawer');
+  var home = document.getElementById('navScrHome');
+  var moreToggle = document.getElementById('navMoreToggle');
+
+  function scr(slug) { return document.getElementById('navScr-' + slug); }
+  function hideAllScreens() {
+    if (!drawer) return;
+    drawer.querySelectorAll('.nav-scr').forEach(function (s) { s.hidden = true; });
+  }
+
+  /* Reset to home screen each time the drawer opens */
+  function resetToHome() {
+    hideAllScreens();
+    if (home) home.hidden = false;
+  }
+  if (drawer) {
+    resetToHome();
+    new MutationObserver(function () {
+      if (!drawer.hidden) resetToHome();
+    }).observe(drawer, { attributes: true, attributeFilter: ['hidden'] });
+  }
+
+  /* Level 1 → Level 2 */
+  drawer && drawer.addEventListener('click', function (e) {
+    var cat = e.target.closest('[data-nav-cat]');
+    if (cat) {
+      var s = scr(cat.getAttribute('data-nav-cat'));
+      if (s) {
+        hideAllScreens();
+        s.hidden = false;
+        var body = drawer.querySelector('.nav-drawer__body');
+        if (body) body.scrollTop = 0;
+        var back = s.querySelector('.nav-back');
+        if (back) back.focus({ preventScroll: true });
       }
-    });
-    var trig = document.querySelector('.mega-trigger');
-    var wrap = document.querySelector('.mega-wrap');
-    if (trig && wrap) {
-      wrap.addEventListener('mouseenter', function () { trig.setAttribute('aria-expanded', 'true'); });
-      wrap.addEventListener('mouseleave', function () { trig.setAttribute('aria-expanded', 'false'); });
-      trig.addEventListener('focus', function () { trig.setAttribute('aria-expanded', 'true'); });
-      trig.addEventListener('blur', function () { trig.setAttribute('aria-expanded', 'false'); });
+      return;
+    }
+
+    if (e.target.closest('[data-nav-back]')) {
+      hideAllScreens();
+      if (home) {
+        home.hidden = false;
+        var t = home.querySelector('[data-nav-cat]');
+        if (t) t.focus({ preventScroll: true });
+      }
+      return;
+    }
+
+    /* Close drawer after choosing an action/link inside it */
+    var act = e.target.closest('a, [data-qa]');
+    if (act && drawer.contains(act) && !act.hasAttribute('data-nav-cat') && !act.closest('[data-nav-back]')) {
+      var closer = drawer.querySelector('[data-nav-close]');
+      if (closer) setTimeout(function () { closer.click(); }, 0);
     }
   });
+
+  /* Xem thêm toggle */
+  if (moreToggle) {
+    moreToggle.addEventListener('click', function () {
+      var expanded = moreToggle.getAttribute('aria-expanded') === 'true';
+      moreToggle.setAttribute('aria-expanded', String(!expanded));
+      moreToggle.querySelector('span').textContent = expanded ? 'Xem thêm' : 'Thu gọn';
+      drawer.querySelectorAll('.nav-cat--more').forEach(function (b) {
+        b.hidden = expanded;
+      });
+    });
+  }
+
+  /* Active states */
+  function siteBase() {
+    var b = document.documentElement.getAttribute('data-base') || '';
+    return b.replace(/\/index\.html$/, '');
+  }
+  function markActive() {
+    var here = location.pathname.replace(/\/index\.html$/, '');
+    drawer && drawer.querySelectorAll('a[href]').forEach(function (a) {
+      var u;
+      try { u = new URL(a.href, location.origin); } catch (err) { return; }
+      var p = u.pathname.replace(/\/index\.html$/, '');
+      var isRoot = p === '/' || p === siteBase();
+      a.classList.toggle('is-active', !isRoot && here === p);
+    });
+  }
+  markActive();
+
+  /* Footer: <details> open on desktop, closed on mobile */
+  function syncFooter() {
+    var desktop = window.matchMedia('(min-width: 900px)').matches;
+    document.querySelectorAll('details.foot-sec').forEach(function (d) {
+      d.open = desktop;
+    });
+  }
+  if (document.querySelector('.site-footer')) {
+    syncFooter();
+    var rq;
+    window.addEventListener('resize', function () {
+      clearTimeout(rq);
+      rq = setTimeout(syncFooter, 150);
+    });
+  }
 })();

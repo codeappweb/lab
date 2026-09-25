@@ -6,13 +6,15 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="hero">
   <div class="hero__inner container">
     <h1>Kiến thức xe &amp; di chuyển, viết cho người thật sự đi đường</h1>
-    <p class="hero__sub">Hệ sinh thái nội dung về xe máy, xe điện, xe đạp, sửa chữa, pháp lý giao thông và du lịch bằng xe quanh Hà Nội — mỗi bài trả lời đúng một câu hỏi thực tế.</p>
+    <p class="hero__sub">Xe máy, xe điện, xe đạp — sửa chữa, pháp lý, du lịch. Mỗi bài trả lời đúng một câu hỏi thực tế.</p>
     <form class="hero__search" id="heroSearch" role="search">
       <input type="search" placeholder="Tìm kiếm: đề yếu, đi mưa, pin LFP…" aria-label="Tìm kiếm">
       <button class="go" type="submit" aria-label="Tìm">{% include icon.html name="search" %}</button>
     </form>
-    <a class="hero__cta" href="#danh-muc">Khám phá 12 danh mục {% include icon.html name="arrow" %}</a>
-    <button type="button" class="hero__ai" data-assistant-open>{% include icon.html name="chat" %} Hỏi Trợ lý AI</button>
+    <div>
+      <button type="button" class="hero__ai" data-assistant-open>{% include icon.html name="chat" %} Hỏi Trợ lý AI</button>
+      <a class="hero__cta" href="#danh-muc">Khám phá danh mục {% include icon.html name="arrow" %}</a>
+    </div>
     <div class="hero__stats">
       <div class="hero__stat"><b>12</b><span>danh mục</span></div>
       <div class="hero__stat"><b>{{ site.posts | size }}</b><span>bài đã xuất bản</span></div>
@@ -22,9 +24,10 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 </section>
 
 <section class="section container" id="danh-muc">
-  <h2 class="section-title">Danh mục</h2>
-  <div class="topic-grid">
-    {% for p in site.data.taxonomy.parents %}
+  <h2 class="section-title">Khám phá phương tiện</h2>
+  <div class="topic-grid--xl">
+    {% for slug in 'xe-may,xe-dien,xe-dap' | split: ',' %}
+    {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
     {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
@@ -32,10 +35,74 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
       {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
       {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
     {% endfor %}
-    <a class="topic-card" href="{{ purl | relative_url }}">
+    <a class="topic-card topic-card--xl" href="{{ purl | relative_url }}">
       <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
       <span class="topic-card__title">{{ p.name }}</span>
       <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
+      <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">Hành trình</h2>
+  <div class="topic-grid">
+    {% for slug in 'du-lich,phuot-xe,thue-xe' | split: ',' %}
+    {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+    {% assign pcount = 0 %}
+    {% for post in site.posts %}
+      {% assign pc = post.parent_category | default: '' %}
+      {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
+      {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
+    {% endfor %}
+    <a class="topic-card topic-card--xl" href="{{ purl | relative_url }}">
+      <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
+      <span class="topic-card__title">{{ p.name }}</span>
+      <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
+      <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">Chăm sóc xe</h2>
+  <div class="topic-grid">
+    {% for slug in 'sua-chua,phu-tung' | split: ',' %}
+    {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+    {% assign pcount = 0 %}
+    {% for post in site.posts %}
+      {% assign pc = post.parent_category | default: '' %}
+      {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
+      {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
+    {% endfor %}
+    <a class="topic-card topic-card--xl" href="{{ purl | relative_url }}">
+      <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
+      <span class="topic-card__title">{{ p.name }}</span>
+      <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
+      <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">Kiến thức</h2>
+  <div class="topic-grid">
+    {% for slug in 'phap-ly,an-toan,chi-phi,cong-nghe' | split: ',' %}
+    {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+    {% assign pcount = 0 %}
+    {% for post in site.posts %}
+      {% assign pc = post.parent_category | default: '' %}
+      {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
+      {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
+    {% endfor %}
+    <a class="topic-card topic-card--sm" href="{{ purl | relative_url }}">
+      <span class="topic-card__title">{{ p.name }}</span>
       <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
     </a>
     {% endfor %}

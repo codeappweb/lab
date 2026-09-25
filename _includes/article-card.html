@@ -1,0 +1,12 @@
+{% assign p = include.post %}
+<a class="card {% if include.size == 'featured' %}card--featured{% elsif include.size == 'compact' %}card--compact{% endif %}" href="{{ p.url | relative_url }}">
+  <div class="card__body">
+    <div class="card__meta">
+      {% if p.cluster %}<span class="badge">{{ p.cluster | upcase }}</span>{% endif %}
+      <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: '%d.%m.%Y' }}</time>
+    </div>
+    <h3 class="card__title">{{ p.title | escape }}</h3>
+    {% if p.description %}<p class="card__desc">{{ p.description | strip_html | truncate: 140 }}</p>{% endif %}
+  </div>
+  <span class="card__more">Đọc tiếp {% include icon.html name="arrow" %}</span>
+</a>

@@ -1,6 +1,6 @@
 {
   "last_updated": "2026-09-25",
-  "phase": "deploy-fixed-root",
+  "phase": "ui-redesign",
   "content_budget_total": 3000,
   "articles": {
     "planned": 193,
@@ -56,14 +56,34 @@
       ],
       "updated_manifest": [],
       "status": "done"
+    },
+    {
+      "batch_id": "ui-redesign-001",
+      "date": "2026-09-25",
+      "cluster": "infra (UI)",
+      "created": [
+        "Design system CSS (assets/css/main.css): tokens sáng/tối, app bar, hero, topic cards, article cards, prose, TOC, search palette, mobile sheet, bottom nav",
+        "Vanilla JS (assets/js/main.js): theme toggle + localStorage không flash, search overlay (/, Ctrl+K) với assets/search.json, TOC tự sinh, reading time, sheet, bottom nav",
+        "Logo SVG + favicon (assets/images/favicon.svg)",
+        "9 includes: head, header, footer, logo, icon, theme-toggle, article-card, search, topic-sheet",
+        "3 layouts mới: default (app shell), post (premium reading + JSON-LD), hub (hero + auto listing + empty state)",
+        "assets/search.json: index tìm kiếm tĩnh (posts + hubs)"
+      ],
+      "updated": [
+        "index.md: hero + topic explorer + mới nhất + khám phá (chips từ entities)",
+        "hub/c01..c12.md: thêm front matter icon, giữ nguyên permalink/title/description/cluster, bỏ danh sách link thủ công (layout tự render)"
+      ],
+      "updated_manifest": [],
+      "status": "done"
     }
   ],
   "next_actions": [
-    "Xác nhận https://codeappweb.github.io/lab/ load đúng trang chủ, CSS và hub.",
-    "Chuyển 8 bài qa -> published sau khi deploy chạy, chạy scripts/build-sitemap.mjs.",
+    "QA trực tiếp trang live: light/dark, mobile, search, TOC sau khi GitHub Pages rebuild.",
+    "Chuyển 8 bài qa -> published sau khi UI deploy chạy ổn, chạy scripts/build-sitemap.mjs.",
     "Batch 002: 8 bài C05 còn lại (bảo dưỡng định kỳ) + 5 bài C03 đầu tiên."
   ],
   "open_issues": [
-    "GitHub App không có quyền tạo repo (Administration) — site nằm trong repo lab, base path /lab/."
+    "GitHub App không có quyền tạo repo (Administration) — site nằm trong repo lab, base path /lab/.",
+    "Không chạy được jekyll build cục bộ trong sandbox — cần xác nhận bản render trực tiếp trên Pages."
   ]
 }

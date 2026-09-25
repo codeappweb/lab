@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-  <meta name="description" content="{{ page.description | default: site.description | escape }}">
-  <link rel="canonical" href="{{ page.url | absolute_url }}">
-</head>
+<html lang="vi" data-base="{{ site.baseurl }}" data-theme="light">
+{% include head.html %}
 <body>
-  <header><a href="{{ '/' | relative_url }}">{{ site.title }}</a></header>
-  <main>{{ content }}</main>
-  <footer><p>Cập nhật: {{ page.date | default: site.time | date: "%d/%m/%Y" }}</p></footer>
+  <a class="skip-link" href="#main">Bỏ qua tới nội dung</a>
+  {% include header.html %}
+  <main id="main">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  {% include search.html %}
+  {% include topic-sheet.html %}
+  <nav class="bottom-nav" aria-label="Điều hướng nhanh">
+    <a href="{{ '/' | relative_url }}">{% include icon.html name="home" %}<span>Trang chủ</span></a>
+    <button type="button" data-sheet-open>{% include icon.html name="grid" %}<span>Chủ đề</span></button>
+    <button type="button" data-search-open>{% include icon.html name="search" %}<span>Tìm kiếm</span></button>
+  </nav>
+  <script defer src="{{ '/assets/js/main.js' | relative_url }}"></script>
 </body>
 </html>

@@ -1,6 +1,42 @@
 ---
 layout: default
 ---
-<nav class="hub">
-  {{ content }}
-</nav>
+{% assign cluster_posts = site.posts | where: 'cluster', page.cluster %}
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">Chủ đề</p>
+    <div class="hub-hero__row">
+      <span class="hub-hero__icon" aria-hidden="true">{% include icon.html name=page.icon %}</span>
+      <div>
+        <h1>{{ page.title | escape }}</h1>
+        {% if page.description %}<p class="hub-hero__desc">{{ page.description | escape }}</p>{% endif %}
+        <p class="hub-hero__meta">
+          {% if cluster_posts.size > 0 %}{{ cluster_posts.size }} bài đã xuất bản{% else %}Nội dung đang được chuẩn bị{% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <div class="prose hub-intro">
+    {{ content }}
+  </div>
+  {% if cluster_posts.size > 0 %}
+  <div class="card-grid">
+    {% for p in cluster_posts %}{% include article-card.html post=p %}{% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-note">
+    <p>Chủ đề này nằm trong kế hoạch nội dung. Bài viết sẽ được xuất bản theo từng đợt sau khi qua kiểm định.</p>
+  </div>
+  {% endif %}
+  <section class="hub-other" aria-label="Chủ đề khác">
+    <h2>Khám phá chủ đề khác</h2>
+    <div class="chips">
+      {% assign other_hubs = site.pages | where: 'layout', 'hub' | where_exp: 'h', 'h.cluster != page.cluster' | sort: 'cluster' %}
+      {% for h in other_hubs %}
+      <a class="chip" href="{{ h.url | relative_url }}">{{ h.title }}</a>
+      {% endfor %}
+    </div>
+  </section>
+</div>

@@ -1,7 +1,55 @@
 ---
 layout: default
 ---
-<article>
-  <p class="meta">Cập nhật: {{ page.date | date: "%d/%m/%Y" }} · <a href="/lab/hub/{{ page.cluster | downcase }}/">Chủ đề liên quan</a></p>
-  {{ content }}
+{% assign hub_page = site.pages | where: 'cluster', page.cluster | first %}
+<article class="container article">
+  <nav class="crumbs" aria-label="Điều hướng breadcrumb">
+    <a href="{{ '/' | relative_url }}">Trang chủ</a>
+    {% if hub_page %}<a href="{{ hub_page.url | relative_url }}">{{ hub_page.title }}</a>{% endif %}
+    <span aria-current="page">{{ page.title | escape }}</span>
+  </nav>
+  <header class="article-head">
+    {% if page.cluster %}<a class="badge badge--link" href="{{ hub_page.url | relative_url }}">{{ page.cluster | upcase }}</a>{% endif %}
+    <h1>{{ page.title | escape }}</h1>
+    {% if page.description %}<p class="lede">{{ page.description | escape }}</p>{% endif %}
+    <div class="article-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d.%m.%Y' }}</time>
+      <span id="readingTime" aria-hidden="true"></span>
+    </div>
+  </header>
+  <details class="toc-mobile" id="tocMobile" hidden>
+    <summary>Mục lục</summary>
+    <nav id="tocMobileNav" aria-label="Mục lục"></nav>
+  </details>
+  <div class="article-body-wrap">
+    <div class="prose">
+      {{ content }}
+    </div>
+    <aside class="toc" hidden aria-label="Mục lục">
+      <h2>Mục lục</h2>
+      <nav id="tocNav"></nav>
+    </aside>
+  </div>
+  {% assign related = site.posts | where: 'cluster', page.cluster | where_exp: 'p', 'p.url != page.url' | limit: 3 %}
+  {% if related.size > 0 %}
+  <section class="article-related" aria-label="Bài liên quan">
+    <h2>Bài liên quan</h2>
+    <div class="card-grid">
+      {% for p in related %}{% include article-card.html post=p %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+  {% if hub_page %}
+  <p class="back-hub"><a href="{{ hub_page.url | relative_url }}">{% include icon.html name="arrow" %} Xem tất cả bài trong {{ hub_page.title }}</a></p>
+  {% endif %}
 </article>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ page.title | jsonify }},
+  "description": {{ page.description | default: '' | jsonify }},
+  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+  "url": {{ page.url | absolute_url | jsonify }}
+}
+</script>

@@ -2,11 +2,9 @@
   <div class="container app-bar__inner">
     {% include logo.html %}
     <nav class="main-nav" aria-label="Điều hướng chính">
-      <a href="{{ '/' | relative_url }}">Trang chủ</a>
-      <a href="{{ '/hub/c05/' | relative_url }}">Sửa chữa</a>
-      <a href="{{ '/hub/c03/' | relative_url }}">Xe điện</a>
-      <a href="{{ '/hub/c08/' | relative_url }}">Du lịch</a>
-      <a href="{{ '/hub/c07/' | relative_url }}">Pháp lý</a>
+      {% for item in site.data.navigation.main %}
+      <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+      {% endfor %}
     </nav>
     <div class="app-bar__actions">
       <button type="button" class="search-btn" data-search-open aria-label="Tìm kiếm (Ctrl K)">
@@ -15,7 +13,7 @@
         <kbd class="kbd">Ctrl K</kbd>
       </button>
       {% include theme-toggle.html %}
-      <button type="button" class="menu-btn" data-sheet-open aria-label="Mở danh sách chủ đề">
+      <button type="button" class="menu-btn" data-nav-open aria-controls="navDrawer" aria-expanded="false" aria-label="Mở menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>

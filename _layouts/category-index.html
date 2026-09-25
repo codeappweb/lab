@@ -1,0 +1,37 @@
+---
+layout: default
+---
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">Khám phá</p>
+    <div class="hub-hero__row">
+      <div>
+        <h1>Danh mục chủ đề</h1>
+        <p class="hub-hero__desc">Toàn bộ nội dung của trang được tổ chức thành các danh mục lớn, mỗi danh mục chia thành các chuyên mục nhỏ theo một chủ đề cụ thể.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <nav class="crumbs" aria-label="Điều hướng breadcrumb">
+    <a href="{{ '/' | relative_url }}">Trang chủ</a>
+    <span aria-current="page">Danh mục</span>
+  </nav>
+  <div class="topic-grid">
+    {% for p in site.data.taxonomy.parents %}
+    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+    {% assign pcount = 0 %}
+    {% for post in site.posts %}
+      {% assign pc = post.parent_category | default: '' %}
+      {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
+      {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
+    {% endfor %}
+    <a class="topic-card" href="{{ purl | relative_url }}">
+      <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
+      <span class="topic-card__title">{{ p.name }}</span>
+      <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
+      <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>

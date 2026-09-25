@@ -4,22 +4,20 @@
       {% include logo.html %}
       <p>Cẩm nang thực dụng về xe máy, xe điện, xe đạp, sửa chữa, pháp lý và du lịch bằng xe — bắt đầu từ Hà Nội.</p>
     </div>
-    <nav class="footer-col" aria-label="Chủ đề">
-      <h3>Chủ đề</h3>
-      <a href="{{ '/hub/c01/' | relative_url }}">Thuê xe</a>
-      <a href="{{ '/hub/c02/' | relative_url }}">Xe máy</a>
-      <a href="{{ '/hub/c03/' | relative_url }}">Xe điện</a>
-      <a href="{{ '/hub/c04/' | relative_url }}">Xe đạp</a>
-      <a href="{{ '/hub/c05/' | relative_url }}">Sửa chữa</a>
-      <a href="{{ '/hub/c06/' | relative_url }}">Phụ tùng</a>
-      <a href="{{ '/hub/c07/' | relative_url }}">Pháp lý</a>
-      <a href="{{ '/hub/c08/' | relative_url }}">Du lịch Hà Nội</a>
-      <a href="{{ '/hub/c09/' | relative_url }}">Phượt</a>
-      <a href="{{ '/hub/c10/' | relative_url }}">An toàn</a>
-      <a href="{{ '/hub/c11/' | relative_url }}">Mua xe &amp; chi phí</a>
-      <a href="{{ '/hub/c12/' | relative_url }}">Công nghệ EV</a>
+    <nav class="footer-col" aria-label="Trang">
+      <h3>Trang</h3>
+      {% for item in site.data.navigation.main %}
+      <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+      {% endfor %}
     </nav>
-    <nav class="footer-col" aria-label="Kỹ thuật">
+    <nav class="footer-col" aria-label="Danh mục">
+      <h3>Danh mục</h3>
+      {% for p in site.data.taxonomy.parents %}
+      {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+      <a href="{{ purl | relative_url }}">{{ p.name }}</a>
+      {% endfor %}
+    </nav>
+    <nav class="footer-col" aria-label="Liên kết kỹ thuật">
       <h3>Kỹ thuật</h3>
       <a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a>
       <a href="{{ '/feed.xml' | relative_url }}">RSS</a>

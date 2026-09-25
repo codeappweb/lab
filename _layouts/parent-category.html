@@ -1,0 +1,78 @@
+---
+layout: default
+---
+{% assign parent = site.data.taxonomy.parents | where: 'id', page.taxonomy | first %}
+{% assign mine = '' | split: '' %}
+{% for p in site.posts %}
+  {% assign pc = p.parent_category | default: '' %}
+  {% if pc == '' %}{% assign t = site.data['article-taxonomy'][p.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
+  {% if pc == parent.slug %}{% assign mine = mine | push: p %}{% endif %}
+{% endfor %}
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">Danh mục</p>
+    <div class="hub-hero__row">
+      <span class="hub-hero__icon" aria-hidden="true">{% include icon.html name=parent.icon %}</span>
+      <div>
+        <h1>{{ parent.name }}</h1>
+        <p class="hub-hero__desc">{{ parent.description }}</p>
+        <p class="hub-hero__meta">{% if mine.size > 0 %}{{ mine.size }} bài đã xuất bản{% else %}Nội dung đang được chuẩn bị{% endif %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <nav class="crumbs" aria-label="Điều hướng breadcrumb">
+    <a href="{{ '/' | relative_url }}">Trang chủ</a>
+    <span aria-current="page">{{ parent.name }}</span>
+  </nav>
+  <section class="section" aria-label="Chuyên mục con">
+    <h2 class="section-title">Chuyên mục</h2>
+    <div class="topic-grid">
+      {% for c in parent.children %}
+      {% capture curl %}/danh-muc/{{ parent.slug }}/{{ c.slug }}/{% endcapture %}
+      {% assign ccount = 0 %}
+      {% for p in site.posts %}
+        {% assign pc = p.parent_category | default: '' %}
+        {% assign cc = p.child_category | default: '' %}
+        {% if pc == '' or cc == '' %}{% assign t = site.data['article-taxonomy'][p.slug] %}{% if t %}{% assign pc = pc | default: t.parent %}{% assign cc = cc | default: t.child %}{% endif %}{% endif %}
+        {% if pc == parent.slug and cc == c.slug %}{% assign ccount = ccount | plus: 1 %}{% endif %}
+      {% endfor %}
+      <a class="topic-card" href="{{ curl | relative_url }}">
+        <span class="topic-card__title">{{ c.name }}</span>
+        <span class="topic-card__desc">{{ c.description | truncate: 110 }}</span>
+        <span class="topic-card__meta">{% if ccount > 0 %}{{ ccount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% if mine.size > 0 %}
+  <section class="section" aria-label="Bài viết trong danh mục">
+    <h2 class="section-title">Bài trong {{ parent.name }}</h2>
+    <div class="card-grid">
+      {% assign shown = mine | slice: 0, 12 %}
+      {% for p in shown %}{% include article-card.html post=p %}{% endfor %}
+    </div>
+    {% if mine.size > 12 %}
+    <p class="empty-note">Còn {{ mine.size | minus: 12 }} bài khác trong danh mục — dùng tìm kiếm (Ctrl K) hoặc duyệt từng chuyên mục.</p>
+    {% endif %}
+  </section>
+  {% else %}
+  <div class="empty-note">
+    <p>Danh mục này nằm trong kế hoạch nội dung. Bài viết sẽ được xuất bản theo từng đợt sau khi qua kiểm định.</p>
+  </div>
+  {% endif %}
+  {% if parent.cluster %}
+  {% capture huburl %}/hub/{{ parent.cluster | downcase }}/{% endcapture %}
+  <p class="back-hub"><a href="{{ huburl | relative_url }}">{% include icon.html name="arrow" %} Trang chủ đề biên tập {{ parent.cluster }}</a></p>
+  {% endif %}
+  <section class="hub-other" aria-label="Danh mục khác">
+    <h2>Khám phá danh mục khác</h2>
+    <div class="chips">
+      {% for other in site.data.taxonomy.parents %}{% unless other.id == parent.id %}
+      {% capture ourl %}/danh-muc/{{ other.slug }}/{% endcapture %}
+      <a class="chip" href="{{ ourl | relative_url }}">{{ other.name }}</a>
+      {% endunless %}{% endfor %}
+    </div>
+  </section>
+</div>

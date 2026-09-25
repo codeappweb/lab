@@ -1,7 +1,7 @@
 /* Content retrieval over the build-time content index (assets/data/).
-   Core index (content-index.json) is lightweight: title/url/desc/category/headings.
+   Core index (content-index.json): title/url/desc/category/headings/parent/child.
    Full-text shards (content-index-cNN.json) are lazy-loaded per cluster —
-   this is the scale strategy for thousands of articles. */
+   the scale strategy for thousands of articles. */
 window.XDC = window.XDC || {};
 (function (X) {
   'use strict';
@@ -37,7 +37,7 @@ window.XDC = window.XDC || {};
   };
 
   /* Rank core items against the query. Signals: exact/normalized title match,
-     heading match, description match, category match. */
+     heading match, description match, child/parent category match, cluster match. */
   X.rank = function (query) {
     return X.getCore().then(function (core) {
       var ts = terms(query);
@@ -45,14 +45,17 @@ window.XDC = window.XDC || {};
       var scored = [];
       core.forEach(function (it) {
         var nTitle = norm(it.title), nDesc = norm(it.description || ''),
-            nHead = norm((it.headings || []).join(' . ')), nCat = norm(it.category || '');
+            nHead = norm((it.headings || []).join(' . ')), nCat = norm(it.category || ''),
+            nPar = norm(it.parent || ''), nChi = norm(it.child || '');
         var s = 0;
         ts.forEach(function (t) {
           if (nTitle === t) s += 14;
           else if (nTitle.indexOf(t) !== -1) s += 8;
           if (nHead.indexOf(t) !== -1) s += 4;
           if (nDesc.indexOf(t) !== -1) s += 3;
+          if (nChi.indexOf(t) !== -1) s += 3;
           if (nCat.indexOf(t) !== -1) s += 2;
+          if (nPar.indexOf(t) !== -1) s += 2;
         });
         if (s > 0) scored.push({ item: it, score: s });
       });

@@ -1,16 +1,28 @@
 ---
 layout: default
 ---
+{% assign tmap = site.data['article-taxonomy'][page.slug] %}
+{% assign pcat = page.parent_category | default: tmap.parent %}
+{% assign ccat = page.child_category | default: tmap.child %}
+{% assign parent = site.data.taxonomy.parents | where: 'slug', pcat | first %}
+{% assign child = nil %}
+{% if parent %}{% assign child = parent.children | where: 'slug', ccat | first %}{% endif %}
 {% assign hub_page = site.pages | where: 'cluster', page.cluster | first %}
 <article class="container article">
   <div class="read-progress" id="readProgress" aria-hidden="true"></div>
   <nav class="crumbs" aria-label="Điều hướng breadcrumb">
     <a href="{{ '/' | relative_url }}">Trang chủ</a>
-    {% if hub_page %}<a href="{{ hub_page.url | relative_url }}">{{ hub_page.title }}</a>{% endif %}
+    {% if parent %}{% capture purl %}/danh-muc/{{ parent.slug }}/{% endcapture %}<a href="{{ purl | relative_url }}">{{ parent.name }}</a>{% endif %}
+    {% if child %}{% capture curl %}/danh-muc/{{ parent.slug }}/{{ child.slug }}/{% endcapture %}<a href="{{ curl | relative_url }}">{{ child.name }}</a>{% endif %}
     <span aria-current="page">{{ page.title | escape }}</span>
   </nav>
   <header class="article-head">
-    {% if page.cluster %}<a class="badge badge--link" href="{{ hub_page.url | relative_url }}">{{ page.cluster | upcase }}</a>{% endif %}
+    {% if parent %}
+    {% capture purl %}/danh-muc/{{ parent.slug }}/{% endcapture %}
+    <a class="badge badge--link" href="{{ purl | relative_url }}">{{ parent.name }}</a>
+    {% elsif page.cluster %}
+    <a class="badge badge--link" href="{{ hub_page.url | relative_url }}">{{ page.cluster | upcase }}</a>
+    {% endif %}
     <h1>{{ page.title | escape }}</h1>
     {% if page.description %}<p class="lede">{{ page.description | escape }}</p>{% endif %}
     <div class="article-meta">
@@ -44,20 +56,19 @@ layout: default
   {% if hub_page %}
   <p class="back-hub"><a href="{{ hub_page.url | relative_url }}">{% include icon.html name="arrow" %} Xem tất cả bài trong {{ hub_page.title }}</a></p>
   {% endif %}
-{% assign sorted_posts = site.posts | sort: 'date' %}
-{% for p in sorted_posts %}{% if p.url == page.url %}{% assign cur = forloop.index0 %}{% endif %}{% endfor %}
-{% assign pi = cur | minus: 1 %}{% assign ni = cur | plus: 1 %}
-<nav class="post-nav" aria-label="Bài trước, bài sau">
-{% if pi >= 0 %}{% assign pp = sorted_posts[pi] %}<a href="{{ pp.url | relative_url }}"><span>Bài trước</span><b>{{ pp.title }}</b></a>{% endif %}
-{% if ni < sorted_posts.size %}{% assign np = sorted_posts[ni] %}<a class="pn-next" href="{{ np.url | relative_url }}"><span>Bài tiếp theo</span><b>{{ np.title }}</b></a>{% endif %}
-</nav>
+  {% assign sorted_posts = site.posts | sort: 'date' %}
+  {% for p in sorted_posts %}{% if p.url == page.url %}{% assign cur = forloop.index0 %}{% endif %}{% endfor %}
+  {% assign pi = cur | minus: 1 %}{% assign ni = cur | plus: 1 %}
+  <nav class="post-nav" aria-label="Bài trước, bài sau">
+    {% if pi >= 0 %}{% assign pp = sorted_posts[pi] %}<a href="{{ pp.url | relative_url }}"><span>Bài trước</span><b>{{ pp.title }}</b></a>{% endif %}
+    {% if ni < sorted_posts.size %}{% assign np = sorted_posts[ni] %}<a class="pn-next" href="{{ np.url | relative_url }}"><span>Bài tiếp theo</span><b>{{ np.title }}</b></a>{% endif %}
+  </nav>
 </article>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": {{ page
-.title | jsonify }},
+  "headline": {{ page.title | jsonify }},
   "description": {{ page.description | default: '' | jsonify }},
   "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
   "url": {{ page.url | absolute_url | jsonify }}

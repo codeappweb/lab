@@ -1,0 +1,59 @@
+---
+layout: default
+---
+{% assign parent = site.data.taxonomy.parents | where: 'id', page.taxonomy | first %}
+{% assign child = parent.children | where: 'slug', page.cslug | first %}
+{% capture purl %}/danh-muc/{{ parent.slug }}/{% endcapture %}
+{% assign mine = '' | split: '' %}
+{% for p in site.posts %}
+  {% assign pc = p.parent_category | default: '' %}
+  {% assign cc = p.child_category | default: '' %}
+  {% if pc == '' or cc == '' %}{% assign t = site.data['article-taxonomy'][p.slug] %}{% if t %}{% assign pc = pc | default: t.parent %}{% assign cc = cc | default: t.child %}{% endif %}{% endif %}
+  {% if pc == parent.slug and cc == child.slug %}{% assign mine = mine | push: p %}{% endif %}
+{% endfor %}
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">Danh mục</p>
+    <div class="hub-hero__row">
+      <span class="hub-hero__icon" aria-hidden="true">{% include icon.html name=parent.icon %}</span>
+      <div>
+        <h1>{{ child.name }}</h1>
+        <p class="hub-hero__desc">{{ child.description }}</p>
+        <p class="hub-hero__meta">{% if mine.size > 0 %}{{ mine.size }} bài đã xuất bản{% else %}Nội dung đang được chuẩn bị{% endif %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container">
+  <nav class="crumbs" aria-label="Điều hướng breadcrumb">
+    <a href="{{ '/' | relative_url }}">Trang chủ</a>
+    <a href="{{ purl | relative_url }}">{{ parent.name }}</a>
+    <span aria-current="page">{{ child.name }}</span>
+  </nav>
+  <div class="prose hub-intro">
+    <p>{{ child.description }} Thuộc danh mục <a href="{{ purl | relative_url }}">{{ parent.name }}</a>.</p>
+    {% if parent.needs_official_source %}<p><em>Lưu ý — nội dung nhóm này dễ thay đổi theo quy định mới, chỉ nên dựa vào nguồn chính thống được dẫn trong từng bài.</em></p>{% endif %}
+  </div>
+  {% if mine.size > 0 %}
+  <div class="card-grid">
+    {% assign shown = mine | slice: 0, 24 %}
+    {% for p in shown %}{% include article-card.html post=p %}{% endfor %}
+  </div>
+  {% if mine.size > 24 %}
+  <p class="empty-note">Còn {{ mine.size | minus: 24 }} bài khác — dùng tìm kiếm (Ctrl K) để lọc nhanh hơn.</p>
+  {% endif %}
+  {% else %}
+  <div class="empty-note">
+    <p>Chuyên mục này nằm trong kế hoạch nội dung. Trong lúc chờ, bạn có thể xem các bài khác trong danh mục <a href="{{ purl | relative_url }}">{{ parent.name }}</a>.</p>
+  </div>
+  {% endif %}
+  <section class="hub-other" aria-label="Chuyên mục cùng danh mục">
+    <h2>Chuyên mục khác trong {{ parent.name }}</h2>
+    <div class="chips">
+      {% for sib in parent.children %}{% unless sib.slug == child.slug %}
+      {% capture surl %}/danh-muc/{{ parent.slug }}/{{ sib.slug }}/{% endcapture %}
+      <a class="chip" href="{{ surl | relative_url }}">{{ sib.name }}</a>
+      {% endunless %}{% endfor %}
+    </div>
+  </section>
+</div>

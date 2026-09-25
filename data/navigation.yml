@@ -1,0 +1,22 @@
+# Nguồn dữ liệu DUY NHẤT cho menu chính — dùng cho header, footer và nav drawer.
+# URL tương đối (bắt đầu bằng "/"), render bằng | relative_url để tự thêm /lab/.
+main:
+  - label: "Trang chủ"
+    url: "/"
+  - label: "Giới thiệu"
+    url: "/gioi-thieu/"
+  - label: "Liên hệ"
+    url: "/lien-he/"
+  - label: "Câu hỏi"
+    url: "/faq/"
+  - label: "Dịch vụ"
+    url: "/dich-vu/"
+  - label: "Bảo mật"
+    url: "/bao-mat/"
+  - label: "Điều khoản"
+    url: "/dieu-khoan/"
+utility:
+  - label: "Sitemap"
+    url: "/sitemap.xml"
+  - label: "RSS"
+    url: "/feed.xml"

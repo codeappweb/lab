@@ -1,0 +1,24 @@
+<div class="sheet-backdrop" id="navBackdrop" hidden></div>
+<aside class="nav-drawer" id="navDrawer" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="nav-drawer__head">
+    <span>Menu</span>
+    <button type="button" class="sheet__close" data-nav-close aria-label="Đóng menu">
+      {% include icon.html name="close" %}
+    </button>
+  </div>
+  <nav class="nav-drawer__main" aria-label="Trang">
+    {% for item in site.data.navigation.main %}
+    <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+    {% endfor %}
+  </nav>
+  <div class="nav-drawer__cats">
+    <span class="nav-drawer__title">Danh mục</span>
+    {% for p in site.data.taxonomy.parents %}
+    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+    <a class="nav-drawer__cat" href="{{ purl | relative_url }}">
+      <span class="nav-drawer__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
+      <span>{{ p.name }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</aside>

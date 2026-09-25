@@ -19,7 +19,8 @@ Khác với mua xe, thuê xe không cần quan tâm tuổi thọ pin hay lịch 
 
 ## Các nhóm nội dung chính
 
-**[Thuê xe máy](/danh-muc/thue-xe/thue-xe-may/)** là nhóm phổ biến nhất: thủ tục (CMND/CCCD hoặc passport, GPLX nếu yêu cầu), cọc thường theo giá trị xe, và cách chọn giữa xe số cũ bền với xe ga mới hơn nhưng cọc cao.
+**[Thuê xe máy](/danh-muc/thue-xe/thue-xe-may/)** là nhóm phổ biến nhất: thủ tục (CMND/CCCD hoặc passport, GPLX nếu y
+êu cầu), cọc thường theo giá trị xe, và cách chọn giữa xe số cũ bền với xe ga mới hơn nhưng cọc cao.
 
 **[Thuê xe điện](/danh-muc/thue-xe/thue-xe-dien/)** đang mở rộng nhanh: rẻ hơn xe xăng, hợp quãng đường trong thành phố, nhưng cần hỏi rõ quãng đường thực của xe và có được sạc tại chỗ thuê không — với xe pin chai, quảng cáo và thực tế cách nhau xa.
 
@@ -40,7 +41,8 @@ Khác với mua xe, thuê xe không cần quan tâm tuổi thọ pin hay lịch 
 - **Bạn du lịch Hà Nội vài ngày** — đọc Thủ tục thuê trước (chuẩn bị giấy tờ), rồi Thuê ngắn hạn để tính ngày thuê rẻ nhất. Xe đạp hợp phố cổ, xe máy hợp lộ trình xa hơn.
 - **Bạn cần xe đi làm 1–3 tháng** — Thuê dài hạn, chú ý điều khoản bảo dưỡng trong hợp đồng.
 - **Bạn cân nhắc mua xe điện** — thuê loại định mua 1–2 tuần, trải nghiệm thật vẫn hơn mọi bài đánh giá.
-- **Bạn không có GPLX** — đọc phần giấy tờ trong Thủ tục thuê và ranh giới [xe 50cc/xe đạp điện](/danh-muc/phap-ly/bang-lai/) để biết loại xe nào được phép đi.
+- **Bạn không có GPLX** — đọc phần giấy tờ trong Thủ tục thuê và ranh giới [xe 50cc/xe đạp điện](/danh-muc
+/phap-ly/bang-lai/) để biết loại xe nào được phép đi.
 
 ## Những vấn đề thường gặp
 
@@ -64,7 +66,8 @@ Thuê xe là cách rẻ nhất để có xe nhanh — với điều kiện hợp
 
 ## Quy trình thuê chuẩn, từ đặt xe đến trả xe
 
-Một lần thuê suôn sẻ đi qua bốn bước. Trước khi đến: xác nhận rõ loại xe, giá theo ngày hoặc theo giờ, tiền cọc và giấy tờ cần để lại. Khi nhận xe: kiểm tra cùng chủ xe — chụp ảnh xe cả hai phía, ghi lại mức xăng hoặc lượng pin, thử phanh, còi, đèn và đề máy. Trong thời gian thuê: giữ xe như xe mình, không cho người khác mượn. Khi trả xe: đối chiếu lại ảnh nhận xe, nhận lại đủ giấy tờ và cọc.
+Một lần thuê suôn sẻ đi qua bốn bước. Trước khi đến: xác nhận rõ loại xe, giá theo ngày hoặc theo giờ, tiền cọc và giấy tờ cần để lại. Khi nhận xe: kiểm tra cùng chủ xe — chụp ảnh xe cả hai phía, ghi lại mức xăng hoặc lượng pin, thử pha
+nh, còi, đèn và đề máy. Trong thời gian thuê: giữ xe như xe mình, không cho người khác mượn. Khi trả xe: đối chiếu lại ảnh nhận xe, nhận lại đủ giấy tờ và cọc.
 
 Bước kiểm tra khi nhận là quan trọng nhất: gần như mọi tranh chấp khi trả xe đều xuất phát từ vết trầy hoặc hư hỏng không ai ghi nhận lúc nhận. Một album ảnh ba phút lúc nhận xe là thứ rẻ nhất bảo vệ bạn khỏi phải đền oan. Checklist đầy đủ nằm ở [thủ tục thuê](/danh-muc/thue-xe/thu-tuc-thue/).
 
@@ -79,3 +82,7 @@ Với đền bù, nguyên tắc hợp lý là bạn đền phần hư hỏng do 
 Ngưỡng quyết định giữa thuê dài hạn và mua thường nằm ở tần suất dùng và thời gian ở lại. Thuê theo tháng hợp với người ở Hà Nội thời gian ngắn (dưới một năm), người chưa chắc nhu cầu, hoặc người muốn thử dòng xe trước khi mua. Mua hợp khi bạn ở dài hạn và quãng chạy ổn định: sau khoảng một năm, tổng chi thuê thường đã vượt mức hao mòn của một chiếc xe đã qua sử dụng.
 
 Một lưu ý với thuê xe điện: pin và quãng đường của xe thuê thường đã qua thời kỳ tốt nhất, nên hỏi kỹ pin còn bao nhiêu phần trăm dung lượng thiết kế trước khi nhận — chi tiết tại [thuê xe điện](/danh-muc/thue-xe/thue-xe-dien/). Với so sánh chi phí thuê và nuôi xe theo hạng mục, xem [Chi phí](/danh-muc/chi-phi/nuoi-xe/).
+
+## Quy trình khi có sự cố với xe thuê
+
+Trước khi nhận xe, hãy chụp ảnh toàn thân xe, cụm phanh, lốp và đồng hồ công tơ mét, rồi gửi cho bên cho thuê qua tin nhắn để có chứng cứ về tình trạng tại thời điểm nhận. Trong lúc thuê, nếu xe hỏng nhỏ như thủng lốp hay hết bình ắc quy, việc đầu tiên là gọi bên cho thuê, không tự mang xe ra tiệm sửa trước khi có sự đồng thuận, vì nhiều hợp đồng quy định rõ bên nào chịu chi phí sửa chữa. Khi trả xe, yêu cầu bên cho thuê xác nhận tình trạng xe và số công tơ mét, giữ lại tin nhắn xác nhận cho đến khi tiền cọc được hoàn đủ.

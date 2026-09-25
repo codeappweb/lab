@@ -1,1 +1,699 @@
-This page could not be read: the site blocked automated access or returned no readable content. Do not retry this URL; try a different source.
+# Danh mục cha/con (taxonomy) duy nhất cho toàn site.
+# Thứ tự cha theo hành trình người dùng: xe -> thuê xe -> sửa chữa -> phụ tùng -> du lịch/phượt -> pháp lý/an toàn -> chi phí -> công nghệ.
+# planned_capacity là chỉ tiêu biên tập (kế hoạch ~2.000 bài), KHÔNG hiển thị cho người dùng.
+# Cluster (C01-C12) = biên tập nội dung; taxonomy này = tổ chức hiển thị cho người dùng.
+parents:
+  - id: "P01"
+    name: "Xe máy"
+    slug: "xe-may"
+    icon: "moto"
+    cluster: "C02"
+    planned_capacity: 230
+    description: "Tổng quan xe máy — chọn xe, so sánh dòng xe, mua xe cũ và vận hành hằng ngày."
+    children:
+      - id: "P01-01"
+        name: "Xe số"
+        slug: "xe-so"
+        status: "planned"
+        planned_capacity: 35
+        description: "Cách vận hành, bảo dưỡng và các lỗi thường gặp trên xe số."
+      - id: "P01-02"
+        name: "Xe ga"
+        slug: "xe-ga"
+        status: "planned"
+        planned_capacity: 40
+        description: "Xe tay ga với bộ truyền động CVT — cách dùng, bảo dưỡng puly và curoa."
+      - id: "P01-03"
+        name: "Xe côn"
+        slug: "xe-con-tay"
+        status: "planned"
+        planned_capacity: 25
+        description: "Xe côn tay cho thể thao và phượt — kỹ năng lái và bảo dưỡng."
+      - id: "P01-04"
+        name: "Xe 50cc"
+        slug: "xe-50cc"
+        status: "planned"
+        planned_capacity: 20
+        description: "Xe dưới 50cc cho học sinh và người lớn tuổi — quy định và cách sử dụng."
+      - id: "P01-05"
+        name: "Xe cũ"
+        slug: "xe-cu"
+        status: "planned"
+        planned_capacity: 30
+        description: "Mua và kiểm định xe máy cũ — dấu hiệu hư hỏng, định giá, sang tên."
+      - id: "P01-06"
+        name: "Chọn xe"
+        slug: "mua-xe"
+        status: "planned"
+        planned_capacity: 30
+        description: "Chọn mua xe máy theo nhu cầu, dòng xe và chi phí sở hữu."
+      - id: "P01-07"
+        name: "So sánh"
+        slug: "so-sanh-xe"
+        status: "planned"
+        planned_capacity: 25
+        description: "So sánh các dòng xe máy phổ biến theo nhu cầu thực tế."
+      - id: "P01-08"
+        name: "Sử dụng"
+        slug: "su-dung-xe"
+        status: "planned"
+        planned_capacity: 25
+        description: "Kỹ năng vận hành xe máy hằng ngày — đề máy, ra số, chạy rà, tiết kiệm."
+  - id: "P02"
+    name: "Xe điện"
+    slug: "xe-dien"
+    icon: "ev"
+    cluster: "C03"
+    planned_capacity: 210
+    description: "Xe máy điện, xe đạp điện và scooter điện — chọn xe, pin, sạc và bảo dưỡng."
+    children:
+      - id: "P02-01"
+        name: "Xe máy điện"
+        slug: "xe-may-dien"
+        status: "planned"
+        planned_capacity: 45
+        description: "Cấu tạo, cách chọn và sử dụng xe máy điện hằng ngày."
+      - id: "P02-02"
+        name: "Xe đạp điện"
+        slug: "xe-dap-dien"
+        status: "planned"
+        planned_capacity: 25
+        description: "Đặc điểm, quy định và cách dùng xe đạp điện trong đô thị."
+      - id: "P02-03"
+        name: "Scooter điện"
+        slug: "scooter-dien"
+        status: "planned"
+        planned_capacity: 20
+        description: "Dòng scooter điện — tính năng, trải nghiệm và cách so sánh."
+      - id: "P02-04"
+        name: "Pin xe"
+        slug: "pin-xe-dien"
+        status: "planned"
+        planned_capacity: 35
+        description: "Loại pin, dung lượng, tuổi thọ và cách bảo quản pin xe điện."
+      - id: "P02-05"
+        name: "Sạc điện"
+        slug: "sac-xe-dien"
+        status: "planned"
+        planned_capacity: 25
+        description: "Cách sạc đúng — thời gian, môi trường, kéo dài tuổi thọ pin."
+      - id: "P02-06"
+        name: "Trạm sạc"
+        slug: "tram-sac"
+        status: "planned"
+        planned_capacity: 15
+        description: "Hệ thống trạm sạc và điểm sạc xe điện công cộng."
+      - id: "P02-07"
+        name: "Bảo dưỡng"
+        slug: "bao-duong"
+        status: "planned"
+        planned_capacity: 20
+        description: "Bảo dưỡng xe điện — kiểm tra pin, phanh, lưu điện và chu kỳ bảo trì."
+      - id: "P02-08"
+        name: "Công nghệ pin"
+        slug: "cong-nghe-pin"
+        status: "planned"
+        planned_capacity: 25
+        description: "Công nghệ pin lithium, LFP và xu hướng pin cho xe điện."
+  - id: "P03"
+    name: "Xe đạp"
+    slug: "xe-dap"
+    icon: "bike"
+    cluster: "C04"
+    planned_capacity: 140
+    description: "Xe đạp cho đi lại, thể thao và dã ngoại — chọn xe, bảo dưỡng và phụ kiện
+."
+    children:
+      - id: "P03-01"
+        name: "Xe phố"
+        slug: "xe-dap-pho"
+        status: "planned"
+        planned_capacity: 25
+        description: "Xe đạp đi lại trong đô thị — chọn xe, tư thế, phụ kiện cơ bản."
+      - id: "P03-02"
+        name: "Xe địa hình"
+        slug: "xe-dia-hinh"
+        status: "planned"
+        planned_capacity: 20
+        description: "MTB cho đường gồ ghề — khung xe, giảm xóc, kỹ thuật lái."
+      - id: "P03-03"
+        name: "Xe đường trường"
+        slug: "xe-duong-truong"
+        status: "planned"
+        planned_capacity: 15
+        description: "Road bike cho tốc độ và quãng đường dài."
+      - id: "P03-04"
+        name: "Xe gấp"
+        slug: "xe-gap"
+        status: "planned"
+        planned_capacity: 10
+        description: "Xe đạp gấp cho người di chuyển đa phương tiện."
+      - id: "P03-05"
+        name: "Xe touring"
+        slug: "xe-touring"
+        status: "planned"
+        planned_capacity: 10
+        description: "Xe đạp chở hành lý đi đường dài và dã ngoại."
+      - id: "P03-06"
+        name: "Chọn xe"
+        slug: "chon-xe"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chọn xe đạp đúng nhu cầu — kiểu xe, khung, cỡ khung và ngân sách."
+      - id: "P03-07"
+        name: "Bảo dưỡng"
+        slug: "bao-duong-xe-dap"
+        status: "planned"
+        planned_capacity: 20
+        description: "Bôi trơn, siết ớt, chỉnh phanh và thay lốp định kỳ."
+      - id: "P03-08"
+        name: "Phụ kiện"
+        slug: "phu-kien-xe-dap"
+        status: "planned"
+        planned_capacity: 20
+        description: "Mũ bảo hiểm, đèn, giá nước và đồ nghề đi đường."
+  - id: "P06"
+    name: "Thuê xe"
+    slug: "thue-xe"
+    icon: "key"
+    cluster: "C01"
+    planned_capacity: 140
+    description: "Kiến thức thuê xe máy, xe điện, xe đạp — thủ tục, hình thức thuê và kinh nghiệm."
+    children:
+      - id: "P06-01"
+        name: "Thuê xe máy"
+        slug: "thue-xe-may"
+        status: "planned"
+        planned_capacity: 30
+        description: "Kiến thức thuê xe máy — thủ tục, giấy tờ, cách chọn xe."
+      - id: "P06-02"
+        name: "Thuê xe điện"
+        slug: "thue-xe-dien"
+        status: "planned"
+        planned_capacity: 15
+        description: "Th
+uê xe điện — điểm cần lưu ý về pin và quãng đường."
+      - id: "P06-03"
+        name: "Thuê xe đạp"
+        slug: "thue-xe-dap"
+        status: "planned"
+        planned_capacity: 10
+        description: "Thuê xe đạp phục vụ đi lại và dã ngoại."
+      - id: "P06-04"
+        name: "Thuê ngắn hạn"
+        slug: "thue-ngan-han"
+        status: "planned"
+        planned_capacity: 15
+        description: "Thuê xe ngắn hạn theo giờ và theo ngày — cách tính và lưu ý."
+      - id: "P06-05"
+        name: "Thuê dài hạn"
+        slug: "thue-dai-han"
+        status: "planned"
+        planned_capacity: 15
+        description: "Thuê xe dài hạn theo tuần và tháng — kế hoạch và kiểm định xe."
+      - id: "P06-06"
+        name: "Thủ tục thuê"
+        slug: "thu-tuc-thue"
+        status: "planned"
+        planned_capacity: 20
+        description: "Giấy tờ cần mang theo khi thuê xe và quy trình nhận, trả."
+      - id: "P06-07"
+        name: "Chọn xe thuê"
+        slug: "chon-xe-thue"
+        status: "planned"
+        planned_capacity: 15
+        description: "Chọn xe khi thuê — kiểm tra xe, thử xe và cân nhắc dòng xe."
+      - id: "P06-08"
+        name: "Kinh nghiệm thuê"
+        slug: "kinh-nghiem-thue"
+        status: "planned"
+        planned_capacity: 20
+        description: "Kinh nghiệm thuê xe — đặt cọc, kiểm tra xe, tranh chấp."
+  - id: "P04"
+    name: "Sửa chữa"
+    slug: "sua-chua"
+    icon: "wrench"
+    cluster: "C05"
+    planned_capacity: 220
+    description: "Chẩn đoán và sửa chữa theo triệu chứng, bảo dưỡng định kỳ cho xe máy và xe điện."
+    children:
+      - id: "P04-01"
+        name: "Động cơ"
+        slug: "dong-co"
+        status: "in-progress"
+        planned_capacity: 35
+        description: "Sự cố động cơ — nóng máy, yếu máy, khó nổ, tiếng ố."
+      - id: "P04-02"
+        name: "Hệ thống điện"
+        slug: "he-thong-dien"
+        status: "planned"
+        planned_capacity: 25
+        description: "Chẩn đoán hệ thống điện xe — sườn điện, còi, đèn, khóa điện."
+      - id: "P04-03"
+        name: "Khởi động"
+        slug: "khoi-dong"
+        status: "in-progress"
+        planned_capacity: 20
+        description: "Khởi động — đề yếu, đề không nổ, ắc quy và bộ đề."
+      - id: "P04-04"
+        name: "Truy
+ền động"
+        slug: "truyen-dong"
+        status: "in-progress"
+        planned_capacity: 30
+        description: "Nhông sên dĩa và CVT — rung, hú, giật khi tăng ga."
+      - id: "P04-05"
+        name: "Phanh xe"
+        slug: "phanh-xe"
+        status: "in-progress"
+        planned_capacity: 25
+        description: "Sửa chữa phanh đĩa và tang trăng — kêu, rít, yếu, kẹt."
+      - id: "P04-06"
+        name: "Lốp xe"
+        slug: "lop-xe"
+        status: "in-progress"
+        planned_capacity: 20
+        description: "Xử lý lốp xe máy — thủng, mòn, chọn lốp đúng cỡ."
+      - id: "P04-07"
+        name: "Chẩn đoán lỗi"
+        slug: "chan-doan-loi"
+        status: "active"
+        planned_capacity: 40
+        description: "Chẩn đoán theo triệu chứng — hao xăng, không nổ, hú, rung."
+      - id: "P04-08"
+        name: "Bảo dưỡng"
+        slug: "bao-duong"
+        status: "planned"
+        planned_capacity: 25
+        description: "Chu kỳ bảo dưỡng định kỳ — nhớt, lọc gió, bugi, dây curoa."
+  - id: "P05"
+    name: "Phụ tùng"
+    slug: "phu-tung"
+    icon: "parts"
+    cluster: "C06"
+    planned_capacity: 150
+    description: "Phụ tùng và phụ kiện — dầu nhớt, lốp, ắc quy, bugi, phanh, truyền động, đồ trang bị."
+    children:
+      - id: "P05-01"
+        name: "Dầu nhớt"
+        slug: "dau-nhot"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chọn dầu nhớt đúng loại, chu kỳ thay, dấu hiệu dầu bẩn."
+      - id: "P05-02"
+        name: "Lốp xe"
+        slug: "lop-xe"
+        status: "in-progress"
+        planned_capacity: 20
+        description: "Chọn và thay lốp — cỡ lốp, vá trong, từ mòn đến nứt."
+      - id: "P05-03"
+        name: "Ắc quy"
+        slug: "ac-quy"
+        status: "planned"
+        planned_capacity: 15
+        description: "Chọn mua ắc quy xe máy — dung lượng, thương hiệu, thay đúng cách."
+      - id: "P05-04"
+        name: "Bugi"
+        slug: "bugi"
+        status: "planned"
+        planned_capacity: 15
+        description: "Bugi — khi nào thay, chọn loại, đọc màu điện cực."
+      - id: "P05-05"
+        name: "Phanh"
+        slug: "phanh"
+        status: "planned"
+        planned_capacity: 20
+        description: "Má phanh, dầu phanh, đĩa phanh — lựa chọn và thay đúng lúc."
+      - id: "P05-06"
+  
+      name: "Truyền động"
+        slug: "truyen-dong"
+        status: "in-progress"
+        planned_capacity: 20
+        description: "Phụ tùng truyền động — nhông sên dĩa, puly, dây curoa, chọn và thay."
+      - id: "P05-07"
+        name: "Đèn điện"
+        slug: "den-xe"
+        status: "planned"
+        planned_capacity: 15
+        description: "Đèn pha và đèn LED cho xe máy — chọn và lắp."
+      - id: "P05-08"
+        name: "Phụ kiện"
+        slug: "phu-kien"
+        status: "planned"
+        planned_capacity: 25
+        description: "Gương, khóa, hộp xe, giá chống và đồ trang bị xe."
+  - id: "P07"
+    name: "Du lịch"
+    slug: "du-lich"
+    icon: "travel"
+    cluster: "C08"
+    planned_capacity: 260
+    description: "Du lịch bằng xe quanh Hà Nội — điểm đến, lịch trình, di chuyển và gửi xe."
+    children:
+      - id: "P07-01"
+        name: "Trung tâm Hà Nội"
+        slug: "trung-tam-ha-noi"
+        status: "planned"
+        planned_capacity: 30
+        description: "Khu trung tâm Hà Nội — dạo phố, di chuyển và điểm dừng."
+      - id: "P07-02"
+        name: "Phố cổ"
+        slug: "pho-co"
+        status: "planned"
+        planned_capacity: 25
+        description: "Khu phố cổ Hà Nội — dạo phố, gửi xe, phố đi bộ."
+      - id: "P07-03"
+        name: "Hồ Tây"
+        slug: "ho-tay"
+        status: "planned"
+        planned_capacity: 20
+        description: "Vòng quanh Hồ Tây — điểm ngắm, quán cà phê, lộ trình vòng hồ."
+      - id: "P07-04"
+        name: "Ngoại thành"
+        slug: "ngoai-thanh"
+        status: "planned"
+        planned_capacity: 25
+        description: "Các huyện ngoại thành — vườn, làng nghề, đường quê."
+      - id: "P07-05"
+        name: "Điểm tham quan"
+        slug: "diem-den-hanoi"
+        status: "planned"
+        planned_capacity: 40
+        description: "Điểm đến quanh Hà Nội — mô tả, cách đi, thời điểm phù hợp."
+      - id: "P07-06"
+        name: "Lịch trình"
+        slug: "lich-trinh-hanoi"
+        status: "planned"
+        planned_capacity: 40
+        description: "Ghép lịch trình tham quan Hà Nội theo ngày và sở thích."
+      - id: "P07-07"
+        name: "Cách di chuyển"
+        slug: "cach-di-chuyen"
+        status: "planned"
+        planned_capacity: 30
+        description: "Di chuyển trong Hà N
+ội — chọn xe, tránh giờ cao điểm."
+      - id: "P07-08"
+        name: "Gửi xe"
+        slug: "gui-xe"
+        status: "planned"
+        planned_capacity: 25
+        description: "Gửi xe tại điểm tham quan — vị trí bãi, lưu ý an toàn."
+      - id: "P07-09"
+        name: "Tuyến tham quan"
+        slug: "tuyen-tham-quan"
+        status: "planned"
+        planned_capacity: 25
+        description: "Tuyến tham quan quanh Hà Nội — ghép điểm theo lộ trình."
+  - id: "P08"
+    name: "Phượt xe"
+    slug: "phuot-xe"
+    icon: "phuot"
+    cluster: "C09"
+    planned_capacity: 170
+    description: "Phượt xe máy từ Hà Nội — cung đường, lịch trình, chuẩn bị và an toàn."
+    children:
+      - id: "P08-01"
+        name: "Đi gần Hà Nội"
+        slug: "di-ngan-ngay"
+        status: "planned"
+        planned_capacity: 25
+        description: "Chuyến đi trong ngày và cuối tuần từ Hà Nội."
+      - id: "P08-02"
+        name: "Tây Bắc"
+        slug: "tay-bac"
+        status: "planned"
+        planned_capacity: 25
+        description: "Phượt Tây Bắc — các cung đường núi phía tây Bắc Bộ."
+      - id: "P08-03"
+        name: "Đông Bắc"
+        slug: "dong-bac"
+        status: "planned"
+        planned_capacity: 20
+        description: "Phượt Đông Bắc — cao nguyên, biển và vòng cung phía đông Bắc Bộ."
+      - id: "P08-04"
+        name: "Cung đường"
+        slug: "cung-duong"
+        status: "planned"
+        planned_capacity: 30
+        description: "Các cung đường phượt nổi tiếng xuất phát từ Hà Nội."
+      - id: "P08-05"
+        name: "Lịch trình"
+        slug: "di-dai-ngay"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chuyến phượt nhiều ngày — hành trình và nghỉ đêm."
+      - id: "P08-06"
+        name: "Chuẩn bị"
+        slug: "chuan-bi-phuot"
+        status: "planned"
+        planned_capacity: 15
+        description: "Kiểm tra xe, đồ nghề và kế hoạch trước mỗi chuyến."
+      - id: "P08-07"
+        name: "Đồ phượt"
+        slug: "do-phuot"
+        status: "planned"
+        planned_capacity: 10
+        description: "Trang bị cá nhân và đồ dùng cho chuyến đi xa."
+      - id: "P08-08"
+        name: "Kinh nghiệm"
+        slug: "kinh-nghiem-phuot"
+        status: "planned"
+        planned_capacity: 15
+        description:
+ "Bài học thực tế từ các chuyến đi."
+      - id: "P08-09"
+        name: "An toàn phượt"
+        slug: "an-toan-phuot"
+        status: "planned"
+        planned_capacity: 10
+        description: "An toàn khi phượt — chạy đoàn, giao thông, thời tiết."
+  - id: "P09"
+    name: "Pháp lý"
+    slug: "phap-ly"
+    icon: "legal"
+    cluster: "C07"
+    needs_official_source: true
+    planned_capacity: 130
+    description: "Pháp lý xe và giao thông — bằng lái, đăng ký, biển số, bảo hiểm, thuế phí, quy định."
+    children:
+      - id: "P09-01"
+        name: "Bằng lái"
+        slug: "bang-lai"
+        status: "planned"
+        planned_capacity: 20
+        description: "Giấy phép lái xe — hạng bằng, thi, đổi bằng, lưu ý mới."
+      - id: "P09-02"
+        name: "Đăng ký xe"
+        slug: "dang-ky-xe"
+        status: "planned"
+        planned_capacity: 20
+        description: "Cấp đăng ký xe, sang tên và đổi lại giấy tờ."
+      - id: "P09-03"
+        name: "Biển số"
+        slug: "bien-so"
+        status: "planned"
+        planned_capacity: 15
+        description: "Biển số xe — quy định, đổi biển, biển xe điện."
+      - id: "P09-04"
+        name: "Bảo hiểm"
+        slug: "bao-hiem"
+        status: "planned"
+        planned_capacity: 15
+        description: "Bảo hiểm trách nhiệm bắt buộc và bảo hiểm vật chất xe."
+      - id: "P09-05"
+        name: "Thuế phí"
+        slug: "thue-phi"
+        status: "planned"
+        planned_capacity: 15
+        description: "Lệ phí trước bạ, phí đường bộ và các khoản phí liên quan xe."
+      - id: "P09-06"
+        name: "Mức phạt"
+        slug: "muc-phat"
+        status: "planned"
+        planned_capacity: 20
+        description: "Mức phạt vi phạm giao thông theo quy định hiện hành."
+      - id: "P09-07"
+        name: "Xe điện"
+        slug: "quy-dinh-xe-dien"
+        status: "planned"
+        planned_capacity: 10
+        description: "Quy định về xe điện và xe đạp điện."
+      - id: "P09-08"
+        name: "Luật giao thông"
+        slug: "quy-dinh-giao-thong"
+        status: "planned"
+        planned_capacity: 15
+        description: "Luật và quy tắc giao thông đường bộ cần nhớ."
+  - id: "P10"
+    name: "An toàn"
+    slug: "an-toan"
+    icon: "safety"
+    cluster: "C10"
+    plan
+ned_capacity: 110
+    description: "An toàn khi đi đường — kỹ năng lái, thời tiết xấu, sự cố, bảo hộ và sơ cứu."
+    children:
+      - id: "P10-01"
+        name: "Kỹ năng lái"
+        slug: "ky-nang-lai"
+        status: "planned"
+        planned_capacity: 20
+        description: "Kỹ năng lái cơ bản và nâng cao trên đường thật."
+      - id: "P10-02"
+        name: "Đi trời mưa"
+        slug: "di-mua"
+        status: "planned"
+        planned_capacity: 15
+        description: "Đi xe trong mưa — tầm nhìn, lốp, phanh, tránh ngập."
+      - id: "P10-03"
+        name: "Đi ban đêm"
+        slug: "di-dem"
+        status: "planned"
+        planned_capacity: 15
+        description: "Đi xe ban đêm — đèn, tốc độ, chống buồn ngủ."
+      - id: "P10-04"
+        name: "Đường trơn"
+        slug: "duong-tron"
+        status: "planned"
+        planned_capacity: 15
+        description: "Đường trơn, sỏi, dốc — giữ thăng bằng và phanh an toàn."
+      - id: "P10-05"
+        name: "Ngập nước"
+        slug: "ngap-nuoc"
+        status: "planned"
+        planned_capacity: 15
+        description: "Qua đường ngập — đánh giá độ sâu, không nổ máy, xử lý chết máy."
+      - id: "P10-06"
+        name: "Sự cố đường"
+        slug: "su-co-duong"
+        status: "planned"
+        planned_capacity: 10
+        description: "Xử lý tình huống trên đường — nổ lốp, đứt xích, va chạm nhẹ."
+      - id: "P10-07"
+        name: "Đồ bảo hộ"
+        slug: "bao-ho"
+        status: "planned"
+        planned_capacity: 10
+        description: "Mũ bảo hiểm và đồ bảo hộ — chọn, mang đúng, tuổi thọ."
+      - id: "P10-08"
+        name: "Sơ cứu"
+        slug: "so-cuu"
+        status: "planned"
+        planned_capacity: 10
+        description: "Sơ cứu các chấn thương thường gặp khi đi đường."
+  - id: "P12"
+    name: "Chi phí"
+    slug: "chi-phi"
+    icon: "cost"
+    cluster: "C11"
+    planned_capacity: 140
+    description: "Chi phí mua xe, nuôi xe, bảo dưỡng, nhiên liệu, điện, bảo hiểm và khấu hao."
+    children:
+      - id: "P12-01"
+        name: "Giá mua xe"
+        slug: "mua-xe"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chi phí mua xe mới và cũ — cách tính tổng."
+      - id: "P12-02"
+        name: "Chi phí nuôi"
+      
+  slug: "nuoi-xe"
+        planned_capacity: 25
+        description: "Chi phí nuôi xe hằng tháng và cách tối ưu."
+      - id: "P12-03"
+        name: "Nhiên liệu"
+        slug: "nhien-lieu"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chi phí xăng và cách tiết kiệm nhiên liệu."
+      - id: "P12-04"
+        name: "Tiền điện"
+        slug: "tien-dien"
+        status: "planned"
+        planned_capacity: 15
+        description: "Chi phí sạc xe điện — tính theo lần sạc và theo tháng."
+      - id: "P12-05"
+        name: "Bảo dưỡng"
+        slug: "bao-duong"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chi phí bảo dưỡng định kỳ theo chu kỳ."
+      - id: "P12-06"
+        name: "Sửa chữa"
+        slug: "sua-chua"
+        status: "planned"
+        planned_capacity: 20
+        description: "Chi phí sửa xe — khung giá theo hạng mục và cách hạn chế."
+      - id: "P12-07"
+        name: "Bảo hiểm"
+        slug: "bao-hiem"
+        status: "planned"
+        planned_capacity: 10
+        description: "Chi phí bảo hiểm xe bắt buộc và tự nguyện."
+      - id: "P12-08"
+        name: "Khấu hao"
+        slug: "khau-hao"
+        status: "planned"
+        planned_capacity: 10
+        description: "Khấu hao giá trị xe qua thời gian sử dụng."
+  - id: "P11"
+    name: "Công nghệ"
+    slug: "cong-nghe"
+    icon: "evtech"
+    cluster: "C12"
+    planned_capacity: 100
+    description: "Công nghệ xe điện — pin lithium, LFP, BMS, động cơ, sạc nhanh, smartkey, GPS."
+    children:
+      - id: "P11-01"
+        name: "Pin Lithium"
+        slug: "pin-lithium"
+        status: "planned"
+        planned_capacity: 20
+        description: "Pin lithium-ion cho xe điện — đặc tính và tuổi thọ."
+      - id: "P11-02"
+        name: "Pin LFP"
+        slug: "pin-lfp"
+        status: "planned"
+        planned_capacity: 15
+        description: "Pin LFP — an toàn, chu kỳ sạc và ứng dụng trên xe."
+      - id: "P11-03"
+        name: "BMS"
+        slug: "bms"
+        status: "planned"
+        planned_capacity: 15
+        description: "Hệ thống quản lý pin BMS — cân bằng cell, bảo vệ quá tải."
+      - id: "P11-04"
+        name: "Động cơ điện"
+        slug: "dong-co-dien"
+        status: "planned"
+        planned_capacity
+: 15
+        description: "Động cơ điện trên xe — công suất, mô-men, hiệu suất."
+      - id: "P11-05"
+        name: "Sạc nhanh"
+        slug: "sac-nhanh"
+        status: "planned"
+        planned_capacity: 10
+        description: "Sạc nhanh — nguyên lý, ảnh hưởng pin, khi nào nên dùng."
+      - id: "P11-06"
+        name: "GPS"
+        slug: "gps"
+        status: "planned"
+        planned_capacity: 5
+        description: "Thiết bị định vị và ứng dụng cho người đi đường."
+      - id: "P11-07"
+        name: "Smartkey"
+        slug: "smartkey"
+        status: "planned"
+        planned_capacity: 10
+        description: "Khóa thông minh trên xe máy — tính năng và rủi ro."
+      - id: "P11-08"
+        name: "Công nghệ xe"
+        slug: "cong-nghe-xe"
+        status: "planned"
+        planned_capacity: 10
+        description: "Tổng quan công nghệ trên xe máy và xe điện hiện đại."
+# Tổng: 12 cha, 98 con, quy hoạch 2000 bài.

@@ -1,54 +1,39 @@
-=== gem install ===
-Successfully installed unicode-display_width-2.6.0
-Successfully installed terminal-table-3.0.2
-Successfully installed safe_yaml-1.0.5
-Successfully installed forwardable-extended-2.6.0
-Successfully installed pathutil-0.16.2
-Successfully installed mercenary-0.4.0
-Successfully installed liquid-4.0.4
-Successfully installed kramdown-2.5.2
-Successfully installed kramdown-parser-gfm-1.1.0
-Successfully installed ffi-1.17.4-x86_64-linux-gnu
-Successfully installed rb-inotify-0.11.1
-Successfully installed rb-fsevent-0.11.2
-Successfully installed listen-3.10.0
-Successfully installed jekyll-watch-2.2.1
-Successfully installed rake-13.4.2
-Successfully installed google-protobuf-4.36.2-x86_64-linux-gnu
-Successfully installed sass-embedded-1.105.0-x86_64-linux-gnu
-Successfully installed jekyll-sass-converter-3.1.0
-Successfully installed concurrent-ruby-1.3.8
-Successfully installed i18n-1.15.2
-Building native extensions. This could take a while...
-Successfully installed http_parser.rb-0.8.1
-Building native extensions. This could take a while...
-Successfully installed eventmachine-1.2.7
-Successfully installed em-websocket-0.5.3
-Successfully installed colorator-1.1.0
-Successfully installed jekyll-4.4.1
-Successfully installed jekyll-sitemap-1.4.0
-Successfully installed jekyll-feed-0.17.0
-27 gems installed
 === jekyll build ===
-/usr/lib/ruby/3.2.0/bundler/resolver.rb:304:in `raise_not_found!': Could not find gem 'github-pages' in locally installed gems. (Bundler::GemNotFound)
-	from /usr/lib/ruby/3.2.0/bundler/resolver.rb:357:in `block in prepare_dependencies'
-	from /usr/lib/ruby/3.2.0/bundler/resolver.rb:342:in `each'
-	from /usr/lib/ruby/3.2.0/bundler/resolver.rb:342:in `map'
-	from /usr/lib/ruby/3.2.0/bundler/resolver.rb:342:in `prepare_dependencies'
-	from /usr/lib/ruby/3.2.0/bundler/resolver.rb:53:in `setup_solver'
-	from /usr/lib/ruby/3.2.0/bundler/resolver.rb:28:in `start'
-	from /usr/lib/ruby/3.2.0/bundler/definition.rb:570:in `start_resolution'
-	from /usr/lib/ruby/3.2.0/bundler/definition.rb:301:in `resolve'
-	from /usr/lib/ruby/3.2.0/bundler/definition.rb:523:in `materialize'
-	from /usr/lib/ruby/3.2.0/bundler/definition.rb:200:in `specs'
-	from /usr/lib/ruby/3.2.0/bundler/definition.rb:266:in `specs_for'
-	from /usr/lib/ruby/3.2.0/bundler/runtime.rb:18:in `setup'
-	from /usr/lib/ruby/3.2.0/bundler.rb:162:in `setup'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/plugin_manager.rb:52:in `require_from_bundler'
-	from /home/runner/.gems/gems/jekyll-4.4.1/exe/jekyll:11:in `<top (required)>'
+Configuration file: /home/runner/work/lab/lab/_config.yml
+            Source: /home/runner/work/lab/lab
+       Destination: /tmp/site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+/usr/lib/ruby/3.2.0/psych/parser.rb:62:in `_native_parse': (/home/runner/work/lab/lab/data/entities.json): did not find expected ',' or '}' while parsing a flow mapping at line 567 column 3 (Psych::SyntaxError)
+	from /usr/lib/ruby/3.2.0/psych/parser.rb:62:in `parse'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:143:in `load'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:157:in `block in load_file'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:157:in `open'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:157:in `load_file'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:66:in `read_data_file'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:49:in `block in read_data_to'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:41:in `each'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:41:in `read_data_to'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:23:in `read'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/reader.rb:31:in `read_data'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/reader.rb:21:in `read'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:181:in `read'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:78:in `process'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/command.rb:28:in `process_site'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/commands/build.rb:65:in `build'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/commands/build.rb:36:in `process'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/command.rb:91:in `block in process_with_graceful_fail'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/command.rb:91:in `each'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/command.rb:91:in `process_with_graceful_fail'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/commands/build.rb:18:in `block (2 levels) in init_with_program'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `block in execute'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `each'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `execute'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/program.rb:44:in `go'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary.rb:21:in `program'
+	from /home/runner/.gems/gems/jekyll-4.4.1/exe/jekyll:15:in `<top (required)>'
 	from /home/runner/.gems/bin/jekyll:25:in `load'
 	from /home/runner/.gems/bin/jekyll:25:in `<main>'
 JEKYLL_EXIT=1
-=== site file count ===
-find: ‘/tmp/site’: No such file or directory
-0
+=== generated url count ===
+no-sitemap

@@ -29,7 +29,7 @@ Chuyên mục này phục vụ người mới đi chuyến dài đầu tiên, ng
 
 **Đi dài ngày** ([di-dai-ngay](/danh-muc/phuot-xe/di-dai-ngay/)) là kỹ năng cho chuyến nhiều ngày: phân bổ thể lực, lịch nghỉ, gửi đồ và giữ xe qua đêm.
 
-**Đồ phượt** ([do-phuot](/danh-muc/phuot-xe/do-phuot/)) nói về trang thiết bị: mũ bảo hiểm fullface, găng tay, áo mưa, đồ sửa xe mini mang theo — và ưu tiên mua gì trước với ngân sách giới hạn.
+**Đồ phượt** ([do-phuot](/danh-muc/phuot-xe/do-phuot/)) nói về trang thiết bị: mũ bảo hiểm fullface, găng tay, áo mưa, bộ dụng cụ sửa xe mini mang theo — và ưu tiên mua gì trước với ngân sách giới hạn.
 
 **Kinh nghiệm phượt** ([kinh-nghiem-phuot](/danh-muc/phuot-xe/kinh-nghiem-phuot/)) là các bài học tổng hợp từ tình huống thực tế: đi nhóm đông, đi một mình, thời tiết xấu bất ngờ.
 
@@ -39,17 +39,17 @@ Chuyên mục này phục vụ người mới đi chuyến dài đầu tiên, ng
 
 Người chưa từng đi chuyến dài nên đọc theo thứ tự: **chuẩn bị phượt** trước, rồi chọn một cung ở nhóm **đi ngắn ngày** để thử. Sau hai ba chuyến ngắn ngày ổn, mới cân nhắc các cung dài ở **tây bắc** hoặc **đông bắc**. Trình tự này giúp bạn phát hiện vấn đề xe và thể lực ở gần nhà, nơi xử lý rẻ và an toàn hơn.
 
-Người đã có kinh nghiệm周末 đi ngắn ngày muốn lên cung dài nên đọc **cung đường** và **đi dài ngày** trước — hai nhóm này trả lời câu hỏi khó nhất của chuyến dài: chọn cung khớp trình độ nhóm và phân bổ thể lực nhiều ngày liên tục.
+Người đã có kinh nghiệm đi ngắn ngày cuối tuần muốn lên cung dài nên đọc **cung đường** và **đi dài ngày** trước — hai nhóm này trả lời câu hỏi khó nhất của chuyến dài: chọn cung khớp trình độ nhóm và phân bổ thể lực nhiều ngày liên tục.
 
 Người đi nhóm nên cùng đọc **kinh nghiệm phượt** trước khi xuất phát, vì nhiều vấn đề trong chuyến đi nhóm không nằm ở đường mà ở cách vận hành nhóm: tốc độ không đồng đều, lịch nghỉ lệch nhau, và cách xử lý khi một xe gặp sự cố.
 
 ## Những vấn đề thường gặp
 
-Vấn đề gặp nhiều nhất là hỏng xe giữa cung. Đa số ca hỏng giữa đường thuộc nhóm có thể phòng tránh: lốp mòn không thay trước chuyến đi, xích khô không được tưới dầu, ắc quy yếu từ trước. Checklist ở nhóm **chuẩn bị phượt** nhắm trực tiếp vào các hạng mục này.
+Vấn đề gặp nhiều nhất là hỏng xe giữa cung. Đa số ca hỏng giữa đường thuộc nhóm có thể phòng tránh: lốp mòn không thay trước chuyến đi, xích khô không được bôi trơn, ắc quy yếu từ trước. Checklist ở nhóm **chuẩn bị phượt** hướng trực tiếp vào các hạng mục này.
 
-Thứ hai là ước lượng sai thời gian trên đường núi. Trên đèo, tốc độ trung bình thực tế thấp hơn nhiều so với đường bằng — một cung 150km đường đèo có thể mất gần gấp đôi thời gian so với 150km đường thẳng. Cách tính realistic có trong nhóm **cung đường**.
+Thứ hai là ước lượng sai thời gian trên đường núi. Trên đèo, tốc độ trung bình thực tế thấp hơn nhiều so với đường bằng — một cung 150km đường đèo có thể mất gần gấp đôi thời gian so với 150km đường thẳng. Cách tính thực tế có trong nhóm **cung đường**.
 
-Thứ ba là thời tiết thay đổi nhanh ở miền núi: mưa rào trên đèo, sương mù buổi sáng, trơn đường sau mưa. Kỹ năng xử lý từng tình huống nằm ở nhóm **an toàn phượt**, còn kỹ năng lái nền tảng — phanh hợp lý trên đường trơn, vị trí vào cua — nằm ở chuyên mục [An toàn](/danh-muc/an-toan/).
+Thứ ba là thời tiết thay đổi nhanh ở miền núi: mưa rào trên đèo, sương mù buổi sáng, đường trơn sau mưa. Kỹ năng xử lý từng tình huống nằm ở nhóm **an toàn phượt**, còn kỹ năng lái nền tảng — phanh hợp lý trên đường trơn, vị trí vào cua — nằm ở chuyên mục [An toàn](/danh-muc/an-toan/).
 
 Cuối cùng, các vấn đề giấy tờ khi đi xa vùng biên cần được chuẩn bị trước: giấy phép lái xe hợp lệ, đăng ký xe, và mũ bảo hiểm đạt chuẩn — quy định chi tiết nằm ở chuyên mục [Pháp lý](/danh-muc/phap-ly/).
 
@@ -57,9 +57,9 @@ Cuối cùng, các vấn đề giấy tờ khi đi xa vùng biên cần được
 
 Nguyên tắc quan trọng nhất của phượt an toàn: xe đi được về luôn quan trọng hơn xe đi nhanh. Một chuyến phượt tốt là chuyến mà xe được kiểm tra trước, tốc độ giữ trong ngưỡng kiểm soát, và có điểm dừng dự phòng nếu lịch trễ. Cách chọn tải trên xe cũng quan trọng hơn nhiều người nghĩ: đồ chồng quá cao hoặc lệch về sau làm xe mất ổn định vào cua — nhóm **đồ phượt** có hướng dẫn phân bổ cụ thể.
 
-Về chọn thời điểm, mùa phọt đẹp ở miền bắc trải từ tháng 10–4 (khô ráo, trời lạnh dễ chịu) trong khi mùa mưa tháng 5–9 khiến đèo trơn và lũ quét thường xảy ra ở miền núi. Mỗi nhóm cung trong **tây bắc** và **đông bắc** đều ghi chú thời điểm tốt nhất cho cung đó.
+Về chọn thời điểm, mùa phượt đẹp ở miền bắc trải từ tháng 10 đến tháng 4 (khô ráo, trời lạnh dễ chịu), trong khi mùa mưa tháng 5–9 khiến đèo trơn và lũ quét thường xảy ra ở miền núi. Mỗi nhóm cung trong **tây bắc** và **đông bắc** đều ghi chú thời điểm tốt nhất cho cung đó.
 
-Về thể lực, chạy đèo nhiều ngày消耗 thể lực nhanh hơn chạy phố: nhiệt độ, gió, tư thế ngồi và độ tập trung cao hơn cộng dồn. Lịch trình dài ngày hợp lý là chạy khung sáng – nghỉ trưa – chạy khung chiều, tránh chạy sau 18h — chi tiết cách phân bổ nằm ở nhóm **đi dài ngày**.
+Về thể lực, chạy đèo nhiều ngày tiêu hao thể lực nhanh hơn chạy phố: nhiệt độ, gió, tư thế ngồi và độ tập trung cao hơn cộng dồn. Lịch trình dài ngày hợp lý là chạy khung sáng – nghỉ trưa – chạy khung chiều, tránh chạy sau 18h — chi tiết cách phân bổ nằm ở nhóm **đi dài ngày**.
 
 ## Khám phá nội dung
 

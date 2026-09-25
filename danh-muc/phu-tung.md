@@ -13,25 +13,25 @@ Phụ tùng là chuyên mục trả lời câu hỏi mà mọi chủ xe máy đ�
 
 Phụ tùng trên thị trường Việt Nam chia thành ba nguồn cơ bản: chính hãng (OEM), aftermarket có thương hiệu, và hàng trôi nổi không rõ nguồn gốc. Chênh lệch giá giữa ba nguồn có thể gấp nhiều lần, nhưng khác biệt chất lượng cũng tương ứng — đặc biệt với các linh kiện ảnh hưởng trực tiếp đến an toàn như má phanh, lốp và dầu phanh. Vấn đề thực tế của người mua là không biết linh kiện nào nên dùng đồ chính hãng, linh kiện nào dùng aftermarket vẫn ổn.
 
-Chuyên mục này phục vụ người tự mua phụ tùng về thay, người muốn kiểm tra lại danh sách thợ yêu cầu thay, và người bảo dưỡng xe định kỳ cần chuẩn bị linh kiện trước. Cách tiếp cận là đi từng linh kiện: chức năng, thông số cần đọc, vũng lỗi tràn lan trên thị trường, và cách phân biệt hàng thật cơ bản.
+Chuyên mục này phục vụ người tự mua phụ tùng về thay, người muốn kiểm tra lại danh sách thợ yêu cầu thay, và người bảo dưỡng xe định kỳ cần chuẩn bị linh kiện trước. Cách tiếp cận là đi từng linh kiện: chức năng, thông số cần đọc, kiểu hàng giả tràn lan trên thị trường, và cách phân biệt hàng thật cơ bản.
 
 ## Các nhóm nội dung chính
 
 **Dầu nhớt** ([dau-nhot](/danh-muc/phu-tung/dau-nhot/)) là nhóm mua thường xuyên nhất: phân biệt nhớt máy theo cấp độ, cách đọc chỉ số độ nhớt, và chu kỳ thay phù hợp với điều kiện chạy ở Việt Nam.
 
-**Lốp xe** ([lop-xe](/danh-muc/phu-tung/lop-xe/)) nói về cỡ lốp ghi trên thành lốp, chọn lốp theo kiểu chạy ( phố, đường trường, đường xấu) và thời điểm thay khi gờ lốp mòn.
+**Lốp xe** ([lop-xe](/danh-muc/phu-tung/lop-xe/)) nói về cỡ lốp ghi trên thành lốp, chọn lốp theo kiểu chạy (đường phố, đường trường, đường xấu) và thời điểm thay khi gờ lốp mòn.
 
-**Ắc quy** ([ac-quy](/danh-muc/phu-tung/ac-quy/)) bao gồm các loại ắc quy chì và ắc quy khô, cách nhận biết ắc quy yếu trước khi xe không nổ, và lưu ý với xe có nhiều thiết bị điện加装.
+**Ắc quy** ([ac-quy](/danh-muc/phu-tung/ac-quy/)) bao gồm các loại ắc quy nước và ắc quy khô, cách nhận biết ắc quy yếu trước khi xe không nổ, và lưu ý với xe gắn nhiều thiết bị điện.
 
 **Bugi** ([bugi](/danh-muc/phu-tung/bugi/)) giải thích vai trò của bugi, cách đọc màu sắc bugi để đo tình trạng động cơ, và lựa chọn bugi theo xe số hay xe ga.
 
-**Phanh** ([phanh](/danh-muc/phu-tung/phanh/)) nói về má phanh, dầu phanh và cách chọn đồ phanh không hy sinh độ an toàn để đổi lấy giá rẻ.
+**Phanh** ([phanh](/danh-muc/phu-tung/phanh/)) nói về má phanh, dầu phanh và cách chọn đồ phanh không đánh đổi độ an toàn để đổi lấy giá rẻ.
 
 **Truyền động** ([truyen-dong](/danh-muc/phu-tung/truyen-dong/)) bao gồm bộ nhông sên dĩa, dầu hộp số và các linh kiện thường bị thay nhầm khi xe chỉ cần siết lại.
 
-**Đèn xe** ([den-xe](/danh-muc/phu-tung/den-xe/)) nói về đèn pha, đèn hậu, lựa chọn bóng đèn đúng công suất tránh cháy ít-nhi và chập điện.
+**Đèn xe** ([den-xe](/danh-muc/phu-tung/den-xe/)) nói về đèn pha, đèn hậu, và cách chọn bóng đèn đúng công suất để tránh quá tải mạch điện.
 
-**Phụ kiện** ([phu-kien](/danh-muc/phu-tung/phu-kien/)) là nhóm đồ加装 không ảnh hưởng vận hành: giá đỡ, hộp đồ, chống trộm, sạc điện thoại.
+**Phụ kiện** ([phu-kien](/danh-muc/phu-tung/phu-kien/)) là nhóm trang bị thêm không ảnh hưởng vận hành: giá đỡ, hộp đồ, khóa chống trộm, sạc điện thoại.
 
 ## Bắt đầu từ đâu?
 

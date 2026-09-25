@@ -7,7 +7,7 @@ description: "Hướng dẫn chẩn đoán lỗi xe máy theo triệu chứng, l
 permalink: /danh-muc/sua-chua/
 ---
 
-Sửa chữa là chuyên mục dành cho người muốn hiểu đúng nguyên nhân hư hỏng của xe máy trước khi mang ra tiệm, tự bảo dưỡng được những hạng mục cơ bản và tránh bị "tháo đâu tính đó". Thay vì liệt kê chung chung, mỗi bài viết trong nhóm này đi theo một triệu chứng cụ thể: xe khó nổ, hao xăng bất thường, phanh kêu, lốp hay bị xìen, động cơ nóng bất thường. Toàn bộ nội dung được viết theo hướng chẩn đoán từ dấu hiệu đến nguyên nhân, rồi mới đến cách khắc phục.
+Sửa chữa là chuyên mục dành cho người muốn hiểu đúng nguyên nhân hư hỏng của xe máy trước khi mang ra tiệm, tự bảo dưỡng được những hạng mục cơ bản và tránh bị "tháo đâu tính đó". Thay vì liệt kê chung chung, mỗi bài viết trong nhóm này đi theo một triệu chứng cụ thể: xe khó nổ, hao xăng bất thường, phanh kêu, lốp hay bị thủng, động cơ nóng bất thường. Toàn bộ nội dung được viết theo hướng chẩn đoán từ dấu hiệu đến nguyên nhân, rồi mới đến cách khắc phục.
 
 ## Tổng quan về sửa chữa và bảo dưỡng xe máy
 
@@ -23,13 +23,13 @@ Chuyên mục được chia thành tám nhóm con, mỗi nhóm tập trung vào 
 
 **Hệ thống điện** ([he-thong-dien](/danh-muc/sua-chua/he-thong-dien/)) bao gồm ắc quy, còi, đèn, sạc điện và các lỗi chập cháy. Nhiều sự cố tưởng là hư máy thực ra chỉ là tiếp xúc kém ở hệ thống điện.
 
-**Khởi động** ([khoi-dong](/danh-muc/sua-chua/khoi-dong/)) tập trung vào trường hợp xe không nổ hoặc nổ khó — từ kim phun, bugi đến quá trình kiểm tra bước-by-step.
+**Khởi động** ([khoi-dong](/danh-muc/sua-chua/khoi-dong/)) tập trung vào trường hợp xe không nổ hoặc nổ khó — từ kim phun, bugi đến quy trình kiểm tra từng bước.
 
 **Truyền động** ([truyen-dong](/danh-muc/sua-chua/truyen-dong/)) nói về côn, hộp số, xích và nhông sên dĩa: khối lượng điểm thường gây rung và tiếng ồn ở xe đời cao.
 
 **Phanh xe** ([phanh-xe](/danh-muc/sua-chua/phanh-xe/)) giải thích dấu hiệu phanh kêu, phanh rit, phanh mềm và thời điểm thay má phanh, dầu phanh đúng cách.
 
-**Lốp xe** ([lop-xe](/danh-muc/sua-chua/lop-xe/)) bao gồm chọn lốp, áp suất phù hợp, dấu hiệu lốp mòn và cách xử lý khi lốp bị_thủng giữa đường.
+**Lốp xe** ([lop-xe](/danh-muc/sua-chua/lop-xe/)) bao gồm chọn lốp, áp suất phù hợp, dấu hiệu lốp mòn và cách xử lý khi lốp bị thủng giữa đường.
 
 **Chẩn đoán lỗi** ([chan-doan-loi](/danh-muc/sua-chua/chan-doan-loi/)) là nhóm trọng tâm: đối chiếu triệu chứng cụ thể với nguyên nhân khả dĩ nhất, giúp bạn thu hẹp nhanh lỗi nằm ở đâu.
 
@@ -45,19 +45,19 @@ Nếu bạn tự sửa ở nhà, nhóm động cơ và hệ thống điện là 
 
 ## Những vấn đề thường gặp
 
-Hao xăng bất thường là lỗi bị phàn nàn nhiều nhất. Nguyên nhân thường gặp nằm ở bộ gió dơ, bugi mòn, hoặc way gió sai độ cao — gần như không bao giờ do "bình xăng bị hao" như nhiều người nghĩ. Nhóm chẩn đoán lỗi có hướng dẫn kiểm tra từng bước cho trường hợp [xe hao xăng bất thường](/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/).
+Hao xăng bất thường là lỗi bị phàn nàn nhiều nhất. Nguyên nhân thường gặp nằm ở bộ hòa khí bẩn, bugi mòn, hoặc chỉnh ga sai độ cao — gần như không bao giờ do "bình xăng bị hao" như nhiều người nghĩ. Nhóm chẩn đoán lỗi có hướng dẫn kiểm tra từng bước cho trường hợp [xe hao xăng bất thường](/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/).
 
 Xe khó nổ hoặc không nổ thường khiến người dùng vội kết luận hư máy. Trên thực tế, đa số ca "xe không nổ" do bugi, ắc quy yếu hoặc nhiên liệu kém — đều là hạng mục kiểm tra trong vài phút. Xem hướng dẫn đầy đủ cho lỗi [xe máy không nổ máy](/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/).
 
-Tiếng kêu khi phanh — kêu "kít kít" khi phanh trước — thường do má phanh mòn bất cân bằng hoặc dăm phanh bị bẩn, và việc [thay má phanh đúng thời điểm](/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/) quan trọng hơn nhiều người nghĩ vì ảnh hưởng trực tiếp đến an toàn.
+Tiếng kêu khi phanh — kêu "kít kít" khi phanh trước — thường do má phanh mòn bất cân bằng hoặc đĩa phanh bị bẩn, và việc [thay má phanh đúng thời điểm](/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/) quan trọng hơn nhiều người nghĩ vì ảnh hưởng trực tiếp đến an toàn.
 
-Xe rung khi tăng ga thường nằm ở nhông sên dĩa mòn hoặc bu-đôn lỏng — hướng dẫn xác định vị trí phát tiếng và rung có trong bài về [rung khi tăng ga](/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/). Động cơ nóng quá mức thì đọc [nguyên nhân và cách xử lý](/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/). Với lốp, vấn đề bị_thủng lặp lại có cách xử lý triệt để trong bài về [lốp xe hay bị_thủng](/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/). Tiếng ồn động cơ khi chạy được phân tích trong bài [xác định tiếng hú khi chạy xe](/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/). Nếu xe đang "dề" hơn thường lệ, bắt đầu với [các lỗi khiến xe đuối](/de-yeu-de/).
+Xe rung khi tăng ga thường nằm ở nhông sên dĩa mòn hoặc bu-long lỏng — hướng dẫn xác định vị trí phát tiếng và rung có trong bài về [rung khi tăng ga](/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/). Động cơ nóng quá mức thì đọc [nguyên nhân và cách xử lý](/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/). Với lốp, vấn đề thủng lặp lại có cách xử lý triệt để trong bài về [lốp xe hay bị thủng](/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/). Tiếng ồn động cơ khi chạy được phân tích trong bài [xác định tiếng hú khi chạy xe](/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/). Nếu xe đang "dề" hơn thường lệ, bắt đầu với [các lỗi khiến xe đuối](/de-yeu-de/).
 
 ## Kiến thức cần biết
 
 Ba khái niệm giúp bạn sửa xe thông minh hơn. Thứ nhất, "chẩn đoán theo triệu chứng" luôn rẻ hơn "thay thử từng linh kiện": hầu hết các thợ uy tín đều kiểm tra theo trình tự, và bạn nên yêu cầu được xem linh kiện cũ trước khi đồng ý thay. Thứ hai, hao mòn dự đoán được (lốp, má phanh, dầu nhớt, xích) khác với hư hỏng đột ngột (chập điện, gãy lò xo) — nhóm trước thì bảo dưỡng định kỳ đủ, nhóm sau thì phụ thuộc khả năng chẩn đoán. Thứ ba, độ tuổi xe quyết định xác suất lỗi: xe dưới 5 năm lỗi thường nằm ở hệ thống điện và cảm biến, xe trên 10 năm lỗi thường nằm ở truyền động và gioăng.
 
-Về công cụ, người tự sửa ở nhà chỉ cần bộ cơ bản: kềm, tô vít, đồng hồ đo điện, và bộ dụng cụ vệ sinh bugi — phần lớn sự cứu nạn thường ngày không đòi hỏi thiết bị chuyên dụng. Nếu bạn quan tâm đến chọn đúng phụ tùng thay thế và tính tương thích, xem thêm chuyên mục [Phụ tùng](/danh-muc/phu-tung/).
+Về công cụ, người tự sửa ở nhà chỉ cần bộ cơ bản: kìm, tô vít, đồng hồ đo điện, và bộ dụng cụ vệ sinh bugi — phần lớn sự cứu nạn thường ngày không đòi hỏi thiết bị chuyên dụng. Nếu bạn quan tâm đến chọn đúng phụ tùng thay thế và tính tương thích, xem thêm chuyên mục [Phụ tùng](/danh-muc/phu-tung/).
 
 ## Khám phá nội dung
 

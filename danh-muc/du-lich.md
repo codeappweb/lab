@@ -31,7 +31,7 @@ Chuyên mục này phục vụ ba nhóm: người du lịch lần đầu cần l
 
 **Cách di chuyển** ([cach-di-chuyen](/danh-muc/du-lic/cach-di-chuyen/)) so sánh các cách đi trong thành phố: xe máy công nghệ, taxi, xe buýt, đi bộ — và loại nào hợp khu vực nào.
 
-**Gửi xe** ([gui-xe](/danh-muc/du-lic/gui-xe/)) là nhóm thông tin thực dụng dễ bị bỏ qua: bãi gửi quanh điểm đông, giá gửi phổ biến, và cách nhận bãi gửi có bảo quản xe tốt.
+**Gửi xe** ([gui-xe](/danh-muc/du-lic/gui-xe/)) là nhóm thông tin thực dụng dễ bị bỏ qua: bãi gửi quanh điểm đông, giá gửi phổ biến, và cách nhận biết bãi trông giữ xe đáng tin.
 
 **Tuyến tham quan** ([tuyen-tham-quan](/danh-muc/du-lic/tuyen-tham-quan/)) tổng hợp các tuyến theo chủ đề — tuyến di tích, tuyến ẩm thực, tuyến ven sông — để ghép điểm nhanh.
 
@@ -47,7 +47,7 @@ Nếu bạn đi cả ngày và muốn trải nghiệm đường dài hơn, chuy�
 
 Vấn đề số một là ước lượng sai thời gian di chuyển. Hà Nội phố nhỏ và nhiều tuyến một chiều, nên khoảng cách trên bản đồ gần nhưng đi thật lâu. Lịch trình mẫu trong nhóm **lịch trình** đã tính toán thời gian thực tế để tránh lỗi này.
 
-Thứ hai là gửi xe quanh khu đông: quanh hồ Hoàn Kiếm và phố cổ, bãi gửi mọc lên không có bảng giá, dễ phát sinh mâu thuẫn về giá. Nhóm **gửi xe** nêu rõ khu nào có bãi quy tụ hợp pháp và giá phổ biến để bạn biết trước mức tham chiếu.
+Thứ hai là gửi xe quanh khu đông: quanh hồ Hoàn Kiếm và phố cổ, bãi gửi xuất hiện tràn lan không có bảng giá, dễ phát sinh mâu thuẫn về giá. Nhóm **gửi xe** nêu rõ khu nào có bãi quy tụ hợp pháp và giá phổ biến để bạn biết trước mức tham chiếu.
 
 Thứ ba là thời điểm: phố cổ giữa 10h–16h cuối tuần gần như không di chuyển được bằng xe, trong khi sáng sớm là khung giờ đẹp nhất để chụp ảnh và đi lại thoải mái. Các nhóm con đều ghi chú khung giờ vào của từng khu vực.
 
@@ -59,7 +59,7 @@ Hiểu bố cục Hà Nội giúp tiết kiệm rất nhiều thời gian. Thàn
 
 Về mùa, Hà Nội có bốn mùa rõ rệt và điều này ảnh hưởng lịch trình nhiều hơn du khách nghĩ: mùa hè nắng gắt giữa trưa nên lịch trình nên đảo — trong nhà buổi trưa, ngoài trời buổi sáng; mùa đông rét và nhiều sương mù, các tuyến ven hồ và ven sông đẹp buổi chiều tà; tháng 5–6 và 9–10 là những khoảng thời tiết dễ chịu nhất để đi nhiều điểm ngoài trời.
 
-Về ẩm thực, mỗi khu phố gần như có đặc sản riêng gắn với vị trí — nếp béo Cầu Gỗ, chả cá đường Thành, phở trong phố cổ — nên ghép ăn theo cụm điểm đến là cách tự nhiên, thay vì đi riêng một chuyến chỉ để ăn một món. Chi tiết ghép này nằm trong từng tuyến ở nhóm **tuyến tham quan**.
+Về ẩm thực, mỗi khu phố gần như có đặc sản riêng gắn với vị trí — chả cá trên phố Chả Cá, phở bát Đàn, các hàng bún chả trong phố cổ — nên ghép ăn theo cụm điểm đến là cách tự nhiên, thay vì đi riêng một chuyến chỉ để ăn một món. Chi tiết ghép này nằm trong từng tuyến ở nhóm **tuyến tham quan**.
 
 ## Khám phá nội dung
 

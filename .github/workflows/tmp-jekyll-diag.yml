@@ -1,8 +1,8 @@
 name: tmp-jekyll-diag
 on:
   push:
-    branches: [main]
-    paths: ['.github/workflows/tmp-jekyll-diag.yml']
+    paths:
+      - '.github/workflows/tmp-jekyll-diag.yml'
   workflow_dispatch:
 permissions:
   contents: write
@@ -11,33 +11,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: diag
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler: none
+      - name: install jekyll
+        run: gem install jekyll jekyll-feed jekyll-sitemap --no-document
+      - name: build
         run: |
-          export GEM_HOME="$HOME/.gems"
-          export PATH="$GEM_HOME/bin:$PATH"
+          set +e
           {
             git rev-parse HEAD
-            wc -c data/entities.json
-            sha256sum data/entities.json
             echo '=== jekyll build ==='
-            if [ -f Gemfile ]; then mv Gemfile Gemfile.diagbak; fi
-            if [ -f Gemfile.lock ]; then mv Gemfile.lock Gemfile.lock.diagbak; fi
-            gem install jekyll jekyll-sitemap jekyll-feed --no-document > /dev/null 2>&1
-            jekyll build --trace -d /tmp/site 2>&1 | head -60
+            jekyll build --destination /tmp/site 2>&1
             echo "JEKYLL_EXIT=$?"
-            if [ -f /tmp/site/index.html ]; then echo SITE_OK; fi
             echo '=== url count ==='
-            grep -c '<loc>' /tmp/site/sitemap.xml 2>/dev/null || echo no-sitemap
-          } > DIAG-V8.txt 2>&1 || true
-      - name: commit
+            if [ -f /tmp/site/sitemap.xml ]; then grep -c '<loc>' /tmp/site/sitemap.xml; ls /tmp/site/sitemap.xml; else echo no-sitemap; fi
+          } > DIAG-V9.txt 2>&1
+          cat DIAG-V9.txt
+      - name: commit results
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase --autostash origin main 2>/dev/null || true
-          git add DIAG-V8.txt
-          git commit -m "tmp: jekyll diag v9 results" 2>/dev/null || true
+          git config user.name "diag-bot"
+          git config user.email "actions@github.com"
+          git add DIAG-V9.txt
+          git commit -m "tmp: diag v9 results" || echo "nothing to commit"
           git push
-
-# diag v8 trigger: entities.json repaired from HEAD (3 stray newlines stripped inside string tokens)
-
-# diag v9 trigger: entities.json fully canonicalized (JSON.stringify) — removes ALL stray newlines incl. key/colon YAML-breaking ones

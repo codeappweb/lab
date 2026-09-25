@@ -61,20 +61,11 @@ Ba nguyên tắc nền tảng của an toàn xe máy. Thứ nhất, "nhìn xa ch
 
 Về trang bị, mũ bảo hiểm đạt chuẩn (có tem CR đầy đủ) là khoản đầu tư có lợi nhất trong mọi loại trang bị — chấn thương đầu là loại chấn thương gây hậu quả nặng nhất và khó hồi phục nhất. Về kỹ năng, phối hợp phanh trước – sau là kỹ năng đáng luyện tập nhất: nó áp dụng cho mọi tình huống, từ phố đông đến đèo núi.
 
-
-## Tình huống nguy hiểm điển hình và cách xử lý
-
-Hầu hết tai nạn xe máy trong đô thị rơi vào vài nhóm tình huống lặp lại. Nhóm thứ nhất là xe ô tô mở cửa hoặc cắt làn lúc bạn đang đi sát mép đường; cách giảm rủi ro là giữ khoảng cách đủ lớn với hàng xe đỗ và không chạy song song sát với ô tô. Nhóm thứ hai là đâm đuôi khi trời mưa hoặc đèn pha chói; giải pháp là tăng khoảng cách gấp đôi với điều kiện thường và nhìn gương hậu thường xuyên hơn. Nhóm thứ ba là trơn ngã ở vệt dầu, nắp cống và vạch sơn mới khi mặt đường ẩm; kỹ năng là quan sát xa mặt đường và giảm tốc trước khi tới đoạn nhìn bóng loáng.
-
-Nguyên tắc chung khi tình huống xảy ra là phanh thẳng, giữ tay lái và không né gấp; phần lớn ngã nặng đến từ thao tác né đột ngột hơn là va chạm nhẹ. Nếu buộc phải giảm tốc trong khoảng ngắn, ép phanh trước nhịp nhàng rồi phanh sau, tránh khóa bánh trước ở tốc độ cao.
-
-## Trang bị bảo hộ vượt mức tối thiểu
-
-Mũ bảo hiểm đạt chuẩn là trang bị bắt buộc, nhưng người đi đường dài hoặc đi hằng ngày nên xem xét vượt mức tối thiểu: mũ có kính che mặt bảo vệ mắt khỏi côn trùng và bụi đường, găng tay giữ độ bám khi mưa, và áo mưa dạng quần áo tách rời thay vì áo choàng dễ bay cuộn vào xe. Giày bọc cổ tốt hơn dép vì phần lớn chấn thương bàn chân xảy ra lúc xe ngã ở tốc độ thấp.
-
-Bảo hộ chỉ phát huy tác dụng nếu đúng tình trạng: dây mũ bảo hiểm bị giãn, lớp tiếp xúc bị rít sau nhiều lần va, hay lớp chèn lót xuống cấp. Kiểm tra mũ định kỳ và thay mũ sau mỗi lần va mạnh, kể cả khi vỏ ngoài không nhìn thấy nứt, vì phần hấp thụ lực bên trong đã mất tác dụng.
-
 ## Khám phá nội dung
 
 Đọc theo tình huống bạn thường gặp nhất, rồi mở dần các nhóm còn lại. Với kỹ năng chuẩn bị xe trước khi đi xa — kiểm tra phanh, lốp, đèn — chuyên mục [Sửa chữa](/danh-muc/sua-ch
 ua/) và [Phượt xe](/danh-muc/phuot-xe/) có hướng dẫn chi tiết. Với quy định về trang bị bắt buộc khi lưu hành, xem [Pháp lý](/danh-muc/phap-ly/).
+
+## Thói quen hằng ngày tạo nên sự an toàn
+
+An toàn không đến từ một kỹ năng đơn lẻ mà từ tập hợp thói quen nhỏ lặp lại mỗi ngày: mặc kiểm tra gương trước khi ra khỏi vỉa hè, xi nhan sớm trước khi rẽ, để một khoảng trống thoát phía trước khi dừng đèn đỏ, và không chèn vào góc mù của xe tải ở giao lộ. Người đi xe nhiều năm mà ít va chạm thường không lái giỏi hơn ở thao tác khó, họ chỉ lặp các thói quen giữ khoảng cách và nhìn trước tốt hơn. Ghi lại ngắn gọn mỗi lần suýt va để tự nhận ra nhóm tình huống mình hay gặp, là cách cải thiện nhanh nhất sau một quãng thời gian ngắn.

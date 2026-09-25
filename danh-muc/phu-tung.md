@@ -21,7 +21,8 @@ Chuyên mục này phục vụ người tự mua phụ tùng về thay, người
 
 **Lốp xe** ([lop-xe](/danh-muc/phu-tung/lop-xe/)) nói về cỡ lốp ghi trên thành lốp, chọn lốp theo kiểu chạy (đường phố, đường trường, đường xấu) và thời điểm thay khi gờ lốp mòn.
 
-**Ắc quy** ([ac-quy](/danh-muc/phu-tung/ac-quy/)) bao gồm các loại ắc quy nước và ắc quy khô, cách nhận biết ắc quy yếu trước khi xe không nổ, và lưu ý với xe gắn nhiều thiết bị điện.
+**Ắc quy** ([ac-quy](/danh-muc/phu-tung/ac-quy/)) bao gồm các loại ắc quy nước và ắc quy khô, cách nhận biết ắc quy yếu trướ
+c khi xe không nổ, và lưu ý với xe gắn nhiều thiết bị điện.
 
 **Bugi** ([bugi](/danh-muc/phu-tung/bugi/)) giải thích vai trò của bugi, cách đọc màu sắc bugi để đo tình trạng động cơ, và lựa chọn bugi theo xe số hay xe ga.
 
@@ -43,7 +44,8 @@ Nếu bạn không chắc linh kiện mình mua có tương thích xe không, ng
 
 ## Những vấn đề thường gặp
 
-Vấn đề phổ biến nhất là hàng giả và hàng trôi nổi: bugi, lọc gió và má phanh là ba linh kiện bị làm giả nhiều nhất trên thị trường, và hàng giả loại này hư hỏng sớm còn gây hại thứ phát cho động cơ hoặc hệ thống phanh. Cách phòng tránh cơ bản là mua ở kênh có nguồn gốc rõ ràng và kiểm tra bao bì, mã vạch — chi tiết từng linh kiện có trong nhóm tương ứng.
+Vấn đề phổ biến nhất là hàng giả và hàng trôi nổi: bugi, lọc gió và má phanh là ba linh kiện bị làm giả nhiều nhất trên thị trường, và hàng giả loại này hư hỏng sớm còn gây hại thứ phát cho động cơ hoặc hệ thống phanh. Cách phòng tránh cơ bản là mua ở kênh có nguồn gốc rõ rà
+ng và kiểm tra bao bì, mã vạch — chi tiết từng linh kiện có trong nhóm tương ứng.
 
 Thứ hai là mua nhầm thông số: nhớt sai độ nhớt gây động cơ chạy đuối và nóng máy, lốp sai cỡ gây đồng hồ hiển thị sai và lốp hỏng sớm, bugi sai nhiệt độ gây muội hoặc cháy bugi. Hầu hết các trường hợp này tránh được chỉ bằng cách ghi lại thông số cũ trước khi mua.
 
@@ -56,6 +58,22 @@ Khái niệm quan trọng nhất là tính tương thích: một linh kiện "d�
 Thứ hai, chu kỳ thay thực tế phụ thuộc điều kiện chạy: cùng một loại nhớt, xe chạy phố kẹt xe nên thay sớm hơn xe chạy đường trường, vì nhớt nóng lạnh liên tục trong kẹt xe xuống cấp nhanh hơn. Chu kỳ nhà xe đưa ra thường giả định điều kiện tiêu chuẩn.
 
 Thứ ba, với xe điện và xe máy điện pin, danh mục phụ tùng khác hẳn xe xăng — không có bugi, không có nhớt máy, nhưng có pin, BMS và bộ sạc. Nếu bạn chạy xe máy điện, xem thêm chuyên mục [Xe điện](/danh-muc/xe-dien/) và [Công nghệ](/danh-muc/cong-nghe/).
+
+## Nhận biết phụ tùng chính hãng và phụ tùng tương thích
+
+Phân biệt phụ tùng chính hãng, phụ tùng do nhà máy độc lập sản xuất và hàng trôi nổi trên thị trường là kỹ năng quan trọng nhất khi mua linh kiện. Hàng chính hãng thường có bao bì in rõ tên nhà sản xuất, mã linh kiện và tem chống giả; hàng tương thích chất lượng tốt có giá thấp hơn nhưng vẫn ghi rõ thông số kỹ thuật. Điểm chung của hàng kém chất lượng là bao bì mờ, không có mã tra cứu, giá thấp bất thường so với mặt bằng chung.
+
+Với mỗi loại linh kiện, cần biết thông số nào quyết định tính tương thích. Nhớt máy xem cấp độ nhớt và thông số động cơ khuyến cáo của hãng; bugi xem nhiệt độ và kích cỡ ren; ắc quy xem điện áp và dung lượng; lốp xem cỡ và mã tải trọng; bộ truyền động xem số răng nhông, số mắt sên và đường kính dĩa. Mua sai thông số thì linh kiện dù tốt cũng gây hao mòn nhanh cho cụm liên quan.
+
+## Chu kỳ thay thế các linh kiện phổ biến
+
+Mỗi linh kiện có tuổi thọ khác nhau và phụ thuộc vào điều kiện chạy. Bugi là hạng mục kiểm tra trong các lần bảo dưỡng định kỳ, thay khi điện cực mòn hoặc chân bugi có dấu tích cháy bất thường. Lọc gió nên thay hoặc vệ sinh thường xuyên nếu chạy nhiều khu vực nhiều bụi. Bộ nhông sên dĩa là nhóm nên thay cùng lúc, vì thay lẻ sẽ làm cụm mới mòn nhanh theo cụm cũ. Má phanh và lốp phụ thuộc vào thói quen phanh ga, tải nặng và chất lượng đường, nên kiểm tra bằng mắt định kỳ.
+
+Đèn xe và ắc quy là hai cụm thường bị bỏ qua đến khi hỏng. Đèn cháy một trong hai bóng vẫn nên kiểm tra cả cặp, vì bóng còn lại thường cũng sắp hết tuổi. ắc quy già nên thay khi đề yếu liên tục, thay vì chờ đến khi xe không nổ giữa đường. Thói quen ghi lại lịch sử thay linh kiện giúp bạn dự trù được chi phí và tránh mua trùng.
+
+## Mua phụ tùng ở đâu và tránh những lỗi thường gặp
+
+Nên ưu tiên cửa hàng có địa chỉ rõ ràng, chính sách đổi trả rõ ràng và tra cứu được mã linh kiện. Ảnh chụp chung trên mạng không đủ để xác nhận đúng mã phụ tùng; cần đối chiếu mã trên linh kiện cũ hoặc trong sổ bảo hành. Với hàng đã tháo cài, nên kiểm tra trực quan các mặt tiếp xúc trước khi thanh toán. Tránh mua theo giá rẻ bất thường và tránh các mẫu mã linh kiện dán đè tem hãng, vì đây là cách làm phổ biến của hàng kém chất lượng.
 
 ## Khám phá nội dung
 

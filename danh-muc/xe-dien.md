@@ -15,7 +15,8 @@ Nội dung danh mục chia theo ba câu hỏi lớn của người dùng xe đi�
 
 Nguyên tắc quan trọng nhất: mua xe điện theo quãng đường đi thường nhật, không theo con số quãng đường tối đa trong quảng cáo. Con số đó đo ở điều kiện lý tưởng; thực tế giảm 20–30% khi chở người, leo dốc, trời lạnh hoặc pin đã qua vài trăm chu kỳ. Nếu bạn đi 30 km mỗi ngày, một xe ghi 80 km thực sẽ dư sức; xe ghi 50 km thực thì đang căng.
 
-Thứ hai: phân biệt pin lithium (nhẹ, gọn, hỗ trợ sạc nhanh) và pin LFP (nặng hơn nhưng chu kỳ sạc nhiều hơn, kém nhạy với sạc đầy thường xuyên). Hai loại pin này có thói quen sạc tốt khác nhau — chi tiết trong chuyên mục Công nghệ pin.
+Thứ hai: phân biệt pin lithium (nhẹ, gọn, hỗ trợ sạc nhanh) và pin LFP (nặng hơn nhưng chu kỳ sạc nhiều hơn, kém nhạy với sạc đầy thường xuyên). Hai loại pin này có thói quen sạc tốt khác nhau — chi tiết trong chuyên mục Công
+ nghệ pin.
 
 Thứ ba: xe điện cần bảo dưỡng ít hơn xe xăng — không nhớt láp, không bugi, không lọc gió — nhưng phần điện phải giữ khô ráo, giắc cắm chắc, và lốp đủ hơi vì lốp non ăn pin rõ rệt.
 
@@ -25,7 +26,7 @@ Thứ ba: xe điện cần bảo dưỡng ít hơn xe xăng — không nhớt l�
 
 **[Xe đạp điện](/danh-muc/xe-dien/xe-dap-dien/)** nhẹ, chậm, giấy tờ đơn giản hơn — hợp học sinh, người lớn tuổi và quãng đường dưới 10 km. Nhóm bài phân tích ranh giới quy định: khi nào xe đạp điện bị coi là xe máy điện.
 
-**[Scooter điện](/danh-muc/xe-dien/scooter-dien/)** là phân khúc mới nổi: thiết kế như xe tay ga, cách Drawer tiền, sạc rời. Nhóm bài so sánh trải nghiệm với xe ga xăng cùng tầm tiền.
+**[Scooter điện](/danh-muc/xe-dien/scooter-dien/)** là phân khúc mới nổi: thiết kế như xe tay ga, có hộc để tiền, pin tháo rời sạc được. Nhóm bài so sánh trải nghiệm với xe ga xăng cùng tầm tiền.
 
 **[Pin xe](/danh-muc/xe-dien/pin-xe-dien/)** trả lời các câu hỏi tuổi thọ: pin bao nhiêu chu kỳ, khi nào cần thay, biểu hiện pin chai, và bảo quản mùa đông ra sao. Đây là chuyên mục nên đọc trước khi mua xe cũ điện — pin là hạng mục đắt nhất của xe.
 
@@ -39,10 +40,11 @@ Thứ ba: xe điện cần bảo dưỡng ít hơn xe xăng — không nhớt l�
 
 ## Bắt đầu từ đâu?
 
-- **Bạn cân nhắc xe điện lần đầu** — đọc Xe máy điện để hiểu loại xe, rồi bài so sánh chi phí điện với xăng trong [Chi phí](/danh-muc/chi-phi/tien-dien/).
+- **Bạn cân nhắc xe điện lần đầu** — đọc Xe máy điện để hiểu loại xe, rồ
+i bài so sánh chi phí điện với xăng trong [Chi phí](/danh-muc/chi-phi/tien-dien/).
 - **Bạn đi trong bán kính 10 km** — xe đạp điện có thể đủ và rẻ hơn hẳn.
 - **Bạn đã có xe và lo pin** — vào Pin xe đọc phần tuổi thọ, rồi Sạc điện để điều chỉnh thói quen sạc.
-- **Bạn định mua xe điện cũ** — bắt buộc kiểm tra pin trước: số chu kỳ, dung lượng thực, và có曾被 nước chưa. Pin chai gần bằng nửa giá trị xe.
+- **Bạn định mua xe điện cũ** — bắt buộc kiểm tra pin trước: số chu kỳ, dung lượng thực, và từng bị ngập nước chưa. Pin chai gần bằng nửa giá trị xe.
 
 ## Những vấn đề thường gặp
 
@@ -54,10 +56,11 @@ Thứ ba: xe điện cần bảo dưỡng ít hơn xe xăng — không nhớt l�
 
 ## Kiến thức cần biết
 
-Các đơn vị cần hiểu khi mua: Ah là dung lượng (chở được bao nhiêu), V là điện áp (ảnh hưởng công suất), Wh là năng lượng (quy đổi ra quãng đường). BMS — bộ quản lý pin — là "người gác" cân bằng và bảo vệ cell; hiểu BMS giúp bạn đọc table lỗi của xe. Sạc nhanh giúp gấp nhưng dùng thường xuyên sẽ làm pin chai nhanh hơn sạc thường. Và điều kiện bảo hành pin của hãng gần như luôn gắn với chu kỳ sạc đúng — giữ thói quen sạc đúng cũng là giữ điều kiện bảo hành.
+Các đơn vị cần hiểu khi mua: Ah là dung lượng (chở được bao nhiêu), V là điện áp (ảnh hưởng công suất), Wh là năng lượng (quy đổi ra quãng đường). BMS — bộ quản lý pin — là "người gác" cân bằng và bảo vệ cell; hiểu BMS giúp bạn đọc bảng lỗi của xe. Sạc nhanh giúp rút ngắn thời gian nhưng dùng thường xuyên sẽ làm pin chai nhanh hơn sạc thường. Và điều kiện bảo hành pin của hãng gần như luôn gắn với chu kỳ sạc đúng — giữ thói quen sạc đúng cũng là giữ điều kiện bảo hành.
 
 Về pháp lý: xe máy điện trên ngưỡng công suất cần bằng lái, đăng ký, biển số như xe máy; dưới ngưỡng thì theo luật xe đạp điện. Ranh giới này được giải thích trong [Pháp lý](/danh-muc/phap-ly/quy-dinh-xe-dien/).
 
 ---
 
-Xe điện phù hợp người đi quãng ngắn, ổn định hằng ngày và có chỗ sạc tiện. Nếu bạn thường đi xa liên tục, cân nhắc thêm [Xe máy](/danh-muc/xe-may/) hoặc kết hợp thuê xe cho những chuyến dài trong [Thuê xe](/danh-muc/thue-xe/).
+Xe điện phù hợp người đi quãng ngắn, ổn định hằng ngày và có chỗ sạc tiện. Nếu bạn thường đi xa liên tục, cân nhắc thêm [Xe máy](/danh-muc/xe-may/) hoặc kết hợp thuê xe cho những chuyến dài trong [Thuê x
+e](/danh-muc/thue-xe/).

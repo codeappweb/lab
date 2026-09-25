@@ -19,7 +19,8 @@ Khác với mua xe, thuê xe không cần quan tâm tuổi thọ pin hay lịch 
 
 ## Các nhóm nội dung chính
 
-**[Thuê xe máy](/danh-muc/thue-xe/thue-xe-may/)** là nhóm phổ biến nhất: thủ tục (CMND/CCCD hoặc passport, GPLX nếu yêu cầu), cọc thường theo giá trị xe, và cách chọn giữa xe số cũ bền với xe ga mới hơn nhưng cọc cao.
+**[Thuê xe máy](/danh-muc/thue-xe/thue-xe-may/)** là nhóm phổ biến nhất: thủ tục (CMND/CCCD hoặc passport, GPLX nếu y
+êu cầu), cọc thường theo giá trị xe, và cách chọn giữa xe số cũ bền với xe ga mới hơn nhưng cọc cao.
 
 **[Thuê xe điện](/danh-muc/thue-xe/thue-xe-dien/)** đang mở rộng nhanh: rẻ hơn xe xăng, hợp quãng đường trong thành phố, nhưng cần hỏi rõ quãng đường thực của xe và có được sạc tại chỗ thuê không — với xe pin chai, quảng cáo và thực tế cách nhau xa.
 
@@ -40,7 +41,8 @@ Khác với mua xe, thuê xe không cần quan tâm tuổi thọ pin hay lịch 
 - **Bạn du lịch Hà Nội vài ngày** — đọc Thủ tục thuê trước (chuẩn bị giấy tờ), rồi Thuê ngắn hạn để tính ngày thuê rẻ nhất. Xe đạp hợp phố cổ, xe máy hợp lộ trình xa hơn.
 - **Bạn cần xe đi làm 1–3 tháng** — Thuê dài hạn, chú ý điều khoản bảo dưỡng trong hợp đồng.
 - **Bạn cân nhắc mua xe điện** — thuê loại định mua 1–2 tuần, trải nghiệm thật vẫn hơn mọi bài đánh giá.
-- **Bạn không có GPLI** — đọc phần giấy tờ trong Thủ tục thuê và ranh giới [xe 50cc/xe đạp điện](/danh-muc/phap-ly/bang-lai/) để biết loại xe nào được phép đi.
+- **Bạn không có GPLX** — đọc phần giấy tờ trong Thủ tục thuê và ranh giới [xe 50cc/xe đạp điện](/danh-muc
+/phap-ly/bang-lai/) để biết loại xe nào được phép đi.
 
 ## Những vấn đề thường gặp
 
@@ -54,9 +56,9 @@ Cuối cùng, giá "rẻ bất thường" nhiều khi là xe cũ hết hạn ho�
 
 ## Kiến thức cần biết
 
-Về pháp lý khi thuê: người thuê vẫn phải chịu trách nhiệm khi lưu thông — bằng lái, mũ bảo hiểm, đèn đủ sáng. Thuê xe không có đăng ký bản sao kèm (nhiều tiệm giao kèm bản photo đăng ký) là tín hiệu đáng lo. Với khách nước ngoài, GPLI quốc tế hoặc GPLX Việt Nam đã đổi là điều kiện nhiều tiệm yêu cầu. Về bảo hiểm: bảo hiểm trách nhiệm bắt buộc thuộc xe, nhưng bảo hiểm không che tiền tự sửa trong lúc thuê.
+Về pháp lý khi thuê: người thuê vẫn phải chịu trách nhiệm khi lưu thông — bằng lái, mũ bảo hiểm, đèn đủ sáng. Thuê xe không có đăng ký bản sao kèm (nhiều tiệm giao kèm bản photo đăng ký) là tín hiệu đáng lo. Với khách nước ngoài, GPLX quốc tế (IDP) hoặc GPLX Việt Nam đã đổi hoặc GPLX Việt Nam đã đổi là điều kiện nhiều tiệm yêu cầu. Về bảo hiểm: bảo hiểm trách nhiệm bắt buộc thuộc xe, nhưng bảo hiểm không che tiền tự sửa trong lúc thuê.
 
-Cẩn thận với các khoản trong hợp đồng: mức trừ mỗi ngày trả muộn, mức bồi thường hỏng đồ (gương, cheats), và điều khoản "xe bị mất" — các mức này nên được ghi rõ bằng số cụ thể.
+Cẩn thận với các khoản trong hợp đồng: mức trừ mỗi ngày trả muộn, mức bồi thường hỏng đồ (gương, ốp che), và điều khoản "xe bị mất" — các mức này nên được ghi rõ bằng số cụ thể.
 
 ---
 

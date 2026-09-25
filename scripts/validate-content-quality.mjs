@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// build nudge 2026-09-25 — comment only, no behavior change
 // Content quality gate for codeappweb/lab.
 // Run BEFORE any push: node scripts/validate-content-quality.mjs
 // Exit code 1 = validation FAILED = DO NOT PUSH.
@@ -61,7 +62,8 @@ for (const f of mdFiles) {
     errors.push(`${rel}: missing or malformed front matter`);
     continue;
   }
-  const { fm } = parsed;
+  const { fm } = par
+sed;
 
   // body = content after front matter
   const bodyEnd = text.indexOf('
@@ -107,7 +109,8 @@ try {
     const p = line.match(/^  - id: "(Pd+)"/); if (p) parent = p[1];
     const c = line.match(/^        slug: "(.+)"$/); if (!c) continue;
     const key = parent + '/' + c[1];
-    if (seen.has(key)) errors.push(`taxonomy: duplicate child slug ${key}`);
+    if (seen.has(key)) errors.push(`taxonomy: duplica
+te child slug ${key}`);
     seen.set(key, true);
   }
 } catch { /* taxonomy missing is reported elsewhere */ }

@@ -106,7 +106,7 @@
     "Batch 002: 8 bài C05 còn lại + 5 bài C03 đầu tiên."
   ],
   "open_issues": [
-    "Deployment ui-redesign-001 (commit 96d32b2) bị kẹt in_progress ~20 phut — retrigger build bằng commit tiep theo.",
+    "Deployment smart-blog-001 (bdc3c02) chờ Pages build — queue hay kẹt, đã retrigger bằng commit tiếp theo.",
     "GitHub App không có quyền tạo repo (Administration) — site nằm trong repo lab, base path /lab/.",
     "Không chạy được jekyll build cục bộ trong sandbox — cần xác nhận bản render trực tiếp trên Pages."
   ]

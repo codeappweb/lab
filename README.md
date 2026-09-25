@@ -38,7 +38,8 @@ Framework: Jekyll, GitHub Pages project site. Base URL: https://codeappweb.githu
 
 | ID | Chủ đề | Budget |
 |----|--------|--------|
-| C01 | Thuê xe: khu vực, thời lượng, nhu cầu | 240 |
+| C
+01 | Thuê xe: khu vực, thời lượng, nhu cầu | 240 |
 | C02 | Xe máy xăng: xe số, xe ga, 50cc, review/so sánh | 260 |
 | C03 | Xe máy điện, scooter điện | 300 |
 | C04 | Xe đạp, xe đạp điện, commuter, touring | 260 |
@@ -94,7 +95,8 @@ Batch mặc định 10–20 bài, tối đa 25 bài.
 ogress.json`.
 3. Đọc `data/article-manifest.jsonl`.
 4. Kiểm tra bài hiện có trong `_posts/` và `hub/`.
-5. Chọn topic status `planned`, ưu tiên theo chiến lược ở mục 6.
+5. Chọn topic status
+ `planned`, ưu tiên theo chiến lược ở mục 6.
 6. Chạy `node scripts/detect-duplicates.mjs` — nếu trùng intent: MERGE hoặc SKIP, cập nhật manifest.
 7. Research (bài pháp lý: nguồn chính thống, ghi vào `source_plan`).
 8. Viết bài vào `_posts/` (front matter: layout, title, date, description, cluster, manifest_id).
@@ -131,7 +133,8 @@ Mỗi bài: H1 duy nhất (do layout render từ title), title/slug/manifest_id 
 - Mỗi bài link lên parent hub
  `/hub/cNN/`.
 - Link 2–3 bài liên quan cùng cluster, 1–2 bài cross-cluster khi hữu ích.
-- URL bài: `/<slug>/` (permalink `/:title/`).
+- URL bài: `/<slug>/` (permalink `
+/:title/`).
 - Không dùng cùng một exact-match anchor lặp lại hàng loạt.
 
 ## 8. Batch report (bắt buộc sau mỗi batch)
@@ -163,3 +166,25 @@ BATCH REPORT
 ## Về repo
 
 Repo `lab` gốc có mô tả: "AI-powered web experiments, tools & automation." Hiện dùng làm host cho content hub này ở root.
+
+
+## Kiến trúc Smart Blog App (frontend + smart discovery)
+
+### Chỉ mục nội dung build-time
+- `assets/data/content-index.json`: chỉ mục lõi nhẹ (title/url/description/category/headings/keywords) cho toàn bộ posts + hub pages. Luôn được tải khi cần.
+- `assets/data/content-index-cNN.json`: shard full-text theo cluster (C01..C12), chỉ được fetch lazy khi truy vấn cần trích đoạn. Đây là chiến lược scale cho ~3.000 bài: trình duyệt không bao giờ tải toàn bộ text ngay lần đầu; thêm cluster mới chỉ cần thêm file shard theo mẫu có sẵn (đổi mã cluster trong file).
+- Nội dung được sinh bởi Liquid lúc build từ `_posts/` và `hub/` — không có bước crawler, không chứa thông tin nội bộ dự án (scripts QA, manifest pipeline).
+
+### Trợ lý AI (Blog Assistant)
+- `assets/js/assistant/retrieval.js`: chuẩn hóa tiếng Việt không dấu (đến không dấu vẫn tìm ra), xếp hạng theo title/heading/description/category, trích đoạn từ shard.
+- `assets/js/assistant/providers.js`: adapter boundary. Provider mặc định `local` (grounded, offline, không API key). Để nối LLM thật sau này: deploy serverless endpoint giữ key phía server, khai báo `endpoint` và đổi `active` sang `remote`. KHÔNG BAO GIỜ để API key trong repo — GitHub Pages là public.
+- `assets/js/assistant/assistant.js`: UI chat (panel bên phải / full-screen mobile), focus trap, Esc đóng, câu hỏi mẫu, source-aware answers (mỗi câu trả lời kèm link bài nguồn), fallback "Chưa tìm thấy nội dung phù hợp trong thư viện."
+
+### Quick Actions & cấu hình tập trung
+- `data/site-actions.yml`: cấu hình duy nhất cho quick actions và nút liên hệ (call/zalo/whatsapp). Action thiếu dữ liệu (`enabled: false` hoặc href rỗng) tự ẩn khỏi UI. Không tự bịa thông tin liên hệ.
+
+### Tính năng app
+- Command palette: Ctrl/Cmd+K hoặc `/`; mobile là sheet full-screen.
+- Article toolbar: Lưu (localStorage `xdc-saved`), Chia sẻ, Copy link, Mục lục, "Hỏi AI" (retrieval ưu tiên scope bài hiện tại).
+- Reading progress bar, prev/next article, đọc tiếp (recently viewed `xdc-recent`) — mọi dữ liệu cá nhân chỉ nằm trong browser.
+- PWA: `manifest.webmanifest`, theme-color sáng/tối. KHÔNG dùng service worker: HTML bị cache stale là rủi ro cho content blog cập nhật liên tục; chi phí triển khai chưa xứng đáng ở giai đoạn này.

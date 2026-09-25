@@ -1,0 +1,21 @@
+---
+---
+{
+  "name": {{ site.title | jsonify }},
+  "short_name": "Xe&DiChuyen",
+  "description": {{ site.description | jsonify }},
+  "start_url": "{{ '/' | relative_url }}",
+  "scope": "{{ '/' | relative_url }}",
+  "display": "standalone",
+  "lang": "vi",
+  "background_color": "#ffffff",
+  "theme_color": "#0c0c0e",
+  "icons": [
+    {
+      "src": "{{ '/assets/images/favicon.svg' | relative_url }}",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

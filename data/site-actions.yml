@@ -1,0 +1,44 @@
+# Cấu hình tập trung cho Quick Actions và các nút liên hệ.
+# Action không có giá trị (enabled: false hoặc href rỗng) sẽ tự ẩn khỏi UI.
+# KHÔNG tự bịa thông tin liên hệ. Chỉ bật enabled khi có dữ liệu thật.
+
+quick_actions:
+  - id: search
+    label: Tìm kiếm
+    enabled: true
+  - id: topics
+    label: Chủ đề
+    enabled: true
+  - id: assistant
+    label: Trợ lý AI
+    enabled: true
+  - id: latest
+    label: Bài mới nhất
+    enabled: true
+  - id: saved
+    label: Bài đã lưu
+    enabled: true
+  - id: share
+    label: Chia sẻ trang này
+    enabled: true
+  - id: copy
+    label: Sao chép liên kết
+    enabled: true
+  - id: top
+    label: Lên đầu trang
+    enabled: true
+
+# Nút liên hệ: chỉ hiển thị khi có dữ liệu thật và enabled: true.
+contacts:
+  - id: call
+    label: Gọi điện
+    href: ""
+    enabled: false
+  - id: zalo
+    label: Zalo
+    href: ""
+    enabled: false
+  - id: whatsapp
+    label: WhatsApp
+    href: ""
+    enabled: false

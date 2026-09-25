@@ -1,0 +1,28 @@
+{% assign acts = site.data.site-actions.quick_actions %}
+{% assign contacts = site.data.site-actions.contacts %}
+<button type="button" class="fab" data-qa-open aria-haspopup="menu" aria-expanded="false" aria-label="Mở thao tác nhanh">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<div class="qa-panel" id="qaPanel" hidden>
+  <span class="qa-title">Thao tác nhanh</span>
+  {% if acts %}
+  {% for a in acts %}
+  {% if a.enabled != false %}
+  <button type="button" class="qa-item" data-qa="{{ a.id }}">
+    {% case a.id %}{% when 'search' %}{% include icon.html name="search" %}{% when 'topics' %}{% include icon.html name="grid" %}{% when 'assistant' %}{% include icon.html name="chat" %}{% when 'latest' %}{% include icon.html name="arrow" %}{% when 'saved' %}{% include icon.html name="bookmark" %}{% when 'share' %}{% include icon.html name="share" %}{% when 'copy' %}{% include icon.html name="copy" %}{% when 'top' %}{% include icon.html name="up" %}{% endcase %}
+    <span>{{ a.label }}</span>
+  </button>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if contacts %}
+  {% for c in contacts %}
+  {% if c.enabled == true and c.href != nil and c.href != empty %}
+  <a class="qa-item" href="{{ c.href }}">
+    {% if c.id == 'call' %}{% include icon.html name="call" %}{% else %}{% include icon.html name="arrow" %}{% endif %}
+    <span>{{ c.label }}</span>
+  </a>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+</div>

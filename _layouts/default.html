@@ -10,11 +10,18 @@
   {% include footer.html %}
   {% include search.html %}
   {% include topic-sheet.html %}
+  {% include saved-sheet.html %}
+  {% include quick-actions.html %}
+  {% include assistant.html %}
   <nav class="bottom-nav" aria-label="Điều hướng nhanh">
     <a href="{{ '/' | relative_url }}">{% include icon.html name="home" %}<span>Trang chủ</span></a>
     <button type="button" data-sheet-open>{% include icon.html name="grid" %}<span>Chủ đề</span></button>
     <button type="button" data-search-open>{% include icon.html name="search" %}<span>Tìm kiếm</span></button>
   </nav>
   <script defer src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  <script defer src="{{ '/assets/js/assistant/retrieval.js' | relative_url }}"></script>
+  <script defer src="{{ '/assets/js/assistant/providers.js' | relative_url }}"></script>
+  <script defer src="{{ '/assets/js/assistant/assistant.js' | relative_url }}"></script>
+  <script defer src="{{ '/assets/js/app-extras.js' | relative_url }}"></script>
 </body>
 </html>

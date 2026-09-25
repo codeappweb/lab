@@ -12,6 +12,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
       <button class="go" type="submit" aria-label="Tìm">{% include icon.html name="search" %}</button>
     </form>
     <a class="hero__cta" href="#chu-de">Khám phá 12 chủ đề {% include icon.html name="arrow" %}</a>
+    <button type="button" class="hero__ai" data-assistant-open>{% include icon.html name="chat" %} Hỏi Trợ lý AI</button>
     <div class="hero__stats">
       <div class="hero__stat"><b>12</b><span>chủ đề</span></div>
       <div class="hero__stat"><b>{{ site.posts | size }}</b><span>bài đã xuất bản</span></div>
@@ -36,9 +37,15 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
   </div>
 </section>
 
+<section class="section section--tight container" id="doc-tiep" hidden>
+  <h2 class="section-title">Đọc tiếp</h2>
+  <div class="card-grid" id="continueList"></div>
+</section>
+
 {% if site.posts.size > 0 %}
 <section class="section container" id="moi-nhat">
-  <h2 class="section-title">Mới nhất</h2>
+  <h2 class="se
+ction-title">Mới nhất</h2>
   {% assign latest = site.posts | sort: 'date' | reverse %}
   <div class="card-grid">
   {% for p in latest limit: 7 %}

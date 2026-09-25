@@ -1,0 +1,7 @@
+<div class="article-tools">
+  <button type="button" class="tool-btn" data-tool="save" aria-label="Lưu bài viết">{% include icon.html name="bookmark" %}<span>Lưu</span></button>
+  <button type="button" class="tool-btn" data-tool="share" aria-label="Chia sẻ bài viết">{% include icon.html name="share" %}<span>Chia sẻ</span></button>
+  <button type="button" class="tool-btn" data-tool="copy" aria-label="Sao chép liên kết">{% include icon.html name="copy" %}<span>Copy link</span></button>
+  <button type="button" class="tool-btn" data-tool="toc" aria-label="Mở mục lục">{% include icon.html name="grid" %}<span>Mục lục</span></button>
+  <button type="button" class="tool-btn" data-assistant-open data-context-url="{{ page.url | relative_url }}" data-context-title="{{ page.title | escape }}" aria-label="Hỏi trợ lý AI về bài này">{% include icon.html name="chat" %}<span>Hỏi AI</span></button>
+</div>

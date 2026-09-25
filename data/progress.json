@@ -1,6 +1,6 @@
 {
   "last_updated": "2026-09-25",
-  "phase": "ui-redesign",
+  "phase": "smart-blog-app",
   "content_budget_total": 3000,
   "articles": {
     "planned": 193,
@@ -75,12 +75,35 @@
       ],
       "updated_manifest": [],
       "status": "done"
+    },
+    {
+      "batch_id": "smart-blog-001",
+      "date": "2026-09-25",
+      "cluster": "infra (Smart Blog App)",
+      "created": [
+        "Quick Actions FAB + data/site-actions.yml (cấu hình tập trung, ẩn action thiếu dữ liệu)",
+        "Trợ lý AI local: assets/js/assistant/{retrieval,providers,assistant}.js + includes/assistant.html",
+        "Chỉ mục build-time: assets/data/content-index.json (core) + 12 shard content-index-cNN.json (lazy full-text)",
+        "Article toolbar: lưu (localStorage), chia sẻ, copy link, mục lục, hỏi AI theo bài",
+        "Reading progress bar, prev/next article, sheet bài đã lưu, toast",
+        "assets/css/app2.css, assets/js/app-extras.js, manifest.webmanifest + theme-color"
+      ],
+      "updated": [
+        "_layouts/post.html (toolbar, progress, prev/next)",
+        "_layouts/default.html (assistant, quick actions, saved sheet, scripts)",
+        "_includes/head.html (manifest, theme-color, app2.css)",
+        "_includes/icon.html (7 icon mới)",
+        "index.md (nút Hỏi Trợ lý AI, section Đọc tiếp)",
+        "README.md (kiến trúc Smart Blog App, sharding, provider adapter)"
+      ],
+      "updated_manifest": [],
+      "status": "done"
     }
   ],
   "next_actions": [
-    "QA trực tiếp trang live: light/dark, mobile, search, TOC sau khi GitHub Pages rebuild.",
-    "Chuyển 8 bài qa -> published sau khi UI deploy chạy ổn, chạy scripts/build-sitemap.mjs.",
-    "Batch 002: 8 bài C05 còn lại (bảo dưỡng định kỳ) + 5 bài C03 đầu tiên."
+    "QA live: assistant, quick actions, lưu bài, palette mobile, prev/next, PWA manifest.",
+    "Chuyển 8 bài qa -> published, chạy scripts/build-sitemap.mjs.",
+    "Batch 002: 8 bài C05 còn lại + 5 bài C03 đầu tiên."
   ],
   "open_issues": [
     "Deployment ui-redesign-001 (commit 96d32b2) bị kẹt in_progress ~20 phut — retrigger build bằng commit tiep theo.",

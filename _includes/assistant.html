@@ -1,0 +1,19 @@
+<div class="chat-backdrop" id="assistantBackdrop" hidden></div>
+<aside class="chat-panel" id="assistantPanel" hidden role="dialog" aria-modal="true" aria-label="Trợ lý AI">
+  <div class="chat-head">
+    <span class="chat-ava" aria-hidden="true">{% include icon.html name="chat" %}</span>
+    <div class="chat-titles">
+      <span class="chat-title">Trợ lý nội dung</span>
+      <span class="chat-sub">Trả lời dựa trên thư viện bài viết</span>
+    </div>
+    <button type="button" class="icon-btn" id="assistantClear" aria-label="Xoá hội thoại">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m2 0-1 13a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1L7 7"/></svg>
+    </button>
+    <button type="button" class="icon-btn" data-assistant-close aria-label="Đóng trợ lý">{% include icon.html name="close" %}</button>
+  </div>
+  <div class="chat-body" id="assistantBody" aria-live="polite"></div>
+  <div class="chat-foot">
+    <input type="text" id="assistantInput" placeholder="Hỏi về xe, di chuyển…" autocomplete="off" aria-label="Câu hỏi cho trợ lý">
+    <button type="button" class="chat-send" id="assistantSend" aria-label="Gửi">{% include icon.html name="arrow" %}</button>
+  </div>
+</aside>

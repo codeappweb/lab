@@ -1,3 +1,32 @@
+=== entities.json ground truth ===
+791613d23c642d5849ce1a22f9f957a85fa4c471 tmp: jekyll diag v6 (ground truth entities.json bytes + build)
+15878 data/entities.json
+09a7c2b82b91e0708e8f0173710cfcff2c623e6313d804ece7d7e62b7fbcf19d  data/entities.json
+--- lines 560-580 ---
+    "cluster_usage": 1
+  },
+  {
+    "name": "phuộc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vành xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cầu chì",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hệ thống điện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "curoa",
+    "cluster_usage": 1
+--- control chars? ---
+0
+none
 === jekyll build ===
 Configuration file: /home/runner/work/lab/lab/_config.yml
             Source: /home/runner/work/lab/lab
@@ -59,11 +88,6 @@ Configuration file: /home/runner/work/lab/lab/_config.yml
 	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `block in execute'
 	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `each'
 	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `execute'
-	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/program.rb:44:in `go'
-	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary.rb:21:in `program'
-	from /home/runner/.gems/gems/jekyll-4.4.1/exe/jekyll:15:in `<top (required)>'
-	from /home/runner/.gems/bin/jekyll:25:in `load'
-	from /home/runner/.gems/bin/jekyll:25:in `<main>'
-JEKYLL_EXIT=1
+JEKYLL_EXIT=0
 === generated url count ===
 no-sitemap

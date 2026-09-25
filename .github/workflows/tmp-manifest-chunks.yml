@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: split manifest
+      - name: inspect tail
         run: |
           mkdir -p _tmpchunks
-          split -b 9000 -d -a 2 --additional-suffix=.txt data/article-manifest.jsonl _tmpchunks/m
-          rm -f _tmpchunks/m0?.txt.orig
-          { sha1sum data/article-manifest.jsonl; wc -c data/article-manifest.jsonl; wc -l data/article-manifest.jsonl; } > _tmpchunks/INFO.txt
-      - name: commit chunks
+          tail -c 300 data/article-manifest.jsonl | base64 -w0 > _tmpchunks/TAIL-B64.txt
+          awk '{print NR ": " length($0)}' data/article-manifest.jsonl > _tmpchunks/LINELEN.txt
+          sed -n '70,89p' data/article-manifest.jsonl | cut -c1-120 > _tmpchunks/LINES70-89.txt
+      - name: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A _tmpchunks
-          git commit -m "tmp: manifest chunks v2 (.txt, smaller)"
+          git commit -m "tmp: manifest tail inspection"
           git push

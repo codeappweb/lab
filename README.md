@@ -75,3 +75,51 @@ Chủ đề liên quan dùng tags/entities/related_topics, không gán nhiều d
 - Cannibalization hub vs taxonomy: 12 hub C01–C12 (biên tập nội bộ) được `noindex` + khỏi sitemap + ghi chú mục đích; taxonomy page là landing SEO công khai duy nhất cho từng intent.
 - Nội dung category nằm trong file .md (không nhét vào taxonomy.yml); taxonomy.yml giữ nguyên vai trò dữ liệu cấu trúc.
 - Pháp lý: chỉ dẫn số liệu đã kiểm chứng (vd. khung phạt mũ bảo hiểm theo NĐ 168/2024/NĐ-CP); mọi bài pháp lý phải đối chiếu văn bản hiện hành trước khi xuất bản.
+
+## Content hardening (2026-09-25)
+
+Ngày 25/09/2026, toàn site qua đợt hardening SEO/nội dung trước khi sản xuất bài mới.
+
+### Cổng an toàn triển khai (bắt buộc)
+
+Trước MỌI lần push nội dung mới:
+
+1. Chạy `node scripts/validate-content-quality.mjs` (validator chất lượng nội dung).
+2. Nếu validator trả về lỗi (exit 1): KHÔNG push. Sửa lỗi trước.
+3. Validator phát hiện: ký tự CJK trong nội dung tiếng Việt, artifact "undefined" trong tên file/nội dung, front matter hỏng, permalink trùng, thiếu title, thiếu description ở trang indexable, nhiều H1, artifact gạch dưới trong văn xuôi, trang danh mục indexable trống/nhỏ hơn 200 từ, template search vẫn chứa hub hoặc thiếu filter noindex. Từ kỹ thuật tiếng Anh hợp lệ (BMS, GPS, LFP, Lithium, Smartkey, CVT...) KHÔNG bị cấm.
+
+### Quy tắc đưa chuyên mục con vào trạng thái indexable
+
+Chuyên mục con CHỈ được index khi đồng thời thỏa cả bốn điều kiện:
+
+1. Có tối thiểu 3 bài viết thực sự liên quan đã xuất bản.
+2. Có nội dung giới thiệu chuyên mục duy nhất, có giá trị standalone.
+3. Có search intent riêng, không trùng intent với trang cha hoặc anh em.
+4. Không cannibalization với trang cha/sibling.
+
+Số lượng bài KHÔNG phải tiêu chí duy nhất. Hiện trạng sau hardening: chỉ sua-chua/chan-doan-loi đạt chuẩn indexable (3 bài + nội dung Tier A). Năm con còn lại của sua-chua (dong-co, khoi-dong, truyen-dong, phanh-xe, lop-xe) chỉ có 1 bài mỗi con nên bị hạ về noindex + khỏi sitemap; 92 con trống giữ noindex từ đợt trước.
+
+### Trạng thái taxonomy
+
+Mỗi child trong data/taxonomy.yml có trường `status`:
+- `active`: có nội dung standalone + đủ bài, indexable (hiện chỉ chan-doan-loi).
+- `in-progress`: có bài thật nhưng chưa đủ chuẩn indexable (5 con sua-chua còn lại).
+- `planned`: chưa có nội dung, noindex, chờ kích hoạt sau.
+
+### Lọc search / AI retrieval
+
+assets/search.json và assets/data/content-index.json chỉ xuất: bài viết, 12 trang danh mục cha, và chuyên mục con KHÔNG noindex. Hub C01–C12 và mọi trang có `noindex: true` bị loại khỏi kết quả tìm kiếm và AI retrieval.
+
+### Nguồn pháp lý
+
+Mọi con số pháp lý (mức phạt, thuế phí, đăng ký, bảo hiểm) phải có mục nguồn tương ứng trong data/legal-sources.yml (source_title, source_url, publisher, published_or_effective_date, fact, last_verified, applies_to). Không ghi "đã kiểm chứng" nếu chưa ghi nguồn. Cập nhật theo Nghị định 238/2026/NĐ-CP (sửa đổi NĐ 168/2024, hiệu lực 15/08/2026, không thay đổi khung phạt tiền).
+
+### Đồng bộ manifest
+
+data/progress.json phải khớp trạng thái thực tế: 8 bài C05 đã live, kiểm tra render/canonical/title/meta/link → chuyển `qa` thành `published`. Trang đã live không được giữ trạng thái `qa`.
+
+### Sửa lỗi hạ tầng phát hiện trong đợt này
+
+- Bug Liquid `cco\nunt` trong _layouts/parent-category.html làm mất đếm bài của card chuyên mục con — đã sửa.
+- Hai khối child hỏng trong data/taxonomy.yml (su-dung-xe thiếu thụt lề description, nuoi-xe sai thụt lề slug) — đã sửa.
+- 229 link markdown ghi đường dẫn gốc `/danh-muc/...` bị 404 trên live (baseurl /lab/ không được tự thêm) — đã chuyển toàn bộ sang dạng `{{ '...' | relative_url }}` trong 12 trang cha, chan-doan-loi và danh-muc/index.md.

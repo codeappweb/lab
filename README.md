@@ -67,3 +67,11 @@ Chủ đề liên quan dùng tags/entities/related_topics, không gán nhiều d
 - GitHub Pages build có thể kẹt queue vài phút; nếu deploy không cập nhật, retrigger bằng commit nhỏ.
 - GitHub App không có quyền Administration; repo là `lab`, base path `/lab/`.
 - Không có trình duyệt trong sandbox — kiểm tra tương tác qua HTML/render text.
+## Category SEO audit (2026-09-25)
+
+- 12 trang cha `danh-muc/<slug>.md`: nội dung editorial ~1.500–1.800 từ, mỗi trang một intent chính riêng, title + meta description duy nhất (không pattern "X | Blog"), internal link cha→con + sang parent liên quan.
+- `danh-muc/index.md`: ~700 từ, vai trò site-wide category discovery, không cạnh tranh trang cha.
+- 92/98 con chưa có bài: `noindex: true` + `sitemap: false` (giữ taxonomy & URL, không filler). 6 con sua-chua có bài thật giữ index với title SEO riêng; chan-doan-loi có nội dung Tier A ~1.000 từ.
+- Cannibalization hub vs taxonomy: 12 hub C01–C12 (biên tập nội bộ) được `noindex` + khỏi sitemap + ghi chú mục đích; taxonomy page là landing SEO công khai duy nhất cho từng intent.
+- Nội dung category nằm trong file .md (không nhét vào taxonomy.yml); taxonomy.yml giữ nguyên vai trò dữ liệu cấu trúc.
+- Pháp lý: chỉ dẫn số liệu đã kiểm chứng (vd. khung phạt mũ bảo hiểm theo NĐ 168/2024/NĐ-CP); mọi bài pháp lý phải đối chiếu văn bản hiện hành trước khi xuất bản.

@@ -13,8 +13,18 @@
     "update_needed": 0
   },
   "planned_by_cluster": {
-    "C01": 17, "C02": 16, "C03": 18, "C04": 16, "C05": 22,
-    "C06": 15, "C07": 17, "C08": 22, "C09": 19, "C10": 13, "C11": 12, "C12": 14
+    "C01": 17,
+    "C02": 16,
+    "C03": 18,
+    "C04": 16,
+    "C05": 22,
+    "C06": 15,
+    "C07": 17,
+    "C08": 22,
+    "C09": 19,
+    "C10": 13,
+    "C11": 12,
+    "C12": 14
   },
   "batches": [
     {
@@ -25,14 +35,25 @@
         "12 hub pages (hub/c01..c12)",
         "8 articles C05-0001..C05-0008 (_posts/2026-09-25-*.md)"
       ],
-      "updated_manifest": ["C05-0001","C05-0002","C05-0003","C05-0004","C05-0005","C05-0006","C05-0007","C05-0008"],
+      "updated_manifest": [
+        "C05-0001",
+        "C05-0002",
+        "C05-0003",
+        "C05-0004",
+        "C05-0005",
+        "C05-0006",
+        "C05-0007",
+        "C05-0008"
+      ],
       "status": "qa"
     },
     {
       "batch_id": "deploy-fix-001",
       "date": "2026-09-25",
       "cluster": "infra",
-      "created": ["Chuyển toàn bộ project về root repo để GitHub Pages build đúng"],
+      "created": [
+        "Chuyển toàn bộ project về root repo để GitHub Pages build đúng"
+      ],
       "updated_manifest": [],
       "status": "done"
     },
@@ -161,12 +182,32 @@
       ],
       "updated_manifest": [],
       "status": "done"
+    },
+    {
+      "batch_id": "cat-seo-001",
+      "date": "2026-09-25",
+      "cluster": "content SEO (category & hub audit)",
+      "created": [
+        "12 trang cha danh-muc/*.md: nội dung editorial ~1.500–1.800 từ, title/meta duy nhất, intent riêng từng danh mục, internal link cha→con + parent liên quan + 8 cornerstone bài sua-chua",
+        "danh-muc/sua-chua/chan-doan-loi.md: nội dung Tier A ~1.000 từ, title \"Chẩn đoán lỗi xe máy theo triệu chứng\"",
+        "README: mục Category SEO audit (2026-09-25)"
+      ],
+      "updated": [
+        "danh-muc/index.md: mở rộng ~700 từ, title \"Danh mục chủ đề xe và di chuyển\", hero dùng page.description",
+        "98 trang con tái sinh thống nhất từ taxonomy.yml: 92 con mỏng được noindex:true + sitemap:false (giữ taxonomy, không xóa URL)",
+        "6 con sua-chua có bài thật giữ index với title SEO riêng: dong-co, khoi-dong, truyen-dong, phanh-xe, lop-xe, chan-doan-loi",
+        "12 hub C01–C12: noindex:true + sitemap:false + ghi chú mục đích biên tập (giải quyết cannibalization hub vs taxonomy)",
+        "head.html: meta robots noindex,follow khi page.noindex; layouts parent/child render {{ content }} qua .prose.cat-prose"
+      ],
+      "deleted": [],
+      "updated_manifest": [],
+      "status": "done"
     }
   ],
   "next_actions": [
-    "QA live sau deploy: footer 3 nhóm theo breakpoint (mobile accordion / tablet 3 cột / desktop 5 cột), drawer 2 màn hình, Xem thêm, dark mode, Ctrl K, trợ lý AI.",
-    "Chuyển 8 bài qa -> published sau khi nav-footer-sync-001 deploy chạy ổn.",
-    "Batch 002: viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml."
+    "QA live sau deploy cat-seo-001: sitemap giảm còn ~40 URL (12 cha + 6 con sua-chua + danh-muc + home + 8 bài + trang tĩnh), kiểm tra noindex meta trên hub và 92 con, link nội bộ /danh-muc/...",
+    "Chuyển 8 bài qa -> published sau khi cat-seo-001 deploy chạy ổn.",
+    "Batch 002: viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml, ưu tiên C05 (sua-chua) để dày thêm các con đã index."
   ],
   "open_issues": [
     "Đã xác nhận: Pages build thành công sau khi canonicalize data/entities.json (commit bbbe6d7); smart-blog-app đã deploy live.",
@@ -174,6 +215,7 @@
     "Không có trình duyệt trong sandbox — console errors, light/dark, tương tác chỉ kiểm tra tĩnh qua HTML/render text.",
     "Lưu ý: GitHub Pages build có thể kẹt queue nhiều phút — nếu deploy không cập nhật, retrigger bằng commit nhỏ.",
     "scripts/build-sitemap.mjs là bản cũ theo manifest — đã lỗi thời, sitemap do jekyll-sitemap plugin sinh; không chạy lại script này.",
-    "11/12 danh mục cha chưa có bài (hiển thị trung thực 'Nội dung đang được chuẩn bị'); không sinh filler để lấp khoảng trống."
+    "92/98 con chưa có bài → noindex + khỏi sitemap cho tới khi có nội dung thật; gỡ noindex theo từng con khi có >= 3 bài chất lượng.",
+    "Pháp lý: mức phạt thay đổi theo từng nghị định (hiện hành NĐ 168/2024/NĐ-CP đang được sửa đổi) — bài viết con muc-phat phải đối chiếu nguồn chính thống trước khi xuất bản."
   ]
 }

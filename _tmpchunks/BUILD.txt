@@ -1,0 +1,24 @@
+=== gem install ===
+ERROR:  While executing gem ... (Gem::FilePermissionError)
+    You don't have write permissions for the /var/lib/gems/3.2.0 directory.
+	/usr/lib/ruby/vendor_ruby/rubygems/installer.rb:713:in `verify_gem_home'
+	/usr/lib/ruby/vendor_ruby/rubygems/installer.rb:903:in `pre_install_checks'
+	/usr/lib/ruby/vendor_ruby/rubygems/installer.rb:303:in `install'
+	/usr/lib/ruby/vendor_ruby/rubygems/resolver/specification.rb:105:in `install'
+	/usr/lib/ruby/vendor_ruby/rubygems/request_set.rb:195:in `block in install'
+	/usr/lib/ruby/vendor_ruby/rubygems/request_set.rb:183:in `each'
+	/usr/lib/ruby/vendor_ruby/rubygems/request_set.rb:183:in `install'
+	/usr/lib/ruby/vendor_ruby/rubygems/commands/install_command.rb:215:in `install_gem'
+	/usr/lib/ruby/vendor_ruby/rubygems/commands/install_command.rb:231:in `block in install_gems'
+	/usr/lib/ruby/vendor_ruby/rubygems/commands/install_command.rb:224:in `each'
+	/usr/lib/ruby/vendor_ruby/rubygems/commands/install_command.rb:224:in `install_gems'
+	/usr/lib/ruby/vendor_ruby/rubygems/commands/install_command.rb:170:in `execute'
+	/usr/lib/ruby/vendor_ruby/rubygems/command.rb:328:in `invoke_with_build_args'
+	/usr/lib/ruby/vendor_ruby/rubygems/command_manager.rb:253:in `invoke_command'
+	/usr/lib/ruby/vendor_ruby/rubygems/command_manager.rb:193:in `process_args'
+	/usr/lib/ruby/vendor_ruby/rubygems/command_manager.rb:151:in `run'
+	/usr/lib/ruby/vendor_ruby/rubygems/gem_runner.rb:52:in `run'
+	/usr/bin/gem:12:in `<main>'
+=== jekyll build ===
+/home/runner/work/_temp/80b7ec9d-7f11-416c-b530-053bf3877435.sh: line 5: jekyll: command not found
+JEKYLL_EXIT=127

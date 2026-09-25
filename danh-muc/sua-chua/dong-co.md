@@ -1,0 +1,9 @@
+---
+layout: child-category
+taxonomy: P04
+pslug: sua-chua
+cslug: dong-co
+title: "Động cơ"
+description: "Sự cố động cơ — nóng máy, yếu máy, khó nổ, tiếng ố."
+permalink: /danh-muc/sua-chua/dong-co/
+---

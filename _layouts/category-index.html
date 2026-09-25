@@ -7,7 +7,7 @@ layout: default
     <div class="hub-hero__row">
       <div>
         <h1>Danh mục chủ đề</h1>
-        <p class="hub-hero__desc">Toàn bộ nội dung của trang được tổ chức thành các danh mục lớn, mỗi danh mục chia thành các chuyên mục nhỏ theo một chủ đề cụ thể.</p>
+        <p class="hub-hero__desc">{{ page.description }}</p>
       </div>
     </div>
   </div>
@@ -17,6 +17,9 @@ layout: default
     <a href="{{ '/' | relative_url }}">Trang chủ</a>
     <span aria-current="page">Danh mục</span>
   </nav>
+  <div class="prose cat-prose">
+    {{ content }}
+  </div>
   <div class="topic-grid">
     {% for p in site.data.taxonomy.parents %}
     {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}

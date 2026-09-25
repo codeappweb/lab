@@ -18,7 +18,7 @@ layout: default
       <span class="hub-hero__icon" aria-hidden="true">{% include icon.html name=parent.icon %}</span>
       <div>
         <h1>{{ child.name }}</h1>
-        <p class="hub-hero__desc">{{ child.description }}</p>
+        <p class="hub-hero__desc">{{ page.description | default: child.description }}</p>
         <p class="hub-hero__meta">{% if mine.size > 0 %}{{ mine.size }} bài đã xuất bản{% else %}Nội dung đang được chuẩn bị{% endif %}</p>
       </div>
     </div>
@@ -34,6 +34,9 @@ layout: default
   <div class="prose hub-intro">
     <p>{{ child.description }} Thuộc danh mục <a href="{{ purl | relative_url }}">{{ parent.name }}</a>.</p>
     {% if parent.needs_official_source %}<p><em>Lưu ý — nội dung nhóm này dễ thay đổi theo quy định mới, chỉ nên dựa vào nguồn chính thống được dẫn trong từng bài.</em></p>{% endif %}
+  </div>
+  <div class="prose cat-prose">
+    {{ content }}
   </div>
   {% if mine.size > 0 %}
   <div class="card-grid">

@@ -15,7 +15,7 @@ layout: default
       <span class="hub-hero__icon" aria-hidden="true">{% include icon.html name=parent.icon %}</span>
       <div>
         <h1>{{ parent.name }}</h1>
-        <p class="hub-hero__desc">{{ parent.description }}</p>
+        <p class="hub-hero__desc">{{ page.description | default: parent.description }}</p>
         <p class="hub-hero__meta">{% if mine.size > 0 %}{{ mine.size }} bài đã xuất bản{% else %}Nội dung đang được chuẩn bị{% endif %}</p>
       </div>
     </div>
@@ -27,6 +27,9 @@ layout: default
     <a href="{{ '/danh-muc/' | relative_url }}">Danh mục</a>
     <span aria-current="page">{{ parent.name }}</span>
   </nav>
+  <div class="prose cat-prose">
+    {{ content }}
+  </div>
   <section class="section" aria-label="Chuyên mục con">
     <h2 class="section-title">Chuyên mục</h2>
     <div class="topic-grid">

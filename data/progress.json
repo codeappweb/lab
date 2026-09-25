@@ -145,11 +145,27 @@
       ],
       "updated_manifest": [],
       "status": "done"
+    },
+    {
+      "batch_id": "nav-footer-sync-001",
+      "date": "2026-09-25",
+      "cluster": "infra (footer mirrors menu IA + responsive 3 device groups)",
+      "created": [
+        "_data/menu-cats.yml: nguồn dữ liệu dùng chung cho menu và footer (primary 6 cha + more 6 cha)"
+      ],
+      "updated": [
+        "_includes/footer.html: footer theo IA của menu — Truy cập nhanh (6 action data-qa) / Khám phá (12 cha, 2 cột con) / Thông tin (navigation.yml) + brand + footer-bottom",
+        "_includes/nav-drawer.html: dùng site.data.menu-cats thay chuỗi slug cứng; thêm tiêu đề 'Truy cập nhanh' cho nhóm action",
+        "assets/css/app4.css: footer responsive 3 nhóm thiết bị (mobile accordion / tablet 3 cột / desktop 5 cột), drawer tablet rộng hơn, overflow-x clip, heading scale dùng chung menu+footer",
+        "assets/js/nav2.js: breakpoint footer accordion 768px, khớp nhóm tablet trở lên mở cột"
+      ],
+      "updated_manifest": [],
+      "status": "done"
     }
   ],
   "next_actions": [
-    "QA live sau deploy: drawer 2 màn hình (back, Xem thêm, active), footer details desktop/mobile, mega menu, homepage editorial, Ctrl K, trợ lý AI, dark mode.",
-    "Chuyển 8 bài qa -> published sau khi hybrid-ui-001 deploy chạy ổn.",
+    "QA live sau deploy: footer 3 nhóm theo breakpoint (mobile accordion / tablet 3 cột / desktop 5 cột), drawer 2 màn hình, Xem thêm, dark mode, Ctrl K, trợ lý AI.",
+    "Chuyển 8 bài qa -> published sau khi nav-footer-sync-001 deploy chạy ổn.",
     "Batch 002: viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml."
   ],
   "open_issues": [

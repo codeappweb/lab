@@ -1,4 +1,4 @@
-/* app4.css — hybrid UI layer: Apple-minimal visuals, app menu, Honda-style footer.
+/* app4.css — hybrid UI layer: Apple-minimal visuals, app menu, menu-mirrored footer.
    Loaded after main/app2/app3.css. Overrides only what this layer owns. */
 
 :root {
@@ -88,7 +88,7 @@
   box-shadow: 0 18px 48px rgba(0,0,0,.12);
 }
 
-@media (max-width: 899px) {
+@media (max-width: 767px) {
   .icon-btn__label { display: none; }
   .icon-btn { min-width: 38px; min-height: 38px; }
 }
@@ -133,6 +133,17 @@
 .nav-scr { display: block; }
 .nav-scr[hidden] { display: none; }
 
+/* Section headings: shared scale for menu + footer */
+.nav-title,
+.foot-sec__h {
+  margin: 4px 2px 10px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--h-text-2);
+}
+
 /* Primary action grid */
 .nav-actions {
   display: grid;
@@ -157,15 +168,6 @@
 }
 .nav-action:hover { border-color: var(--h-text-2); }
 .nav-action:focus-visible { outline: 2px solid var(--h-accent); outline-offset: 2px; }
-
-.nav-title {
-  margin: 4px 2px 10px;
-  font-size: .72rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--h-text-2);
-}
 
 /* Category grid */
 .nav-cats {
@@ -278,6 +280,17 @@
   color: var(--h-text-2);
 }
 
+/* Tablet drawer: roomier, wider sheet */
+@media (min-width: 768px) {
+  .nav-drawer { max-width: 440px; width: 78vw; }
+  .nav-drawer__body { padding: 20px 20px calc(28px + env(safe-area-inset-bottom)); }
+  .nav-action { min-height: 52px; font-size: .9rem; }
+  .nav-cat { min-height: 48px; font-size: .92rem; }
+  .nav-kid { min-height: 48px; font-size: .95rem; }
+  .nav-cats { gap: 10px; }
+  .nav-actions { gap: 10px; }
+}
+
 /* Screen transition */
 .nav-scr { animation: hSlideIn .22s ease; }
 @keyframes hSlideIn {
@@ -289,16 +302,23 @@
   .nav-more-toggle svg, .app-bar { transition: none; }
 }
 
-/* ---------- Footer: Honda-style structured columns ---------- */
+/* ---------- Footer: mirrors menu IA (Truy cập nhanh / Khám phá / Thông tin) ---------- */
 .site-footer {
   background: var(--h-surface);
   border-top: 1px solid var(--h-border);
-  padding: 24px 0 0;
+  padding: 4px 0 0;
 }
 .footer-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0 32px;
+}
+.foot-brand { padding: 16px 0 8px; }
+.foot-brand p {
+  margin: 10px 0 0;
+  color: var(--h-text-2);
+  font-size: .85rem;
+  line-height: 1.5;
+  max-width: 40ch;
 }
 .foot-sec { border-bottom: 1px solid var(--h-border); }
 .foot-sec__h {
@@ -308,10 +328,6 @@
   min-height: 48px;
   list-style: none;
   cursor: pointer;
-  font-size: .8rem;
-  font-weight: 600;
-  letter-spacing: .06em;
-  text-transform: uppercase;
   color: var(--h-text);
 }
 .foot-sec__h::-webkit-details-marker { display: none; }
@@ -321,20 +337,50 @@
   font-size: 1rem;
 }
 .foot-sec[open] .foot-sec__h::after { content: "–"; }
-.foot-sec--brand .foot-sec__h::after { content: ""; }
+.foot-sec__h:focus-visible { outline: 2px solid var(--h-accent); outline-offset: 2px; }
+
 .foot-links {
   display: flex;
   flex-direction: column;
-  padding-bottom: 12px;
+  padding: 2px 0 14px;
 }
-.foot-links a {
-  padding: 8px 0;
+.foot-links a,
+.foot-act {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--h-text-2);
   font-size: .88rem;
+  font-weight: 400;
+  text-align: left;
   text-decoration: none;
+  cursor: pointer;
 }
-.foot-links a:hover { color: var(--h-text); }
-.footer-bottom { border-top: 1px solid var(--h-border); margin-top: 12px; }
+.foot-links a:hover,
+.foot-act:hover { color: var(--h-text); }
+.foot-links a:focus-visible,
+.foot-act:focus-visible { outline: 2px solid var(--h-accent); outline-offset: 2px; }
+
+/* Truy cập nhanh: 2-col compact grid (mobile) */
+.foot-links--actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+/* Khám phá: 2-col grid, mirrors menu primary + more split */
+.foot-discover {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+  padding: 2px 0 14px;
+}
+.foot-discover .foot-links { padding: 0; }
+
+.footer-bottom { border-top: 1px solid var(--h-border); }
 .footer-bottom__row {
   display: flex;
   align-items: center;
@@ -347,22 +393,37 @@
 .footer-bottom a { color: var(--h-text-2); text-decoration: none; }
 .footer-bottom a:hover { color: var(--h-text); }
 
-@media (min-width: 900px) {
-  .site-footer { padding-top: 40px; }
+/* Tablet ≥768px: 3 grouped columns, accordions forced open, summaries disabled */
+@media (min-width: 768px) {
+  .site-footer { padding-top: 24px; }
+  .foot-brand { grid-column: 1 / -1; padding: 0 0 20px; }
   .footer-grid {
-    grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 32px;
-    padding-bottom: 32px;
+    grid-template-columns: 1fr 1fr 1.4fr;
+    gap: 24px 32px;
+    padding-bottom: 28px;
   }
   .foot-sec { border-bottom: 0; }
   .foot-sec__h {
     cursor: default;
     min-height: auto;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     pointer-events: none;
   }
   .foot-sec__h::after { content: ""; }
-  .foot-links { padding-bottom: 0; }
+  .foot-links,
+  .foot-discover { padding-bottom: 0; }
+}
+
+/* Desktop ≥1024px: brand | Truy cập nhanh | Khám phá (2 sub-cols) | Thông tin */
+@media (min-width: 1024px) {
+  .site-footer { padding-top: 40px; }
+  .foot-brand { grid-column: auto; }
+  .footer-grid {
+    grid-template-columns: 1.3fr 1fr 2.2fr 1fr;
+    gap: 32px 40px;
+    padding-bottom: 32px;
+  }
+  .foot-discover { gap: 0 40px; }
   .footer-bottom__row { padding: 0 0 20px; }
 }
 
@@ -478,6 +539,7 @@ body {
   background: var(--h-bg, #fff);
   color: var(--h-text, #1d1d1f);
 }
+html, body { overflow-x: clip; }
 .bottom-nav {
   padding-bottom: env(safe-area-inset-bottom);
 }

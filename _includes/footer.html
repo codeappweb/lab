@@ -1,54 +1,48 @@
 <footer class="site-footer">
   <div class="container footer-grid">
-    <details class="foot-sec foot-sec--brand">
-      <summary class="foot-sec__h">{% include logo.html %}</summary>
+    <div class="foot-brand">
+      {% include logo.html %}
       <p>Cẩm nang thực dụng về xe máy, xe điện, xe đạp, sửa chữa, pháp lý và du lịch bằng xe — bắt đầu từ Hà Nội.</p>
-    </details>
+    </div>
+
     <details class="foot-sec">
+      <summary class="foot-sec__h">Truy cập nhanh</summary>
+      <div class="foot-links foot-links--actions">
+        <button type="button" class="foot-act" data-qa="search">Tìm kiếm</button>
+        <button type="button" class="foot-act" data-qa="assistant">Trợ lý AI</button>
+        <button type="button" class="foot-act" data-qa="saved">Đã lưu</button>
+        <button type="button" class="foot-act" data-qa="latest">Mới nhất</button>
+        <button type="button" class="foot-act" data-qa="topics">Chủ đề</button>
+        <a class="foot-act" href="{{ '/danh-muc/' | relative_url }}">Danh mục</a>
+      </div>
+    </details>
+
+    <details class="foot-sec foot-sec--discover">
       <summary class="foot-sec__h">Khám phá</summary>
-      <div class="foot-links">
-        {% for slug in 'xe-may,xe-dien,xe-dap,thue-xe' | split: ',' %}
-        {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-        {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
-        <a href="{{ purl | relative_url }}">{{ p.name }}</a>
-        {% endfor %}
+      <div class="foot-discover">
+        <div class="foot-links">
+          {% for slug in site.data.menu-cats.primary %}
+          {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+          {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+          <a href="{{ purl | relative_url }}">{{ p.name }}</a>
+          {% endfor %}
+        </div>
+        <div class="foot-links">
+          {% for slug in site.data.menu-cats.more %}
+          {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+          {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+          <a href="{{ purl | relative_url }}">{{ p.name }}</a>
+          {% endfor %}
+        </div>
       </div>
     </details>
-    <details class="foot-sec">
-      <summary class="foot-sec__h">Hành trình</summary>
-      <div class="foot-links">
-        {% for slug in 'du-lich,phuot-xe,an-toan' | split: ',' %}
-        {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-        {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
-        <a href="{{ purl | relative_url }}">{{ p.name }}</a>
-        {% endfor %}
-      </div>
-    </details>
-    <details class="foot-sec">
-      <summary class="foot-sec__h">Kỹ thuật</summary>
-      <div class="foot-links">
-        {% for slug in 'sua-chua,phu-tung,cong-nghe,chi-phi' | split: ',' %}
-        {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-        {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
-        <a href="{{ purl | relative_url }}">{{ p.name }}</a>
-        {% endfor %}
-      </div>
-    </details>
+
     <details class="foot-sec">
       <summary class="foot-sec__h">Thông tin</summary>
       <div class="foot-links">
-        <a href="{{ '/gioi-thieu/' | relative_url }}">Giới thiệu</a>
-        <a href="{{ '/lien-he/' | relative_url }}">Liên hệ</a>
-        <a href="{{ '/faq/' | relative_url }}">Câu hỏi</a>
-        <a href="{{ '/dich-vu/' | relative_url }}">Dịch vụ</a>
-      </div>
-    </details>
-    <details class="foot-sec">
-      <summary class="foot-sec__h">Pháp lý</summary>
-      <div class="foot-links">
-        <a href="{{ '/bao-mat/' | relative_url }}">Bảo mật</a>
-        <a href="{{ '/dieu-khoan/' | relative_url }}">Điều khoản</a>
-        <a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a>
+        {% for item in site.data.navigation.main %}
+        <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+        {% endfor %}
       </div>
     </details>
   </div>

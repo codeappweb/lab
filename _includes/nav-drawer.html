@@ -9,7 +9,8 @@
   <div class="nav-drawer__body">
     {% comment %} ---------- MÀN HÌNH 1: app menu ---------- {% endcomment %}
     <div class="nav-scr" id="navScrHome">
-      <div class="nav-actions" aria-label="Nhanh">
+      <p class="nav-title">Truy cập nhanh</p>
+      <div class="nav-actions" aria-label="Truy cập nhanh">
         <button type="button" class="nav-action" data-qa="search">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
           <span>Tìm kiếm</span>
@@ -38,9 +39,7 @@
 
       <p class="nav-title">Khám phá</p>
       <div class="nav-cats" aria-label="Khám phá danh mục">
-        {% assign cat_primary = 'xe-may,xe-dien,xe-dap,thue-xe,du-lich,sua-chua' | split: ',' %}
-        {% assign cat_more = 'phu-tung,phuot-xe,phap-ly,an-toan,chi-phi,cong-nghe' | split: ',' %}
-        {% for slug in cat_primary %}
+        {% for slug in site.data.menu-cats.primary %}
         {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
         <button type="button" class="nav-cat" data-nav-cat="{{ p.slug }}">
           <span class="nav-cat__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
@@ -48,7 +47,7 @@
           <svg class="nav-cat__chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </button>
         {% endfor %}
-        {% for slug in cat_more %}
+        {% for slug in site.data.menu-cats.more %}
         {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
         <button type="button" class="nav-cat nav-cat--more" data-nav-cat="{{ p.slug }}" hidden>
           <span class="nav-cat__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>

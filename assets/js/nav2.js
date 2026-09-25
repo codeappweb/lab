@@ -86,11 +86,11 @@
   }
   markActive();
 
-  /* Footer: <details> open on desktop, closed on mobile */
+  /* Footer: <details> accordion on mobile, forced-open columns on tablet/desktop */
   function syncFooter() {
-    var desktop = window.matchMedia('(min-width: 900px)').matches;
-    document.querySelectorAll('details.foot-sec').forEach(function (d) {
-      d.open = desktop;
+    var wide = window.matchMedia('(min-width: 768px)').matches;
+    document.querySelectorAll('.site-footer details.foot-sec').forEach(function (d) {
+      d.open = wide;
     });
   }
   if (document.querySelector('.site-footer')) {

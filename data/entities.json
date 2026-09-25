@@ -144,7 +144,8 @@
     "cluster_usage": 2
   },
   {
-    "name": "metro",
+    "name":
+ "metro",
     "cluster_usage": 2
   },
   {
@@ -564,7 +565,8 @@
     "cluster_usage": 1
   },
   {
-    "name": "vành xe",
+    "name"
+: "vành xe",
     "cluster_usage": 1
   },
   {
@@ -845,7 +847,8 @@
   },
   {
     "name": "Bản Giốc",
-    "cluster_usage": 1
+ 
+   "cluster_usage": 1
   },
   {
     "name": "Ba Bể",
@@ -987,6 +990,7 @@
     "name": "trả góp",
     "cluster_usage": 1
   },
+
   {
     "name": "lãi suất",
     "cluster_usage": 1

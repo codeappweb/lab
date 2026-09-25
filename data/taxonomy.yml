@@ -600,7 +600,8 @@ ned_capacity: 110
       - id: "P12-02"
         name: "Chi phí nuôi"
       
-  slug: "nuoi-xe"
+        slug: "nuoi-xe"
+        status: "planned"
         planned_capacity: 25
         description: "Chi phí nuôi xe hằng tháng và cách tối ưu."
       - id: "P12-03"

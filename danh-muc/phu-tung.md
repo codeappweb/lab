@@ -17,22 +17,23 @@ Chuyên mục này phục vụ người tự mua phụ tùng về thay, người
 
 ## Các nhóm nội dung chính
 
-**Dầu nhớt** ([dau-nhot]({{ 'danh-muc/phu-tung/dau-nhot/' | relative_url }})) là nhóm mua thường xuyên nhất: phân biệt nhớt máy theo cấp độ, cách đọc chỉ số độ nhớt, và chu kỳ thay phù hợp với điều kiện chạy ở Việt Nam.
+**Dầu nhớt** ([dau-nhot]({{ '/danh-muc/phu-tung/dau-nhot/' | relative_url }})) là nhóm mua thường xuyên nhất: phân biệt nhớt máy theo cấp độ, cách đọc chỉ số độ nhớt, và chu kỳ thay phù hợp với điều kiện chạy ở Việt Nam.
 
-**Lốp xe** ([lop-xe]({{ 'danh-muc/phu-tung/lop-xe/' | relative_url }})) nói về cỡ lốp ghi trên thành lốp, chọn lốp theo kiểu chạy (đường phố, đường trường, đường xấu) và thời điểm thay khi gờ lốp mòn.
+**Lốp xe** ([lop-xe]({{ '/danh-muc/phu-tung/lop-xe/' | relative_url }})) nói về cỡ lốp ghi trên thành lốp, chọn lốp theo kiểu chạy (đường phố, đường trường, đường xấu) và thời điểm thay khi gờ lốp mòn.
 
-**Ắc quy** ([ac-quy]({{ 'danh-muc/phu-tung/ac-quy/' | relative_url }})) bao gồm các loại ắc quy nước và ắc quy khô, cách nhận biết ắc quy yếu trướ
+**Ắc quy** ([ac-quy]({{ '/danh-muc/phu-tung/ac-quy/' | relative_url }})) bao gồm 
+các loại ắc quy nước và ắc quy khô, cách nhận biết ắc quy yếu trướ
 c khi xe không nổ, và lưu ý với xe gắn nhiều thiết bị điện.
 
-**Bugi** ([bugi]({{ 'danh-muc/phu-tung/bugi/' | relative_url }})) giải thích vai trò của bugi, cách đọc màu sắc bugi để đo tình trạng động cơ, và lựa chọn bugi theo xe số hay xe ga.
+**Bugi** ([bugi]({{ '/danh-muc/phu-tung/bugi/' | relative_url }})) giải thích vai trò của bugi, cách đọc màu sắc bugi để đo tình trạng động cơ, và lựa chọn bugi theo xe số hay xe ga.
 
-**Phanh** ([phanh]({{ 'danh-muc/phu-tung/phanh/' | relative_url }})) nói về má phanh, dầu phanh và cách chọn đồ phanh không đánh đổi độ an toàn để đổi lấy giá rẻ.
+**Phanh** ([phanh]({{ '/danh-muc/phu-tung/phanh/' | relative_url }})) nói về má phanh, dầu phanh và cách chọn đồ phanh không đánh đổi độ an toàn để đổi lấy giá rẻ.
 
-**Truyền động** ([truyen-dong]({{ 'danh-muc/phu-tung/truyen-dong/' | relative_url }})) bao gồm bộ nhông sên dĩa, dầu hộp số và các linh kiện thường bị thay nhầm khi xe chỉ cần siết lại.
+**Truyền động** ([truyen-dong]({{ '/danh-muc/phu-tung/truyen-dong/' | relative_url }})) bao gồm bộ nhông sên dĩa, dầu hộp số và các linh kiện thường bị thay nhầm khi xe chỉ cần siết lại.
 
-**Đèn xe** ([den-xe]({{ 'danh-muc/phu-tung/den-xe/' | relative_url }})) nói về đèn pha, đèn hậu, và cách chọn bóng đèn đúng công suất để tránh quá tải mạch điện.
+**Đèn xe** ([den-xe]({{ '/danh-muc/phu-tung/den-xe/' | relative_url }})) nói về đèn pha, đèn hậu, và cách chọn bóng đèn đúng công suất để tránh quá tải mạch điện.
 
-**Phụ kiện** ([phu-kien]({{ 'danh-muc/phu-tung/phu-kien/' | relative_url }})) là nhóm trang bị thêm không ảnh hưởng vận hành: giá đỡ, hộp đồ, khóa chống trộm, sạc điện thoại.
+**Phụ kiện** ([phu-kien]({{ '/danh-muc/phu-tung/phu-kien/' | relative_url }})) là nhóm trang bị thêm không ảnh hưởng vận hành: giá đỡ, hộp đồ, khóa chống trộm, sạc điện thoại.
 
 ## Bắt đầu từ đâu?
 
@@ -44,12 +45,13 @@ Nếu bạn không chắc linh kiện mình mua có tương thích xe không, ng
 
 ## Những vấn đề thường gặp
 
-Vấn đề phổ biến nhất là hàng giả và hàng trôi nổi: bugi, lọc gió và má phanh là ba linh kiện bị làm giả nhiều nhất trên thị trường, và hàng giả loại này hư hỏng sớm còn gây hại thứ phát cho động cơ hoặc hệ thống phanh. Cách phòng tránh cơ bản là mua ở kênh có nguồn gốc rõ rà
+Vấn đề phổ biến nhất là hàng giả và hàng trôi nổi: bugi, lọc gió và má phanh là ba linh kiện bị là
+m giả nhiều nhất trên thị trường, và hàng giả loại này hư hỏng sớm còn gây hại thứ phát cho động cơ hoặc hệ thống phanh. Cách phòng tránh cơ bản là mua ở kênh có nguồn gốc rõ rà
 ng và kiểm tra bao bì, mã vạch — chi tiết từng linh kiện có trong nhóm tương ứng.
 
 Thứ hai là mua nhầm thông số: nhớt sai độ nhớt gây động cơ chạy đuối và nóng máy, lốp sai cỡ gây đồng hồ hiển thị sai và lốp hỏng sớm, bugi sai nhiệt độ gây muội hoặc cháy bugi. Hầu hết các trường hợp này tránh được chỉ bằng cách ghi lại thông số cũ trước khi mua.
 
-Thứ ba là thay sớm không cần thiết: nhiều xe bị "khuyến nghị" thay bộ nồi/xích/sên khi thực chất chỉ cần siết lại hoặc vệ sinh. Nếu bạn nghi ngờ, đối chiếu triệu chứng với nhóm [Chẩn đoán lỗi]({{ 'danh-muc/sua-chua/chan-doan-loi/' | relative_url }}) trước khi trả tiền.
+Thứ ba là thay sớm không cần thiết: nhiều xe bị "khuyến nghị" thay bộ nồi/xích/sên khi thực chất chỉ cần siết lại hoặc vệ sinh. Nếu bạn nghi ngờ, đối chiếu triệu chứng với nhóm [Chẩn đoán lỗi]({{ '/danh-muc/sua-chua/chan-doan-loi/' | relative_url }}) trước khi trả tiền.
 
 ## Kiến thức cần biết
 
@@ -57,11 +59,12 @@ Khái niệm quan trọng nhất là tính tương thích: một linh kiện "d�
 
 Thứ hai, chu kỳ thay thực tế phụ thuộc điều kiện chạy: cùng một loại nhớt, xe chạy phố kẹt xe nên thay sớm hơn xe chạy đường trường, vì nhớt nóng lạnh liên tục trong kẹt xe xuống cấp nhanh hơn. Chu kỳ nhà xe đưa ra thường giả định điều kiện tiêu chuẩn.
 
-Thứ ba, với xe điện và xe máy điện pin, danh mục phụ tùng khác hẳn xe xăng — không có bugi, không có nhớt máy, nhưng có pin, BMS và bộ sạc. Nếu bạn chạy xe máy điện, xem thêm chuyên mục [Xe điện]({{ 'danh-muc/xe-dien/' | relative_url }}) và [Công nghệ]({{ 'danh-muc/cong-nghe/' | relative_url }}).
+Thứ ba, với xe điện và xe máy điện pin, danh mục phụ tùng khác hẳn xe xăng — không có bugi, không có nhớt máy, nhưng có pin, BMS và bộ sạc. Nếu bạn chạy xe máy điện, xem thêm chuyên mục [Xe điện]({{ '/danh-muc/xe-dien/' | relative_url }}) và [Công nghệ]({{ '/danh-muc/cong-nghe/' | relative_url }}).
 
 ## Nhận biết phụ tùng chính hãng và phụ tùng tương thích
 
-Phân biệt phụ tùng chính hãng, phụ tùng do nhà máy độc lập sản xuất và hàng trôi nổi trên thị trường là kỹ năng quan trọng nhất khi mua linh kiện. Hàng chính hãng thường có bao bì in rõ tên nhà sản xuất, mã linh kiện và tem chống giả; hàng tương thích chất lượng tốt có giá thấp hơn nhưng vẫn ghi rõ thông số kỹ thuật. Điểm chung của hàng kém chất lượng là bao bì mờ, không có mã tra cứu, giá thấp bất thường so với mặt bằng chung.
+Phân biệt phụ tùng chính hãng, phụ tùng do nhà máy độc lập sản xuất và hàng trôi nổi trên thị trường là kỹ năng quan trọng nhất khi mua linh kiện. Hàng chính hãng thường có bao bì in rõ tên nhà sản xuất, mã linh kiện và te
+m chống giả; hàng tương thích chất lượng tốt có giá thấp hơn nhưng vẫn ghi rõ thông số kỹ thuật. Điểm chung của hàng kém chất lượng là bao bì mờ, không có mã tra cứu, giá thấp bất thường so với mặt bằng chung.
 
 Với mỗi loại linh kiện, cần biết thông số nào quyết định tính tương thích. Nhớt máy xem cấp độ nhớt và thông số động cơ khuyến cáo của hãng; bugi xem nhiệt độ và kích cỡ ren; ắc quy xem điện áp và dung lượng; lốp xem cỡ và mã tải trọng; bộ truyền động xem số răng nhông, số mắt sên và đường kính dĩa. Mua sai thông số thì linh kiện dù tốt cũng gây hao mòn nhanh cho cụm liên quan.
 
@@ -77,4 +80,5 @@ Nên ưu tiên cửa hàng có địa chỉ rõ ràng, chính sách đổi trả
 
 ## Khám phá nội dung
 
-Bắt đầu từ tám nhóm con phía trên tùy linh kiện bạn đang cần. Khi linh kiện đã chọn xong và cần hướng dẫn thay hoặc chẩn đoán lỗi vận hành, chuyển sang chuyên mục [Sửa chữa]({{ 'danh-muc/sua-chua/' | relative_url }}) — hai chuyên mục này thiết kế để dùng song song: Phụ tùng trả lời "mua gì", Sửa chữa trả lời "làm sao biết hư và thay ra sao". Với chi phí bảo dưỡng định kỳ, xem thêm [Chi phí]({{ 'danh-muc/chi-phi/' | relative_url }}).
+Bắt đầu từ tám nhóm con phía trên tùy linh k
+iện bạn đang cần. Khi linh kiện đã chọn xong và cần hướng dẫn thay hoặc chẩn đoán lỗi vận hành, chuyển sang chuyên mục [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}) — hai chuyên mục này thiết kế để dùng song song: Phụ tùng trả lời "mua gì", Sửa chữa trả lời "làm sao biết hư và thay ra sao". Với chi phí bảo dưỡng định kỳ, xem thêm [Chi phí]({{ '/danh-muc/chi-phi/' | relative_url }}).

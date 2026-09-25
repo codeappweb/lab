@@ -17,24 +17,24 @@ Chuyên mục này phục vụ người mới đi chuyến dài đầu tiên, ng
 
 ## Các nhóm nội dung chính
 
-**Chuẩn bị phượt** ([chuan-bi-phuot]({{ 'danh-muc/phuot-xe/chuan-bi-phuot/' | relative_url }})) là nhóm nên đọc đầu tiên: checklist kiểm tra xe trước chuyến đi, đồ bảo hộ bắt buộc, cách đóng đồ và phân bổ tải trên xe.
+**Chuẩn bị phượt** ([chuan-bi-phuot]({{ '/danh-muc/phuot-xe/chuan-bi-phuot/' | relative_url }})) là nhóm nên đọc đầu tiên: checklist kiểm tra xe trước chuyến đi, đồ bảo hộ bắt buộc, cách đóng đồ và phân bổ tải trên xe.
 
-**Đi ngắn ngày** ([di-ngan-ngay]({{ 'danh-muc/phuot-xe/di-ngan-ngay/' | relative_url }})) là các cung quanh Hà Nội trong một ngày hoặc hai ngày — nơi hợp lý để thử sức trước khi đi xa hơn.
+**Đi ngắn ngày** ([di-ngan-ngay]({{ '/danh-muc/phuot-xe/di-ngan-ngay/' | relative_url }})) là các cung quanh Hà Nội trong một ngày hoặc hai ngày — nơi hợp lý để thử sức trước khi đi xa hơn.
 
-**Tây Bắc** ([tay-bac]({{ 'danh-muc/phuot-xe/tay-bac/' | relative_url }})) nói về các cung hướng tây bắc: đặc trưng đường đèo dài, thời điểm đẹp trong năm và các điểm nghỉ dọc tuyến.
+**Tây Bắc** ([tay-bac]({{ '/danh-muc/phuot-xe/tay-bac/' | relative_url }})) nói về các cung hướng tây bắc: đặc trưng đường đèo dài, thời điểm đẹp trong năm và các điểm nghỉ dọc tuyến.
 
 **Đông Bắc** ([dong-b
-ac]({{ 'danh-muc/phuot-xe/dong-bac/' | relative_url }})) bao gồm các cung hướng đông bắc: đường uốn khúc gần biển và vùng biên, khác biệt rõ rệt với tây bắc về địa hình và thời tiết.
+ac]({{ '/danh-muc/phuot-xe/dong-bac/' | relative_url }})) bao gồm các cung hướng đông bắc: đường uốn khúc gần biển và vùng biên, khác biệt rõ rệt với tây bắc về địa hình và thời tiết.
 
-**Cung đường** ([cung-duong]({{ 'danh-muc/phuot-xe/cung-duong/' | relative_url }})) tổng hợp cách đánh giá một cung đường: quãng đường, độ khó, điểm tiếp nhiên liệu, và cách chọn cung khớp trình độ nhóm.
+**Cung đường** ([cung-duong]({{ '/danh-muc/phuot-xe/cung-duong/' | relative_url }})) tổng hợp cách đánh giá một cung đường: quãng đường, độ khó, điểm tiếp nhiên liệu, và cách chọn cung khớp trình độ nhóm.
 
-**Đi dài ngày** ([di-dai-ngay]({{ 'danh-muc/phuot-xe/di-dai-ngay/' | relative_url }})) là kỹ năng cho chuyến nhiều ngày: phân bổ thể lực, lịch nghỉ, gửi đồ và giữ xe qua đêm.
+**Đi dài ngày** ([di-dai-ngay]({{ '/danh-muc/phuot-xe/di-dai-ngay/' | relative_url }})) là kỹ năng cho chuyến nhiều ngày: phân bổ thể lực, lịch nghỉ, gửi đồ và giữ xe qua đêm.
 
-**Đồ phượt** ([do-phuot]({{ 'danh-muc/phuot-xe/do-phuot/' | relative_url }})) nói về trang thiết bị: mũ bảo hiểm fullface, găng tay, áo mưa, bộ dụng cụ sửa xe mini mang theo — và ưu tiên mua gì trước với ngân sách giới hạn.
+**Đồ phượt** ([do-phuot]({{ '/danh-muc/phuot-xe/do-phuot/' | relative_url }})) nói về trang thiết bị: mũ bảo hiểm fullface, găng tay, áo mưa, bộ dụng cụ sửa xe mini mang theo — và ưu tiên mua gì trước với ngân sách giới hạn.
 
-**Kinh nghiệm phượt** ([kinh-nghiem-phuot]({{ 'danh-muc/phuot-xe/kinh-nghiem-phuot/' | relative_url }})) là các bài học tổng hợp từ tình huống thực tế: đi nhóm đông, đi một mình, thời tiết xấu bất ngờ.
+**Kinh nghiệm phượt** ([kinh-nghiem-phuot]({{ '/danh-muc/phuot-xe/kinh-nghiem-phuot/' | relative_url }})) là các bài học tổng hợp từ tình huống thực tế: đi nhóm đông, đi một mình, thời tiết xấu bất ngờ.
 
-**An toàn phượt** ([an-toan-phuot]({{ 'danh-muc/phuot-xe/an-toan-phuot/' | relative_url }})) nhấn mạnh phần an toàn riêng của phượt: chạy đèo, chạy mưa, chạy đêm và xử lý khi có thành viên nhóm gặp sự cố.
+**An toàn phượt** ([an-toan-phuot]({{ '/danh-muc/phuot-xe/an-toan-phuot/' | relative_url }})) nhấn mạnh phần an toàn riêng của phượt: chạy đèo, chạy mưa, chạy đêm và xử lý khi có thành viên nhóm gặp sự cố.
 
 ## Bắt đầu từ đâu?
 
@@ -51,9 +51,9 @@ Vấn đề gặp nhiều nhất là hỏng xe giữa cung. Đa số ca hỏng g
 
 Thứ hai là ước lượng sai thời gian trên đường núi. Trên đèo, tốc độ trung bình thực tế thấp hơn nhiều so với đường bằng — một cung 150km đường đèo có thể mất gần gấp đôi thời gian so với 150km đường thẳng. Cách tính thực tế có trong nhóm **cung đường**.
 
-Thứ ba là thời tiết thay đổi nhanh ở miền núi: mưa rào trên đèo, sương mù buổi sáng, đường trơn sau mưa. Kỹ năng xử lý từng tình huống nằm ở nhóm **an toàn phượt**, còn kỹ năng lái nền tảng — phanh hợp lý trên đường trơn, vị trí vào cua — nằm ở chuyên mục [An toàn]({{ 'danh-muc/an-toan/' | relative_url }}).
+Thứ ba là thời tiết thay đổi nhanh ở miền núi: mưa rào trên đèo, sương mù buổi sáng, đường trơn sau mưa. Kỹ năng xử lý từng tình huống nằm ở nhóm **an toàn phượt**, còn kỹ năng lái nền tảng — phanh hợp lý trên đường trơn, vị trí vào cua — nằm ở chuyên mục [An toàn]({{ '/danh-muc/an-toan/' | relative_url }}).
 
-Cuối cùng, các vấn đề giấy tờ khi đi xa vùng biên cần được chuẩn bị trước: giấy phép lái xe hợp lệ, đăng ký xe, và mũ bảo hiểm đạt chuẩn — quy định chi tiết nằm ở chuyên mục [Pháp lý]({{ 'danh-muc/phap-ly/' | relative_url }}).
+Cuối cùng, các vấn đề giấy tờ khi đi xa vùng biên cần được chuẩn bị trước: giấy phép lái xe hợp lệ, đăng ký xe, và mũ bảo hiểm đạt chuẩn — quy định chi tiết nằm ở chuyên mục [Pháp lý]({{ '/danh-muc/phap-ly/' | relative_url }}).
 
 ## Kiến thức cần biết
 
@@ -82,4 +82,4 @@ Sau mỗi chuyến đi, một bản ghi chép ngắn về tổng km, tình trạ
 ## Khám phá nội dung
 
 Bắt đầu từ nhóm chuẩn bị phượt và một cung ngắn ngày trước khi đi xa. Các nhóm cung đường và kỹ
- năng nên đọc dần theo trình độ, thay vì dồn một lần. Khi cần hiểu sâu về xe trước khi lên đường — kiểm tra phanh, lốp, nhớt — chuyên mục [Sửa chữa]({{ 'danh-muc/sua-chua/' | relative_url }}) có hướng dẫn chi tiết từng hạng mục, và [Phụ tùng]({{ 'danh-muc/phu-tung/' | relative_url }}) giúp chọn đúng đồ thay. Chuyến đi trong nội thành Hà Nội thì xem chuyên mục [Du lịch]({{ 'danh-muc/du-lic/' | relative_url }}).
+ năng nên đọc dần theo trình độ, thay vì dồn một lần. Khi cần hiểu sâu về xe trước khi lên đường — kiểm tra phanh, lốp, nhớt — chuyên mục [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}) có hướng dẫn chi tiết từng hạng mục, và [Phụ tùng]({{ '/danh-muc/phu-tung/' | relative_url }}) giúp chọn đúng đồ thay. Chuyến đi trong nội thành Hà Nội thì xem chuyên mục [Du lịch]({{ '/danh-muc/du-lic/' | relative_url }}).

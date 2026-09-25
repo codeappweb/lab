@@ -11,15 +11,16 @@ Toàn bộ nội dung của trang được tổ chức theo hành trình thật 
 
 Thứ tự danh mục dưới đây không theo bảng chữ cái mà theo trình tự một người gặp phải trong đời sống xe:
 
-1. **Ba loại phương tiện chính** — [Xe máy]({{ 'danh-muc/xe-may/' | relative_url }}), [Xe điện]({{ 'danh-muc/xe-dien/' | relative_url }}) và [Xe đạp]({{ 'danh-muc/xe-dap/' | relative_url }}): chọn đúng loại xe cho nhu cầu của bạn.
-2. **Thuê xe** — khi bạn chưa cần sở hữu: thủ tục, đặt cọc, chọn xe thuê [theo ngày, tuần hay tháng]({{ 'danh-muc/thue-xe/' | relative_url }}).
-3. **Sửa chữa và Phụ tùng** — khi xe có vấn đề: [chẩn đoán theo triệu chứng]({{ 'danh-muc/sua-chua/' | relative_url }}), [chọn phụ tùng đúng loại]({{ 'danh-muc/phu-tung/' | relative_url }}).
-4. **Du lịch và Phượt xe** — khi bạn đi ra ngoài Hà Nội: [điểm đến quanh thành phố]({{ 'danh-muc/du-lich/' | relative_url }}) và [các cung đường phượt miền Bắc]({{ 'danh-muc/phuot-xe/' | relative_url }}).
-5. **Pháp lý, An toàn, Chi phí, Công nghệ** — nền tảng phải biết: [quy định giao thông]({{ 'danh-muc/phap-ly/' | relative_url }}), [kỹ năng đi đường an toàn]({{ 'danh-muc/an-toan/' | relative_url }}), [chi phí nuôi xe]({{ 'danh-muc/chi-phi/' | relative_url }}) và [công nghệ pin, sạc]({{ 'danh-muc/cong-nghe/' | relative_url }}).
+1. **Ba loại phương tiện chính** — [Xe máy]({{ '/danh-muc/xe-may/' | relative_url }}), [Xe điện]({{ '/danh-muc/xe-dien/' | relative_url }}) và [Xe đạp]({{ '/danh-muc/xe-dap/' | relative_url }}): chọn đúng loại xe cho nhu cầu của bạn.
+2. **Thuê xe** — khi bạn chưa cần sở hữu: thủ tục, đặt cọc, chọn xe thuê [theo ngày, tuần hay tháng]({{ '/danh-muc/thue-xe/' | relative_url }}).
+3. **Sửa chữa và Phụ tùng** — khi xe có vấn đề: [chẩn đoán theo triệu chứng]({{ '/danh-muc/sua-chua/' | relative_url }}), [chọn phụ tùng đúng loại]({{ '/danh-muc/phu-tung/' | relative_url }}).
+4. **Du lịch và Phượt xe** — khi bạn đi ra ngoài Hà Nội: [điểm đến quanh thành phố]({{ '/danh-muc/du-lich/' | relative_url }}) và [các cung đường phượt miền Bắc]({{ '/danh-muc/phuot-xe/' | relative_url }}).
+5. **Pháp lý, An toàn, Chi phí, Công nghệ** — nền tảng phải biết: [quy định giao thông]({{ '/danh-muc/phap-ly/' | relative_url }}), [kỹ năng đi đường an toàn]({{ '/danh-muc/an-toan/' | relative_url }}), [chi phí nuôi xe]({{ '/danh-muc/chi-phi/' | relative_url }}) và [công nghệ pin, sạc]({{ '/danh-muc/cong-nghe/' | relative_url }}).
 
 ## Mỗi danh mục chia thành các chuyên mục nhỏ
 
-Ví dụ trong [Sửa chữa]({{ 'danh-muc/sua-chua/' | relative_url }}) có riêng các chuyên mục cho [động cơ]({{ 'danh-muc/sua-chua/dong-co/' | relative_url }}), [hệ thống điện]({{ 'danh-muc/sua-chua/he-thong-dien/' | relative_url }}), [khởi động]({{ 'danh-muc/sua-chua/khoi-dong/' | relative_url }}), [truyền động]({{ 'danh-muc/sua-chua/truyen-dong/' | relative_url }}), [phanh]({{ 'danh-muc/sua-chua/phanh-xe/' | relative_url }}), [lốp]({{ 'danh-muc/sua-chua/lop-xe/' | relative_url }}) và [chẩn đoán theo triệu chứng]({{ 'danh-muc/sua-chua/chan-doan-loi/' | relative_url }}). Cách chia này giúp bạn đi thẳng đến vấn đề đang gặp thay vì đọc lan man.
+Ví dụ trong [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}) có riêng các chuyên mục cho [động
+ cơ]({{ '/danh-muc/sua-chua/dong-co/' | relative_url }}), [hệ thống điện]({{ '/danh-muc/sua-chua/he-thong-dien/' | relative_url }}), [khởi động]({{ '/danh-muc/sua-chua/khoi-dong/' | relative_url }}), [truyền động]({{ '/danh-muc/sua-chua/truyen-dong/' | relative_url }}), [phanh]({{ '/danh-muc/sua-chua/phanh-xe/' | relative_url }}), [lốp]({{ '/danh-muc/sua-chua/lop-xe/' | relative_url }}) và [chẩn đoán theo triệu chứng]({{ '/danh-muc/sua-chua/chan-doan-loi/' | relative_url }}). Cách chia này giúp bạn đi thẳng đến vấn đề đang gặp thay vì đọc lan man.
 
 ## Cách dùng trang danh mục này
 

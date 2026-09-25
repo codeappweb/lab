@@ -6,4 +6,6 @@ cslug: truyen-dong
 title: "Lỗi truyền động xe máy: nhông sên dĩa, CVT, rung và hú"
 description: "Nhông sên dĩa và CVT — rung, hú, giật khi tăng ga."
 permalink: /danh-muc/sua-chua/truyen-dong/
+noindex: true
+sitemap: false
 ---

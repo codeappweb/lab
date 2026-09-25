@@ -105,9 +105,9 @@
     "Batch 002: 8 bài C05 còn lại (bảo dưỡng định kỳ) + 5 bài C03 đầu tiên."
   ],
   "open_issues": [
-    "Pages build queue từng bị kẹt (run #51 in_progress > 40 phút); đã retrigger bằng commit này — cần xác nhận build success trên Actions.",
+    "Đã xác nhận: Pages build thành công sau khi canonicalize data/entities.json (commit bbbe6d7); site smart-blog-app đã deploy live.",
     "GitHub App không có quyền Administration — không thể tạo repo mới; site ở repo lab, base path /lab/.",
-    "Không chạy được jekyll build cục bộ trong sandbox — xác nhận bằng bản render trực tiếp trên Pages sau deploy.",
-    "Không có trình duyệt trong sandbox — console errors, light/dark mode chỉ kiểm tra tĩnh."
+    "Không có trình duyệt trong sandbox — console errors, light/dark mode, tương tác chat/search chỉ kiểm tra tĩnh qua HTML/render text.",
+    "Lưu ý: GitHub Pages build có thể kẹt queue nhiều phút — nếu deploy không cập nhật, retrigger bằng commit nhỏ."
   ]
 }

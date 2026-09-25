@@ -52,7 +52,7 @@
       "date": "2026-09-25",
       "cluster": "infra",
       "created": [
-        "Chuyển toàn bộ project từ thư mục con xe-di-chuyen-content/ về root repo để GitHub Pages build đúng"
+        "Chuyển toàn bộ project về root repo để GitHub Pages build đúng"
       ],
       "updated_manifest": [],
       "status": "done"
@@ -62,16 +62,11 @@
       "date": "2026-09-25",
       "cluster": "infra (UI)",
       "created": [
-        "Design system CSS (assets/css/main.css): tokens sáng/tối, app bar, hero, topic cards, article cards, prose, TOC, search palette, mobile sheet, bottom nav",
-        "Vanilla JS (assets/js/main.js): theme toggle + localStorage không flash, search overlay (/, Ctrl+K) với assets/search.json, TOC tự sinh, reading time, sheet, bottom nav",
-        "Logo SVG + favicon (assets/images/favicon.svg)",
-        "9 includes: head, header, footer, logo, icon, theme-toggle, article-card, search, topic-sheet",
-        "3 layouts mới: default (app shell), post (premium reading + JSON-LD), hub (hero + auto listing + empty state)",
-        "assets/search.json: index tìm kiếm tĩnh (posts + hubs)"
+        "Design system CSS, vanilla JS (theme, search palette Ctrl+K, TOC, reading time), logo/favicon, 9 includes, 3 layouts, assets/search.json"
       ],
       "updated": [
-        "index.md: hero + topic explorer + mới nhất + khám phá (chips từ entities)",
-        "hub/c01..c12.md: thêm front matter icon, giữ nguyên permalink/title/description/cluster, bỏ danh sách link thủ công (layout tự render)"
+        "index.md: hero + explorer + mới nhất + chips",
+        "hub pages: front matter icon, layout tự render"
       ],
       "updated_manifest": [],
       "status": "done"
@@ -81,33 +76,55 @@
       "date": "2026-09-25",
       "cluster": "infra (UI + smart features)",
       "created": [
-        "Quick Actions (data/site-actions.yml + _includes/quick-actions.html): FAB, dock di động, tự ẩn action không cấu hình",
-        "Trợ lý AI cục bộ (_includes/assistant.html + assets/js/assistant/*): retrieval client-side, không API key, không backend giả",
-        "Chỉ mục nội dung build-time (assets/data/content-index.json core + 12 shard c01..c12 lazy-load)",
-        "Article toolbar (save/share/copy/TOC/Ask AI), reading progress bar, prev/next navigation",
-        "Saved + Continue reading (localStorage xdc-saved/xdc-recent), homepage section Doc tiep",
-        "PWA-lite: manifest.webmanifest, theme-color, icon SVG; bỏ service worker (rủi ro stale cache)"
+        "Quick Actions + data/site-actions.yml",
+        "Trợ lý AI cục bộ (assistant/*, không API key)",
+        "Content index core + 12 shard lazy-load",
+        "Article toolbar, reading progress, prev/next",
+        "Saved + Continue reading (localStorage)",
+        "PWA-lite: manifest, theme-color; bỏ service worker (rủi ro stale cache)"
       ],
       "updated": [
-        "_layouts/post.html: toolbar + progress + prev/next",
-        "_layouts/default.html: thêm saved-sheet, quick-actions, assistant + 4 script defer",
-        "index.md: nút Hoi Tro ly AI + section #doc-tiep",
-        "_includes/head.html, icon.html, footer: theme-color, app2.css, icon mới",
-        "data/entities.json: sửa 3 dòng bị corrupt (newline trong chuỗi) khiến Pages build fail từ f5e8069"
+        "_layouts/post.html, default.html, index.md, head.html, icon.html, footer",
+        "data/entities.json: sửa file corrupt khiến Pages build fail"
+      ],
+      "updated_manifest": [],
+      "status": "done"
+    },
+    {
+      "batch_id": "nav-taxonomy-001",
+      "date": "2026-09-25",
+      "cluster": "infra (navigation + taxonomy)",
+      "created": [
+        "data/navigation.yml — menu trung tâm duy nhất, 7 mục dùng chung header/footer/drawer",
+        "data/taxonomy.yml — 12 parent (P01-P12) + 98 child, icon + cluster mapping",
+        "data/article-taxonomy.yml — mapping 8 bài C05 sang sua-chua/<child>, không sửa file bài",
+        "_includes/nav-drawer.html + drawer JS (Esc, focus trap, aria-expanded)",
+        "6 trang tĩnh: gioi-thieu, lien-he, faq, dich-vu, bao-mat, dieu-khoan",
+        "12 trang danh mục cha + 98 trang chuyên mục con + trang /danh-muc/",
+        "assets/css/app3.css (drawer, active state, topic groups, page-narrow)"
+      ],
+      "updated": [
+        "header/footer render từ navigation.yml; footer thêm 12 danh mục từ taxonomy",
+        "main.js rewrite: drawer, active state header/drawer/bottom-nav, search hay thêm parent/child",
+        "retrieval.js: ranking thêm tín hiệu child/parent category",
+        "index.md: category explorer từ taxonomy.yml; post.html: breadcrumb Danh mục cha/con",
+        "search.json + content-index.json: thêm trường parent/child + trang danh mục",
+        "topic-sheet: duyệt taxonomy cha/con thay vì hub; hub giữ nguyên URL, liên kết từ trang parent"
       ],
       "updated_manifest": [],
       "status": "done"
     }
   ],
   "next_actions": [
-    "QA trực tiếp trang live: light/dark, mobile, search, TOC sau khi GitHub Pages rebuild.",
-    "Chuyển 8 bài qa -> published sau khi UI deploy chạy ổn, chạy scripts/build-sitemap.mjs.",
-    "Batch 002: 8 bài C05 còn lại (bảo dưỡng định kỳ) + 5 bài C03 đầu tiên."
+    "QA trực tiếp trang live sau deploy: menu, drawer, footer, 7 link tĩnh, danh mục cha/con, breadcrumb, Ctrl K, trợ lý AI, light/dark.",
+    "Chuyển 8 bài qa -> published sau khi taxonomy deploy chạy ổn.",
+    "Batch 002: viết bài mới bắt buộc front matter parent_category/child_category theo data/taxonomy.yml."
   ],
   "open_issues": [
-    "Đã xác nhận: Pages build thành công sau khi canonicalize data/entities.json (commit bbbe6d7); site smart-blog-app đã deploy live.",
+    "Đã xác nhận: Pages build thành công sau khi canonicalize data/entities.json (commit bbbe6d7); smart-blog-app đã deploy live.",
     "GitHub App không có quyền Administration — không thể tạo repo mới; site ở repo lab, base path /lab/.",
-    "Không có trình duyệt trong sandbox — console errors, light/dark mode, tương tác chat/search chỉ kiểm tra tĩnh qua HTML/render text.",
-    "Lưu ý: GitHub Pages build có thể kẹt queue nhiều phút — nếu deploy không cập nhật, retrigger bằng commit nhỏ."
+    "Không có trình duyệt trong sandbox — console errors, light/dark, tương tác chỉ kiểm tra tĩnh qua HTML/render text.",
+    "Lưu ý: GitHub Pages build có thể kẹt queue nhiều phút — nếu deploy không cập nhật, retrigger bằng commit nhỏ.",
+    "scripts/build-sitemap.mjs là bản cũ theo manifest — đã lỗi thời, sitemap do jekyll-sitemap plugin sinh; không chạy lại script này."
   ]
 }

@@ -17,29 +17,29 @@ Chuyên mục này phục vụ người đang cân nhắc mua xe muốn ước t
 
 ## Các nhóm nội dung chính
 
-**Mua xe** ([mua-xe](/danh-muc/chi-phi/mua-xe/)) nói về cấu trúc giá khi mua xe mới và xe cũ: giá niêm yết, phí trước bạ, phụ phí, và các điểm cần cân nhắc khi quyết định ngân sách mua.
+**Mua xe** ([mua-xe]({{ 'danh-muc/chi-phi/mua-xe/' | relative_url }})) nói về cấu trúc giá khi mua xe mới và xe cũ: giá niêm yết, phí trước bạ, phụ phí, và các điểm cần cân nhắc khi quyết định ngân sách mua.
 
-**Nuôi xe** ([nuoi-xe](/danh-muc/chi-phi/nuoi-xe/)) là nhóm tổng hợp chi phí hằng tháng của xe: xăng, gửi xe, bảo dưỡng, để bạn có khung ước tính cho ngân sách định kỳ.
+**Nuôi xe** ([nuoi-xe]({{ 'danh-muc/chi-phi/nuoi-xe/' | relative_url }})) là nhóm tổng hợp chi phí hằng tháng của xe: xăng, gửi xe, bảo dưỡng, để bạn có khung ước tính cho ngân sách định kỳ.
 
-**Nhiên liệu** ([nhien-lieu](/danh-muc/chi-phi/nhien-lieu/)) phân tích chi phí xăng theo quãng đường và mức tiêu thụ thực tế của các dòng xe phổ biến, kèm các thói quen chạy xe giúp tiết kiệm xăng.
+**Nhiên liệu** ([nhien-lieu]({{ 'danh-muc/chi-phi/nhien-lieu/' | relative_url }})) phân tích chi phí xăng theo quãng đường và mức tiêu thụ thực tế của các dòng xe phổ biến, kèm các thói quen chạy xe giúp tiết kiệm xăng.
 
 **Tiền điện** ([tien-dien]
 
 (/danh-muc/chi-phi/tien-dien/)) là nhóm tương đương cho xe điện: chi phí sạc theo quãng đường, so sánh với xăng ở cùng quãng đường, và các yếu tố ảnh hưởng chi phí sạc.
 
-**Bảo dưỡng** ([bao-duong](/danh-muc/chi-phi/bao-duong/)) tổng hợp chi phí các gói bảo dưỡng định kỳ: thay nhớt, lọc gió, bugi, xích — theo chu kỳ km phổ biến.
+**Bảo dưỡng** ([bao-duong]({{ 'danh-muc/chi-phi/bao-duong/' | relative_url }})) tổng hợp chi phí các gói bảo dưỡng định kỳ: thay nhớt, lọc gió, bugi, xích — theo chu kỳ km phổ biến.
 
-**Sửa chữa** ([sua-chua](/danh-muc/chi-phi/sua-chua/)) nói về chi phí các hạng mục sửa thường gặp và cách kiểm soát: khi nào đáng sửa, khi nào tiết chế yêu cầu thay linh kiện không cần thiết.
+**Sửa chữa** ([sua-chua]({{ 'danh-muc/chi-phi/sua-chua/' | relative_url }})) nói về chi phí các hạng mục sửa thường gặp và cách kiểm soát: khi nào đáng sửa, khi nào tiết chế yêu cầu thay linh kiện không cần thiết.
 
-**Bảo hiểm** ([bao-hiem](/danh-muc/chi-phi/bao-hiem/)) phân biệt các loại bảo hiểm theo chi phí: bắt buộc với mức phí theo quy định, và các gói tự nguyện với phạm vi tương ứng giá.
+**Bảo hiểm** ([bao-hiem]({{ 'danh-muc/chi-phi/bao-hiem/' | relative_url }})) phân biệt các loại bảo hiểm theo chi phí: bắt buộc với mức phí theo quy định, và các gói tự nguyện với phạm vi tương ứng giá.
 
-**Khấu hao** ([khau-hao](/danh-muc/chi-phi/khau-hao/)) là nhóm ít được nghĩ đến nhất: giá trị xe giảm theo thời gian và cách giữ giá trị khi bán lại.
+**Khấu hao** ([khau-hao]({{ 'danh-muc/chi-phi/khau-hao/' | relative_url }})) là nhóm ít được nghĩ đến nhất: giá trị xe giảm theo thời gian và cách giữ giá trị khi bán lại.
 
 ## Bắt đầu từ đâu?
 
 Người đang cân nhắc mua xe nên đọc theo thứ tự: mua xe → khấu hao → nuôi xe. Trình tự này cho cái nhìn tổng chi sở hữu thay vì chỉ nhìn giá bán ban đầu — hai xe cùng giá mua có thể khác nhau đáng kể về tổng chi sau vài năm. Người so sánh xe xăng với xe điện thì đọc cặp nhóm nhiên liệu và tiền điện cạnh nhau, vì đây là hai hạng mục so sánh trực tiếp nhất.
 
-Người đã có xe và muốn kiểm tra chi phí vận hành bắt đầu từ nuôi xe, rồi đối chiếu chi tiết từng hạng mục với nhóm tương ứng. Nếu chi phí xăng hoặc sạc đang bất thường so với trước, đó thường là dấu hiệu xe có lỗi vận hành — chuyên mục [Sửa chữa](/danh-muc/sua-chua/) có hướng dẫn chẩn đoán hao xăng.
+Người đã có xe và muốn kiểm tra chi phí vận hành bắt đầu từ nuôi xe, rồi đối chiếu chi tiết từng hạng mục với nhóm tương ứng. Nếu chi phí xăng hoặc sạc đang bất thường so với trước, đó thường là dấu hiệu xe có lỗi vận hành — chuyên mục [Sửa chữa]({{ 'danh-muc/sua-chua/' | relative_url }}) có hướng dẫn chẩn đoán hao xăng.
 
 Người mua xe cũ nên đọc nhóm mua xe và sửa chữa cùng nhau, vì xe cũ thường có chi phí sửa chữa năm đầu cao hơn xe mới — yếu tố cần đưa vào quyết định giá mua.
 
@@ -61,7 +61,7 @@ Khái niệm quan trọng nhất là tổng chi sở hữu (TCO): giá mua chỉ
 
 Thứ hai, khấu hao không đều: xe máy giảm giá mạnh nhất ở 1–2 năm đầu, sau đó chậm dần. Hệ quả thực tế: mua xe đã qua 1–2 năm sử dụng là điểm cân bằng tốt giữa giá và tình trạng xe, và bán xe trước mốc 5 năm thường giữ giá tốt hơn để quá lâu.
 
-Thứ ba, chi phí bảo dưỡng theo chu kỳ là khoản có thể tối ưu bằng cách làm đúng lúc, không sớm không muộn: thay nhớt quá sớm tốn thêm, thay quá muộn gây hao mòn động cơ và đội chi phí sau này. Chu kỳ chuẩn theo km có ở chuyên mục [Sửa chữa](/danh-muc/sua-chua/bao-duong/).
+Thứ ba, chi phí bảo dưỡng theo chu kỳ là khoản có thể tối ưu bằng cách làm đúng lúc, không sớm không muộn: thay nhớt quá sớm tốn thêm, thay quá muộn gây hao mòn động cơ và đội chi phí sau này. Chu kỳ chuẩn theo km có ở chuyên mục [Sửa chữa]({{ 'danh-muc/sua-chua/bao-duong/' | relative_url }}).
 
 
 ## Cách lập bảng chi phí nuôi xe
@@ -79,7 +79,7 @@ Với xe điện, điểm cân nhắc thêm là bình pin: đây là chi phí th
 
 ## Khám phá nội dung
 
-Bắt đầu từ nhóm khớp với quyết định bạn đang đứng trước: mua xe nếu chưa mua, nuôi xe nếu đang ước ngân sách. Nhóm khấu hao nên đọc ít nhất một lần khi cân nhắc giữa các dòng xe. Với cách chọn đúng xe theo nhu cầu — phân khúc, dòng xe, xe điện hay xăng — xem chuyên mục [Xe máy](/danh-muc/xe-may/) và [Xe điện](/danh-muc/xe-dien/).
+Bắt đầu từ nhóm khớp với quyết định bạn đang đứng trước: mua xe nếu chưa mua, nuôi xe nếu đang ước ngân sách. Nhóm khấu hao nên đọc ít nhất một lần khi cân nhắc giữa các dòng xe. Với cách chọn đúng xe theo nhu cầu — phân khúc, dòng xe, xe điện hay xăng — xem chuyên mục [Xe máy]({{ 'danh-muc/xe-may/' | relative_url }}) và [Xe điện]({{ 'danh-muc/xe-dien/' | relative_url }}).
 
 ## Chi phí ẩn khi đổi xe mới
 

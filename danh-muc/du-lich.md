@@ -17,24 +17,24 @@ Chuyên mục này phục vụ ba nhóm: người du lịch lần đầu cần l
 
 ## Các nhóm nội dung chính
 
-**Trung tâm Hà Nội** ([trung-tam-ha-noi](/danh-muc/du-lich/trung-tam-ha-noi/)) là bản đồ tổng thể khu trung tâm: đâu là các cụm điểm đến đi bộ được với nhau, và cần bao nhiêu thời gian cho từng cụm.
+**Trung tâm Hà Nội** ([trung-tam-ha-noi]({{ 'danh-muc/du-lich/trung-tam-ha-noi/' | relative_url }})) là bản đồ tổng thể khu trung tâm: đâu là các cụm điểm đến đi bộ được với nhau, và cần bao nhiêu thời gian cho từng cụm.
 
-**Phố cổ** ([pho-co](/danh-muc/du-lic/pho-co/)) đi sâu vào khu 36 phố phường: cách đi giữa các con phố bán đồ "chuyên ngành", thời điểm đông vắng và bãi gửi xe quanh hồ Hoàn Kiếm.
+**Phố cổ** ([pho-co]({{ 'danh-muc/du-lic/pho-co/' | relative_url }})) đi sâu vào khu 36 phố phường: cách đi giữa các con phố bán đồ "chuyên ngành", thời điểm đông vắng và bãi gửi xe quanh hồ Hoàn Kiếm.
 
-**Hồ Tây** ([ho-tay](/danh-muc/du-lic/ho-tay/)) nói về tuyến hồ lớn phía tây: các tuyến đường ven hồ, điểm dừng ăn uống và thời điểm chạy ven hồ đẹp nhất trong ngày.
+**Hồ Tây** ([ho-tay]({{ 'danh-muc/du-lic/ho-tay/' | relative_url }})) nói về tuyến hồ lớn phía tây: các tuyến đường ven hồ, điểm dừng ăn uống và thời điểm chạy ven hồ đẹp nhất trong ngày.
 
-**Ngoại thành** ([ngoai-thanh](/danh-muc/du-
-lic/ngoai-thanh/)) là nhóm các tuyến đi xa hơn: nơi lý tưởng để gom vào buổi sáng hoặc cả ngày, thay vì rải rác khiến mất thời gian di chuyển.
+**Ngoại thành** ([ngoai-thanh]({{ 'danh-muc/du-
+lic/ngoai-thanh/' | relative_url }})) là nhóm các tuyến đi xa hơn: nơi lý tưởng để gom vào buổi sáng hoặc cả ngày, thay vì rải rác khiến mất thời gian di chuyển.
 
-**Điểm đến Hà Nội** ([diem-den-hanoi](/danh-muc/du-lic/diem-den-hanoi/)) tổng hợp các điểm tham quan đáng đi theo loại hình: di tích, không gian công cộng, khu ẩm thực — kèm ghi chú thời gian ở mỗi điểm.
+**Điểm đến Hà Nội** ([diem-den-hanoi]({{ 'danh-muc/du-lic/diem-den-hanoi/' | relative_url }})) tổng hợp các điểm tham quan đáng đi theo loại hình: di tích, không gian công cộng, khu ẩm thực — kèm ghi chú thời gian ở mỗi điểm.
 
-**Lịch trình Hà Nội** ([lich-trinh-hanoi](/danh-muc/du-lic/lich-trinh-hanoi/)) là nhóm lịch trình mẫu theo số ngày: một ngày, hai ngày, cuối tuần — sắp điểm đến theo hướng đi hợp lý.
+**Lịch trình Hà Nội** ([lich-trinh-hanoi]({{ 'danh-muc/du-lic/lich-trinh-hanoi/' | relative_url }})) là nhóm lịch trình mẫu theo số ngày: một ngày, hai ngày, cuối tuần — sắp điểm đến theo hướng đi hợp lý.
 
-**Cách di chuyển** ([cach-di-chuyen](/danh-muc/du-lic/cach-di-chuyen/)) so sánh các cách đi trong thành phố: xe máy công nghệ, taxi, xe buýt, đi bộ — và loại nào hợp khu vực nào.
+**Cách di chuyển** ([cach-di-chuyen]({{ 'danh-muc/du-lic/cach-di-chuyen/' | relative_url }})) so sánh các cách đi trong thành phố: xe máy công nghệ, taxi, xe buýt, đi bộ — và loại nào hợp khu vực nào.
 
-**Gửi xe** ([gui-xe](/danh-muc/du-lic/gui-xe/)) là nhóm thông tin thực dụng dễ bị bỏ qua: bãi gửi quanh điểm đông, giá gửi phổ biến, và cách nhận biết bãi trông giữ xe đáng tin.
+**Gửi xe** ([gui-xe]({{ 'danh-muc/du-lic/gui-xe/' | relative_url }})) là nhóm thông tin thực dụng dễ bị bỏ qua: bãi gửi quanh điểm đông, giá gửi phổ biến, và cách nhận biết bãi trông giữ xe đáng tin.
 
-**Tuyến tham quan** ([tuyen-tham-quan](/danh-muc/du-lic/tuyen-tham-quan/)) tổng hợp các tuyến theo chủ đề — tuyến di tích, tuyến ẩm thực, tuyến ven sông — để ghép điểm nhanh.
+**Tuyến tham quan** ([tuyen-tham-quan]({{ 'danh-muc/du-lic/tuyen-tham-quan/' | relative_url }})) tổng hợp các tuyến theo chủ đề — tuyến di tích, tuyến ẩm thực, tuyến ven sông — để ghép điểm nhanh.
 
 ## Bắt đầu từ đâu?
 
@@ -42,7 +42,7 @@ Người đi lần đầu nên bắt đầu từ **lịch trình Hà Nội**, ch
 
 Người đi tự lái xe máy cần đọc nhóm **gửi xe** và **cách di chuyển** trước, vì hai nhóm này quyết định việc ghép điểm có trơn tru hay không. Người sống tại Hà Nội muốn tận dụng cuối tuần thì bắt đầu từ **ngoại thành** và **tuyến tham quan** — hai nhóm này chứa tuyến ít người biết hơn so với các cụm phố cổ quen thuộc.
 
-Nếu bạn đi cả ngày và muốn trải nghiệm đường dài hơn, chuyên mục [Phượt xe](/danh-muc/phuot-xe/) có hướng dẫn chuẩn bị chuyến đi ra khỏi thành phố, còn [Thuê xe](/danh-muc/thue-xe/) hữu ích nếu bạn chưa có xe hoặc cần thuê thêm xe cho bạn đi cùng.
+Nếu bạn đi cả ngày và muốn trải nghiệm đường dài hơn, chuyên mục [Phượt xe]({{ 'danh-muc/phuot-xe/' | relative_url }}) có hướng dẫn chuẩn bị chuyến đi ra khỏi thành phố, còn [Thuê xe]({{ 'danh-muc/thue-xe/' | relative_url }}) hữu ích nếu bạn chưa có xe hoặc cần thuê thêm xe cho bạn đi cùng.
 
 ## Những vấn đề thường gặp
 
@@ -53,7 +53,7 @@ Thứ hai là gửi xe quanh khu đông: quanh hồ Hoàn Kiếm và phố cổ,
 
 Thứ ba là thời điểm: phố cổ giữa 10h–16h cuối tuần gần như không di chuyển được bằng xe, trong khi sáng sớm là khung giờ đẹp nhất để chụp ảnh và đi lại thoải mái. Các nhóm con đều ghi chú khung giờ vào của từng khu vực.
 
-Cuối cùng, nếu bạn thăm quan bằng xe máy riêng thì cần lưu ý quy định đội mũ bảo hiểm và một số phố cấm xe máy theo khung giờ — thông tin quy định giao thông chi tiết nằm ở chuyên mục [Pháp lý](/danh-muc/phap-ly/), còn kỹ năng lái trong phố đông thì xem [An toàn](/danh-muc/an-toan/).
+Cuối cùng, nếu bạn thăm quan bằng xe máy riêng thì cần lưu ý quy định đội mũ bảo hiểm và một số phố cấm xe máy theo khung giờ — thông tin quy định giao thông chi tiết nằm ở chuyên mục [Pháp lý]({{ 'danh-muc/phap-ly/' | relative_url }}), còn kỹ năng lái trong phố đông thì xem [An toàn]({{ 'danh-muc/an-toan/' | relative_url }}).
 
 ## Kiến thức cần biết
 
@@ -82,4 +82,4 @@ Với một ngày, nên chọn một khu vực trọng tâm, ví dụ đi bộ v
 ## Khám phá nội dung
 
 Bắt đầu từ lịch trình mẫu nếu bạn mới đến, hoặc từ tuyến tham quan
- nếu bạn muốn tuyến mới. Nhóm gửi xe và cách di chuyển nên đọc trước khi xuất phát. Khi muốn mở rộng chuyến đi ra ngoài Hà Nội — miền núi phía bắc, ven biển — chuyển sang chuyên mục [Phượt xe](/danh-muc/phuot-xe/).
+ nếu bạn muốn tuyến mới. Nhóm gửi xe và cách di chuyển nên đọc trước khi xuất phát. Khi muốn mở rộng chuyến đi ra ngoài Hà Nội — miền núi phía bắc, ven biển — chuyển sang chuyên mục [Phượt xe]({{ 'danh-muc/phuot-xe/' | relative_url }}).

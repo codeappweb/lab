@@ -11,38 +11,38 @@ Xe đạp đang trở lại mạnh mẽ ở các thành phố lớn: rẻ, khôn
 
 ## Tổng quan về xe đạp
 
-Kiến thức trong danh mục phục vụ ba nhóm người. Nhóm đi lại hằng ngày trong thành phố: cần [xe phố](/danh-muc/xe-dap/xe-dap-pho/) hoặc [xe gấp](/danh-muc/xe-dap/xe-gap/) bền, thoải mái với tư thế thẳng lưng, dễ gửi. Nhóm chơi thể thao: [xe địa hình](/danh-muc/xe-dap/xe-dia-hinh/) (MTB) cho đường mòn và [xe đường trường](/danh-muc/xe-dap/xe-duong-truong/) (road) cho tốc độ. Nhóm dã ngoại: [xe touring](/danh-muc/xe-dap/xe-touring/) chở được đồ và chịu được đường dài.
+Kiến thức trong danh mục phục vụ ba nhóm người. Nhóm đi lại hằng ngày trong thành phố: cần [xe phố]({{ 'danh-muc/xe-dap/xe-dap-pho/' | relative_url }}) hoặc [xe gấp]({{ 'danh-muc/xe-dap/xe-gap/' | relative_url }}) bền, thoải mái với tư thế thẳng lưng, dễ gửi. Nhóm chơi thể thao: [xe địa hình]({{ 'danh-muc/xe-dap/xe-dia-hinh/' | relative_url }}) (MTB) cho đường mòn và [xe đường trường]({{ 'danh-muc/xe-dap/xe-duong-truong/' | relative_url }}) (road) cho tốc độ. Nhóm dã ngoại: [xe touring]({{ 'danh-muc/xe-dap/xe-touring/' | relative_url }}) chở được đồ và chịu được đường dài.
 
 Ba quyết định quan trọng khi mua xe đạp. Một: loại xe theo mục đích — dùng xe phố leo dốc trail mòn sẽ mau hỏng, dùng MTB đi làm thì nặng và chậm. Hai: cỡ khung theo chiều cao người — khung quá to hoặc quá nhỏ đều làm đau lưng, đau cổ đầu gối dù xe đắt đến đâu. Ba: mức độ phân biệt "đồ tốt ở đúng chỗ" — xích, lốp, phanh là hạng mục hao mòn nên chọn loại thay được dễ; khung và bộ truyền động mới là nơi đáng đầu tư lâu dài.
 
-Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dưỡng gần như toàn bộ với vài dụng cụ cơ bản. Nội dung bảo dưỡng trong danh mục vì thế viết theo hướng tự làm được: [bôi trơn xích](/danh-muc/xe-dap/bao-duong-xe-dap/), chỉnh phanh, vá lốp, siết ớt.
+Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dưỡng gần như toàn bộ với vài dụng cụ cơ bản. Nội dung bảo dưỡng trong danh mục vì thế viết theo hướng tự làm được: [bôi trơn xích]({{ 'danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}), chỉnh phanh, vá lốp, siết ớt.
 
 ## Các nhóm nội dung
  chính
 
-**[Xe phố](/danh-muc/xe-dap/xe-dap-pho/)** (city bike) là dòng cho đi lại: yên rộng, tư thế thẳng, có thể gắn giỏ và đèn. Nhóm bài viết về cách chọn trong tầm tiền và phụ kiện đáng mua trước tiên.
+**[Xe phố]({{ 'danh-muc/xe-dap/xe-dap-pho/' | relative_url }})** (city bike) là dòng cho đi lại: yên rộng, tư thế thẳng, có thể gắn giỏ và đèn. Nhóm bài viết về cách chọn trong tầm tiền và phụ kiện đáng mua trước tiên.
 
-**[Xe địa hình](/danh-muc/xe-dap/xe-dia-hinh/)** (MTB) có giảm xóc trước, lốp gai to, khung chắc — cho đường mòn, dốc đất. Nhóm bài giải thích khi nào giảm xóc đáng tiền và khi nào một chiếc "xe địa hình siêu rẻ" thực chất là xe phố lốp to.
+**[Xe địa hình]({{ 'danh-muc/xe-dap/xe-dia-hinh/' | relative_url }})** (MTB) có giảm xóc trước, lốp gai to, khung chắc — cho đường mòn, dốc đất. Nhóm bài giải thích khi nào giảm xóc đáng tiền và khi nào một chiếc "xe địa hình siêu rẻ" thực chất là xe phố lốp to.
 
-**[Xe đường trường](/danh-muc/xe-dap/xe-duong-truong/)** (road bike) ưu tiên tốc độ: khung nhẹ, hông cúi, lốp mảnh. Viết cho người bắt đầu đạp đường dài, kể cả cách điều chỉnh tư thế để không mỏi lưng.
+**[Xe đường trường]({{ 'danh-muc/xe-dap/xe-duong-truong/' | relative_url }})** (road bike) ưu tiên tốc độ: khung nhẹ, hông cúi, lốp mảnh. Viết cho người bắt đầu đạp đường dài, kể cả cách điều chỉnh tư thế để không mỏi lưng.
 
-**[Xe gấp](/danh-muc/xe-dap/xe-gap/)** hợp người kết hợp nhiều phương tiện: gấp lên xe buýt, mang vào văn phòng, lên tàu. Bài viết tập trung vào độ cứng khung ở khoá gấp — điểm yếu của hầu hết xe gấp rẻ.
+**[Xe gấp]({{ 'danh-muc/xe-dap/xe-gap/' | relative_url }})** hợp người kết hợp nhiều phương tiện: gấp lên xe buýt, mang vào văn phòng, lên tàu. Bài viết tập trung vào độ cứng khung ở khoá gấp — điểm yếu của hầu hết xe gấp rẻ.
 
-**[Xe touring](/danh-muc/xe-dap/xe-touring/)** chở đồ đi nhiều ngày: khung dài, nhiều điểm gắn багa. Đây là chuyên mục cho các chuyến du lịch bằng xe đạp.
+**[Xe touring]({{ 'danh-muc/xe-dap/xe-touring/' | relative_url }})** chở đồ đi nhiều ngày: khung dài, nhiều điểm gắn багa. Đây là chuyên mục cho các chuyến du lịch bằng xe đạp.
 
-**[Chọn xe](/danh-muc/xe-dap/chon-xe/)** tổng hợp quy trình quyết định: mục đích, ngân sách, cỡ khung, rồi mới đến nhãn hiệu — cùng các câu hỏi nên hỏi người bán trước khi mua.
+**[Chọn xe]({{ 'danh-muc/xe-dap/chon-xe/' | relative_url }})** tổng hợp quy trình quyết định: mục đích, ngân sách, cỡ khung, rồi mới đến nhãn hiệu — cùng các câu hỏi nên hỏi người bán trước khi mua.
 
-**[Bảo dưỡng](/danh-muc/xe-dap/bao-duong-xe-dap/)** là chuyên mục đều đặn: chu kỳ bôi trơn xích, thay lốp, chỉnh phanh — hầu hết làm tại nhà dưới 30 phút.
+**[Bảo dưỡng]({{ 'danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }})** là chuyên mục đều đặn: chu kỳ bôi trơn xích, thay lốp, chỉnh phanh — hầu hết làm tại nhà dưới 30 phút.
 
-**[Phụ kiện](/danh-muc/xe-dap/phu-kien-xe-dap/)** sắp xếp theo thứ tự đáng mua: mũ bảo hiểm đạt chuẩn, đèn, giá nước, dụng cụ vá — và giải thích đồ nào mua đắt là lãng phí.
+**[Phụ kiện]({{ 'danh-muc/xe-dap/phu-kien-xe-dap/' | relative_url }})** sắp xếp theo thứ tự đáng mua: mũ bảo hiểm đạt chuẩn, đèn, giá nước, dụng cụ vá — và giải thích đồ nào mua đắt là lãng phí.
 
 ## Bắt đầu từ đâu?
 
 - **Bạn đi làm 5–10 km mỗi ngày trong phố** — bắt đầu từ Xe phố và Chọn xe; nếu cần mang xe vào nhà hoặc lên phương tiện công cộng thì xem Xe gấp.
 - **Bạn muốn vận động cuối tuần, đường quanh hồ hoặc đường trường** — đọc Xe đường trường và phần tư thế trong Chọn xe.
 - **Bạn muốn đi đường mòn, vườn, dốc đất** — Xe địa hình, chú ý phần giảm xóc.
-- **Bạn định đi du lịch nhiều ngày bằng xe đạp** — Xe touring kết hợp kinh nghiệm trong [Phượt xe](/danh-muc/phuot
--xe/), vì hai loại chuyến đi dùng nhiều nguyên tắc giống nhau.
+- **Bạn định đi du lịch nhiều ngày bằng xe đạp** — Xe touring kết hợp kinh nghiệm trong [Phượt xe]({{ 'danh-muc/phuot
+-xe/' | relative_url }}), vì hai loại chuyến đi dùng nhiều nguyên tắc giống nhau.
 
 ## Những vấn đề thường gặp
 
@@ -56,32 +56,32 @@ Cuối cùng là lốp: non hơi làm đạp nặng và làm vành mép khi va �
 
 ## Kiến thức cần biết
 
-Chất liệu khung: thép bền và rẻ nhưng nặng, nhôm nhẹ và phổ biến, carbon nhẹ và êm nhưng đắt và dễ hỏng khi va chạm mạnh. Bộ truyền động: số "nhanh" càng nhiều không có nghĩa xe càng tốt — phối hợp trước-sau ăn khớp mới quan trọng. Lốp slick hợp đường nhựa khô, lốp gai hợp đường ướt và mòn; đa số người đi phố chỉ cần slick và chúng êm hơn hẳn. Về quy định khi lưu thông: xe đạp là xe thô sơ, phải đi đúng làn, có thiết bị phản sáng khi đi ban đêm, người đi phải đủ 16 tuổi mới chở người — chi tiết trong [Pháp lý](/danh-muc/phap-ly/quy-dinh-giao-thong/). Và mũ bảo hiểm xe đạp khác mũ bảo hiểm xe máy về chuẩn — đọc phần đồ bảo hộ trong [An toàn](/danh-muc/an-toan/bao-ho/) trước khi mua.
+Chất liệu khung: thép bền và rẻ nhưng nặng, nhôm nhẹ và phổ biến, carbon nhẹ và êm nhưng đắt và dễ hỏng khi va chạm mạnh. Bộ truyền động: số "nhanh" càng nhiều không có nghĩa xe càng tốt — phối hợp trước-sau ăn khớp mới quan trọng. Lốp slick hợp đường nhựa khô, lốp gai hợp đường ướt và mòn; đa số người đi phố chỉ cần slick và chúng êm hơn hẳn. Về quy định khi lưu thông: xe đạp là xe thô sơ, phải đi đúng làn, có thiết bị phản sáng khi đi ban đêm, người đi phải đủ 16 tuổi mới chở người — chi tiết trong [Pháp lý]({{ 'danh-muc/phap-ly/quy-dinh-giao-thong/' | relative_url }}). Và mũ bảo hiểm xe đạp khác mũ bảo hiểm xe máy về chuẩn — đọc phần đồ bảo hộ trong [An toàn]({{ 'danh-muc/an-toan/bao-ho/' | relative_url }}) trước khi mua.
 
 ---
 
 Xe đạp rẻ nhất để sở hữu nhưng dễ bị bỏ quên nhất — chỉ vì chọn sai loại xe ban đầu. Chọn đúng, bảo dưỡng 30 phút mỗi tháng, và một chiếc xe đạp tốt sẽ đi cùng bạn nhiều năm.
 
-Cân nhắc xe đạp điện cho quãng đường dài hơn? Xem [Xe điện](/danh-muc/xe-dien/xe-dap-dien/).
+Cân nhắc xe đạp điện cho quãng đường dài hơn? Xem [Xe điện]({{ 'danh-muc/xe-dien/xe-dap-dien/' | relative_url }}).
 
 ## Chọn khung xe và cỡ xe đúng người
 
 Hai quyết định kỹ thuật quan trọng nhất khi mua xe đạp: chất liệu khung và cỡ khung. Về chất liệu, khung thép bền và rẻ nhưng nặng; khun
 g nhôm nhẹ và không rỉ, hợp người đi lại hằng ngày; khung carbon nhẹ nhất nhưng đắt và cần cẩn trọng khi va chạm. Người đi phố trong điều kiện Việt Nam thường hợp nhất với khung nhôm: đủ nhẹ để leo cầu vượt, đủ bền cho vỉa hè xấu.
 
-Về cỡ khung, chiều cao người lái quyết định cỡ khung. Khung quá to khiến người lái phải với tay, mỏi lưng và khó xử lý khi gấp rẽ; khung quá nhỏ làm khớp gối gập quá, đau đầu gối sau vài chục km. Cách đo nhanh: đứng vượt qua khung, khoảng hở giữa khung và thân người cỡ một bàn tay; khi ngồi lên yên, mũi bàn chân chạm đất. Hướng dẫn chọn chi tiết nằm ở [chọn xe](/danh-muc/xe-dap/chon-xe/).
+Về cỡ khung, chiều cao người lái quyết định cỡ khung. Khung quá to khiến người lái phải với tay, mỏi lưng và khó xử lý khi gấp rẽ; khung quá nhỏ làm khớp gối gập quá, đau đầu gối sau vài chục km. Cách đo nhanh: đứng vượt qua khung, khoảng hở giữa khung và thân người cỡ một bàn tay; khi ngồi lên yên, mũi bàn chân chạm đất. Hướng dẫn chọn chi tiết nằm ở [chọn xe]({{ 'danh-muc/xe-dap/chon-xe/' | relative_url }}).
 
 ## Vận hành an toàn trong đô thị
 
 Xe đạp trong đô thị Việt Nam có một đặc thù: người đi xe đạp thường đi chung làn với xe máy, không có làn riêng. Vì thế ba kỹ năng quan trọng nhất là giữ hướng đi ổn định, ra hiệu bằng tay trước khi rẽ, và không len qua khoảng hẹp giữa xe máy và lề đường — nơi người lái xe máy ít ngờ tới xe đạp.
 
-Về trang bị, đèn trước và sau cùng đồ phản quang không phải tùy chọn khi chạy tối: người lái xe máy rất khó thấy xe đạp không có đèn trong đêm. Nhóm phụ kiện cần thiết cho chạy phố có trong [phụ kiện](/danh-muc/xe-dap/phu-kien-xe-dap/), còn kỹ năng xử lý đường đông ở chuyên mục [An toàn](/danh-muc/an-toan/).
+Về trang bị, đèn trước và sau cùng đồ phản quang không phải tùy chọn khi chạy tối: người lái xe máy rất khó thấy xe đạp không có đèn trong đêm. Nhóm phụ kiện cần thiết cho chạy phố có trong [phụ kiện]({{ 'danh-muc/xe-dap/phu-kien-xe-dap/' | relative_url }}), còn kỹ năng xử lý đường đông ở chuyên mục [An toàn]({{ 'danh-muc/an-toan/' | relative_url }}).
 
 ## Bảo dưỡng tại nhà
 
 Xe đạp là phương tiện dễ tự bảo dưỡng nhất: gần như toàn bộ bảo dưỡng định kỳ làm được tại nhà với bộ dụng cụ cơ bản. Ba hạng mục nên làm đều đặn: bôi trơn xích sau mỗi tuần chạy ướt hoặc bụi, kiểm tra áp suất lốp mỗi tuần (lốp non làm đạp nặng và mau mòn), và siết bu-long sau 200km đầu với xe mới.
 
-Hai tín hiệu cần xử lý sớm: xích có tiếng lách cách dù đã bôi trơn (xích giãn, cần cắt hoặc thay), và phanh kêu dù đã chỉnh (má phanh mòn hoặc vành bánh lệch). Chi tiết các hạng mục nằm ở [bảo dưỡng](/danh-muc/xe-dap/bao-duong-xe-dap/).
+Hai tín hiệu cần xử lý sớm: xích có tiếng lách cách dù đã bôi trơn (xích giãn, cần cắt hoặc thay), và phanh kêu dù đã chỉnh (má phanh mòn hoặc vành bánh lệch). Chi tiết các hạng mục nằm ở [bảo dưỡng]({{ 'danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}).
 
 Về độ bền tổng thể, cách giữ xe đơn giản nhất là để trong nhà có mái che: mưa và nắng gắt là hai tác nhân làm mục ổ trục và làm giòn cao su nhanh nhất. Một chiếc xe phố đư
 ợc để trong nhà dễ dàng bền gấp đôi so với xe phơi ngoài trời.

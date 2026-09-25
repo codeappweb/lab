@@ -19,30 +19,30 @@ Khác với mua xe, thuê xe không cần quan tâm tuổi thọ pin hay lịch 
 
 ## Các nhóm nội dung chính
 
-**[Thuê xe máy](/danh-muc/thue-xe/thue-xe-may/)** là nhóm phổ biến nhất: thủ tục (CMND/CCCD hoặc passport, GPLX nếu y
+**[Thuê xe máy]({{ 'danh-muc/thue-xe/thue-xe-may/' | relative_url }})** là nhóm phổ biến nhất: thủ tục (CMND/CCCD hoặc passport, GPLX nếu y
 êu cầu), cọc thường theo giá trị xe, và cách chọn giữa xe số cũ bền với xe ga mới hơn nhưng cọc cao.
 
-**[Thuê xe điện](/danh-muc/thue-xe/thue-xe-dien/)** đang mở rộng nhanh: rẻ hơn xe xăng, hợp quãng đường trong thành phố, nhưng cần hỏi rõ quãng đường thực của xe và có được sạc tại chỗ thuê không — với xe pin chai, quảng cáo và thực tế cách nhau xa.
+**[Thuê xe điện]({{ 'danh-muc/thue-xe/thue-xe-dien/' | relative_url }})** đang mở rộng nhanh: rẻ hơn xe xăng, hợp quãng đường trong thành phố, nhưng cần hỏi rõ quãng đường thực của xe và có được sạc tại chỗ thuê không — với xe pin chai, quảng cáo và thực tế cách nhau xa.
 
-**[Thuê xe đạp](/danh-muc/thue-xe/thue-xe-dap/)** phục vụ đi lại chậm, phố cổ và vườn: thủ tục đơn giản nhất, cọc thấp nhất, nhưng nên kiểm tra phanh và xích trước khi nhận.
+**[Thuê xe đạp]({{ 'danh-muc/thue-xe/thue-xe-dap/' | relative_url }})** phục vụ đi lại chậm, phố cổ và vườn: thủ tục đơn giản nhất, cọc thấp nhất, nhưng nên kiểm tra phanh và xích trước khi nhận.
 
-**[Thuê ngắn hạn](/danh-muc/thue-xe/thue-ngan-han/)** theo giờ và ngày: hợp khách du lịch và người cần xe tạm. Nhóm bài viết về cách tính giá theo giờ vượt ngày và lúc nào thuê ngày rẻ hơn thuê giờ.
+**[Thuê ngắn hạn]({{ 'danh-muc/thue-xe/thue-ngan-han/' | relative_url }})** theo giờ và ngày: hợp khách du lịch và người cần xe tạm. Nhóm bài viết về cách tính giá theo giờ vượt ngày và lúc nào thuê ngày rẻ hơn thuê giờ.
 
-**[Thuê dài hạn](/danh-muc/thue-xe/thue-dai-han/)** theo tuần và tháng: giá ưu đãi hơn nhiều nhưng hợp đồng dài đòi hỏi đọc kỹ điều khoản bảo dưỡng — ai chịu bảo dưỡng định kỳ giữa kỳ thuê.
+**[Thuê dài hạn]({{ 'danh-muc/thue-xe/thue-dai-han/' | relative_url }})** theo tuần và tháng: giá ưu đãi hơn nhiều nhưng hợp đồng dài đòi hỏi đọc kỹ điều khoản bảo dưỡng — ai chịu bảo dưỡng định kỳ giữa kỳ thuê.
 
-**[Thủ tục thuê](/danh-muc/thue-xe/thu-tuc-thue/)** tổng hợp giấy tờ cần mang theo từng loại khách (người Việt, người nước ngoài, khách không có GPLX) và quy trình nhận - trả chuẩn để không bị trừ cọc oan.
+**[Thủ tục thuê]({{ 'danh-muc/thue-xe/thu-tuc-thue/' | relative_url }})** tổng hợp giấy tờ cần mang theo từng loại khách (người Việt, người nước ngoài, khách không có GPLX) và quy trình nhận - trả chuẩn để không bị trừ cọc oan.
 
-**[Chọn xe thuê](/danh-muc/thue-xe/chon-xe-thue/)** là kỹ năng kiểm tra nhanh trong 5 phút: đề máy, thử phanh, xoay tay ga, soi lốp, và với xe ga thì nghe bộ truyền động.
+**[Chọn xe thuê]({{ 'danh-muc/thue-xe/chon-xe-thue/' | relative_url }})** là kỹ năng kiểm tra nhanh trong 5 phút: đề máy, thử phanh, xoay tay ga, soi lốp, và với xe ga thì nghe bộ truyền động.
 
-**[Kinh nghiệm thuê](/danh-muc/thue-xe/kinh-nghiem-thue/)** là các bài học từ tình huống thật: xe hỏng giữa đường ai sửa, mất chìa khóa xử lý ra sao, và tranh chấp trừ cọc — kèm cả cách chọn tiệm đáng tin.
+**[Kinh nghiệm thuê]({{ 'danh-muc/thue-xe/kinh-nghiem-thue/' | relative_url }})** là các bài học từ tình huống thật: xe hỏng giữa đường ai sửa, mất chìa khóa xử lý ra sao, và tranh chấp trừ cọc — kèm cả cách chọn tiệm đáng tin.
 
 ## Bắt đầu từ đâu?
 
 - **Bạn du lịch Hà Nội vài ngày** — đọc Thủ tục thuê trước (chuẩn bị giấy tờ), rồi Thuê ngắn hạn để tính ngày thuê rẻ nhất. Xe đạp hợp phố cổ, xe máy hợp lộ trình xa hơn.
 - **Bạn cần xe đi làm 1–3 tháng** — Thuê dài hạn, chú ý điều khoản bảo dưỡng trong hợp đồng.
 - **Bạn cân nhắc mua xe điện** — thuê loại định mua 1–2 tuần, trải nghiệm thật vẫn hơn mọi bài đánh giá.
-- **Bạn không có GPLX** — đọc phần giấy tờ trong Thủ tục thuê và ranh giới [xe 50cc/xe đạp điện](/danh-muc
-/phap-ly/bang-lai/) để biết loại xe nào được phép đi.
+- **Bạn không có GPLX** — đọc phần giấy tờ trong Thủ tục thuê và ranh giới [xe 50cc/xe đạp điện]({{ 'danh-muc
+/phap-ly/bang-lai/' | relative_url }}) để biết loại xe nào được phép đi.
 
 ## Những vấn đề thường gặp
 
@@ -62,26 +62,26 @@ Cẩn thận với các khoản trong hợp đồng: mức trừ mỗi ngày tr�
 
 ---
 
-Thuê xe là cách rẻ nhất để có xe nhanh — với điều kiện hợp đồng rõ và bạn kiểm tra xe đúng cách. Nếu bạn đi xa bằng xe thuê, đọc thêm phần chuẩn bị chuyến đi trong [Phượt xe](/danh-muc/phuot-xe/chuan-bi-phuot/); nếu quyết định mua thay thuê, bắt đầu từ [Xe máy](/danh-muc/xe-may/) hoặc [Xe điện](/danh-muc/xe-dien/
+Thuê xe là cách rẻ nhất để có xe nhanh — với điều kiện hợp đồng rõ và bạn kiểm tra xe đúng cách. Nếu bạn đi xa bằng xe thuê, đọc thêm phần chuẩn bị chuyến đi trong [Phượt xe]({{ 'danh-muc/phuot-xe/chuan-bi-phuot/' | relative_url }}); nếu quyết định mua thay thuê, bắt đầu từ [Xe máy]({{ 'danh-muc/xe-may/' | relative_url }}) hoặc [Xe điện]({{ 'danh-muc/xe-dien/
 
 ## Quy trình thuê chuẩn, từ đặt xe đến trả xe
 
 Một lần thuê suôn sẻ đi qua bốn bước. Trước khi đến: xác nhận rõ loại xe, giá theo ngày hoặc theo giờ, tiền cọc và giấy tờ cần để lại. Khi nhận xe: kiểm tra cùng chủ xe — chụp ảnh xe cả hai phía, ghi lại mức xăng hoặc lượng pin, thử pha
 nh, còi, đèn và đề máy. Trong thời gian thuê: giữ xe như xe mình, không cho người khác mượn. Khi trả xe: đối chiếu lại ảnh nhận xe, nhận lại đủ giấy tờ và cọc.
 
-Bước kiểm tra khi nhận là quan trọng nhất: gần như mọi tranh chấp khi trả xe đều xuất phát từ vết trầy hoặc hư hỏng không ai ghi nhận lúc nhận. Một album ảnh ba phút lúc nhận xe là thứ rẻ nhất bảo vệ bạn khỏi phải đền oan. Checklist đầy đủ nằm ở [thủ tục thuê](/danh-muc/thue-xe/thu-tuc-thue/).
+Bước kiểm tra khi nhận là quan trọng nhất: gần như mọi tranh chấp khi trả xe đều xuất phát từ vết trầy hoặc hư hỏng không ai ghi nhận lúc nhận. Một album ảnh ba phút lúc nhận xe là thứ rẻ nhất bảo vệ bạn khỏi phải đền oan. Checklist đầy đủ nằm ở [thủ tục thuê](/danh-muc/thue-xe/thu-tuc-thue/' | relative_url }}).
 
 ## Đặt cọc và xử lý tranh chấp
 
 Vấn đề tài chính khi thuê chỉ có hai loại: cọc và đền bù. Với cọc, nên hỏi trước ba điều: số tiền, hình thức (tiền mặt hay khóa thẻ), và thời điểm trả lại. Chủ xe uy tín trả cọc ngay khi nhận lại xe nguyên vẹn; nếu cọc bị giữ lại mà không có bằng chứng hư hỏng, yêu cầu chủ xe đưa ra ảnh chụp so sánh với ảnh nhận xe.
 
-Với đền bù, nguyên tắc hợp lý là bạn đền phần hư hỏng do lỗi sử dụng của mình, không đền hao mòn tự nhiên như lốp mòn sau chuyến đi dài. Khi hai bên không thống nhất, mức tham chiếu là báo giá sửa tại tiệm trung lập, không phải mức do một bên tự đưa ra. Các tình huống thực tế và cách xử lý nằm ở [kinh nghiệm thuê](/danh-muc/thue-xe/kinh-nghiem-thue/).
+Với đền bù, nguyên tắc hợp lý là bạn đền phần hư hỏng do lỗi sử dụng của mình, không đền hao mòn tự nhiên như lốp mòn sau chuyến đi dài. Khi hai bên không thống nhất, mức tham chiếu là báo giá sửa tại tiệm trung lập, không phải mức do một bên tự đưa ra. Các tình huống thực tế và cách xử lý nằm ở [kinh nghiệm thuê]({{ 'danh-muc/thue-xe/kinh-nghiem-thue/' | relative_url }}).
 
 ## Thuê dài hạn hay mua xe
 
 Ngưỡng quyết định giữa thuê dài hạn và mua thường nằm ở tần suất dùng và thời gian ở lại. Thuê theo tháng hợp với người ở Hà Nội thời gian ngắn (dưới một năm), người chưa chắc nhu cầu, hoặc người muốn thử dòng xe trước khi mua. Mua hợp khi bạn ở dài hạn và quãng chạy ổn định: sau khoảng một năm, tổng chi thuê thường đã vượt mức hao mòn của một chiếc xe đã qua sử dụng.
 
-Một lưu ý với thuê xe điện: pin và quãng đường của xe thuê thường đã qua thời kỳ tốt nhất, nên hỏi kỹ pin còn bao nhiêu phần trăm dung lượng thiết kế trước khi nhận — chi tiết tại [thuê xe điện](/danh-muc/thue-xe/thue-xe-dien/). Với so sánh chi phí thuê và nuôi xe theo hạng mục, xem [Chi phí](/danh-muc/chi-phi/nuoi-xe/).
+Một lưu ý với thuê xe điện: pin và quãng đường của xe thuê thường đã qua thời kỳ tốt nhất, nên hỏi kỹ pin còn bao nhiêu phần trăm dung lượng thiết kế trước khi nhận — chi tiết tại [thuê xe điện]({{ 'danh-muc/thue-xe/thue-xe-dien/' | relative_url }}). Với so sánh chi phí thuê và nuôi xe theo hạng mục, xem [Chi phí]({{ 'danh-muc/chi-phi/nuoi-xe/' | relative_url }}).
 
 ## Quy trình khi có sự cố với xe thuê
 

@@ -17,29 +17,29 @@ Chuyên mục này phục vụ người mới chạy xe muốn xây thói quen �
 
 ## Các nhóm nội dung chính
 
-**Kỹ năng lái** ([ky-nang-lai](/danh-muc/an-toan/ky-nang-lai/)) là nhóm nền tảng: tư thế ngồi, quan sát gương, giữ khoảng cách, vào cua, phối hợp phanh trước – sau đúng cách.
+**Kỹ năng lái** ([ky-nang-lai]({{ 'danh-muc/an-toan/ky-nang-lai/' | relative_url }})) là nhóm nền tảng: tư thế ngồi, quan sát gương, giữ khoảng cách, vào cua, phối hợp phanh trước – sau đúng cách.
 
-**Đi trong mưa** ([di-mua](/danh-muc/an-toan/di-mua/)) nói về kỹ năng chạy đường trơn: giảm tốc trước vũng nước, tránh vệt dầu, phanh nhẹ nhàng và trang bị áo mưa phù hợp.
+**Đi trong mưa** ([di-mua]({{ 'danh-muc/an-toan/di-mua/' | relative_url }})) nói về kỹ năng chạy đường trơn: giảm tốc trước vũng nước, tránh vệt dầu, phanh nhẹ nhàng và trang bị áo mưa phù hợp.
 
-**Đi trong đêm** ([di-dem](/danh-muc/an-toan/di-dem/)) bao gồm nhận diện rủi ro buổi tối: tầm nhìn hạn chế, đèn xe khác gây chói, đường vắng dễ chạy nhanh quá ngưỡng phản xạ.
+**Đi trong đêm** ([di-dem]({{ 'danh-muc/an-toan/di-dem/' | relative_url }})) bao gồm nhận diện rủi ro buổi tối: tầm nhìn hạn chế, đèn xe khác gây chói, đường vắng dễ chạy nhanh quá ngưỡng phản xạ.
 
-**Đường trơn** ([duong-tron](/danh-muc/an-toan/duong-tron/)) là nhóm chuyên
+**Đường trơn** ([duong-tron]({{ 'danh-muc/an-toan/duong-tron/' | relative_url }})) là nhóm chuyên
 
  sâu về các bề mặt mất độ bám: đường mới rải nhựa, vệt dầu, lá ướt, gờ giảm tốc sơn trơn — và cách nhận biết từ xa.
 
-**Ngập nước** ([ngap-nuoc](/danh-muc/an-toan/ngap-nuoc/)) nói về chạy qua đoạn đường ngập: ước độ sâu an toàn, giữ ga đều, không tắt máy giữa vùng ngập, và cách xử lý khi xe tắt máy trong nước.
+**Ngập nước** ([ngap-nuoc]({{ 'danh-muc/an-toan/ngap-nuoc/' | relative_url }})) nói về chạy qua đoạn đường ngập: ước độ sâu an toàn, giữ ga đều, không tắt máy giữa vùng ngập, và cách xử lý khi xe tắt máy trong nước.
 
-**Sự cố trên đường** ([su-co-duong](/danh-muc/an-toan/su-co-duong/)) là kỹ năng xử lý tình huống bất ngờ: xe phía trước phanh gấp, người đi bộ băng ngang, chó chạy ra, vật rơi trên đường.
+**Sự cố trên đường** ([su-co-duong]({{ 'danh-muc/an-toan/su-co-duong/' | relative_url }})) là kỹ năng xử lý tình huống bất ngờ: xe phía trước phanh gấp, người đi bộ băng ngang, chó chạy ra, vật rơi trên đường.
 
-**Đồ bảo hộ** ([bao-ho](/danh-muc/an-toan/bao-ho/)) nói về mũ bảo hiểm đạt chuẩn, găng tay, giày và áo — theo thứ tự ưu tiên đầu tư khi ngân sách giới hạn.
+**Đồ bảo hộ** ([bao-ho]({{ 'danh-muc/an-toan/bao-ho/' | relative_url }})) nói về mũ bảo hiểm đạt chuẩn, găng tay, giày và áo — theo thứ tự ưu tiên đầu tư khi ngân sách giới hạn.
 
-**Sơ cứu** ([so-cuu](/danh-muc/an-toan/so-cuu/)) là nhóm kỹ năng cấp cứu cơ bản khi có tai nạn: đánh giá hiện trường an toàn, gọi cấp cứu đúng số, và các việc không nên làm với người bị nạn.
+**Sơ cứu** ([so-cuu]({{ 'danh-muc/an-toan/so-cuu/' | relative_url }})) là nhóm kỹ năng cấp cứu cơ bản khi có tai nạn: đánh giá hiện trường an toàn, gọi cấp cứu đúng số, và các việc không nên làm với người bị nạn.
 
 ## Bắt đầu từ đâu?
 
 Người mới chạy xe nên đọc theo thứ tự: kỹ năng lái trước, rồi đồ bảo hộ, rồi lần lượt các tình huống (mưa, đêm, đường trơn). Trình tự này xây nền tảng trước khi gặp biến số. Người chạy quen nhưng sắp đi đường dài hoặc vào mùa mưa nên đọc nhóm đường trơn và đi trong mưa — hai nhóm này chứa kỹ năng thay đổi hành vi nhiều nhất so với chạy phố khô ráo.
 
-Nếu bạn từng ngã hoặc suýt ngã trong một tình huống cụ thể, đọc đúng nhóm tình huống đó để hiểu lỗi kỹ thuật nằm ở đâu. Sau sự cố, kiểm tra lại xe trước khi chạy tiếp — hướng dẫn kiểm tra sau khi ngã nằm ở chuyên mục [Sửa chữa](/danh-muc/sua-chua/).
+Nếu bạn từng ngã hoặc suýt ngã trong một tình huống cụ thể, đọc đúng nhóm tình huống đó để hiểu lỗi kỹ thuật nằm ở đâu. Sau sự cố, kiểm tra lại xe trước khi chạy tiếp — hướng dẫn kiểm tra sau khi ngã nằm ở chuyên mục [Sửa chữa]({{ 'danh-muc/sua-chua/' | relative_url }}).
 
 Người đi nhóm đông hoặc có trẻ em đi cùng cần lưu ý thêm nhóm sự cố trên đường — vì nhiều tình huống nguy hiểm phát sinh từ tương tác giữa các xe trong nhóm.
 
@@ -55,7 +55,7 @@ Thứ ba là giữ khoảng cách: đa số tai nạn đuôi xe nằm ở khoả
 
 Thứ tư là trang bị sai ưu tiên: nhiều người đầu tư vào áo khoác đẹp trước khi có găng tay và giày tốt, trong khi ngã xe gây chấn thương bàn tay gần như ngay lập tức khi không có găng. Thứ tự đầu tư đúng có trong nhóm đồ bảo hộ.
 
-Cuối cùng, về hành vi: chạy xe sau khi uống rượu bia là vi phạm bị xử phạt nặng, nhưng quan trọng hơn cả mức phạt là hệ quả an toàn — nhóm quy định giao thông ở chuyên mục [Pháp lý](/danh-muc/phap-ly/quy-dinh-giao-thong/) nêu khung pháp lý, còn phần kỹ năng phòng ngừa nằm ở đây.
+Cuối cùng, về hành vi: chạy xe sau khi uống rượu bia là vi phạm bị xử phạt nặng, nhưng quan trọng hơn cả mức phạt là hệ quả an toàn — nhóm quy định giao thông ở chuyên mục [Pháp lý]({{ 'danh-muc/phap-ly/quy-dinh-giao-thong/' | relative_url }}) nêu khung pháp lý, còn phần kỹ năng phòng ngừa nằm ở đây.
 
 ## Kiến thức cần biết
 
@@ -79,8 +79,8 @@ Bảo hộ chỉ phát huy tác dụng nếu đúng tình trạng: dây mũ bả
 
 ## Khám phá nội dung
 
-Đọc theo tình huống bạn thường gặp nhất, rồi mở dần các nhóm còn lại. Với kỹ năng chuẩn bị xe trước khi đi xa — kiểm tra phanh, lốp, đèn — chuyên mục [Sửa chữa](/danh-muc/sua-ch
-ua/) và [Phượt xe](/danh-muc/phuot-xe/) có hướng dẫn chi tiết. Với quy định về trang bị bắt buộc khi lưu hành, xem [Pháp lý](/danh-muc/phap-ly/).
+Đọc theo tình huống bạn thường gặp nhất, rồi mở dần các nhóm còn lại. Với kỹ năng chuẩn bị xe trước khi đi xa — kiểm tra phanh, lốp, đèn — chuyên mục [Sửa chữa]({{ 'danh-muc/sua-ch
+ua/' | relative_url }}) và [Phượt xe]({{ 'danh-muc/phuot-xe/' | relative_url }}) có hướng dẫn chi tiết. Với quy định về trang bị bắt buộc khi lưu hành, xem [Pháp lý]({{ 'danh-muc/phap-ly/' | relative_url }}).
 
 ## Thói quen hằng ngày tạo nên sự an toàn
 

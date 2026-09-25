@@ -17,22 +17,22 @@ Chuyên mục phục vụ người mua xe lần đầu cần hiểu thủ tục,
 
 ## Các nhóm nội dung chính
 
-**Bằng lái** ([bang-lai](/danh-muc/phap-ly/bang-lai/)) nói về các hạng bằng lái A1, A2, điều kiện thi bằng, giấy phép tạm thời cho người nước ngoài, và các lỗi liên quan đến bằng lái thường bị xử phạt.
+**Bằng lái** ([bang-lai]({{ 'danh-muc/phap-ly/bang-lai/' | relative_url }})) nói về các hạng bằng lái A1, A2, điều kiện thi bằng, giấy phép tạm thời cho người nước ngoài, và các lỗi liên quan đến bằng lái thường bị xử phạt.
 
-**Đăng ký xe** ([dang-ky-xe](/danh-muc/phap-ly/dang-ky-xe/)) là nhóm thủ tục mua bán, sang tên xe, đăng ký xe mới và các giấy tờ bắt buộc khi mua xe cũ.
+**Đăng ký xe** ([dang-ky-xe]({{ 'danh-muc/phap-ly/dang-ky-xe/' | relative_url }})) là nhóm thủ tục mua bán, sang tên xe, đăng ký xe mới và các giấy tờ bắt buộc khi mua xe cũ.
 
-**Biển số** ([bien-so](/danh-muc/phap-ly/bien-so/)) nói về các quy định biển số 
+**Biển số** ([bien-so]({{ 'danh-muc/phap-ly/bien-so/' | relative_url }})) nói về các quy định biển số 
 xe máy, và các lỗi thường gặp khi gắn biển số sai cách.
 
-**Bảo hiểm** ([bao-hiem](/danh-muc/phap-ly/bao-hiem/)) là mảng bắt buộc cần hiểu đúng: bảo hiểm TNDS bắt buộc với phạm vi và mức chi trả theo quy định, khác với bảo hiểm tai nạn tự nguyện.
+**Bảo hiểm** ([bao-hiem]({{ 'danh-muc/phap-ly/bao-hiem/' | relative_url }})) là mảng bắt buộc cần hiểu đúng: bảo hiểm TNDS bắt buộc với phạm vi và mức chi trả theo quy định, khác với bảo hiểm tai nạn tự nguyện.
 
-**Thuế phí** ([thue-phi](/danh-muc/phap-ly/thue-phi/)) tổng hợp các loại phí gắn với xe: lệ phí trước bạ khi đăng ký, phí đường bộ với các dòng xe được quy định, và các khoản phí địa phương.
+**Thuế phí** ([thue-phi]({{ 'danh-muc/phap-ly/thue-phi/' | relative_url }})) tổng hợp các loại phí gắn với xe: lệ phí trước bạ khi đăng ký, phí đường bộ với các dòng xe được quy định, và các khoản phí địa phương.
 
-**Mức phạt** ([muc-phat](/danh-muc/phap-ly/muc-phat/)) là nhóm giải thích khung xử phạt theo hành vi — không đội mũ bảo hiểm, chạy đèn đỏ, chạy sai làn — kèm nhấn mạnh rằng mức phạt thay đổi theo từng nghị định và cần đối chiếu văn bản hiện hành.
+**Mức phạt** ([muc-phat]({{ 'danh-muc/phap-ly/muc-phat/' | relative_url }})) là nhóm giải thích khung xử phạt theo hành vi — không đội mũ bảo hiểm, chạy đèn đỏ, chạy sai làn — kèm nhấn mạnh rằng mức phạt thay đổi theo từng nghị định và cần đối chiếu văn bản hiện hành.
 
-**Quy định xe điện** ([quy-dinh-xe-dien](/danh-muc/phap-ly/quy-dinh-xe-dien/)) nói về quy định riêng cho xe máy điện, xe đạp điện: giấy tờ cần có, giới hạn tốc độ khuyến nghị và các quy định về tiêu chuẩn xe.
+**Quy định xe điện** ([quy-dinh-xe-dien]({{ 'danh-muc/phap-ly/quy-dinh-xe-dien/' | relative_url }})) nói về quy định riêng cho xe máy điện, xe đạp điện: giấy tờ cần có, giới hạn tốc độ khuyến nghị và các quy định về tiêu chuẩn xe.
 
-**Quy định giao thông** ([quy-dinh-giao-thong](/danh-muc/phap-ly/quy-dinh-giao-thong/)) tổng hợp quy tắc vận hành trên đường: làn đường, đèn tín hiệu, ưu tiên, và các quy định mới cập nhật.
+**Quy định giao thông** ([quy-dinh-giao-thong]({{ 'danh-muc/phap-ly/quy-dinh-giao-thong/' | relative_url }})) tổng hợp quy tắc vận hành trên đường: làn đường, đèn tín hiệu, ưu tiên, và các quy định mới cập nhật.
 
 ## Bắt đầu từ đâu?
 
@@ -75,4 +75,4 @@ Tái chế bảo hiểm trách nhiệm dân sự cũng là điểm hay bị bỏ
 ## Khám phá nội dung
 
 Tra cứu theo mốc nhu cầu của bạn qua tám nhóm con phía trên. Nếu vấn đề nằm ở kỹ năng vận hành
- thay vì quy định — chạy mưa, chạy đêm, xử lý sự cố trên đường — chuyên mục [An toàn](/danh-muc/an-toan/) là nơi phù hợp. Với các vấn đề chi phí giữ xe hợp pháp — phí trước bạ, bảo hiểm, phí đường bộ — xem thêm [Chi phí](/danh-muc/chi-phi/).
+ thay vì quy định — chạy mưa, chạy đêm, xử lý sự cố trên đường — chuyên mục [An toàn]({{ 'danh-muc/an-toan/' | relative_url }}) là nơi phù hợp. Với các vấn đề chi phí giữ xe hợp pháp — phí trước bạ, bảo hiểm, phí đường bộ — xem thêm [Chi phí]({{ 'danh-muc/chi-phi/' | relative_url }}).

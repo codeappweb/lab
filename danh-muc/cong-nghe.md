@@ -17,23 +17,23 @@ Chuyên mục này phục vụ người cân nhắc mua xe điện muốn hiểu
 
 ## Các nhóm nội dung chính
 
-**Pin lithium** ([pin-lithium](/danh-muc/cong-nghe/pin-lithium/)) là nhóm nền tảng: cấu tạo cell lithium, các hóa học phổ biến, và cách đọc thông số pin (Wh, V, Ah) trên thông số xe.
+**Pin lithium** ([pin-lithium]({{ 'danh-muc/cong-nghe/pin-lithium/' | relative_url }})) là nhóm nền tảng: cấu tạo cell lithium, các hóa học phổ biến, và cách đọc thông số pin (Wh, V, Ah) trên thông số xe.
 
-**Pin LFP** ([pin-lfp](/danh-muc/cong-nghe/pin-lfp/)) nói về hóa học lithium iron phosphate — loại pin đang được ưa chuộng vì độ bền chu kỳ sạc và an toàn nhiệt, kèm so sánh với các hóa học lithium khác.
+**Pin LFP** ([pin-lfp]({{ 'danh-muc/cong-nghe/pin-lfp/' | relative_url }})) nói về hóa học lithium iron phosphate — loại pin đang được ưa chuộng vì độ bền chu kỳ sạc và an toàn nhiệt, kèm so sánh với các hóa học lithium khác.
 
-**BMS** ([bms](/danh-muc/con
+**BMS** ([bms]({{ 'danh-muc/con
 
-g-nghe/bms/)) giải thích hệ thống quản lý pin — "người gác" của bộ pin: cân bằng cell, giới hạn sạc – xả, bảo vệ nhiệt. Đây là nhóm nên đọc nếu bạn muốn hiểu vì sao pin "chết" sớm hay tại sao không nên sạc kiệt.
+g-nghe/bms/' | relative_url }})) giải thích hệ thống quản lý pin — "người gác" của bộ pin: cân bằng cell, giới hạn sạc – xả, bảo vệ nhiệt. Đây là nhóm nên đọc nếu bạn muốn hiểu vì sao pin "chết" sớm hay tại sao không nên sạc kiệt.
 
-**Động cơ điện** ([dong-co-dien](/danh-muc/cong-nghe/dong-co-dien/)) nói về động cơ lắp trong bánh xe và động cơ giữa khung xe, công suất, mô-men xoắn, và cách thông số này quyết định cảm giác chạy.
+**Động cơ điện** ([dong-co-dien]({{ 'danh-muc/cong-nghe/dong-co-dien/' | relative_url }})) nói về động cơ lắp trong bánh xe và động cơ giữa khung xe, công suất, mô-men xoắn, và cách thông số này quyết định cảm giác chạy.
 
-**Sạc nhanh** ([sac-nhanh](/danh-muc/cong-nghe/sac-nhanh/)) giải thích các mức sạc, ảnh hưởng của sạc nhanh đến pin, và thói quen sạc giữ pin khỏe lâu dài.
+**Sạc nhanh** ([sac-nhanh]({{ 'danh-muc/cong-nghe/sac-nhanh/' | relative_url }})) giải thích các mức sạc, ảnh hưởng của sạc nhanh đến pin, và thói quen sạc giữ pin khỏe lâu dài.
 
-**GPS** ([gps](/danh-muc/cong-nghe/gps/)) nói về định vị trên xe: từ thiết bị định vị gắn thêm phục vụ chống trộm đến app kết nối của nhà sản xuất.
+**GPS** ([gps]({{ 'danh-muc/cong-nghe/gps/' | relative_url }})) nói về định vị trên xe: từ thiết bị định vị gắn thêm phục vụ chống trộm đến app kết nối của nhà sản xuất.
 
-**Smartkey** ([smartkey](/danh-muc/cong-nghe/smartkey/)) giải thích khóa thông minh trên xe ga hiện đại: cách hoạt động, ưu điểm và rủi ro — gồm cả những lưu ý an toàn thông minh.
+**Smartkey** ([smartkey]({{ 'danh-muc/cong-nghe/smartkey/' | relative_url }})) giải thích khóa thông minh trên xe ga hiện đại: cách hoạt động, ưu điểm và rủi ro — gồm cả những lưu ý an toàn thông minh.
 
-**Công nghệ xe** ([cong-nghe-xe](/danh-muc/cong-nghe/cong-nghe-xe/)) tổng hợp các công nghệ khác trên xe hiện đại: phun xăng điện tử, đèn LED, màn hình kết nối, và xu hướng công nghệ của xe hai bánh.
+**Công nghệ xe** ([cong-nghe-xe]({{ 'danh-muc/cong-nghe/cong-nghe-xe/' | relative_url }})) tổng hợp các công nghệ khác trên xe hiện đại: phun xăng điện tử, đèn LED, màn hình kết nối, và xu hướng công nghệ của xe hai bánh.
 
 ## Bắt đầu từ đâu?
 
@@ -41,7 +41,7 @@ Người cân nhắc mua xe điện nên đọc theo thứ tự: pin lithium →
 
 Người dùng xe xăng đời mới với smartkey nên đọc nhóm smartkey, ít nhất phần lưu ý an toàn — vì công nghệ tiện lợi cũng mở ra kiểu rủi ro mới so với khóa cơ.
 
-Người thích hiểu tổng quan công nghệ xe hai bánh đang diễn biến thì bắt đầu từ nhóm công nghệ xe, rồi đào sâu từng cụm theo mối quan tâm. Với quyết định mua xe cụ thể theo dòng và phân khúc — chứ không theo công nghệ — chuyên mục [Xe điện](/danh-muc/xe-dien/) và [Xe máy](/danh-muc/xe-may/) phù hợp hơn.
+Người thích hiểu tổng quan công nghệ xe hai bánh đang diễn biến thì bắt đầu từ nhóm công nghệ xe, rồi đào sâu từng cụm theo mối quan tâm. Với quyết định mua xe cụ thể theo dòng và phân khúc — chứ không theo công nghệ — chuyên mục [Xe điện]({{ 'danh-muc/xe-dien/' | relative_url }}) và [Xe máy]({{ 'danh-muc/xe-may/' | relative_url }}) phù hợp hơn.
 
 ## Những vấn đề thường gặp
 
@@ -78,7 +78,7 @@ Cách tiếp cận hợp lý với người mua là chọn các công nghệ gi�
 ## Khám phá nội dung
 
 Bắt đầu từ cụm công nghệ khớp với xe và quyết định của bạn. 
-Với hướng dẫn chọn và dùng xe máy điện theo từng dòng — thay vì theo công nghệ — xem chuyên mục [Xe điện](/danh-muc/xe-dien/). Với phụ tùng và linh kiện thay thế cho xe hiện đại, xem [Phụ tùng](/danh-muc/phu-tung/). Với khía cạnh chi phí của công nghệ — tiền điện sạc, khấu hao pin — chuyên mục [Chi phí](/danh-muc/chi-phi/) có phân tích theo hạng mục.
+Với hướng dẫn chọn và dùng xe máy điện theo từng dòng — thay vì theo công nghệ — xem chuyên mục [Xe điện]({{ 'danh-muc/xe-dien/' | relative_url }}). Với phụ tùng và linh kiện thay thế cho xe hiện đại, xem [Phụ tùng]({{ 'danh-muc/phu-tung/' | relative_url }}). Với khía cạnh chi phí của công nghệ — tiền điện sạc, khấu hao pin — chuyên mục [Chi phí]({{ 'danh-muc/chi-phi/' | relative_url }}) có phân tích theo hạng mục.
 
 ## Kiểm tra công nghệ khi nhận xe mới
 

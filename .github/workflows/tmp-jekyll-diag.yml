@@ -15,18 +15,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.1'
           bundler: none
-      - name: install jekyll
-        run: gem install jekyll jekyll-feed jekyll-sitemap --no-document
+      - name: install github-pages (môi trường thật của Pages)
+        run: gem install github-pages --no_document
       - name: build
         run: |
           set +e
-          rm -f Gemfile Gemfile.lock .bundle/config
-          unset BUNDLE_GEMFILE
+          rm -f Gemfile Gemfile.lock
           {
             git rev-parse HEAD
-            echo '=== jekyll build ==='
+            echo '=== jekyll build (github-pages gem) ==='
             jekyll build --destination /tmp/site 2>&1
             echo "JEKYLL_EXIT=$?"
             echo '=== url count ==='

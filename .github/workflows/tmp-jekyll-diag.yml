@@ -1,4 +1,5 @@
 name: tmp-jekyll-diag
+# v5 trigger after entities.json fix (fd6464f)
 on:
   push:
     branches: [main]

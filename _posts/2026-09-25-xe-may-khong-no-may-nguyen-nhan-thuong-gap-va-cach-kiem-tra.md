@@ -19,7 +19,7 @@ Rút bugi ra, úp bugi vào nắp máy, bật chì điện, bấm đề và nhì
 
 ## Nhóm 3: đề và điện
 
-Đề quay chậm, "u... u..." yếu là ắc quy chai. Đề "róc róc" trống không là côn đề dính hoặc bi đề vỡ. Tham khảo bài [đề yếu, đề không được: chẩn đoán từ ắc quy đến côn đề](/lab/de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de/) để xử lý riêng nhóm lỗi này.
+Đề quay chậm, "u... u..." yếu là ắc quy chai. Đề "róc róc" trống không là côn đề dính hoặc bi đề vỡ. Tham khảo bài [đề yếu, đề không được: chẩn đoán từ ắc quy đến côn đề]({{ '/de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de/' | relative_url }}) để xử lý riêng nhóm lỗi này.
 
 ## Nhóm 4: khí nén và các lỗi sâu khác
 
@@ -33,4 +33,5 @@ Nếu cả xăng lẫn lửa đều tốt mà máy vẫn không nổ, vấn đ�
 4. Kiểm tra vòi xăng có xăng về bướm ga không.
 5. Nếu cả bốn bước đều đạt, mang xe đi đo nén.
 
-Đa số trường hợp xe không nổ máy dừng ở bước 2 hoặc 3 và chỉ tốn tiền bugi hoặc sạc ắc quy. Xem thêm các bài sửa chữa khác tại [chủ đề bảo dưỡng và sửa chữa](/lab/hub/c05/).
+Đa số trường hợp xe không nổ máy dừng ở bước 2 hoặc 3 và ch
+ỉ tốn tiền bugi hoặc sạc ắc quy. Xem thêm các bài sửa chữa khác tại [chủ đề bảo dưỡng và sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}).

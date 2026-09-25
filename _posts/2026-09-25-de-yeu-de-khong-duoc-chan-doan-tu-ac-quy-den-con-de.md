@@ -11,7 +11,7 @@ manifest_id: C05-0002
 
 ## Kiểm tra ắc quy trước tiên
 
-Ắc quy là thủ phạm trong phần lớn các trường hợp. Dấu hiệu nhận biết: đèn xi nhan, còi yếu theo từng lần bấm đề; đo điện áp ắc quy khi chưa bấm đề và khi đang bấm đề. Ắc quy 12V tốt thường giữ trên 12,6V khi đứng và không sụt quá mạnh khi đề. Ắc quy quá 2-3 năm trong điều kiện thành phố, đi chặng ngắn nhiều lần thì khả năng chai cao. Chi tiết chọn thay thế xem tại [ắc quy xe máy yếu: dấu hiệu và thời điểm thay](/lab/ac-quy-xe-may-yeu-dau-hieu-va-thoi-diem-thay/).
+Ắc quy là thủ phạm trong phần lớn các trường hợp. Dấu hiệu nhận biết: đèn xi nhan, còi yếu theo từng lần bấm đề; đo điện áp ắc quy khi chưa bấm đề và khi đang bấm đề. Ắc quy 12V tốt thường giữ trên 12,6V khi đứng và không sụt quá mạnh khi đề. Ắc quy quá 2-3 năm trong điều kiện thành phố, đi chặng ngắn nhiều lần thì khả năng chai cao. Chi tiết chọn thay thế xem tại [ắc quy xe máy yếu: dấu hiệu và thời điểm thay]({{ '/danh-muc/phu-tung/ac-quy/' | relative_url }}).
 
 ## Tiếp xúc và dây mát
 
@@ -23,13 +23,14 @@ Nếu đề có tiếng "róc" trống, hoặc bấm đề chỉ nghe lạch c�
 
 ## Đề bình thường nhưng máy khó nổ
 
-Nếu đề khỏe mà máy vẫn không lên, lỗi không nằm ở bộ đề mà ở bugi, xăng hoặc nén máy. Xử lý theo bài [xe máy không nổ máy: nguyên nhân thường gặp và cách kiểm tra](/lab/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/).
+Nếu đề khỏe mà máy vẫn không lên, lỗi không nằm ở bộ đề mà ở bugi, xăng hoặc nén máy. Xử lý theo bài [xe máy không nổ máy: nguyên nhân thường gặp và cách kiểm tra]({{ '/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/' | relative_url }}).
 
 ## Phòng tránh
 
 - Nổ máy và chạy đủ 10-15 phút sau mỗi lần đề dài để sạc lại ắc quy.
 - Không bấm đề liên tục quá 5 giây mỗi lần, nghỉ giữa các lần.
-- Mùa lạnh ắc quy yếu đi tự nhiên; xe để 2 tuần không chạy nên nổ giữ máy định 
+- Mùa lạnh ắc quy yếu đi tự nhiên; xe để 2 tuần không chạy nên nổ giữ m
+áy định 
 kỳ.
 
-Danh sách đầy đủ các lỗi và bảo dưỡng định kỳ tại [hub sửa chữa và bảo dưỡng](/lab/hub/c05/).
+Danh sách đầy đủ các lỗi và bảo dưỡng định kỳ tại [sửa chữa và bảo dưỡng]({{ '/danh-muc/sua-chua/' | relative_url }}).

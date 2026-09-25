@@ -192,6 +192,7 @@
         "danh-muc/sua-chua/chan-doan-loi.md: nội dung Tier A ~1.000 từ, title \"Chẩn đoán lỗi xe máy theo triệu chứng\"",
         "README: mục Category SEO audit (2026-09-25)"
       ],
+
       "updated": [
         "danh-muc/index.md: mở rộng ~700 từ, title \"Danh mục chủ đề xe và di chuyển\", hero dùng page.description",
         "98 trang con tái sinh thống nhất từ taxonomy.yml: 92 con mỏng được noindex:true + sitemap:false (giữ taxonomy, không xóa URL)",

@@ -11,7 +11,7 @@ Phanh kêu không phải lúc nào cũng đáng sợ: phanh đĩa kêu nhẹ khi
 
 ## Phanh đĩa xe máy
 
-Má phanh đĩa có lớp ma sát dày. Khi lớp mòn tới mức gần với tấm lót kim loại, phanh bắt đầu rít kim loại lên đĩa. Dấu hiệu: rít liên tục cả khi không bóp phanh, rãnh đĩa thấy rõ, tay phanh sâu hơn. Mòn tới tấm lót là phải thay ngay, vì đĩa sẽ bị xước và chi phí thay thế tăng gấp. Khi thay má, kiểm tra cả dầu phanh và ống phanh. Chi tiết chọn và thay đúng loại tại [má phanh và dạng phanh: chọn và thay đúng loại](/lab/ma-phanh-va-dang-phanh-chon-va-thay-dung-loai/).
+Má phanh đĩa có lớp ma sát dày. Khi lớp mòn tới mức gần với tấm lót kim loại, phanh bắt đầu rít kim loại lên đĩa. Dấu hiệu: rít liên tục cả khi không bóp phanh, rãnh đĩa thấy rõ, tay phanh sâu hơn. Mòn tới tấm lót là phải thay ngay, vì đĩa sẽ bị xước và chi phí thay thế tăng gấp. Khi thay má, kiểm tra cả dầu phanh và ống phanh. Chi tiết chọn và thay đúng loại tại [má phanh và dạng phanh: chọn và thay đúng loại]({{ '/danh-muc/sua-chua/phanh-xe/' | relative_url }}).
 
 ## Phanh tang trăng
 
@@ -19,7 +19,7 @@ Phanh tang trăng kêu khi: má mòn, lò xo vào má rơ, hoặc trống phanh 
 
 ## Phanh kêu kèm hiện tượng ì hay giảm hiệu quả
 
-Phanh kêu kèm xe bị "giữ" khi thả phanh là kẹt phanh: càng phanh bẩn gỉ, pistôn phanh kẹt, về lái sai. Kẹt phanh còn làm hao xăng và nóng máy nhẹ, xem thêm [xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên](/lab/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/).
+Phanh kêu kèm xe bị "giữ" khi thả phanh là kẹt phanh: càng phanh bẩn gỉ, pistôn phanh kẹt, về lái sai. Kẹt phanh còn làm hao xăng và nóng máy nhẹ, xem thêm [xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên]({{ '/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/' | relative_url }}).
 
 ## Không nên làm
 
@@ -29,4 +29,4 @@ Phanh kêu kèm xe bị "giữ" khi thả phanh là kẹt phanh: càng phanh b�
 
 ## Mốc kiểm tra
 
-Phanh là hệ thống an toàn, kiểm tra mỗi lần thay nhớt: nhìn độ dày má, rãnh đĩa, sờ ống pô phanh sau chuyến đi xem có nóng bất thường một bên không. Tổng hợp bảo dưỡng định kỳ tại [hub sửa chữa và bảo dưỡng](/lab/hub/c05/).
+Phanh là hệ thống an toàn, kiểm tra mỗi lần thay nhớt: nhìn độ dày má, rãnh đĩa, sờ ống pô phanh sau chuyến đi xem có nóng bất thường một bên không. Tổng hợp bảo dưỡng định kỳ tại [sửa chữa và bảo dưỡng]({{ '/danh-muc/sua-chua/' | relative_url }}).

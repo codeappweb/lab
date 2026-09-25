@@ -208,7 +208,8 @@
   function openSheet() {
     if (!sheet) return;
     sheet.hidden = false; if (backdrop) backdrop.hidden = false;
-    requestAnimationFrame(function () { sheet.classList.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
+    requestAnimationFrame(function () { sheet.class
+List.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
     document.body.style.overflow = 'hidden';
     var first = sheet.querySelector('a'); if (first) first.focus();
   }
@@ -249,7 +250,8 @@
   }
   if (drawer) {
     $$('[data-nav-open]').forEach(function (b) { b.addEventListener('click', openNav); });
-    $$('[data-nav-close]').forEach(function (b) { b.addEventListener('click', closeNav); });
+    $$
+('[data-nav-close]').forEach(function (b) { b.addEventListener('click', closeNav); });
     if (navBackdrop) navBackdrop.addEventListener('click', closeNav);
     drawer.addEventListener('keydown', function (e) {
       if (e.key !== 'Tab') return;

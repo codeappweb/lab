@@ -11,7 +11,7 @@ Tiếng hú là hiện tượng có tần số cao kéo dài khi xe chạy, khá
 
 ## Hú theo tốc độ bánh xe: biên
 
-Hú tăng cao dần theo tốc độ, không phụ thuộc ga: khả năng lớn nhất là biên (vòng bi) bánh trước hoặc sau. Thử nhấc xe, quay tay bánh: nghe kỹ ở vùng trục bánh. Bánh lắc ngang khi lay là biên hỏng rõ. Biên hỏng cần thay ngay vì có thể kẹt bánh khi đang chạy. Xe số rung kèm theo có thể liên quan [xe máy bị rung khi tăng ga](/lab/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/).
+Hú tăng cao dần theo tốc độ, không phụ thuộc ga: khả năng lớn nhất là biên (vòng bi) bánh trước hoặc sau. Thử nhấc xe, quay tay bánh: nghe kỹ ở vùng trục bánh. Bánh lắc ngang khi lay là biên hỏng rõ. Biên hỏng cần thay ngay vì có thể kẹt bánh khi đang chạy. Xe số rung kèm theo có thể liên quan [xe máy bị rung khi tăng ga]({{ '/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/' | relative_url }}).
 
 ## Hú khi thả ga, ga rà: bi thước nhông
 
@@ -19,11 +19,11 @@ Xe số hú khi thả ga, ngắt côn thì hết: thường là bi thước nhô
 
 ## Hú khi tăng ga trên xe ga: curoa và puly
 
-Xe ga hú ù khi tăng ga, đặc biệt lên dốc: curoa khô, nứt hoặc puly mòn, bi xéc mòn. Xem chi tiết tại [dây curoa xe ga: tuổi thọ và dấu hiệu cần thay](/lab/day-curoa-xe-ga-tuoi-tho-va-dau-hieu-can-thay/).
+Xe ga hú ù khi tăng ga, đặc biệt lên dốc: curoa khô, nứt hoặc puly mòn, bi xéc mòn. Xem chi tiết tại [dây curoa xe ga: tuổi thọ và dấu hiệu cần thay]({{ '/danh-muc/sua-chua/truyen-dong/' | relative_url }}).
 
 ## Hú khi bóp phanh: bề mặt phanh
 
-Phanh đĩa hú nhẹ khi bóp: đĩa mòn hoặc má phanh cứng lại. Nếu kèm rít và hiệu quả phanh giảm, tham khảo [phanh kêu, phanh rít: nguyên nhân và thời điểm thay má phanh](/lab/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/).
+Phanh đĩa hú nhẹ khi bóp: đĩa mòn hoặc má phanh cứng lại. Nếu kèm rít và hiệu quả phanh giảm, tham khảo [phanh kêu, phanh rít: nguyên nhân và thời điểm thay má phanh]({{ '/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/' | relative_url }}).
 
 ## Hú lặp ở tốc độ ổn định: gió và vỏ máy
 
@@ -31,5 +31,6 @@ Hú nhẹ theo tốc độ, không đau máy: chắn bùn lỏng rung theo gió,
 
 ## Khi nào cần vào tiệm ngay
 
-Hú kèm bánh lắc, s-hot, hoặc hú đổi tông sau khi ngâm nước: biên, bi máy. Đó là nhóm lỗi tiếp tục chạy sẽ biến thành hư hỏng lớn hoặc sự cố
- an toàn. Tổng hợp chẩn đoán sự cố tại [hub sửa chữa và bảo dưỡng](/lab/hub/c05/).
+Hú kèm bánh lắc, s-hot, hoặc hú đổi tông sau khi ngâm nước: biên, bi máy. Đó là nhóm lỗi tiếp tục chạy sẽ biến thành hư hỏng lớ
+n hoặc sự cố
+ an toàn. Tổng hợp chẩn đoán sự cố tại [sửa chữa và bảo dưỡng]({{ '/danh-muc/sua-chua/' | relative_url }}).

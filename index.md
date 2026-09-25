@@ -18,7 +18,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
     <div class="hero__stats">
       <div class="hero__stat"><b>12</b><span>danh mục</span></div>
       <div class="hero__stat"><b>{{ site.posts | size }}</b><span>bài đã xuất bản</span></div>
-      <div class="hero__stat"><b>201</b><span>chủ đề đã lên kế hoạch</span></div>
+      <div class="hero__stat"><b>{{ site.data.progress.articles.planned | default: 193 }}</b><span>chủ đề đã lên kế hoạch</span></div>
     </div>
   </div>
 </section>
@@ -28,14 +28,34 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
   <div class="topic-grid--xl">
     {% for slug in 'xe-may,xe-dien,xe-dap' | split: ',' %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
       {% assign pc = post.parent_category | default: '' %}
       {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
       {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
     {% endfor %}
-    <a class="topic-card topic-card--xl" href="{{ purl | relative_url }}">
+    <a class="topic-card topic-card--xl" href="{{ p.slug | prepend: '/danh-muc/' | append: '/' | relative_url }}">
+      <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
+      <span class="topic-card__title">{{ p.name }}</span>
+      <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
+      <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section container">
+  <h2 class="section-title">Thuê &amp; Di chuyển</h2>
+  <div class="topic-grid">
+    {% for slug in 'thue-xe' | split: ',' %}
+    {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
+    {% assign pcount = 0 %}
+    {% for post in site.posts %}
+      {% assign pc = post.parent_category | default: '' %}
+      {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
+      {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
+    {% endfor %}
+    <a class="topic-card topic-card--xl" href="{{ p.slug | prepend: '/danh-muc/' | append: '/' | relative_url }}">
       <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
       <span class="topic-card__title">{{ p.name }}</span>
       <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
@@ -48,16 +68,15 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
 <section class="section container">
   <h2 class="section-title">Hành trình</h2>
   <div class="topic-grid">
-    {% for slug in 'du-lich,phuot-xe,thue-xe' | split: ',' %}
+    {% for slug in 'du-lich,phuot-xe' | split: ',' %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
       {% assign pc = post.parent_category | default: '' %}
       {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
       {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
     {% endfor %}
-    <a class="topic-card topic-card--xl" href="{{ purl | relative_url }}">
+    <a class="topic-card topic-card--xl" href="{{ p.slug | prepend: '/danh-muc/' | append: '/' | relative_url }}">
       <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
       <span class="topic-card__title">{{ p.name }}</span>
       <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
@@ -72,14 +91,13 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
   <div class="topic-grid">
     {% for slug in 'sua-chua,phu-tung' | split: ',' %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
       {% assign pc = post.parent_category | default: '' %}
       {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
       {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
     {% endfor %}
-    <a class="topic-card topic-card--xl" href="{{ purl | relative_url }}">
+    <a class="topic-card topic-card--xl" href="{{ p.slug | prepend: '/danh-muc/' | append: '/' | relative_url }}">
       <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
       <span class="topic-card__title">{{ p.name }}</span>
       <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
@@ -94,21 +112,20 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
   <div class="topic-grid">
     {% for slug in 'phap-ly,an-toan,chi-phi,cong-nghe' | split: ',' %}
     {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
-    {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
     {% assign pcount = 0 %}
     {% for post in site.posts %}
       {% assign pc = post.parent_category | default: '' %}
       {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
       {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
     {% endfor %}
-    <a class="topic-card topic-card--sm" href="{{ purl | relative_url }}">
+    <a class="topic-card topic-card--sm" href="{{ p.slug | prepend: '/danh-muc/' | append: '/' | relative_url }}">
       <span class="topic-card__title">{{ p.name }}</span>
       <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
     </a>
     {% endfor %}
   </div>
-  <p><a href="{{ '/danh-muc/' | relative_url }}">Xem tất cả danh mục và chuyên mục</a></p>
 </section>
+  <p><a href="{{ '/danh-muc/' | relative_url }}">Xem tất cả danh mục và chuyên mục</a></p>
 
 <section class="section section--tight container" id="doc-tiep" hidden>
   <h2 class="section-title">Đọc tiếp</h2>
@@ -135,7 +152,7 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
   <h2 class="section-title">Khám phá</h2>
   <div class="chips">
     {% for e in site.data.entities limit: 16 %}
-    <button type="button" class="chip" data-search-open data-search="{{ e.name | escape }}">{{ e.name }}</button>
+      <button type="button" class="chip" data-search-open data-search="{{ e.name | escape }}">{{ e.name }}</button>
     {% endfor %}
   </div>
 </section>

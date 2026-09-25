@@ -11,11 +11,11 @@ Rung xe có ba loại: rung khi tăng ga (xe số), rung ở dải tốc độ n
 
 ## Xe số: nhông sên dĩa
 
-Rung khi tăng ga trên xe số phần lớn do hệ thống truyền động: sên bị giãn, nhông mòn răng nhọn, dĩa mòn lệch. Nhìn răng nhông: răng nhọn như lưỡi cưa là mòn. Sên giãn cỡ cân thử bằng kéo sên ở giữa hai bánh. Chu kỳ thay và kéo dài tuổi thọ chi tiết tại [nhông sên dĩa: chu kỳ thay và cách kéo dài tuổi thọ](/lab/nhong-sen-dia-chu-ky-thay-va-cach-keo-dai-tuoi-tho/).
+Rung khi tăng ga trên xe số phần lớn do hệ thống truyền động: sên bị giãn, nhông mòn răng nhọn, dĩa mòn lệch. Nhìn răng nhông: răng nhọn như lưỡi cưa là mòn. Sên giãn cỡ cân thử bằng kéo sên ở giữa hai bánh. Chu kỳ thay và kéo dài tuổi thọ chi tiết tại [nhông sên dĩa: chu kỳ thay và cách kéo dài tuổi thọ]({{ '/danh-muc/sua-chua/truyen-dong/' | relative_url }}).
 
 ## Xe ga: bi xéc măng và curoa
 
-Xe ga rung giật ở tốc độ thấp hoặc rung "đề đẹt" khi lên ga thường do bộ CVT: bi xéc mòn làm mở sai cỡ, curoa nứt. Xe ga đời cũ còn hay rung do lò xo puly mòn. Kèm theo xe ì thì xem [xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên](/lab/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/).
+Xe ga rung giật ở tốc độ thấp hoặc rung "đề đẹt" khi lên ga thường do bộ CVT: bi xéc mòn làm mở sai cỡ, curoa nứt. Xe ga đời cũ còn hay rung do lò xo puly mòn. Kèm theo xe ì thì xem [xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên]({{ '/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/' | relative_url }}).
 
 ## Rung theo dải tốc độ
 
@@ -27,7 +27,8 @@ Rung theo ổ gà, đường xấu: giảm xóc. Giảm xóc dầu xì, chuôi g
 
 ## Ốc và biên
 
-Rung kèm tiếng lạch cạch nhỏ: ốc máy, ốp máy, hoặc biên (vòng bi bánh xe) lỏng. Biên hỏng chạy lâu sẽ nguy hiểm vì bánh có thể kẹt giữa đường. Triệu chứng biên có tiếng rít, xem thêm [tiếng hú khi chạy xe máy: xác định vị trí phát tiếng](/lab/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/).
+Rung kèm tiếng lạch cạch nhỏ: ốc máy, ốp máy, hoặc biên (vòng bi bánh xe) lỏng. Biên hỏng chạy lâu sẽ nguy hiểm vì bánh có thể kẹt giữa đường. Triệu chứng biên có tiếng rít, xem thêm [tiếng hú khi chạy xe máy: xác định vị trí phát tiếng]({{ '/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/' | relative_url }}).
 
-Khắc phục đúng bộ phận, không nên chỉ "siết lại ốc" khi chưa biết rung thuộc loại nào. Tổng hợp c
-ác sự cố tại [hub sửa chữa và bảo dưỡng](/lab/hub/c05/).
+Khắc phục đúng bộ phận, không nên chỉ "siết lại ốc" khi chưa biết rung thuộc loại nào
+. Tổng hợp c
+ác sự cố tại [sửa chữa và bảo dưỡng]({{ '/danh-muc/sua-chua/' | relative_url }}).

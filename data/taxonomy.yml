@@ -121,8 +121,7 @@ parents:
     icon: "bike"
     cluster: "C04"
     planned_capacity: 140
-    description: "Xe đạp cho đi lại, thể thao và dã ngoại — chọn xe, bảo dưỡng và phụ kiện
-."
+    description: "Xe đạp cho đi lại, thể thao và dã ngoại — chọn xe, bảo dưỡng và phụ kiện."
     children:
       - id: "P03-01"
         name: "Xe phố"
@@ -191,8 +190,7 @@ parents:
         slug: "thue-xe-dien"
         status: "planned"
         planned_capacity: 15
-        description: "Th
-uê xe điện — điểm cần lưu ý về pin và quãng đường."
+        description: "Thuê xe điện — điểm cần lưu ý về pin và quãng đường."
       - id: "P06-03"
         name: "Thuê xe đạp"
         slug: "thue-xe-dap"
@@ -256,8 +254,7 @@ uê xe điện — điểm cần lưu ý về pin và quãng đường."
         planned_capacity: 20
         description: "Khởi động — đề yếu, đề không nổ, ắc quy và bộ đề."
       - id: "P04-04"
-        name: "Truy
-ền động"
+        name: "Truyền động"
         slug: "truyen-dong"
         status: "in-progress"
         planned_capacity: 30
@@ -277,7 +274,7 @@ uê xe điện — điểm cần lưu ý về pin và quãng đường."
       - id: "P04-07"
         name: "Chẩn đoán lỗi"
         slug: "chan-doan-loi"
-        status: "active"
+        status: "planned"
         planned_capacity: 40
         description: "Chẩn đoán theo triệu chứng — hao xăng, không nổ, hú, rung."
       - id: "P04-08"
@@ -325,8 +322,7 @@ uê xe điện — điểm cần lưu ý về pin và quãng đường."
         planned_capacity: 20
         description: "Má phanh, dầu phanh, đĩa phanh — lựa chọn và thay đúng lúc."
       - id: "P05-06"
-  
-      name: "Truyền động"
+        name: "Truyền động"
         slug: "truyen-dong"
         status: "in-progress"
         planned_capacity: 20
@@ -392,8 +388,7 @@ uê xe điện — điểm cần lưu ý về pin và quãng đường."
         slug: "cach-di-chuyen"
         status: "planned"
         planned_capacity: 30
-        description: "Di chuyển trong Hà N
-ội — chọn xe, tránh giờ cao điểm."
+        description: "Di chuyển trong Hà Nội — chọn xe, tránh giờ cao điểm."
       - id: "P07-08"
         name: "Gửi xe"
         slug: "gui-xe"
@@ -461,8 +456,7 @@ uê xe điện — điểm cần lưu ý về pin và quãng đường."
         slug: "kinh-nghiem-phuot"
         status: "planned"
         planned_capacity: 15
-        description:
- "Bài học thực tế từ các chuyến đi."
+        description: "Bài học thực tế từ các chuyến đi."
       - id: "P08-09"
         name: "An toàn phượt"
         slug: "an-toan-phuot"
@@ -531,8 +525,7 @@ uê xe điện — điểm cần lưu ý về pin và quãng đường."
     slug: "an-toan"
     icon: "safety"
     cluster: "C10"
-    plan
-ned_capacity: 110
+    planned_capacity: 110
     description: "An toàn khi đi đường — kỹ năng lái, thời tiết xấu, sự cố, bảo hộ và sơ cứu."
     children:
       - id: "P10-01"
@@ -599,7 +592,6 @@ ned_capacity: 110
         description: "Chi phí mua xe mới và cũ — cách tính tổng."
       - id: "P12-02"
         name: "Chi phí nuôi"
-      
         slug: "nuoi-xe"
         status: "planned"
         planned_capacity: 25
@@ -670,8 +662,7 @@ ned_capacity: 110
         name: "Động cơ điện"
         slug: "dong-co-dien"
         status: "planned"
-        planned_capacity
-: 15
+        planned_capacity: 15
         description: "Động cơ điện trên xe — công suất, mô-men, hiệu suất."
       - id: "P11-05"
         name: "Sạc nhanh"

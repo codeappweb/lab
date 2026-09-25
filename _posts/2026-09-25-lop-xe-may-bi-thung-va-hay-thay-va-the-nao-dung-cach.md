@@ -31,11 +31,10 @@ Có hai cách vá: vá ngoài (que vá nhét vào từ ngoài, nhanh 5 phút) v�
 
 ## Phòng tránh và trang bị
 
-- Bơm đúng áp suất định kỳ: lốp non là nguyên nhân thủng lớn nhất. Xem [áp suất lốp xe máy chuẩn và cách kiểm tra định kỳ](/lab/ap-suat-lop-xe-may-chuan-va-cach-kiem-tra-dinh-ky/).
+- Bơm đúng áp suất định kỳ: lốp non là nguyên nhân thủng lớn nhất. Xem [áp suất lốp xe máy chuẩn và cách kiểm tra định kỳ]({{ '/danh-muc/sua-chua/lop-xe/' | relative_url }}).
 - Tránh đường nhiều mảnh vỡ, đinh vít quanh công trường.
 - Đi trong phố nên mang theo que vá ngoài + bơm mini hoặc số điện thoại dịch vụ vá lưu động, chỉ dùng que vá để về tới nơi vá trong.
 
 ## Khi nào nên thay lốp
 
-Thay khi: mòn tới mức gai chỉ (mốc mòn), nứt lão hóa da lốp, phồng mép, thủng vai lốp, hoặc vá lại lần thứ ba cùng một lốp. Chi tiết chọn lốp tại [lốp xe máy: chọn đúng cỡ và độ bám cho đường Hà Nội](/lab/lop-xe-may-chon-dung-co-va-do-bam-c
-ho-duong-ha-noi/). Tổng hợp bảo dưỡng tại [hub sửa chữa và bảo dưỡng](/lab/hub/c05/).
+Thay khi: mòn tới mức gai chỉ (mốc mòn), nứt lão hóa da lốp, phồng mép, thủng vai lốp, hoặc vá lại lần thứ ba cùng một lốp. Chi tiết chọn lốp tại [lốp xe máy: chọn đúng cỡ và độ bám cho đường Hà Nội]({{ '/danh-muc/sua-chua/lop-xe/' | relative_url }}). Tổng hợp bảo dưỡng tại [sửa chữa và bảo dưỡng]({{ '/danh-muc/sua-chua/' | relative_url }}).

@@ -1,27 +1,19 @@
 # Mapping slug bài viết (không có ngày) -> danh mục cha/con.
 # Dùng cho 8 bài C05 hiện có. Bài mới nên khai báo parent_category / child_category
 # trực tiếp trong front matter; file này chỉ là fallback cho bài chưa khai báo.
-xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra:
   parent: sua-chua
   child: chan-doan-loi
-xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc:
   parent: sua-chua
   child: truyen-dong
-xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly:
   parent: sua-chua
   child: dong-co
-xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien:
   parent: sua-chua
   child: chan-doan-loi
-tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng:
   parent: sua-chua
   child: chan-doan-loi
-phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh:
   parent: sua-chua
   child: phanh-xe
-lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach:
   parent: sua-chua
   child: lop-xe
-de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de:
   parent: sua-chua
   child: khoi-dong

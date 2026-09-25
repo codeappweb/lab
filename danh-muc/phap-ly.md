@@ -11,7 +11,7 @@ Pháp lý là chuyên mục tổng hợp phần "giấy tờ và quy định" c�
 
 ## Tổng quan về pháp lý xe máy
 
-Phần pháp lý là mảng thông tin dễ sai nhất trên internet: văn bản luật thay đổi theo từng đợt sửa đổi, và nhiều bài viết cũ vẫn lưu hành với mức phạt, hạng bằng lái đã lỗi thời. Vì vậy cách tiếp cận của chuyên mục này là nêu khung quy định ổn định, kèm ghi chú văn bản áp dụng, thay vì đưa ra con số cụ thể khi chưa kiểm chứng. Với các con số về mức phạt, bạn nên luôn đối chiếu văn bản mới nhất trước khi áp dụng — ví dụ các quy định về xử phạt giao thông đường bộ hiện áp dụng theo Nghị định 168/2024/NĐ-CP và đang trong quá trình được sửa đổi, bổ sung.
+Phần pháp lý là mảng thông tin dễ sai nhất trên internet: văn bản luật thay đổi theo từng đợt sửa đổi, và nhiều bài viết cũ vẫn lưu hành với mức phạt, hạng bằng lái đã lỗi thời. Vì vậy cách tiếp cận của chuyên mục này là nêu khung quy định ổn định, kèm ghi chú văn bản áp dụng, thay vì đưa ra con số cụ thể khi chưa kiểm chứng. Với các con số về mức phạt, bạn nên luôn đối chiếu văn bản mới nhất trước khi áp dụng — ví dụ các quy định về xử phạt giao thông đường bộ hiện áp dụng theo Nghị định 168/2024/NĐ-CP, đã được bổ sung, sửa đổi một số nội dung bởi Nghị định 238/2026/NĐ-CP (hiệu lực từ ngày 15/8/2026, không thay đổi khung mức phạt tiền).
 
 Chuyên mục phục vụ người mua xe lần đầu cần hiểu thủ tục, người dùng xe hàng ngày muốn biết quyền và nghĩa vụ của mình, và người gặp tình huống cụ thể (mất giấy tờ, bị phạt, mua xe cũ) cần tra cứu nhanh. Mỗi nhóm con tương ứng với một mảng quy định.
 
@@ -21,7 +21,8 @@ Chuyên mục phục vụ người mua xe lần đầu cần hiểu thủ tục,
 
 **Đăng ký xe** ([dang-ky-xe](/danh-muc/phap-ly/dang-ky-xe/)) là nhóm thủ tục mua bán, sang tên xe, đăng ký xe mới và các giấy tờ bắt buộc khi mua xe cũ.
 
-**Biển số** ([bien-so](/danh-muc/phap-ly/bien-so/)) nói về các quy định biển số xe máy, và các lỗi thường gặp khi gắn biển số sai cách.
+**Biển số** ([bien-so](/danh-muc/phap-ly/bien-so/)) nói về các quy định biển số 
+xe máy, và các lỗi thường gặp khi gắn biển số sai cách.
 
 **Bảo hiểm** ([bao-hiem](/danh-muc/phap-ly/bao-hiem/)) là mảng bắt buộc cần hiểu đúng: bảo hiểm TNDS bắt buộc với phạm vi và mức chi trả theo quy định, khác với bảo hiểm tai nạn tự nguyện.
 
@@ -43,7 +44,8 @@ Nếu bạn vừa bị xử phạt và muốn hiểu căn cứ, bắt đầu t�
 
 ## Những vấn đề thường gặp
 
-Vấn đề phổ biến nhất là tin mức phạt từ bài viết cũ. Ví dụ gần đây nhất: mức phạt lỗi không đội mũ bảo hiểm đã được điều chỉnh theo Nghị định 168/2024/NĐ-CP (vùng khung phạt 400.000–600.000 đồng), và văn bản này vẫn đang được sửa đổi tiếp. Mẹo an toàn: luôn tìm năm ban hành của nghị định được viện dẫn trong bài viết, và ưu tiên nguồn chính thống như công báo, trang của Bộ Công an.
+Vấn đề phổ biến nhất là tin mức phạt từ bài viết cũ. Ví dụ gần đây nhất: mức phạt lỗi khô
+ng đội mũ bảo hiểm đã được điều chỉnh theo Nghị định 168/2024/NĐ-CP (vùng khung phạt 400.000–600.000 đồng); đến nay khung mức này giữ nguyên sau khi Nghị định 238/2026/NĐ-CP sửa đổi, bổ sung một số nội dung của Nghị định 168. Mẹo an toàn: luôn tìm năm ban hành của nghị định được viện dẫn trong bài viết, và ưu tiên nguồn chính thống như công báo, trang của Bộ Công an.
 
 Thứ hai là nhầm lẫn giữa bảo hiểm bắt buộc và bảo hiểm tự nguyện. Bảo hiểm TNDS bắt buộc là nghĩa vụ để xe được lưu hành, còn bảo hiểm tai nạn người lái là tự nguyện — nhiều người tưởng mua một trong hai là đủ. Nhóm bảo hiểm phân biệt rõ phạm vi từng loại.
 
@@ -57,6 +59,20 @@ Ba khái niệm nền tảng. Thứ nhất, "xe đủ điều kiện lưu hành"
 
 Về xu hướng, quản lý giấy tờ xe đang dịch chuyển sang môi trường số — VNeID, cổng dịch vụ công — nên nhiều thủ tục trước đây phải đến trực tiếp nay có thể nộp trực tuyến. Với người dùng xe điện, thêm một lớp quy định về tiêu chuẩn kỹ thuật và pin đang dần hình thành — theo dõi nhóm quy định xe điện để cập nhật.
 
+
+## Tra cứu văn bản gốc như thế nào
+
+Mọi con số pháp lý trên mạng, kể cả trên trang này, đều chỉ nên xem là tham khảo cho đến khi bạn đối chiếu được văn bản gốc. Nguồn tin cậy nhất là Công báo điện tử của Chính phủ và cổng thông tin của Bộ Công an, nơi đăng tải đầy đủ nghị định hiện hành. Khi tra, hãy tìm theo số hiệu nghị định và năm ban hành, rồi kiểm tra mục "hiệu lực" và danh mục văn bản được sửa đổi để biết nghị định đó còn nguyên văn bản hay đã được thay thế từng phần.
+
+Thói quen tra cứu nên theo ba bước. Bước một, xác định vấn đề thuộc nhóm nào: giấy tờ xe, xử phạt, bảo hiểm hay thuế phí. Bước hai, tìm văn bản quy định trực tiếp vấn đề đó, không dừng ở bài giải thích. Bước ba, kiểm tra các nghị định sửa đổi đi kèm để xem điều khoản mình đang đọc có còn hiệu lực nguyên vẹn hay không. Cách làm này mất vài phút nhưng tránh được lỗi phổ biến nhất: áp dụng mức phạt đã lỗi thời.
+
+## Những tình huống pháp lý thường gặp
+
+Mua xe cũ không sang tên là tình huống rủi ro nhất: về pháp lý xe vẫn thuộc chủ cũ, mọi khoản phí tích tụ và người đang cầm xe chịu hậu quả trực tiếp, kể cả khi giấy tờ mua bán đã có sẵn. Cách an toàn là hoàn tất sang tên đúng hạn sau khi giao dịch, giữ bản photo giấy tờ của bên bán và kiểm tra đăng ký bản gốc trước khi trả tiền.
+
+Tái chế bảo hiểm trách nhiệm dân sự cũng là điểm hay bị bỏ quên: bảo hiểm hết hạn vẫn bị xử phạt như chạy xe không đủ điều kiện lưu hành, và nếu gây tai nạn trong lúc hết hạn, người lái xe tự chịu toàn bộ chi phí bồi thường ban đầu. Lỗi giấy tờ khác thường gặp gồm hết hạn bằng lái và không mang đăng ký bản gốc khi chạy xe; cả hai đều có thể kiểm tra trước mỗi chuyến đi bằng một thói quen đơn giản là kẹp toàn bộ giấy tờ vào một chiếc bóp cố định trong cốp xe.
+
 ## Khám phá nội dung
 
-Tra cứu theo mốc nhu cầu của bạn qua tám nhóm con phía trên. Nếu vấn đề nằm ở kỹ năng vận hành thay vì quy định — chạy mưa, chạy đêm, xử lý sự cố trên đường — chuyên mục [An toàn](/danh-muc/an-toan/) là nơi phù hợp. Với các vấn đề chi phí giữ xe hợp pháp — phí trước bạ, bảo hiểm, phí đường bộ — xem thêm [Chi phí](/danh-muc/chi-phi/).
+Tra cứu theo mốc nhu cầu của bạn qua tám nhóm con phía trên. Nếu vấn đề nằm ở kỹ năng vận hành
+ thay vì quy định — chạy mưa, chạy đêm, xử lý sự cố trên đường — chuyên mục [An toàn](/danh-muc/an-toan/) là nơi phù hợp. Với các vấn đề chi phí giữ xe hợp pháp — phí trước bạ, bảo hiểm, phí đường bộ — xem thêm [Chi phí](/danh-muc/chi-phi/).

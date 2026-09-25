@@ -23,7 +23,8 @@ Chuyên mục này phục vụ người đang cân nhắc mua xe muốn ước t
 
 **Nhiên liệu** ([nhien-lieu](/danh-muc/chi-phi/nhien-lieu/)) phân tích chi phí xăng theo quãng đường và mức tiêu thụ thực tế của các dòng xe phổ biến, kèm các thói quen chạy xe giúp tiết kiệm xăng.
 
-**Tiền điện** ([tien-dien](/danh-muc/chi-phi/tien-dien/)) là nhóm tương đương cho xe điện: chi phí sạc theo quãng đường, so sánh với xăng ở cùng quãng đường, và các yếu tố ảnh hưởng chi phí sạc.
+**Tiền điện** ([tien-dien]
+(/danh-muc/chi-phi/tien-dien/)) là nhóm tương đương cho xe điện: chi phí sạc theo quãng đường, so sánh với xăng ở cùng quãng đường, và các yếu tố ảnh hưởng chi phí sạc.
 
 **Bảo dưỡng** ([bao-duong](/danh-muc/chi-phi/bao-duong/)) tổng hợp chi phí các gói bảo dưỡng định kỳ: thay nhớt, lọc gió, bugi, xích — theo chu kỳ km phổ biến.
 
@@ -45,7 +46,8 @@ Người mua xe cũ nên đọc nhóm mua xe và sửa chữa cùng nhau, vì xe
 
 Vấn đề phổ biến nhất là ước tính nuôi xe chỉ tính xăng. Với xe chạy phố hàng ngày, gửi xe và bảo dưỡng cộng lại có khi không thua kém tiền xăng — bỏ sót hai hạng mục này khiến ngân sách thực tế luôn vượt kế hoạch.
 
-Thứ hai là chi phí sửa chữa bất thường không được trích lũy: xe cần thay lốp, ắc quy, má phanh theo chu kỳ ước đoán được, nhưng nhiều người để dồn thành một đợt chi lớn. Cách xử lý là cộng thêm một khoản dự phòng sửa chữa hàng tháng vào ngân sách nuôi xe — cách tính có trong nhóm nuôi xe.
+Thứ hai là chi phí sửa chữa bất thường không được trích lũy:
+ xe cần thay lốp, ắc quy, má phanh theo chu kỳ ước đoán được, nhưng nhiều người để dồn thành một đợt chi lớn. Cách xử lý là cộng thêm một khoản dự phòng sửa chữa hàng tháng vào ngân sách nuôi xe — cách tính có trong nhóm nuôi xe.
 
 Thứ ba là so sánh xe xăng và xe điện chỉ theo giá mua và quãng đường pin. Tổng chi sở hữu của xe điện rẻ hơn ở phần nhiên liệu và bảo dưỡng (ít linh kiện động cơ hơn), nhưng cần tính thêm khấu hao pin và thời gian giữ xe — nhóm khấu hao và tiền điện có khung so sánh.
 
@@ -58,6 +60,19 @@ Khái niệm quan trọng nhất là tổng chi sở hữu (TCO): giá mua chỉ
 Thứ hai, khấu hao không đều: xe máy giảm giá mạnh nhất ở 1–2 năm đầu, sau đó chậm dần. Hệ quả thực tế: mua xe đã qua 1–2 năm sử dụng là điểm cân bằng tốt giữa giá và tình trạng xe, và bán xe trước mốc 5 năm thường giữ giá tốt hơn để quá lâu.
 
 Thứ ba, chi phí bảo dưỡng theo chu kỳ là khoản có thể tối ưu bằng cách làm đúng lúc, không sớm không muộn: thay nhớt quá sớm tốn thêm, thay quá muộn gây hao mòn động cơ và đội chi phí sau này. Chu kỳ chuẩn theo km có ở chuyên mục [Sửa chữa](/danh-muc/sua-chua/bao-duong/).
+
+
+## Cách lập bảng chi phí nuôi xe
+
+Cách đơn giản nhất để nắm chi phí là ghi lại từng khoản trong ba tháng đầu, sau đó tính mức trung bình hằng tháng. Bảng ghi nên tách bốn nhóm: xăng hoặc tiền điện nếu chạy xe điện, nhớt và bảo dưỡng định kỳ, sửa chữa ngoài kế hoạch, và các khoản phí cố định như gửi xe, bảo hiểm. Sau vài tháng, bạn sẽ thấy trọng số thật của từng nhóm và biết cắt ở đâu hợp lý nhất.
+
+Vài quy luật thực tế đáng lưu ý. Chi phí bảo dưỡng định kỳ chiếm phần nhỏ, nhưng nếu bỏ qua sẽ chuyển thành chi phí sửa chữa lớn. Chi phí xăng dao động theo thói quen ga và độ dày giao hơn là theo thông số xe trên giấy. Và hạng mục dễ làm đội chi phí nhất là sửa vặt ở những thời điểm không kiểm soát giá, ví dụ hỏng giữa đường và phải thay linh kiện ở tiệm gần nhất.
+
+## Khi nào sửa, khi nào nên thay xe
+
+Câu hỏi này không có con số chung, nhưng có cách luận hợp lý. Hãy so tổng chi phí sửa trong một năm gần nhất với giá trị xe còn lại trên thị trường; nếu số tiền sửa đã tương đương một phần lớn giá trị xe và vẫn còn nhiều cụm cũ sắp tới hạn, thì tiếp tục vá sẽ đắt hơn về dài hạn. Trường hợp ngược lại, xe chỉ cần những hạng mục định kỳ thì sửa vẫn luôn rẻ hơn mua mới.
+
+Với xe điện, điểm cân nhắc thêm là bình pin: đây là chi phí thay đơn lẻ lớn nhất, nên quyết định nên dựa trên tình trạng pin hiện tại và giá thay bình thay vì chỉ nhìn vẻ ngoài của xe. Với xe số cũ, cụm động cơ và truyền động là hai nơi tốn nhất, nếu cả hai cùng tới hạn thì đó thường là tín hiệu nên đổi xe.
 
 ## Khám phá nội dung
 

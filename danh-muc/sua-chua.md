@@ -21,7 +21,8 @@ Chuyên mục được chia thành tám nhóm con, mỗi nhóm tập trung vào 
 
 **Động cơ** ([dong-co](/danh-muc/sua-chua/dong-co/)) là nhóm bài về động cơ: hao xăng, nóng máy, mất ga, tiếng kêu bên trong máy. Đây là nơi bắt đầu nếu triệu chứng nằm ở "phần tim" của xe.
 
-**Hệ thống điện** ([he-thong-dien](/danh-muc/sua-chua/he-thong-dien/)) bao gồm ắc quy, còi, đèn, sạc điện và các lỗi chập cháy. Nhiều sự cố tưởng là hư máy thực ra chỉ là tiếp xúc kém ở hệ thống điện.
+**Hệ thống điện** ([he-thong-dien](/danh-muc/sua-chu
+a/he-thong-dien/)) bao gồm ắc quy, còi, đèn, sạc điện và các lỗi chập cháy. Nhiều sự cố tưởng là hư máy thực ra chỉ là tiếp xúc kém ở hệ thống điện.
 
 **Khởi động** ([khoi-dong](/danh-muc/sua-chua/khoi-dong/)) tập trung vào trường hợp xe không nổ hoặc nổ khó — từ kim phun, bugi đến quy trình kiểm tra từng bước.
 
@@ -45,7 +46,8 @@ Nếu bạn tự sửa ở nhà, nhóm động cơ và hệ thống điện là 
 
 ## Những vấn đề thường gặp
 
-Hao xăng bất thường là lỗi bị phàn nàn nhiều nhất. Nguyên nhân thường gặp nằm ở bộ hòa khí bẩn, bugi mòn, hoặc chỉnh ga sai độ cao — gần như không bao giờ do "bình xăng bị hao" như nhiều người nghĩ. Nhóm chẩn đoán lỗi có hướng dẫn kiểm tra từng bước cho trường hợp [xe hao xăng bất thường](/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/).
+Hao xăng bất thường là lỗi bị phàn nàn nhiều nhất. Nguyên nhân thường gặp nằm ở b
+ộ hòa khí bẩn, bugi mòn, hoặc chỉnh ga sai độ cao — gần như không bao giờ do "bình xăng bị hao" như nhiều người nghĩ. Nhóm chẩn đoán lỗi có hướng dẫn kiểm tra từng bước cho trường hợp [xe hao xăng bất thường](/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/).
 
 Xe khó nổ hoặc không nổ thường khiến người dùng vội kết luận hư máy. Trên thực tế, đa số ca "xe không nổ" do bugi, ắc quy yếu hoặc nhiên liệu kém — đều là hạng mục kiểm tra trong vài phút. Xem hướng dẫn đầy đủ cho lỗi [xe máy không nổ máy](/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/).
 
@@ -55,9 +57,33 @@ Xe rung khi tăng ga thường nằm ở nhông sên dĩa mòn hoặc bu-long l�
 
 ## Kiến thức cần biết
 
-Ba khái niệm giúp bạn sửa xe thông minh hơn. Thứ nhất, "chẩn đoán theo triệu chứng" luôn rẻ hơn "thay thử từng linh kiện": hầu hết các thợ uy tín đều kiểm tra theo trình tự, và bạn nên yêu cầu được xem linh kiện cũ trước khi đồng ý thay. Thứ hai, hao mòn dự đoán được (lốp, má phanh, dầu nhớt, xích) khác với hư hỏng đột ngột (chập điện, gãy lò xo) — nhóm trước thì bảo dưỡng định kỳ đủ, nhóm sau thì phụ thuộc khả năng chẩn đoán. Thứ ba, độ tuổi xe quyết định xác suất lỗi: xe dưới 5 năm lỗi thường nằm ở hệ thống điện và cảm biến, xe trên 10 năm lỗi thường nằm ở truyền động và gioăng.
+Ba khái niệm giúp bạn sửa xe thông minh hơn. Thứ nhất, "chẩn đoán theo triệu chứng" luôn rẻ hơn "thay thử từng linh kiện": hầu hết các thợ uy tín đều kiểm tra theo trình tự, và bạn nên yêu cầu được xem linh kiện cũ trước khi đồng ý thay. Thứ hai, hao mòn dự đoán được (lốp, má phanh, dầu nhớt, xích) khác với hư hỏng đột ngột (chập điện, gãy lò xo) — nhóm trước thì bảo dưỡng định kỳ đủ, nhóm sau thì phụ thuộc khả năng chẩn đo
+án. Thứ ba, độ tuổi xe quyết định xác suất lỗi: xe dưới 5 năm lỗi thường nằm ở hệ thống điện và cảm biến, xe trên 10 năm lỗi thường nằm ở truyền động và gioăng.
 
 Về công cụ, người tự sửa ở nhà chỉ cần bộ cơ bản: kìm, tô vít, đồng hồ đo điện, và bộ dụng cụ vệ sinh bugi — phần lớn sự cứu nạn thường ngày không đòi hỏi thiết bị chuyên dụng. Nếu bạn quan tâm đến chọn đúng phụ tùng thay thế và tính tương thích, xem thêm chuyên mục [Phụ tùng](/danh-muc/phu-tung/).
+
+## Bài viết thực chiến: chẩn đoán theo tình huống thật
+
+Ngoài kiến thức nền tảng, chuyên mục này đang tích lũy các bài viết lấy từ tình huống sửa xe thực tế, mô tả đúng trình tự quan sát, thử và loại trừ nguyên nhân. Đây là những bài hữu ích nhất để bắt đầu nếu bạn đang gặp một sự cố cụ thể:
+
+- [Xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên](/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/) — liệt kê nhóm lỗi tiêu hao xăng theo thứ tự khả năng xảy ra, từ gió hóa, bugi đến cách đấu điện.
+- [Xe máy không nổ máy: nguyên nhân thường gặp và cách kiểm tra](/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/) — tách riêng nhánh điện và nhánh nhiên liệu khi đề không nổ.
+- [Đề yếu đề không được chẩn đoán và xử lý](/de-yeu-de-khong-duoc-chan-doan/) — kiểm tra ắc quy, công tắc và bộ đề theo từng bước.
+- [Xe máy bị nóng máy: nguyên nhân và cách xử lý](/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/) — phân biệt nóng máy do nhớt, tản nhiệt và cách chạy xe cho hợp lý.
+- [Tiếng hú khi chạy xe máy: xác định vị trí phát tiếng](/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/) — cách dò tiếng hú theo tốc độ và vị trí truyền động.
+- [Xe máy bị rung khi tăng ga: nguyên nhân từ nhông sên dĩa đến giảm xóc](/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/) — gắn tiếng rung với cụm linh kiện tương ứng.
+- [Phanh kêu, phanh rít: nguyên nhân và thời điểm thay má phanh](/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/) — nhận biết má phanh mòn và cát bám vào cụm phanh.
+- [Lốp xe máy bị thủng và hay thay và thế nào đúng cách](/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/) — vá ngoài, vá trong hay thay lốp, kèm thời điểm nên thay.
+
+## Quy trình chẩn đoán sự cố tại nhà
+
+Với hầu hết sự cố xe máy, bạn có thể tự thu hẹp nguyên nhân trước khi quyết định mang ra tiệm. Nguyên tắc chung là quan sát triệu chứng theo đúng ngữ cảnh: sự cố xuất hiện lúc máy nguội hay máy nóng, khi chạy đều ga hay khi tăng ga, trên đường phẳng hay đường xấu. Ghi lại các dấu hiệu này giúp việc mô tả cho thợ sửa xe cũng chính xác hơn, tránh tình trạng thay linh kiện theo phán đoán.
+
+Trình tự khuyến nghị gồm ba bước. Bước một là kiểm tra nhóm dễ nhìn thấy: mức nhớt, nước làm mát nếu có, áp suất lốp, độ căng dây đề, dấu hiệu rò nhớt hay rỉ dưới gầm xe. Bước hai là thử tái hiện sự cố: đề máy nghe tiếng, vặn ga quan sát khói xả, kéo phanh thử ở nơi an toàn. Bước ba mới là tháo kiểm tra các cụm nghi ngờ, bắt đầu từ thứ rẻ và dễ thay nhất. Cách làm này giữ chi phí sửa xe ở mức hợp lý và tránh thay nhầm linh kiện còn tốt.
+
+## Lịch bảo dưỡng theo mốc
+
+Nhớt máy là hạng mục quan trọng nhất: với xe số, mốc thay nhớt đầu tiên thường ngắn hơn các lần sau, sau đó lặp lại theo chu kỳ nhà xe khuyến cáo hoặc sớm hơn nếu chạy nhiều trong đô thị. Lọc gió và bugi nên kiểm tra cùng chu kỳ bảo dưỡng; bộ nhông sên dĩa, má phanh và lốp phụ thuộc vào điều kiện chạy nên kiểm tra bằng mắt định kỳ thay vì chờ đúng mốc km. Ghi lại mỗi lần bảo dưỡng giúp bạn nhận ra sớm khi xe bắt đầu tiêu hao nhiều hơn bình thường.
 
 ## Khám phá nội dung
 

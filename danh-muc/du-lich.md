@@ -23,7 +23,8 @@ Chuyên mục này phục vụ ba nhóm: người du lịch lần đầu cần l
 
 **Hồ Tây** ([ho-tay](/danh-muc/du-lic/ho-tay/)) nói về tuyến hồ lớn phía tây: các tuyến đường ven hồ, điểm dừng ăn uống và thời điểm chạy ven hồ đẹp nhất trong ngày.
 
-**Ngoại thành** ([ngoai-thanh](/danh-muc/du-lic/ngoai-thanh/)) là nhóm các tuyến đi xa hơn: nơi lý tưởng để gom vào buổi sáng hoặc cả ngày, thay vì rải rác khiến mất thời gian di chuyển.
+**Ngoại thành** ([ngoai-thanh](/danh-muc/du-
+lic/ngoai-thanh/)) là nhóm các tuyến đi xa hơn: nơi lý tưởng để gom vào buổi sáng hoặc cả ngày, thay vì rải rác khiến mất thời gian di chuyển.
 
 **Điểm đến Hà Nội** ([diem-den-hanoi](/danh-muc/du-lic/diem-den-hanoi/)) tổng hợp các điểm tham quan đáng đi theo loại hình: di tích, không gian công cộng, khu ẩm thực — kèm ghi chú thời gian ở mỗi điểm.
 
@@ -45,7 +46,8 @@ Nếu bạn đi cả ngày và muốn trải nghiệm đường dài hơn, chuy�
 
 ## Những vấn đề thường gặp
 
-Vấn đề số một là ước lượng sai thời gian di chuyển. Hà Nội phố nhỏ và nhiều tuyến một chiều, nên khoảng cách trên bản đồ gần nhưng đi thật lâu. Lịch trình mẫu trong nhóm **lịch trình** đã tính toán thời gian thực tế để tránh lỗi này.
+Vấn đề số một là ước lượng sai thời gian di chuyển
+. Hà Nội phố nhỏ và nhiều tuyến một chiều, nên khoảng cách trên bản đồ gần nhưng đi thật lâu. Lịch trình mẫu trong nhóm **lịch trình** đã tính toán thời gian thực tế để tránh lỗi này.
 
 Thứ hai là gửi xe quanh khu đông: quanh hồ Hoàn Kiếm và phố cổ, bãi gửi xuất hiện tràn lan không có bảng giá, dễ phát sinh mâu thuẫn về giá. Nhóm **gửi xe** nêu rõ khu nào có bãi quy tụ hợp pháp và giá phổ biến để bạn biết trước mức tham chiếu.
 
@@ -61,6 +63,23 @@ Về mùa, Hà Nội có bốn mùa rõ rệt và điều này ảnh hưởng l�
 
 Về ẩm thực, mỗi khu phố gần như có đặc sản riêng gắn với vị trí — chả cá trên phố Chả Cá, phở bát Đàn, các hàng bún chả trong phố cổ — nên ghép ăn theo cụm điểm đến là cách tự nhiên, thay vì đi riêng một chuyến chỉ để ăn một món. Chi tiết ghép này nằm trong từng tuyến ở nhóm **tuyến tham quan**.
 
+## Di chuyển trong Hà Nội bằng xe máy và phương tiện công cộng
+
+Xe máy vẫn là phương tiện linh hoạt nhất để khám phá Hà Nội, nhưng mỗi khu vực lại hợp với một cách di chuyển. Trong phố cổ và quanh Hồ Gươm, đi bộ là lựa chọn tốt nhất: các con phố ngắn, vỉa hè đông và khó tìm chỗ gửi xe vào giờ cao điểm. Khu vực Hồ Tây và các tuyến tham quan ngoại thành hợp đi xe máy hơn, vì khoảng cách xa và phương tiện công cộng chưa phủ đều. Với các điểm trung tâm có tuyến buýt hoặc điện chạy qua, kết hợp đi bộ với phương tiện công cộng giúp tránh cảnh ùn tắc giờ tan tầm.
+
+Thời điểm di chuyển ảnh hưởng nhiều đến trải nghiệm. Sáng sớm là lúc phố cổ yên tĩnh nhất, hợp chụp ảnh và dạo quanh chợ dân sinh; buổi trưa nắng gắt nên xếp vào lịch nghỉ; chiều tối quanh hồ là lúc đông vui nhất nhưng cũng khó gửi xe. Nếu di chuyển bằng xe máy, nên gửi xe ở bãi có vé giữ xe in sẵn giá, chụp ảnh biển giá trước khi giao xe và không để đồ có giá trị trong cốp.
+
+## Chi phí tham quan và thời điểm hợp lý
+
+Chi phí một ngày khám phá Hà Nội chủ yếu nằm ở ba hạng mục: giữ xe, ăn uống và vé tham quan. Giữ xe tính theo lượt, tăng nhẹ tại các điểm đông khách vào cuối tuần. Vé tham quan các di tích thường thấp, nhiều điểm như chùa, đình, đền không thu vé hoặc chỉ thu vé dịp lễ lớn. Ăn uống quanh phố cổ đa dạng mức giá; hàng quán đông người bản địa thường là lựa chọn an toàn về chất lượng.
+
+Mỗi mùa trong năm mang một trải nghiệm khác nhau. Mùa thu còn đẹp nhất để đi bộ quanh hồ và dạo phố cổ. Mùa hè nóng và hay mưa rào, nên xếp hoạt động ngoài trời vào sáng sớm. Mùa đông se lạnh hợp với các quán cà phê trong ngõ và ẩm thực nóng. Tết và các dịp lễ, một số điểm đóng cửa hoặc đổi giờ mở, nên kiểm tra trước khi xếp lịch trình.
+
+## Lên lịch trình hợp lý cho từng kiểu du lịch
+
+Với một ngày, nên chọn một khu vực trọng tâm, ví dụ đi bộ vòng quanh Hồ Gươm rồi qua vài con phố cổ, thay vì di chuyển xa giữa nhiều điểm. Với hai đến ba ngày, có thể ghép khu trung tâm với một tuyến ngoại thành hoặc một tuyến ven hồ trong cùng ngày. Người thích ẩm thực nên đi theo giờ ăn chính và chọn các tuyến phố nổi tiếng về một nhóm món; người thích chụp ảnh nên ưu tiên sáng sớm và giờ chiều ngà.
+
 ## Khám phá nội dung
 
-Bắt đầu từ lịch trình mẫu nếu bạn mới đến, hoặc từ tuyến tham quan nếu bạn muốn tuyến mới. Nhóm gửi xe và cách di chuyển nên đọc trước khi xuất phát. Khi muốn mở rộng chuyến đi ra ngoài Hà Nội — miền núi phía bắc, ven biển — chuyển sang chuyên mục [Phượt xe](/danh-muc/phuot-xe/).
+Bắt đầu từ lịch trình mẫu nếu bạn mới đến, hoặc từ tuyến tham quan
+ nếu bạn muốn tuyến mới. Nhóm gửi xe và cách di chuyển nên đọc trước khi xuất phát. Khi muốn mở rộng chuyến đi ra ngoài Hà Nội — miền núi phía bắc, ven biển — chuyển sang chuyên mục [Phượt xe](/danh-muc/phuot-xe/).

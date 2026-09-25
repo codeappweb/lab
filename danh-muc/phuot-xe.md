@@ -23,7 +23,8 @@ Chuyên mục này phục vụ người mới đi chuyến dài đầu tiên, ng
 
 **Tây Bắc** ([tay-bac](/danh-muc/phuot-xe/tay-bac/)) nói về các cung hướng tây bắc: đặc trưng đường đèo dài, thời điểm đẹp trong năm và các điểm nghỉ dọc tuyến.
 
-**Đông Bắc** ([dong-bac](/danh-muc/phuot-xe/dong-bac/)) bao gồm các cung hướng đông bắc: đường uốn khúc gần biển và vùng biên, khác biệt rõ rệt với tây bắc về địa hình và thời tiết.
+**Đông Bắc** ([dong-b
+ac](/danh-muc/phuot-xe/dong-bac/)) bao gồm các cung hướng đông bắc: đường uốn khúc gần biển và vùng biên, khác biệt rõ rệt với tây bắc về địa hình và thời tiết.
 
 **Cung đường** ([cung-duong](/danh-muc/phuot-xe/cung-duong/)) tổng hợp cách đánh giá một cung đường: quãng đường, độ khó, điểm tiếp nhiên liệu, và cách chọn cung khớp trình độ nhóm.
 
@@ -45,7 +46,8 @@ Người đi nhóm nên cùng đọc **kinh nghiệm phượt** trước khi xu�
 
 ## Những vấn đề thường gặp
 
-Vấn đề gặp nhiều nhất là hỏng xe giữa cung. Đa số ca hỏng giữa đường thuộc nhóm có thể phòng tránh: lốp mòn không thay trước chuyến đi, xích khô không được bôi trơn, ắc quy yếu từ trước. Checklist ở nhóm **chuẩn bị phượt** hướng trực tiếp vào các hạng mục này.
+Vấn đề gặp nhiều nhất là hỏng xe giữa cung. Đa số ca hỏng giữa đường thuộc nhóm có thể phòng tránh: lốp
+ mòn không thay trước chuyến đi, xích khô không được bôi trơn, ắc quy yếu từ trước. Checklist ở nhóm **chuẩn bị phượt** hướng trực tiếp vào các hạng mục này.
 
 Thứ hai là ước lượng sai thời gian trên đường núi. Trên đèo, tốc độ trung bình thực tế thấp hơn nhiều so với đường bằng — một cung 150km đường đèo có thể mất gần gấp đôi thời gian so với 150km đường thẳng. Cách tính thực tế có trong nhóm **cung đường**.
 
@@ -61,6 +63,23 @@ Về chọn thời điểm, mùa phượt đẹp ở miền bắc trải từ th
 
 Về thể lực, chạy đèo nhiều ngày tiêu hao thể lực nhanh hơn chạy phố: nhiệt độ, gió, tư thế ngồi và độ tập trung cao hơn cộng dồn. Lịch trình dài ngày hợp lý là chạy khung sáng – nghỉ trưa – chạy khung chiều, tránh chạy sau 18h — chi tiết cách phân bổ nằm ở nhóm **đi dài ngày**.
 
+## Kiểm tra xe trước chuyến phượt
+
+Xe máy đi đường dài chịu tải nặng hơn hẳn chạy phố, nên buổi kiểm tra trước chuyến đi quyết định an toàn của cả nhóm. Danh mục kiểm tra nên đi từ nhóm an toàn sang nhóm vận hành. Nhóm an toàn gồm: má phanh, độ rơ của tay phanh và pedal, áp suất lốp, độ mòn gai lốp, đèn pha, đèn xi nhan và còi. Nhóm vận hành gồm: mức nhớt, độ căng và độ mòn nhông sên dĩa, ắc quy, dây đề nếu xe số, và độ rơ của tay ga.
+
+Với các cung đường núi, cần lưu ý thêm hai điểm. Một là phanh xuống dốc dài, nên kiểm tra kỹ độ ăn sâu của phanh và mang theo dự phòng nếu nhóm đông người. Hai là lốp, vì mặt đường ẩm và cát kết hợp lốp mòn dễ gây ngã ở cua. Nếu xe từng có tiếng hú hoặc rung bất thường khi chạy phố, hãy xử lý trước khi lên đường thay vì chờ sự cố bộc phát giữa cung.
+
+## An toàn và ứng phó trên đường dài
+
+Kỷ luật chung của nhóm phượt là yếu tố an toàn quan trọng nhất. Giữ khoảng cách giữa các xe, ai đi trước ai đi sau phân công rõ, tránh tình trạng cả nhóm ép nhau vượt xe container ở cua mù. Xuống dốc về số thấp, phanh nhịp nhàng, không phanh gộp và khóa bánh trước. Nghỉ giải lao theo mốc thời gian hoặc mốc km, không chạy liên tục nhiều giờ vì mất tập trung là nguyên nhân ngã phổ biến ở nhóm đi xa.
+
+Thời tiết đổi nhanh ở vùng núi, nên theo dõi dự báo trước mỗi chặng và có phương án lùi lịch nếu mưa to. Đi trong mưa cần giảm tốc, tăng khoảng cách và tránh vệt bánh xe cũ trên mặt đường. Khi gặp đoạn đường ngập hoặc sạt lở, nên dừng quan sát trước khi đi, tuyệt đối không đi đầu nhóm vào đoạn không nhìn thấy đáy. Mang theo bộ dụng cụ vá lốp, số dự phòng của đề và bộ sạc dự phòng cho điện thoại.
+
+## Ghi chép và chuẩn bị cho chuyến sau
+
+Sau mỗi chuyến đi, một bản ghi chép ngắn về tổng km, tình trạng xe, các lỗi phát sinh và chi phí thực tế sẽ rất hữu ích cho chuyến sau. Đây là dữ liệu thực để cân nhắc thời điểm thay nhớt, thay nhông sên dĩa và bảo dưỡng lớn sau các cung đường nhiều độ cao. Kinh nghiệm phượt của nhiều người cho thấy xe được kiểm tra theo mốc thực tế mòn nhanh hơn khi chạy tải nặng, nên không nên chờ đến mốc bảo dưỡng chuẩn của hãng.
+
 ## Khám phá nội dung
 
-Bắt đầu từ nhóm chuẩn bị phượt và một cung ngắn ngày trước khi đi xa. Các nhóm cung đường và kỹ năng nên đọc dần theo trình độ, thay vì dồn một lần. Khi cần hiểu sâu về xe trước khi lên đường — kiểm tra phanh, lốp, nhớt — chuyên mục [Sửa chữa](/danh-muc/sua-chua/) có hướng dẫn chi tiết từng hạng mục, và [Phụ tùng](/danh-muc/phu-tung/) giúp chọn đúng đồ thay. Chuyến đi trong nội thành Hà Nội thì xem chuyên mục [Du lịch](/danh-muc/du-lic/).
+Bắt đầu từ nhóm chuẩn bị phượt và một cung ngắn ngày trước khi đi xa. Các nhóm cung đường và kỹ
+ năng nên đọc dần theo trình độ, thay vì dồn một lần. Khi cần hiểu sâu về xe trước khi lên đường — kiểm tra phanh, lốp, nhớt — chuyên mục [Sửa chữa](/danh-muc/sua-chua/) có hướng dẫn chi tiết từng hạng mục, và [Phụ tùng](/danh-muc/phu-tung/) giúp chọn đúng đồ thay. Chuyến đi trong nội thành Hà Nội thì xem chuyên mục [Du lịch](/danh-muc/du-lic/).

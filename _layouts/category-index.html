@@ -26,12 +26,21 @@ layout: default
       {% if pc == '' %}{% assign t = site.data['article-taxonomy'][post.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
       {% if pc == p.slug %}{% assign pcount = pcount | plus: 1 %}{% endif %}
     {% endfor %}
-    <a class="topic-card" href="{{ purl | relative_url }}">
-      <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
-      <span class="topic-card__title">{{ p.name }}</span>
-      <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
-      <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
-    </a>
+    <div class="topic-card topic-card--rich">
+      <a class="topic-card__main" href="{{ purl | relative_url }}">
+        <span class="topic-card__icon">{% include icon.html name=p.icon %}</span>
+        <span class="topic-card__title">{{ p.name }}</span>
+        <span class="topic-card__desc">{{ p.description | truncate: 110 }}</span>
+        <span class="topic-card__meta">{% if pcount > 0 %}{{ pcount }} bài{% else %}Sắp ra mắt{% endif %}</span>
+      </a>
+      <div class="topic-card__kids">
+        {% for c in p.children limit: 5 %}
+        {% capture kurl %}/danh-muc/{{ p.slug }}/{{ c.slug }}/{% endcapture %}
+        <a href="{{ kurl | relative_url }}">{{ c.name }}</a>
+        {% endfor %}
+      </div>
+      <a class="topic-card__more" href="{{ purl | relative_url }}">Xem tất cả</a>
+    </div>
     {% endfor %}
   </div>
 </div>

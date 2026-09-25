@@ -5,6 +5,24 @@
       {% for item in site.data.navigation.main %}
       <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
       {% endfor %}
+      <div class="mega-wrap">
+        <button type="button" class="mega-trigger" aria-haspopup="true" aria-expanded="false">
+          Danh mục
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="mega" role="group" aria-label="Danh mục chủ đề">
+          {% for p in site.data.taxonomy.parents %}
+          <div class="mega__col">
+            {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+            <a class="mega__parent" href="{{ purl | relative_url }}">{{ p.name }}</a>
+            {% for c in p.children %}
+            {% capture curl %}/danh-muc/{{ p.slug }}/{{ c.slug }}/{% endcapture %}
+            <a class="mega__child" href="{{ curl | relative_url }}">{{ c.name }}</a>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </nav>
     <div class="app-bar__actions">
       <button type="button" class="search-btn" data-search-open aria-label="Tìm kiếm (Ctrl K)">

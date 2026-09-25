@@ -10,8 +10,8 @@
       <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
       {% endfor %}
     </nav>
-    <nav class="footer-col" aria-label="Danh mục">
-      <h3>Danh mục</h3>
+    <nav class="footer-col" aria-label="Khám phá">
+      <h3>Khám phá</h3>
       {% for p in site.data.taxonomy.parents %}
       {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
       <a href="{{ purl | relative_url }}">{{ p.name }}</a>

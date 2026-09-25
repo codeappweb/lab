@@ -79,35 +79,35 @@
     {
       "batch_id": "smart-blog-001",
       "date": "2026-09-25",
-      "cluster": "infra (Smart Blog App)",
+      "cluster": "infra (UI + smart features)",
       "created": [
-        "Quick Actions FAB + data/site-actions.yml (cấu hình tập trung, ẩn action thiếu dữ liệu)",
-        "Trợ lý AI local: assets/js/assistant/{retrieval,providers,assistant}.js + includes/assistant.html",
-        "Chỉ mục build-time: assets/data/content-index.json (core) + 12 shard content-index-cNN.json (lazy full-text)",
-        "Article toolbar: lưu (localStorage), chia sẻ, copy link, mục lục, hỏi AI theo bài",
-        "Reading progress bar, prev/next article, sheet bài đã lưu, toast",
-        "assets/css/app2.css, assets/js/app-extras.js, manifest.webmanifest + theme-color"
+        "Quick Actions (data/site-actions.yml + _includes/quick-actions.html): FAB, dock di động, tự ẩn action không cấu hình",
+        "Trợ lý AI cục bộ (_includes/assistant.html + assets/js/assistant/*): retrieval client-side, không API key, không backend giả",
+        "Chỉ mục nội dung build-time (assets/data/content-index.json core + 12 shard c01..c12 lazy-load)",
+        "Article toolbar (save/share/copy/TOC/Ask AI), reading progress bar, prev/next navigation",
+        "Saved + Continue reading (localStorage xdc-saved/xdc-recent), homepage section Doc tiep",
+        "PWA-lite: manifest.webmanifest, theme-color, icon SVG; bỏ service worker (rủi ro stale cache)"
       ],
       "updated": [
-        "_layouts/post.html (toolbar, progress, prev/next)",
-        "_layouts/default.html (assistant, quick actions, saved sheet, scripts)",
-        "_includes/head.html (manifest, theme-color, app2.css)",
-        "_includes/icon.html (7 icon mới)",
-        "index.md (nút Hỏi Trợ lý AI, section Đọc tiếp)",
-        "README.md (kiến trúc Smart Blog App, sharding, provider adapter)"
+        "_layouts/post.html: toolbar + progress + prev/next",
+        "_layouts/default.html: thêm saved-sheet, quick-actions, assistant + 4 script defer",
+        "index.md: nút Hoi Tro ly AI + section #doc-tiep",
+        "_includes/head.html, icon.html, footer: theme-color, app2.css, icon mới",
+        "data/entities.json: sửa 3 dòng bị corrupt (newline trong chuỗi) khiến Pages build fail từ f5e8069"
       ],
       "updated_manifest": [],
       "status": "done"
     }
   ],
   "next_actions": [
-    "QA live: assistant, quick actions, lưu bài, palette mobile, prev/next, PWA manifest.",
-    "Chuyển 8 bài qa -> published, chạy scripts/build-sitemap.mjs.",
-    "Batch 002: 8 bài C05 còn lại + 5 bài C03 đầu tiên."
+    "QA trực tiếp trang live: light/dark, mobile, search, TOC sau khi GitHub Pages rebuild.",
+    "Chuyển 8 bài qa -> published sau khi UI deploy chạy ổn, chạy scripts/build-sitemap.mjs.",
+    "Batch 002: 8 bài C05 còn lại (bảo dưỡng định kỳ) + 5 bài C03 đầu tiên."
   ],
   "open_issues": [
-    "Deployment smart-blog-001 (bdc3c02) chờ Pages build — queue hay kẹt, đã retrigger bằng commit tiếp theo.",
-    "GitHub App không có quyền tạo repo (Administration) — site nằm trong repo lab, base path /lab/.",
-    "Không chạy được jekyll build cục bộ trong sandbox — cần xác nhận bản render trực tiếp trên Pages."
+    "Pages build queue từng bị kẹt (run #51 in_progress > 40 phút); đã retrigger bằng commit này — cần xác nhận build success trên Actions.",
+    "GitHub App không có quyền Administration — không thể tạo repo mới; site ở repo lab, base path /lab/.",
+    "Không chạy được jekyll build cục bộ trong sandbox — xác nhận bằng bản render trực tiếp trên Pages sau deploy.",
+    "Không có trình duyệt trong sandbox — console errors, light/dark mode chỉ kiểm tra tĩnh."
   ]
 }

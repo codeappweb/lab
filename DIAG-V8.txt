@@ -1,57 +1,27 @@
-10d4fe11f54e0d58127a64d96417560fc662c06c
-15878 data/entities.json
-09a7c2b82b91e0708e8f0173710cfcff2c623e6313d804ece7d7e62b7fbcf19d  data/entities.json
+014ded993fc3fcaf73b88a8c307615b660efafc5
+15882 data/entities.json
+462563755d0ed8ebf6064d1648b1a411c2f611e55670a8d9e0ac7d80ce909e2e  data/entities.json
 === jekyll build ===
 Configuration file: /home/runner/work/lab/lab/_config.yml
             Source: /home/runner/work/lab/lab
        Destination: /tmp/site
  Incremental build: disabled. Enable with --incremental
       Generating... 
-       Jekyll Feed: Generating feed for posts
-[31m  Liquid Exception: Liquid syntax error (/home/runner/work/lab/lab/_includes/nav-drawer.html line 93): Tag '{%' was not properly terminated with regexp: /\%\}/ included in /home/runner/work/lab/lab/_layouts/default.html[0m
-/home/runner/.gems/gems/liquid-4.0.4/lib/liquid/block_body.rb:132:in `raise_missing_tag_terminator': Liquid syntax error (/home/runner/work/lab/lab/_includes/nav-drawer.html line 93): Tag '{%' was not properly terminated with regexp: /\%\}/ included  (Liquid::SyntaxError)
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/block_body.rb:24:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/block.rb:58:in `parse_body'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/tags/for.rb:60:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/tag.rb:10:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/block_body.rb:34:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/document.rb:10:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/document.rb:5:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/template.rb:130:in `parse'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/template.rb:114:in `parse'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:13:in `block in parse'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:70:in `measure_time'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:12:in `parse'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/inclusion.rb:15:in `render'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/tags/include.rb:208:in `block in render'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/context.rb:123:in `stack'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/tags/include.rb:206:in `render'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/block_body.rb:103:in `render_node_to_output'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/block_body.rb:91:in `render'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/template.rb:206:in `block in render'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/template.rb:240:in `with_profiling'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/template.rb:205:in `render'
-	from /home/runner/.gems/gems/liquid-4.0.4/lib/liquid/template.rb:218:in `render!'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:39:in `block (3 levels) in render!'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:59:in `measure_counts'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:38:in `block (2 levels) in render!'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:63:in `measure_bytes'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:37:in `block in render!'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:70:in `measure_time'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/liquid_renderer/file.rb:36:in `render!'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/renderer.rb:129:in `render_liquid'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/renderer.rb:192:in `render_layout'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/renderer.rb:161:in `place_in_layouts'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/renderer.rb:93:in `render_document'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/renderer.rb:63:in `run'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:572:in `render_regenerated'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:557:in `block (2 levels) in render_docs'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:556:in `each'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:556:in `block in render_docs'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:555:in `each_value'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:555:in `render_docs'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:210:in `render'
-	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:80:in `process'
+/usr/lib/ruby/3.2.0/psych/parser.rb:62:in `_native_parse': (/home/runner/work/lab/lab/data/entities.json): did not find expected ',' or '}' while parsing a flow mapping at line 567 column 3 (Psych::SyntaxError)
+	from /usr/lib/ruby/3.2.0/psych/parser.rb:62:in `parse'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:143:in `load'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:157:in `block in load_file'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:157:in `open'
+	from /home/runner/.gems/gems/safe_yaml-1.0.5/lib/safe_yaml/load.rb:157:in `load_file'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:66:in `read_data_file'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:49:in `block in read_data_to'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:41:in `each'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:41:in `read_data_to'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/readers/data_reader.rb:23:in `read'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/reader.rb:31:in `read_data'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/reader.rb:21:in `read'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:181:in `read'
+	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/site.rb:78:in `process'
 	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/command.rb:28:in `process_site'
 	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/commands/build.rb:65:in `build'
 	from /home/runner/.gems/gems/jekyll-4.4.1/lib/jekyll/commands/build.rb:36:in `process'
@@ -62,6 +32,11 @@ Configuration file: /home/runner/work/lab/lab/_config.yml
 	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `block in execute'
 	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `each'
 	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/command.rb:221:in `execute'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary/program.rb:44:in `go'
+	from /home/runner/.gems/gems/mercenary-0.4.0/lib/mercenary.rb:21:in `program'
+	from /home/runner/.gems/gems/jekyll-4.4.1/exe/jekyll:15:in `<top (required)>'
+	from /home/runner/.gems/bin/jekyll:25:in `load'
+	from /home/runner/.gems/bin/jekyll:25:in `<main>'
 JEKYLL_EXIT=0
 === url count ===
 no-sitemap

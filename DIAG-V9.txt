@@ -1,17 +1,12 @@
-561a8509b1fa53a87a34861f9173b5517bc7880a
-=== jekyll build ===
+513ef555e07a8be6314c6cb8ef75b7634cd4ebf4
+=== jekyll build (github-pages gem) ===
 Configuration file: /home/runner/work/lab/lab/_config.yml
             Source: /home/runner/work/lab/lab
        Destination: /tmp/site
  Incremental build: disabled. Enable with --incremental
       Generating... 
        Jekyll Feed: Generating feed for posts
-[33m    Liquid Warning: Liquid syntax error (line 24): Expected end_of_string but found pipe in "slug in 'xe-may,xe-dien,xe-dap' | split: ','" in index.md[0m
-[33m    Liquid Warning: Liquid syntax error (line 45): Expected end_of_string but found pipe in "slug in 'thue-xe' | split: ','" in index.md[0m
-[33m    Liquid Warning: Liquid syntax error (line 66): Expected end_of_string but found pipe in "slug in 'du-lich,phuot-xe' | split: ','" in index.md[0m
-[33m    Liquid Warning: Liquid syntax error (line 87): Expected end_of_string but found pipe in "slug in 'sua-chua,phu-tung' | split: ','" in index.md[0m
-[33m    Liquid Warning: Liquid syntax error (line 108): Expected end_of_string but found pipe in "slug in 'phap-ly,an-toan,chi-phi,cong-nghe' | split: ','" in index.md[0m
-                    done in 4.702 seconds.
+                    done in 9.356 seconds.
  Auto-regeneration: disabled. Use --watch to enable.
 JEKYLL_EXIT=0
 === url count ===

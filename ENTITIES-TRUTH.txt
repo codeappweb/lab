@@ -1,0 +1,53 @@
+=== ground truth ===
+7ea3df55bc0f7042b887c471e6e1245446b626f9
+15878 data/entities.json
+09a7c2b82b91e0708e8f0173710cfcff2c623e6313d804ece7d7e62b7fbcf19d  data/entities.json
+--- sed 560,580 ---
+    "cluster_usage": 1
+  },
+  {
+    "name": "phuộc",
+    "cluster_usage": 1
+  },
+  {
+    "name": "vành xe",
+    "cluster_usage": 1
+  },
+  {
+    "name": "cầu chì",
+    "cluster_usage": 1
+  },
+  {
+    "name": "hệ thống điện",
+    "cluster_usage": 1
+  },
+  {
+    "name": "curoa",
+    "cluster_usage": 1
+--- od around offset 14800 ---
+0000000   n       s 341 272 241   c   "   ,  \n                   "   c
+0000020   l   u   s   t   e   r   _   u   s   a   g   e   "   :       1
+0000040  \n           }   ,  \n           {  \n                   "   n
+0000060   a   m   e   "   :       "   t   r 341 272 241   m       s 341
+0000100 272 241   c   "   ,  \n                   "   c   l   u   s   t
+0000120   e   r   _   u   s   a   g   e   "   :       1  \n           }
+0000140   ,  \n           {  \n                   "   n   a   m   e   "
+0000160   :       " 304 221 341 273 225   i       p   i   n   "   ,  \n
+0000200                   "   c   l   u   s   t   e   r   _   u   s   a
+0000220   g   e   "   :       1  \n           }   ,  \n           {  \n
+0000240                   "   n   a   m   e   "   :       "   c 303 264
+0000260   n   g       n   g   h 341 273 207       p   i   n   "   ,  \n
+0000300                   "   c   l   u   s   t   e   r   _   u   s   a
+0000320   g   e   "   :       1  \n           }   ,  \n           {  \n
+0000340                   "   n   a   m   e   "   :       "   h 341 272
+0000360 241       t 341 272 247   n   g       s 341 272 241   c   "   ,
+0000400  \n                   "   c   l   u   s   t   e   r   _   u   s
+0000420   a   g   e   "   :       1  \n           }   ,  \n           {
+0000440  \n                   "   n   a   m   e   "   :       "   t   h
+0000460 303 241   o       p   i   n   "   ,  \n                   "   c
+0000500   l   u   s   t   e   r   _   u   s   a   g   e   "   :       1
+0000520  \n           }   ,  \n           {  \n                   "   n
+0000540   a   m   e   "   :       "   c   h   u   n   g       c 306 260
+0000560   "   ,  \n                   "   c   l   u   s   t   e   r   _
+0000600   u   s   a   g   e   "   :       1  \n           }  \n   ]  \n
+0000620

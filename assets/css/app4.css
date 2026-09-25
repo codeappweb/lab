@@ -1,34 +1,54 @@
-/* app4.css — lớp bổ sung cho taxonomy-rebalance-001.
-   Ghi đè nhẹ lên app3: drawer accordion, mega menu, thẻ danh mục già. Không sửa app3. */
+/* app4.css — lớp bổ sung (taxonomy-rebalance-001 + menu-compaction-001).
+   Drawer gọn: lưới 2 cột cho trang tĩnh, 6 nhóm accordion, chuyên mục cấp 2, mega menu 6 cột, footer gọn. */
 
-.nav-drawer__body { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 4px 16px 28px; }
-.nav-drawer__divider { height: 1px; margin: 10px 0 6px; border: 0; background: var(--line, rgba(128,128,128,.25)); }
+/* ---------- Drawer: khung cuộn + divider ---------- */
+.nav-drawer__body { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px 14px 24px; }
+.nav-drawer__divider { height: 1px; margin: 8px 0 4px; border: 0; background: var(--line, rgba(128,128,128,.25)); }
+.nav-drawer__title { margin: 2px 6px 4px; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .55; }
 
+/* ---------- Trang tĩnh: lưới 2 cột, gọn nhẹ ---------- */
+.nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
+.nav-grid a { display: flex; align-items: center; min-height: 44px; padding: 0 8px; border-radius: 10px; font-size: .92rem; font-weight: 400; }
+.nav-grid a:hover { background: rgba(128,128,128,.12); }
+
+/* ---------- Nhóm accordion (6 nhóm) ---------- */
 .nav-acc { border-bottom: 1px solid rgba(128,128,128,.12); }
 .nav-acc:last-child { border-bottom: 0; }
-.nav-acc__summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 0 6px; border-radius: 10px; font-weight: 500; }
+.nav-acc__summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 0 6px; border-radius: 10px; font-weight: 600; font-size: .95rem; }
 .nav-acc__summary::-webkit-details-marker { display: none; }
 .nav-acc__summary:hover { background: rgba(128,128,128,.12); }
 .nav-acc__label { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .nav-acc__chev { flex: none; transition: transform .2s ease; }
 .nav-acc[open] > .nav-acc__summary .nav-acc__chev { transform: rotate(180deg); }
-.nav-acc__panel { display: flex; flex-direction: column; padding-left: 14px; }
-.nav-acc__child { display: flex; align-items: center; min-height: 44px; padding: 0 10px; border-radius: 8px; font-size: .95rem; }
-.nav-acc__child:hover { background: rgba(128,128,128,.12); }
-.nav-acc__child--all { font-weight: 600; }
-.nav-acc__panel a.is-active { font-weight: 700; }
+.nav-acc__panel { display: flex; flex-direction: column; }
+
+/* ---------- Cha (cấp 2) ---------- */
+.nav-sub__summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 44px; padding: 0 6px; border-radius: 8px; font-size: .92rem; }
+.nav-sub__summary::-webkit-details-marker { display: none; }
+.nav-sub__summary:hover { background: rgba(128,128,128,.12); }
+.nav-sub__label { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.nav-sub__chev { flex: none; opacity: .6; transition: transform .2s ease; }
+.nav-sub[open] > .nav-sub__summary .nav-sub__chev { transform: rotate(90deg); }
+.nav-sub__panel { display: flex; flex-direction: column; padding-left: 16px; }
+.nav-sub__child { display: flex; align-items: center; min-height: 44px; padding: 0 8px; border-radius: 8px; font-size: .88rem; opacity: .9; }
+.nav-sub__child:hover { background: rgba(128,128,128,.12); opacity: 1; }
+.nav-sub__child--all { font-weight: 600; }
+.nav-sub__panel a.is-active, .nav-acc__panel a.is-active { font-weight: 700; opacity: 1; }
 body.nav-lock { overflow: hidden; }
 
+/* ---------- Desktop: mega menu 6 cột nhóm ---------- */
 .mega-wrap { position: relative; }
 .mega-trigger { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 8px 4px; color: inherit; font: inherit; cursor: pointer; }
-.mega { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(4, minmax(170px, 1fr)); gap: 8px 24px; padding: 18px 22px; border-radius: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.18); background: var(--panel, #fff); opacity: 0; visibility: hidden; transition: opacity .15s ease; min-width: min(940px, 92vw); max-height: 78vh; overflow-y: auto; z-index: 60; }
+.mega { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(6, minmax(140px, 1fr)); gap: 6px 20px; padding: 16px 18px; border-radius: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.18); background: var(--panel, #fff); opacity: 0; visibility: hidden; transition: opacity .15s ease; min-width: min(1000px, 94vw); max-height: 76vh; overflow-y: auto; z-index: 60; }
 [data-theme="dark"] .mega { background: var(--panel, #16161a); }
 .mega-wrap:hover .mega, .mega-wrap:focus-within .mega { opacity: 1; visibility: visible; }
 .mega__col { display: flex; flex-direction: column; }
-.mega__parent { font-weight: 700; margin-bottom: 2px; padding: 4px 0; }
-.mega__child { font-size: .88rem; opacity: .8; padding: 2px 0; }
+.mega__group { font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; opacity: .5; margin-bottom: 4px; }
+.mega__parent { font-weight: 700; margin: 2px 0; padding: 2px 0; }
+.mega__child { font-size: .85rem; opacity: .75; padding: 1px 0 1px 8px; }
 .mega__child:hover { opacity: 1; text-decoration: underline; }
 
+/* ---------- Thẻ danh mục già trên /danh-muc/ ---------- */
 .topic-card--rich { display: flex; flex-direction: column; }
 .topic-card__main { display: flex; flex-direction: column; gap: 4px; }
 .topic-card__kids { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 8px; font-size: .82rem; }
@@ -36,5 +56,11 @@ body.nav-lock { overflow: hidden; }
 .topic-card__kids a:hover { opacity: 1; text-decoration: underline; }
 .topic-card__more { display: inline-block; margin-top: 6px; font-size: .85rem; font-weight: 600; }
 
+/* ---------- Footer: 12 danh mục gọn nhiều cột ---------- */
+.footer-cats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+@media (min-width: 900px) { .footer-cats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.footer-cats a { font-size: .88rem; padding: 1px 0; }
+
+/* ---------- Responsive ---------- */
 @media (max-width: 1100px) { .mega { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 900px) { .mega-wrap { display: none; } }

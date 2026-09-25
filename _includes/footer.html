@@ -10,12 +10,14 @@
       <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
       {% endfor %}
     </nav>
-    <nav class="footer-col" aria-label="Khám phá">
+    <nav class="footer-col footer-col--cats" aria-label="Khám phá">
       <h3>Khám phá</h3>
-      {% for p in site.data.taxonomy.parents %}
-      {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
-      <a href="{{ purl | relative_url }}">{{ p.name }}</a>
-      {% endfor %}
+      <div class="footer-cats">
+        {% for p in site.data.taxonomy.parents %}
+        {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
+        <a href="{{ purl | relative_url }}">{{ p.name }}</a>
+        {% endfor %}
+      </div>
     </nav>
     <nav class="footer-col" aria-label="Liên kết kỹ thuật">
       <h3>Kỹ thuật</h3>

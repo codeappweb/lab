@@ -1,5 +1,7 @@
-/* nav2.js — bổ sung cho taxonomy-rebalance-001.
-   Accordion drawer (mở một cha tại một thời điểm, tự mở mục hiện tại), khóa cuộn body, aria mega menu. */
+/* nav2.js — nav UX cho taxonomy-rebalance-001 + menu-compaction-001.
+   - Drawer: 6 nhóm accordion (một nhóm mở tại một thời điểm), mỗi cha là accordion con cấp 2.
+   - Tự mở nhóm + chuyên mục chứa trang hiện tại, highlight active.
+   - Khóa cuộn body khi drawer mở. Mega menu aria. */
 (function () {
   'use strict';
   function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
@@ -11,20 +13,32 @@
       });
       mo.observe(drawer, { attributes: true, attributeFilter: ['hidden'] });
     }
-    var accs = Array.prototype.slice.call(document.querySelectorAll('details.nav-acc'));
-    accs.forEach(function (d) {
-      d.addEventListener('toggle', function () {
-        if (d.open) accs.forEach(function (o) { if (o !== d) o.open = false; });
+    var norm = function (u) { return (u || '').replace(/\/index\.html$/, ''); };
+    var path = norm(location.pathname);
+    var groups = Array.prototype.slice.call(document.querySelectorAll('details.nav-acc'));
+    groups.forEach(function (g) {
+      g.addEventListener('toggle', function () {
+        if (g.open) groups.forEach(function (o) { if (o !== g) o.open = false; });
+      });
+      // một chuyên mục con mở tại một thời điểm trong cùng nhóm
+      var subs = Array.prototype.slice.call(g.querySelectorAll('details.nav-sub'));
+      subs.forEach(function (s) {
+        s.addEventListener('toggle', function () {
+          if (s.open) subs.forEach(function (o) { if (o !== s) o.open = false; });
+        });
       });
     });
-    var path = location.pathname.replace(/\/index\.html$/, '');
-    accs.forEach(function (d) {
-      var hit = false;
-      Array.prototype.forEach.call(d.querySelectorAll('.nav-acc__panel a'), function (a) {
-        var href = (a.getAttribute('href') || '').replace(/\/index\.html$/, '');
-        if (href && path === href) { a.classList.add('is-active'); a.setAttribute('aria-current', 'page'); hit = true; }
-      });
-      if (hit) d.open = true;
+    // active state: mở nhóm + cha chứa link hiện tại
+    var links = document.querySelectorAll('.nav-sub__panel a, .nav-acc__panel > a');
+    Array.prototype.forEach.call(links, function (a) {
+      if (norm(a.getAttribute('href')) === path) {
+        a.classList.add('is-active');
+        a.setAttribute('aria-current', 'page');
+        var sub = a.closest('details.nav-sub');
+        var grp = a.closest('details.nav-acc');
+        if (sub) sub.open = true;
+        if (grp) grp.open = true;
+      }
     });
     var trig = document.querySelector('.mega-trigger');
     var wrap = document.querySelector('.mega-wrap');

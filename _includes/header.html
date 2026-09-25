@@ -11,13 +11,20 @@
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="mega" role="group" aria-label="Danh mục chủ đề">
-          {% for p in site.data.taxonomy.parents %}
+          {% assign mega = 'Phương tiện:xe-may,xe-dien,xe-dap|Thuê xe:thue-xe|Hành trình:du-lich,phuot-xe|Kỹ thuật:sua-chua,phu-tung,cong-nghe|Kinh nghiệm:an-toan,chi-phi|Pháp lý:phap-ly' | split: '|' %}
+          {% for g in mega %}
+          {% assign gname = g | split: ':' | first %}
+          {% assign gslugs = g | split: ':' | last | split: ',' %}
           <div class="mega__col">
+            <span class="mega__group">{{ gname }}</span>
+            {% for slug in gslugs %}
+            {% assign p = site.data.taxonomy.parents | where: 'slug', slug | first %}
             {% capture purl %}/danh-muc/{{ p.slug }}/{% endcapture %}
             <a class="mega__parent" href="{{ purl | relative_url }}">{{ p.name }}</a>
             {% for c in p.children %}
             {% capture curl %}/danh-muc/{{ p.slug }}/{{ c.slug }}/{% endcapture %}
             <a class="mega__child" href="{{ curl | relative_url }}">{{ c.name }}</a>
+            {% endfor %}
             {% endfor %}
           </div>
           {% endfor %}

@@ -24,6 +24,7 @@ Chuyên mục này phục vụ người mới chạy xe muốn xây thói quen �
 **Đi trong đêm** ([di-dem](/danh-muc/an-toan/di-dem/)) bao gồm nhận diện rủi ro buổi tối: tầm nhìn hạn chế, đèn xe khác gây chói, đường vắng dễ chạy nhanh quá ngưỡng phản xạ.
 
 **Đường trơn** ([duong-tron](/danh-muc/an-toan/duong-tron/)) là nhóm chuyên
+
  sâu về các bề mặt mất độ bám: đường mới rải nhựa, vệt dầu, lá ướt, gờ giảm tốc sơn trơn — và cách nhận biết từ xa.
 
 **Ngập nước** ([ngap-nuoc](/danh-muc/an-toan/ngap-nuoc/)) nói về chạy qua đoạn đường ngập: ước độ sâu an toàn, giữ ga đều, không tắt máy giữa vùng ngập, và cách xử lý khi xe tắt máy trong nước.
@@ -46,7 +47,8 @@ Người đi nhóm đông hoặc có trẻ em đi cùng cần lưu ý thêm nhó
 
 Vấn đề số một là phanh gấp trên đường trơn. Phản xạ tự nhiên là bóp cứng phanh trước, và đây là nguyên nhân ngã phổ biến nhất khi đường ướt. Kỹ năng thay thế — phanh sau giữ ổn định, phanh trước tăng dần — có trong nhóm đường trơn và kỹ năng lái. Đây là kỹ năng nên tập chủ động trong chỗ vắng trước khi cần dùng thật.
 
-Thứ hai là chạy đêm 
+Thứ hai là chạy đêm
+ 
 quá nhanh so với tầm đèn: phản xạ của người thường cần ít nhất một giây để nhận biết vật cản, và ở 50km/h xe đã đi gần 14m trong một giây. Chạy đêm an toàn là giữ tốc độ trong ngưỡng đèn chiếu gần dừng được xe — chi tiết hơn ở nhóm đi trong đêm.
 
 Thứ ba là giữ khoảng cách: đa số tai nạn đuôi xe nằm ở khoảng cách dưới hai giây, không đủ thời gian phanh lại khi xe trước dừng gấp. Kỹ năng đếm "một-ngàn-lẻ-một" khi xe trước qua một mốc cố định là cách đơn giản nhất để giữ đúng khoảng cách.
@@ -61,6 +63,20 @@ Ba nguyên tắc nền tảng của an toàn xe máy. Thứ nhất, "nhìn xa ch
 
 Về trang bị, mũ bảo hiểm đạt chuẩn (có tem CR đầy đủ) là khoản đầu tư có lợi nhất trong mọi loại trang bị — chấn thương đầu là loại chấn thương gây hậu quả nặng nhất và khó hồi phục nhất. Về kỹ năng, phối hợp phanh trước – sau là kỹ năng đáng luyện tập nhất: nó áp dụng cho mọi tình huống, từ phố đông đến đèo núi.
 
+
+## Tình huống nguy hiểm điển hình và cách xử lý
+
+Hầu hết tai nạn xe máy trong đô thị rơi vào vài nhóm tình huống lặp lại. Nhóm thứ nhất là xe ô tô mở cửa hoặc cắt làn lúc bạn đang đi sát mép đường
+; cách giảm rủi ro là giữ khoảng cách đủ lớn với hàng xe đỗ và không chạy song song sát với ô tô. Nhóm thứ hai là đâm đuôi khi trời mưa hoặc đèn pha chói; giải pháp là tăng khoảng cách gấp đôi với điều kiện thường và nhìn gương hậu thường xuyên hơn. Nhóm thứ ba là trơn ngã ở vệt dầu, nắp cống và vạch sơn mới khi mặt đường ẩm; kỹ năng là quan sát xa mặt đường và giảm tốc trước khi tới đoạn nhìn bóng loáng.
+
+Nguyên tắc chung khi tình huống xảy ra là phanh thẳng, giữ tay lái và không né gấp; phần lớn ngã nặng đến từ thao tác né đột ngột hơn là va chạm nhẹ. Nếu buộc phải giảm tốc trong khoảng ngắn, ép phanh trước nhịp nhàng rồi phanh sau, tránh khóa bánh trước ở tốc độ cao.
+
+## Trang bị bảo hộ vượt mức tối thiểu
+
+Mũ bảo hiểm đạt chuẩn là trang bị bắt buộc, nhưng người đi đường dài hoặc đi hằng ngày nên xem xét vượt mức tối thiểu: mũ có kính che mặt bảo vệ mắt khỏi côn trùng và bụi đường, găng tay giữ độ bám khi mưa, và áo mưa dạng quần áo tách rời thay vì áo choàng dễ bay cuộn vào xe. Giày bọc cổ tốt hơn dép vì phần lớn chấn thương bàn chân xảy ra lúc xe ngã ở tốc độ thấp.
+
+Bảo hộ chỉ phát huy tác dụng nếu đúng tình trạng: dây mũ bảo hiểm bị giãn, lớp tiếp xúc bị rít sau nhiều lần va, hay lớp chèn lót xuống cấp. Kiểm tra mũ định kỳ và thay mũ sau mỗi lần va mạnh, kể cả khi vỏ ngoài không nhìn thấy nứt, vì phần hấp thụ lực bên trong đã mất tác dụng.
+
 ## Khám phá nội dung
 
 Đọc theo tình huống bạn thường gặp nhất, rồi mở dần các nhóm còn lại. Với kỹ năng chuẩn bị xe trước khi đi xa — kiểm tra phanh, lốp, đèn — chuyên mục [Sửa chữa](/danh-muc/sua-ch
@@ -68,4 +84,4 @@ ua/) và [Phượt xe](/danh-muc/phuot-xe/) có hướng dẫn chi tiết. Với
 
 ## Thói quen hằng ngày tạo nên sự an toàn
 
-An toàn không đến từ một kỹ năng đơn lẻ mà từ tập hợp thói quen nhỏ lặp lại mỗi ngày: mặc kiểm tra gương trước khi ra khỏi vỉa hè, xi nhan sớm trước khi rẽ, để một khoảng trống thoát phía trước khi dừng đèn đỏ, và không chèn vào góc mù của xe tải ở giao lộ. Người đi xe nhiều năm mà ít va chạm thường không lái giỏi hơn ở thao tác khó, họ chỉ lặp các thói quen giữ khoảng cách và nhìn trước tốt hơn. Ghi lại ngắn gọn mỗi lần suýt va để tự nhận ra nhóm tình huống mình hay gặp, là cách cải thiện nhanh nhất sau một quãng thời gian ngắn.
+An toàn không đến từ một kỹ năng đơn lẻ mà từ tập hợp thói quen nhỏ lặp lại mỗi ngày: nhìn kiểm tra gương trước khi rời vỉa hè, xi nhan sớm trước khi rẽ, để một khoảng trống thoát phía trước khi dừng đèn đỏ, và không chèn vào góc mù của xe tải ở giao lộ. Người đi xe nhiều năm mà ít va chạm thường không lái giỏi hơn ở thao tác khó, họ chỉ lặp các thói quen giữ khoảng cách và nhìn trước tốt hơn. Ghi lại ngắn gọn mỗi lần suýt va để tự nhận ra nhóm tình huống mình hay gặp, là cách cải thiện nhanh nhất sau một quãng thời gian ngắn.

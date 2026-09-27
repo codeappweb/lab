@@ -9,7 +9,6 @@ permalink: /:title/
 markdown: kramdown
 theme: null
 plugins:
-  - jekyll-sitemap
   - jekyll-feed
 defaults:
   - scope: { path: "", type: posts }

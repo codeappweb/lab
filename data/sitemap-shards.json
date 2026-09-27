@@ -1,0 +1,16 @@
+{
+  "site": "https://codeappweb.github.io/lab",
+  "shard_size": 1000,
+  "shards": [
+    {
+      "file": "sitemaps/articles-001.xml",
+      "count": 30,
+      "lastmod": "2026-09-27"
+    }
+  ],
+  "counts": {
+    "articles": 30,
+    "categories": 14,
+    "static": 7
+  }
+}

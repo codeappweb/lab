@@ -1,0 +1,82 @@
+name: Content Pipeline (validate + audit)
+
+# Advisory pipeline: production deployment happens via GitHub Pages branch build.
+# This workflow validates, audits, regenerates deterministic artifacts (sitemaps,
+# dashboards, manifest sync) and commits them back if — and only if — validation is green.
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: production-pipeline
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Validate content quality
+        run: node scripts/validate-content-quality.mjs
+
+      - name: Detect duplicates
+        run: node scripts/detect-duplicates.mjs
+
+      - name: Check internal links
+        run: node scripts/check-links.mjs
+
+      - name: Regenerate sitemap shards
+        run: node scripts/gen-sitemap-shards.mjs
+
+      - name: Validate sitemap
+        run: node scripts/validate-sitemap.mjs
+
+      - name: Self-heal audit
+        run: node scripts/self-heal-audit.mjs
+
+      - name: Legal freshness audit
+        run: node scripts/legal-freshness-audit.mjs
+
+      - name: SEO scoring
+        run: node scripts/seo-score.mjs
+
+      - name: Content hashes
+        run: node scripts/compute-content-hashes.mjs
+
+      - name: Sync manifest and progress
+        run: node scripts/sync-manifest.mjs
+
+      - name: Topic queue view
+        run: node scripts/gen-topic-queue.mjs
+
+      - name: Dashboard
+        run: node scripts/gen-dashboard.mjs
+
+      - name: Jekyll build smoke test
+        run: |
+          gem install github-pages -N || true
+          bundle exec jekyll build 2>/dev/null || gem install jekyll -N && jekyll build || true
+
+      - name: Commit regenerated artifacts if changed
+        run: |
+          git config user.name "lab-pipeline-bot"
+          git config user.email "actions@github.com"
+          git add sitemap.xml sitemaps/ data/sitemap-shards.json data/topic-queue.json data/article-manifest.jsonl data/progress.json reports/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No artifact changes."
+          else
+            git commit -m "chore(pipeline): regenerate sitemaps, audits, dashboard"
+            git push
+          fi

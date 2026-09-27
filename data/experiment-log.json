@@ -1,0 +1,24 @@
+{
+  "note": "Per-batch deploy records. Discovery observations live in reports/google-discovery.json.",
+  "batches": [
+    {
+      "batch": "legacy-2026-09-25",
+      "published": 22,
+      "date": "2026-09-25",
+      "commit": "667535fe",
+      "sitemap": "plugin jekyll-sitemap",
+      "http_status": "200 live",
+      "robots_status": "valid",
+      "canonical_status": "ok"
+    },
+    {
+      "batch": "batch-001",
+      "published": 8,
+      "date": "2026-09-27",
+      "sitemap": "sharded static XML",
+      "http_status": "pending verification",
+      "robots_status": "valid",
+      "canonical_status": "ok"
+    }
+  ]
+}

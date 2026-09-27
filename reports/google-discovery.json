@@ -1,0 +1,245 @@
+{
+  "note": "Manual observation log for the organic discovery experiment. Status: UNKNOWN | NOT_OBSERVED | OBSERVED. site: search counts are never treated as exact index totals. Do not auto-populate first_observed_in_google_at.",
+  "articles": [
+    {
+      "url": "https://codeappweb.github.io/lab/bao-duong-xe-may-dinh-ky-checklist-theo-moc-1000-km/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/chay-cau-chi-xe-may-chan-doan-he-thong-dien/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/chon-lop-xe-may-dung-co-gai-thanh-lop-va-cach-doc-kich-thuoc/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/den-pha-xe-may-mo-hoac-khong-sang-kiem-tra-tu-ac-quy-den-suon-dien/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/nhong-sen-dia-chu-ky-thay-va-dau-hieu-mon/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/phanh-bo-phanh-ket-khong-chiu-nguyen-nhan-va-cach-xu-ly/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/tieng-luc-cuc-o-dau-may-xe-may-chan-doan-loc-va-xupap/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-bi-i-yeu-may-khi-len-doc-hoac-cho-nang-nguyen-nhan/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-bi-truot-con-de-dau-hieu-nhan-biet-va-cach-xu-ly/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-co-mui-xang-dau-hieu-ro-ri-va-cach-kiem-tra/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-dang-chay-bi-chet-may-dot-ngot-nguyen-nhan-va-cach-xu-ly/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-de-lau-khong-chay-de-khong-no-xu-ly-tung-buoc/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-hao-nhot-chay-nhot-nguyen-nhan-va-cach-xu-ly/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-kho-no-may-khi-troi-lanh-nguyen-nhan-va-meo-de-may/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/",
+      "published_at": "2026-09-25",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/ap-suat-lop-xe-may-chuan-theo-tai-trong/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/boi-tron-xich-xe-may-dung-cach/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/cham-soc-ac-quy-xe-may-dung-cach/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/doi-nhot-xe-may-dung-ky/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/kiem-tra-nuoc-lam-mat-xe-tay-ga/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/thay-dau-phanh-xe-may-dung-ky/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/tieng-lach-cach-cua-phuoc-va-op-xe-may/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "url": "https://codeappweb.github.io/lab/ve-sinh-loc-gio-va-bugi-xe-may/",
+      "published_at": "2026-09-27",
+      "first_checked_at": "2026-09-27",
+      "first_observed_in_google_at": null,
+      "last_checked_at": "2026-09-27",
+      "status": "NOT_OBSERVED"
+    }
+  ]
+}

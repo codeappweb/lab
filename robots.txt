@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: /lab/sitemap.xml
+Sitemap: https://codeappweb.github.io/lab/sitemap.xml

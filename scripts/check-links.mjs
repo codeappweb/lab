@@ -6,7 +6,7 @@
 // Usage: node scripts/check-links.mjs [--root <dir>]
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { findRoot, discover, fail } from './lib/lab.mjs';
+import { findRoot, discover, fail, writeReport } from './lib/lab.mjs';
 
 const ROOT = findRoot(process.argv);
 const errors = [];
@@ -47,7 +47,8 @@ for (const f of files) {
     const t = m[1];
     if (t.trimStart().startsWith('{{')) continue;
     if (/[ \t\n]/.test(t) || t.includes('%0A') || t.includes('%0D')) {
-      errors.push(`${f.path}: link target contains whitespace/newline: "${t.slice(0, 60)}"`);
+      errors.push
+(`${f.path}: link target contains whitespace/newline: "${t.slice(0, 60)}"`);
     }
   }
   // markdown relative links
@@ -70,7 +71,7 @@ function check(f, target, frag) {
   const u = normUrl(target.split('?')[0]);
   if (!urlSet.has(u)) {
     // category index /danh-muc/ and archive pages are directory indexes
-    errors.push(`${f.path}: broken internal link "${target}" (no matching page)`);
+    errors.push(`BROKEN ${target} :: in ${f.path}`);
     return;
   }
   if (frag) {
@@ -85,5 +86,6 @@ for (const p of pages) if (p.url) urlSet.add(p.url);
 const danhMucIdx = [...pages].find(p => p.url === '/danh-muc/');
 if (danhMucIdx) urlSet.add('/danh-muc/');
 
+try { writeReport(ROOT, 'link-errors.json', { count: errors.length, errors }); } catch {}
 fail(errors, 'check-links');
 console.log(`check-links: OK (${files.length} files scanned, ${urlSet.size} known URLs)`);

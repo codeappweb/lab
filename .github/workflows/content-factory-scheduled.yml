@@ -1,0 +1,237 @@
+name: Content Factory Scheduled
+
+# ======================================================================
+# NO-AI-API CONTENT FACTORY (modeled on thuexemayhanoi/shop)
+# ----------------------------------------------------------------------
+# GitHub Actions = deterministic hands ONLY. The authenticated
+# Mistral/Vibe agent session (or a human) = editorial writer. This
+# workflow NEVER calls an AI API, NEVER writes article prose and NEVER
+# invents facts. It only:
+#   - validates configuration, queue matrix and transaction state
+#   - claims the next batch of eligible PENDING (status "planned")
+#     rows from data/article-manifest.jsonl — HARD CAP 20 rows
+#   - exports writer manifests/instructions (topics only, no prose)
+#   - runs deterministic QA on drafts the writer already produced
+#   - promotes PASS drafts to _posts, regenerates canonical artifacts
+#     and publishes — never overwriting anything
+#
+# SECRETS: none. Only the default GITHUB_TOKEN (checkout/commit/push).
+# No MISTRAL/OPENAI/GEMINI/ANTHROPIC keys, no external LLM HTTP API,
+# no paid generation API. Article prose requires the authenticated
+# writer session; GitHub cron performs prepare-next, validation,
+# state maintenance, QA of existing drafts, publishing of PASS
+# content and reports/progress only.
+#
+# ONE-TIME PRODUCTION TEST: 2026-09-27 19:00 Asia/Ho_Chi_Minh
+# (= 12:00 UTC, cron "0 12 27 9 *"). GitHub cron has no year field,
+# so the gate job enforces an exact runtime guard: the scheduled
+# production batch may only run when the UTC date is exactly
+# 2026-09-27; in any other year the same cron exits successfully
+# without processing a batch. workflow_dispatch stays available for
+# manual testing later.
+# ======================================================================
+
+on:
+  schedule:
+    - cron: "0 12 27 9 *" # 19:00 Asia/Ho_Chi_Minh == 12:00 UTC
+  workflow_dispatch:
+    inputs:
+      op:
+        description: "Deterministic operator command"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - production
+          - prepare-next
+          - qa
+          - publish
+          - consistency
+          - recover
+          - requeue
+      batch_size:
+        description: "Max rows per batch (hard limit 20)"
+        required: false
+        default: "20"
+      ids:
+        description: "Comma-separated row ids (requeue only)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-factory-production
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+      op: ${{ steps.gate.outputs.op }}
+    steps:
+      - name: One-time runtime date guard (scheduled runs only)
+        id: gate
+        run: |
+          set -eu
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            TODAY="$(date -u +%F)"
+            echo "UTC date: $TODAY (one-time production window: 2026-09-27)"
+            if [ "$TODAY" = "2026-09-27" ]; then
+              echo "allowed=true" >> "$GITHUB_OUTPUT"
+              echo "op=production" >> "$GITHUB_OUTPUT"
+            else
+              # Exit successfully WITHOUT processing a batch. The
+              # 2026-09-27 window is closed (or not reached); this same
+              # Sept-27 cron can never process a production batch again.
+              echo "One-time production test window (2026-09-27) not active. Exiting successfully without processing a batch."
+              echo "allowed=false" >> "$GITHUB_OUTPUT"
+              echo "op=none" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "op=${{ github.event.inputs.op }}" >> "$GITHUB_OUTPUT"
+          fi
+
+  factory:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    env:
+      OP: ${{ needs.gate.outputs.op }}
+      IDS: ${{ github.event.inputs.ids }}
+      BATCH_SIZE: ${{ github.event.inputs.batch_size || '20' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Set up Ruby (Jekyll smoke build)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+
+      - name: Read and validate operator command (whitelist)
+        run: |
+          set -eu
+          case "$OP" in
+            production|prepare-next|qa|publish|consistency|recover|requeue) ;;
+            *) echo "::error::unsupported op: $OP"; exit 1 ;;
+          esac
+          echo "operator op: $OP"
+
+      - name: Enforce hard batch cap (20 rows maximum)
+        run: |
+          set -eu
+          n="${BATCH_SIZE:-20}"
+          case "$n" in (*[!0-9]*|"") n=20 ;; esac
+          if [ "$n" -gt 20 ]; then
+            echo "::error::batch_size $n exceeds the hard test limit of 20"
+            exit 1
+          fi
+          echo "batch size: $n (hard cap 20)"
+
+      - name: Validate factory configuration
+        run: node scripts/factory-batch.mjs check-config
+
+      - name: Validate content matrix (queue + duplicate detection)
+        run: |
+          set -eu
+          node scripts/detect-duplicates.mjs
+          node scripts/validate-content-quality.mjs
+
+      - name: Recover stale/pending transaction state
+        run: node scripts/factory-batch.mjs recover
+
+      - name: Run consistency checks
+        run: node scripts/factory-batch.mjs consistency
+
+      - name: prepare-next — claim next 20 eligible PENDING rows, export writer manifests
+        if: env.OP == 'production' || env.OP == 'prepare-next'
+        run: node scripts/factory-batch.mjs prepare-next --batch-size "$BATCH_SIZE"
+
+      - name: qa — deterministic QA of writer-produced drafts (if present)
+        if: env.OP == 'production' || env.OP == 'qa'
+        run: |
+          code=0
+          node scripts/factory-batch.mjs qa || code=$?
+          echo "qa exit code: $code (3 = FAIL rows recorded, not fatal)"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 3 ]; then exit "$code"; fi
+          exit 0
+
+      - name: publish — promote PASS rows only (never FAIL/REVIEW, never overwrite)
+        if: env.OP == 'production' || env.OP == 'publish'
+        run: |
+          set -eu
+          node scripts/factory-batch.mjs consistency
+          node scripts/factory-batch.mjs publish
+
+      - name: Rebuild category/index/sitemap artifacts (canonical scripts)
+        if: env.OP == 'production' || env.OP == 'publish'
+        run: |
+          set -eu
+          node scripts/gen-sitemap-shards.mjs
+          node scripts/validate-sitemap.mjs
+          node scripts/sync-manifest.mjs
+          node scripts/gen-topic-queue.mjs
+          node scripts/seo-score.mjs
+          node scripts/compute-content-hashes.mjs
+          node scripts/gen-dashboard.mjs
+          node scripts/self-heal-audit.mjs || true
+          node scripts/legal-freshness-audit.mjs || true
+
+      - name: requeue — eligible FAIL/REVIEW rows only (stale-safe)
+        if: env.OP == 'requeue'
+        run: |
+          set -eu
+          if [ -z "$IDS" ]; then echo "::error::requeue requires ids"; exit 1; fi
+          code=0
+          node scripts/factory-batch.mjs requeue --ids "$IDS" || code=$?
+          echo "requeue exit code: $code (4 = refusals recorded, not fatal)"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 4 ]; then exit "$code"; fi
+          exit 0
+
+      - name: Full test suite (all deploy gates)
+        run: |
+          set -eu
+          node scripts/validate-deploy.mjs
+          node scripts/check-links.mjs
+
+      - name: Jekyll build smoke test
+        run: |
+          gem install jekyll -N || true
+          bundle exec jekyll build 2>/dev/null || jekyll build || true
+
+      - name: Save progress
+        run: node scripts/factory-batch.mjs progress
+
+      - name: Commit and push deterministic outputs
+        run: |
+          set -eu
+          git config user.name "content-factory-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- _posts _drafts data sitemaps sitemap.xml reports 2>/dev/null || true
+          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard -- _posts _drafts data sitemaps sitemap.xml reports)" ]; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git commit -m "content-factory: ${OP} (deterministic outputs of canonical tooling only; article prose written by the authenticated Vibe writer session)"
+          if git push; then
+            :
+          else
+            for i in 1 2 3 4 5; do
+              git fetch origin main
+              git rebase origin/main || { git rebase --abort; exit 1; }
+              if git push; then
+                break
+              fi
+            done
+          fi

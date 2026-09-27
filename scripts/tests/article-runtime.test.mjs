@@ -44,7 +44,8 @@ class ClassList {
   }
 }
 class Elem {
-  constructor(doc, tag) {
+  constructor(doc
+, tag) {
     this.doc = doc;
     this.tagName = String(tag).toUpperCase();
     this.children = [];

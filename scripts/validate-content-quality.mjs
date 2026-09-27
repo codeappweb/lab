@@ -21,6 +21,19 @@ const { posts, pages, statics } = discover(ROOT);
 const seenTitles = new Map();
 const seenPerm = new Map();
 
+// Explicit short-article migration allowlist (data/short-article-allowlist.json).
+// Loads ONCE (not per post). Invalid JSON fails closed.
+const allowFile = join(ROOT, 'data', 'short-article-allowlist.json');
+let allowSlugs = new Set();
+if (existsSync(allowFile)) {
+  try {
+    const al = JSON.parse(readFileSync(allowFile, 'utf8'));
+    if (Array.isArray(al.slugs)) allowSlugs = new Set(al.slugs);
+  } catch {
+    errors.push('data/short-article-allowlist.json: invalid JSON — failing closed (the migration allowlist must stay valid)');
+  }
+}
+
 for (const p of posts) {
   const rel = p.path;
   const d = p.fm.data;
@@ -34,13 +47,23 @@ for (const p of posts) {
   if (d.permalink && d.permalink !== '/' + p.slug + '/') errors.push(`${rel}: permalink override "${d.permalink}" != /${p.slug}/ (posts use /:title/)`);
   if (!d.id && !d.manifest_id && !d.mock) errors.push(`${rel}: post missing both id and manifest_id`);
   const words = wordCountVN(p.fm.body);
-  const legacy = Boolean(d.manifest_id);
+  // Legacy exemption is EXPLICIT and CLOSED: manifest_id alone no longer
+  // exempts an article. The legacy batches are capped by publication date
+  // (filename date <= 2026-09-26). New-schema articles below the documented
+  // 1200–2000 VN syllable-token standard are ERRORS unless the slug is in the
+  // reviewed migration allowlist (data/short-article-allowlist.json).
+  const legacy = Boolean(d.manifest_id) && p.date <= '2026-09-26';
   if (!legacy && words > 0) {
-    // new-schema articles: documented VN syllable-count standard 1200-2000.
-    // Currently advisory (existing new articles were published below range);
-    // hard-block will be enforced for pilot articles via seo-score report.
     if (words < 300) errors.push(`${rel}: only ${words} words (unpublished stub or thin content in _posts is invalid)`);
-    else if (words < 1200) warnings.push(`${rel}: ${words} words < 1200 standard for new articles`);
+    else if (words < 1200) {
+      if (allowSlugs.has(p.slug)) {
+        warnings.push(`${rel}: ${words} words < 1200 standard — explicit migration-allowlist entry (data/short-article-allowlist.json; see docs/CONTENT-POLICY.md)`);
+      } else {
+        errors.push(`${rel}: ${words} words < 1200 standard for new-schema articles (documented VN syllable-count standard 1200–2000). The legacy exemption requires manifest_id AND publication date <= 2026-09-26; anything else must meet the standard or go through an explicit, reviewed allowlist entry.`);
+      }
+    } else if (words > 2000) {
+      warnings.push(`${rel}: ${words} words > 2000 standard (1200–2000 documented range; draft-level validation hard-blocks new drafts above 2000)`);
+    }
   }
   if (/\s/.test(basename(p.path))) errors.push(`${rel}: filename contains whitespace/newline`);
   const t = String(d.title || '').trim().toLowerCase();

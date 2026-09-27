@@ -1,0 +1,15 @@
+{
+  "comment": "Explicit short-article migration policy (docs/CONTENT-POLICY.md). These new-schema articles were published on 2026-09-27, before the 1200-2000 Vietnamese syllable-token gate was enforced, and are allowed to remain short. This list is a MIGRATION record, not a bypass: new articles below the standard fail the gate and may only be added here through an explicit, reviewed decision.",
+  "policy": "entry requires: published before the gate, explicit review, and a documented reason",
+  "added_at": "2026-09-27",
+  "slugs": [
+    "ap-suat-lop-xe-may-chuan-theo-tai-trong",
+    "boi-tron-xich-xe-may-dung-cach",
+    "cham-soc-ac-quy-xe-may-dung-cach",
+    "doi-nhot-xe-may-dung-ky",
+    "kiem-tra-nuoc-lam-mat-xe-tay-ga",
+    "thay-dau-phanh-xe-may-dung-ky",
+    "tieng-lach-cach-cua-phuoc-va-op-xe-may",
+    "ve-sinh-loc-gio-va-bugi-xe-may"
+  ]
+}

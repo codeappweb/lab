@@ -7,8 +7,12 @@
 //   LOW: cosmetic
 // Only DETERMINISTIC repairs are auto-applied with --fix (regenerating
 // sitemap shards). Everything else is reported, never guessed.
+// Orphan reporting is validated against RENDERED pages when a _site build
+// exists (related-article cards and category grids render links a raw
+// source-text scan cannot see); without a build it is labeled as a
+// source-only estimate.
 // Usage: node scripts/self-heal-audit.mjs [--root <dir>] [--fix]
-import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { findRoot, discover, isExcluded, SITE, writeReport } from './lib/lab.mjs';
@@ -56,8 +60,8 @@ for (const f of [...posts, ...pages, ...statics]) {
     let t = m[1];
     if (t.startsWith('/lab')) t = t.slice(4);
     const u = t.endsWith('/') || t.includes('.') ? t : t + '/';
-    if (!urlSet.has(u) && !u.startsWith('/danh-muc/') || (u.startsWith('/danh-muc/') && !urlSet.has(u) && !isDirIndex(u, pages))) {
-      if (!urlSet.has(u) && !isDirIndex(u, pages)) add('CRITICAL', `${f.path}: broken link "${m[1]}"`, 'fix source link to the real published URL');
+    if (!urlSet.has(u) && !isDirIndex(u, pages)) {
+      add('CRITICAL', `${f.path}: broken link "${m[1]}"`, 'fix source link to the real published URL');
     }
   }
   for (const m of text.matchAll(/\{\{\s*'([^']+)'\s*\|\s*relative_url\s*\}\}/g)) {
@@ -71,12 +75,39 @@ function isDirIndex(u, pgs) {
   if (u === '/danh-muc/') return pgs.some(p => p.url === '/danh-muc/');
   return false;
 }
-// orphan posts: no inbound link from any other content file
+
+// Rendered corpus (when a Jekyll build exists): every rendered HTML page.
+// Scanned ONCE, not per post. A post's own rendered page is excluded when
+// checking that post's inbound links.
+const siteDir = join(ROOT, '_site');
+let htmlFiles = null;
+if (existsSync(siteDir)) {
+  htmlFiles = [];
+  (function walk(d) {
+    for (const e of readdirSync(d)) {
+      const q = join(d, e);
+      if (statSync(q).isDirectory()) walk(q);
+      else if (e.endsWith('.html')) htmlFiles.push({ path: q, text: readFileSync(q, 'utf8') });
+    }
+  })(siteDir);
+}
+
+// orphan posts: no inbound link from any other content file AND no inbound
+// link on any rendered page other than the post's own page
 const allText = [...pages, ...hubs, ...statics].map(x => x.text).join('\n') +
-  posts.filter(p => true).map(p => p.text).join('\n');
+  posts.map(p => p.text).join('\n');
 for (const p of posts) {
   const needle = '/' + p.slug;
-  if (!allText.includes(needle)) add('MEDIUM', `${p.path}: orphan — no inbound internal link`, 'add a relevant link from a category/hub page');
+  const inSource = allText.includes(needle);
+  if (htmlFiles) {
+    const own = join(siteDir, p.slug, 'index.html');
+    const rendered = htmlFiles.some(h => h.path !== own && h.text.includes(needle));
+    if (!inSource && !rendered) {
+      add('MEDIUM', `${p.path}: orphan — no inbound link in content sources or rendered pages`, 'add a relevant link from a category/hub page');
+    }
+  } else if (!inSource) {
+    add('MEDIUM', `${p.path}: possible orphan (source-only estimate — no rendered _site found; rerun after a Jekyll build)`, 'add a relevant link from a category/hub page');
+  }
 }
 // stale shards vs current post count
 const sdir = join(ROOT, 'sitemaps');
@@ -89,8 +120,7 @@ if (existsSync(sdir)) {
 if (FIX) {
   try {
     execFileSync('node', [join(ROOT, 'scripts/gen-sitemap-shards.mjs'), '--root', ROOT], { stdio: 'inherit' });
-  } catch { add('CRITICAL', 'sitemap regeneration failed', 'check scripts');
-  }
+  } catch { add('CRITICAL', 'sitemap regeneration failed', 'check scripts'); }
 }
 
 writeReport(ROOT, 'self-heal-audit.json', { generated_at: new Date().toISOString(), findings });

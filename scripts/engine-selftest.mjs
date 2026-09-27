@@ -220,6 +220,7 @@ function check(name, cond, detail) {
   const rFake = run(['verify', 'thu-nghiem-orchestration', '--sha', 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'], root);
   const job = state(root).jobs[0];
   check('verify: fake sha => BLOCKED, verified_live NOT recorded', rFake.status === 1 && !job.verified_live, JSON.stringify(job.verified_live || null));
+}
 // ===== Regression tests: durable state, concurrency, resume, retries =====
 // (added with the engine-v2 correctness repair; see docs/ENGINE-RUNBOOK.md)
 import { StateStore as _StateStore, deployedRevisionOk as _drOk } from './engine/state.mjs';
@@ -527,7 +528,6 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
   check('deployedRevisionOk: missing sha fails closed', _drOk('', 'bbb', 'ahead').ok === false);
 }
 
-}
 
 console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
 if (failed) process.exit(1);

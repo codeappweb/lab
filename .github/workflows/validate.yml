@@ -27,12 +27,7 @@ jobs:
             node --check "$f"
           done
       - name: Selftest (ok fixture passes, bad fixture fails)
-        run: |
-          rc=0
-          node scripts/selftest.mjs > selftest.log 2>&1 || rc=$?
-          cat selftest.log >> "$GITHUB_STEP_SUMMARY"
-          cat selftest.log
-          exit $rc
+        run: node scripts/selftest.mjs
 
   validate:
     name: Content + sitemap + build gates
@@ -46,37 +41,37 @@ jobs:
         with:
           node-version: '20'
       - name: Reconcile manifest with actual posts (derive state in CI)
-        run: node scripts/sync-manifest.mjs
+        run: bash scripts/ci-run.sh node scripts/sync-manifest.mjs
       - name: Derive site data
         run: |
-          node scripts/gen-site-data.mjs
-          node scripts/gen-archive-pages.mjs
+          bash scripts/ci-run.sh node scripts/gen-site-data.mjs
+          bash scripts/ci-run.sh node scripts/gen-archive-pages.mjs
       - name: Validate content quality
-        run: node scripts/validate-content-quality.mjs
+        run: bash scripts/ci-run.sh node scripts/validate-content-quality.mjs
       - name: Detect duplicates
-        run: node scripts/detect-duplicates.mjs
+        run: bash scripts/ci-run.sh node scripts/detect-duplicates.mjs
       - name: Check internal links
-        run: node scripts/check-links.mjs
+        run: bash scripts/ci-run.sh node scripts/check-links.mjs
       - name: Regenerate sitemap shards
-        run: node scripts/gen-sitemap-shards.mjs
+        run: bash scripts/ci-run.sh node scripts/gen-sitemap-shards.mjs
       - name: Validate sitemap
-        run: node scripts/validate-sitemap.mjs
+        run: bash scripts/ci-run.sh node scripts/validate-sitemap.mjs
       - name: Self-heal audit
-        run: node scripts/self-heal-audit.mjs
+        run: bash scripts/ci-run.sh node scripts/self-heal-audit.mjs
       - name: Legal freshness audit (gate mode)
-        run: node scripts/legal-freshness-audit.mjs --gate
+        run: bash scripts/ci-run.sh node scripts/legal-freshness-audit.mjs --gate
       - name: SEO scoring
-        run: node scripts/seo-score.mjs
+        run: bash scripts/ci-run.sh node scripts/seo-score.mjs
       - name: Compute content hashes
-        run: node scripts/compute-content-hashes.mjs
+        run: bash scripts/ci-run.sh node scripts/compute-content-hashes.mjs
       - name: Manifest sync idempotency (dry-run must be a no-op)
-        run: node scripts/sync-manifest.mjs --dry-run
+        run: bash scripts/ci-run.sh node scripts/sync-manifest.mjs --dry-run
       - name: Engine status and preflight (never generates, never publishes)
         run: |
-          node scripts/engine/runner.mjs status
-          node scripts/engine/runner.mjs preflight
+          bash scripts/ci-run.sh node scripts/engine/runner.mjs status
+          bash scripts/ci-run.sh node scripts/engine/runner.mjs preflight
       - name: Measure output capacity (source estimate)
-        run: node scripts/measure-output.mjs
+        run: bash scripts/ci-run.sh node scripts/measure-output.mjs
 
       # Real Jekyll build with the github-pages gem. No || true: a build
       # failure fails this job and blocks the pipeline.
@@ -88,9 +83,9 @@ jobs:
           bundle install --jobs 4
           bundle exec jekyll build
       - name: Measure built output
-        run: node scripts/measure-output.mjs
+        run: bash scripts/ci-run.sh node scripts/measure-output.mjs
       - name: Validate built output (rendered links + sitemap membership)
-        run: node scripts/validate-built.mjs --site _site
+        run: bash scripts/ci-run.sh node scripts/validate-built.mjs --site _site
 
       - name: Upload reports (always, even on failure)
         if: always()

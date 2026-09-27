@@ -39,11 +39,14 @@ Fix lỗi thật, tái hiện trước khi sửa, thêm regression test cho từ
   head.html load article.css sau cùng. Docs: **ARTICLE-DESIGN.md** (mới).
 - **Visual QA: KHÔNG hoàn tất** — môi trường không có browser/screenshot; chỉ
   source-level inspection. Không claim khác.
-- Commits phiên này: `d1e5215` (legal gate + fixtures), `44e77db` (temp file-dump
-  CI, đã gỡ), `1f1851a` (runner/state/selftest v2), `d828236` (selftest brace
-  + content-quality allowlist + self-heal rendered + validate.yml parse diag),
-  `e95c0fa` (fixture allowlist), `8720914` (content-pipeline build gates + UI),
-  + các fix CI-diag tiếp theo. PR: https://github.com/codeappweb/lab/pull/1
+- Commits phiên này (cũ → mới): `d1e5215` (legal gate + fixtures + schema doc),
+  `44e77db` (temp file-dump CI, đã gỡ), `1f1851a` (runner/state/selftest v2),
+  `d828236` (selftest brace + content-quality allowlist gate + self-heal
+  rendered + parse-check diag), `e95c0fa` (fixture allowlist), `8720914`
+  (content-pipeline build gates + article UI), `4b15b99` + `9c86465` (CI
+  diagnostics cho engine selftest), `48bbbff` (unit constant fix),
+  `2175785` (E_BUILD_MISSING trong message), `ecb8215` (docs).
+  CI xanh toàn bộ tại run `36303778295`. PR: https://github.com/codeappweb/lab/pull/1
   (KHÔNG merge).
 - 4 comment FILEDUMP cũ trên PR là artifact debug — có thể xóa.
 

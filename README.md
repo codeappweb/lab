@@ -51,6 +51,7 @@ Chi tiết từng lệnh, pilot có kiểm soát, crash/lock recovery: [docs/ENG
 | Draft chưa đủ điều kiện xuất bản | `drafts/` (ngoài `_posts/`, loại khỏi build) |
 | Bài xuất bản | `_posts/` |
 | Report kiểm định | `reports/` (không hardcode số liệu vào docs) |
+| Browser QA (Chromium thật, Playwright pin) | `.github/workflows/visual-qa.yml` + `scripts/tests/browser-qa.mjs`; screenshots: artifact `visual-qa-screenshots` (cần người xem) |
 ## An toàn mặc định
 - `generation_enabled=false`, `dry_run=true`, `provider=mock` trong `data/engine-config.json`.
 - `run` không dry-run từ chối khi generation tắt; provider mock từ chối publish trong mọi trường hợp.

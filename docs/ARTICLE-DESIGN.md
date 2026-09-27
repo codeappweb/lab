@@ -173,3 +173,25 @@ and dark themes, plus 200% zoom and reduced-motion.
 4. Use H2/H3 for sections (≥3 H2s activates the TOC), Kramdown auto-IDs.
 5. Tables, `{:.note}`/`{:.warning}` blocks, quotes and lists only when the
    content genuinely calls for them. Never add filler to expand length.
+
+
+## Post-QA fixes (browser-verified, 2026-09-27)
+
+- **Saved sheet Escape**: the "Bài đã lưu" sheet now closes on Escape, matching
+  search, topic sheet and drawer (keydown handler in app-extras.js). Found by
+  the browser-QA run: the open sheet also blocked bottom-nav clicks through
+  pointer events.
+- **`.article { max-width: none }`**: app4.css caps single-column reading
+  surfaces (`.post`, `.page-narrow`, `.article`) at 740px. On the .article ROOT
+  that cap fought the two-column grid (720px measure + 220px TOC + 64px gap)
+  and shrank the reading column to 456px at 1280px. Scoped override in
+  article.css (loaded last, per the scoping contract); inner blocks keep
+  their own `max-width:var(--content)`.
+- **Real-browser verification now in CI** (`visual-qa.yml`, Playwright/Chromium):
+  reading width 600–760px at desktop, TOC anchors, table-wrap (runtime test
+  covers the table-heavy case; the richest article has none), honest copy
+  feedback, Escape + focus restoration, dark theme, no horizontal overflow at
+  360–1440px, reduced motion, 200% zoom. CI green at `eb3167f` (151/151).
+- **Human visual inspection of the screenshots remains PENDING** (artifact
+  `visual-qa-screenshots`); design quality is not claimed from automated
+  screenshots alone.

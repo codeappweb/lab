@@ -1,5 +1,11 @@
 # HANDOFF — phiên 2026-09-27 (engine correctness + article UI, tiếp nối engine v2)
 
+## Phiên 2026-09-27 (phần 3: browser QA thật trong CI + 3 fix thật)
+
+- Commits (cũ → mới): `c477d05` (browser-qa.mjs: khai báo BASE trước probe — lỗi TDZ giết cả run), `07cbdff` (app-extras.js: Escape đóng saved sheet, ngang hàng search/topic/drawer), `eb3167f` (article.css: `.article{max-width:none}` — bỏ cap 740px của app4.css khỏi root `.article`; cột đọc desktop về 720px).
+- `visual-qa.yml` + `scripts/tests/browser-qa.mjs`: build Jekyll THẬT của nhánh + Playwright Chromium 1.49.1 (pin), 151 check (viewport 360–1440, dark, label/destination/action theo data chuẩn, sheet Escape + focus, TOC, copy, reading width 600–760px, reduced-motion, 200% zoom). CI XANH toàn bộ tại `eb3167f`.
+- Phiên sau: KHÔNG merge, KHÔNG bật generation. Nếu đổi layout bài viết: giữ cột đọc 600–760px (check tự động sẽ fail nếu lệch). Visual QA của NGƯỜI còn treo: mở artifact `visual-qa-screenshots` của run browser QA xanh và kiểm tra bằng mắt; không claim từ automated screenshots.
+
 ## Phiên 2026-09-27 (phần 2: state persistence + nav single-source + runtime test)
 
 - **Persistence sequence** (`runner.mjs`): content commit (pathspec + purity check) →
@@ -27,7 +33,7 @@
   `f0c2896` (workflow YAML quote fix + docs ENGINE-RUNBOOK/VALIDATION/
   ARTICLE-DESIGN), `9f9a1b7` (CI post article-runtime log khi fail),
   `67ebf29` (article.js setAttribute href), `03858a9` (selftest bare `-b main`
-  + defensive clone diag), `420e5fa` (runner persist+push milestone `pushed`).
+  + defensive clone diag), `420e5fa` (rnner persist+push milestone `pushed`).
   CI xanh toàn bộ tại run `36307044166` cho selftest + reconcile; gates job
   xem PR. KHÔNG merge, generation vẫn TẮT.
 - Visual QA phần 2: KHÔNG thực hiện (không browser tooling) — không claim.
@@ -58,7 +64,7 @@ Fix lỗi thật, tái hiện trước khi sửa, thêm regression test cho từ
   Jekyll build + `validate-built.mjs` trước commit/deploy; `E_BUILD_MISSING`
   xuất hiện trong message để diagnose.
 - **Độ dài trung thực**: 1.200–2.000 âm tiết cho bài mới; legacy đóng
-  (manifest_id VÀ ≤2026-09-26); allowlist `data/short-article-allowlist.json`
+  (manifest_id VÀ ≤2026-09-26); allowlist `data/shortarticle-allowlist.json`
   (8 slug thật đã verify trong manifest); fixture ok có allowlist fixture-scoped.
 - **Orphan trung thực**: đối chiếu rendered corpus khi có `_site/`, còn lại
   "source-only estimate".
@@ -85,7 +91,7 @@ Fix lỗi thật, tái hiện trước khi sửa, thêm regression test cho từ
 ## Các phiên trước (giữ nguyên lịch sử)
 
 - `scripts/engine/state.mjs`: atomic save (tmp+rename), state hỏng → `E_STATE_CORRUPT` + lệnh `recover` (lưu archive, không reset im lặng), lock O_EXCL + phát hiện stale theo HEARTBEAT, job identity theo slug cho MỌI trạng thái (failed/blocked giữ slug), `reload()` để thấy pause/stop từ tiến trình khác.
-- `scripts/engine/provider.mjs`: preflight trung thực (`test-only` / `manual-draft-ingestion` / `blocked` + lý do cụ thể); evidence (bắt buộc `sources[]`) + outline + draft là các bước thật; `mistral_api` = BLOCKED (biến môi trường không phải bằng chứng adapter chạy được).
+- `scripts/engine/provider.mjs`: preflight trung thực (`test-only` / `manual-draft-ingestion` / `blocked` + lý do cụ thể); evidence (bắtbuộc `sources[]`) + outline + draft là các bước thật; `mistral_api` = BLOCKED (biến môi trường không phải bằng chứng adapter chạy được).
 - `scripts/engine/runner.mjs` (viết lại): pipeline thật planned → researching (evidence) → drafting (`drafts/`, không đụng `_posts/`) → validating (check thật cấp draft; mock bị cấm ngoài dry-run) → ready → publishing (chạy lại toàn bộ gate, ghi vào `_posts/`, commit) → published CHỈ khi `verify --sha` xác nhận URL live + nội dung + revision Pages khớp. Từ chối topic chưa duyệt; retry re-plan rồi `run --resume` làm lại công việc; reload state mỗi vòng; không còn cờ `--live`.
 - `scripts/engine-selftest.mjs` (mới): 14 nhóm test offline trên root tạm (mkdtemp) — mock không tới `_posts/`, unapproved bị từ chối, corrupt → recover, lock stale heartbeat, identity ổn định, retry thật, verify không ghi `verified_live` thiếu bằng chứng.
 - `.github/workflows/validate.yml`: thêm engine selftest; job `manifest-reconcile` (idempotent, chỉ chạy `scripts/sync-manifest.mjs` và commit data khi lệch — không tạo nội dung); bước đăng chẩn đoán lên PR khi fail (không nới gate nào); gate nội dung luôn ghi `reports/content-quality.json`.
@@ -97,7 +103,7 @@ Fix lỗi thật, tái hiện trước khi sửa, thêm regression test cho từ
 - `.github/workflows/content-pipeline.yml`: đổi tên job `generation` → `writer-preflight` (dispatch-only, không viết bài) — tên phản ánh đúng trách nhiệm.
 - `_config.yml`: exclude `drafts/`, `_tmpchunks/`, `AGENTS.md`.
 - `.gitignore`: `data/engine-lock.json`, `data/engine-state.corrupt-*.json`, `data/topic-candidates.json`.
-- Docs: README (entry point mới), AGENTS.md (mới), docs/PROJECT-STATUS.md, ENGINE-RUNBOOK.md, VALIDATION.md, DEPLOYMENT.md, SCALING.md, CONTENT-POLICY.md, ARCHITECTURE-20K.md, HANDOFF.md (mới), ENGINE.md (chuyển thành pointer).
+- Docs: README (etry point mới), AGENTS.md (mới), docs/PROJECT-STATUS.md, ENGINE-RUNBOOK.md, VALIDATION.md, DEPLOYMENT.md, SCALING.md, CONTENT-POLICY.md, ARCHITECTURE-20K.md, HANDOFF.md (mới), ENGINE.md (chuyển thành pointer).
 
 Commit của phiên này trên nhánh `repair/engine-v2` (mới nhất trước, lịch sử đầy đủ: git log):
 - `6faa74e`, `9460204` — bot CI reconcile: manifest + progress đồng bộ 8 bài đã xuất bản (job `manifest-reconcile`; idempotent từ đây).
@@ -123,7 +129,7 @@ Commit của phiên này trên nhánh `repair/engine-v2` (mới nhất trước,
 
 ## Bước tiếp theo an toàn cho phiên sau
 
-0. Lưu ý: commit đẩy lên từ job CI bằng `GITHUB_TOKEN` KHÔNG kích hoạt workflow mới (chống đệ quy của GitHub). Sau một lần reconcile, cần một commit đẩy từ ngoài (như commit docs này) để CI chạy lại trên trạng thái đã đồng bộ.
+0. Lưu ý: commit đẩy lên từ job CI bằng `GITHUB_TOKEN` KHÔNG kích hoạtworkflow mới (chống đệ quy của GitHub). Sau một lần reconcile, cần một commit đẩy từ ngoài (như commit docs này) để CI chạy lại trên trạng thái đã đồng bộ.
 1. Kiểm tra CI run mới nhất trên nhánh (validate + engine selftest). Nếu fail: đọc comment chẩn đoán trên PR #1, sửa nguyên nhân trong repo — KHÔNG nới gate.
 2. Chạy kiểm tra không tạo nội dung: `node scripts/engine-selftest.mjs && node scripts/validate-deploy.mjs && bundle exec jekyll build && node scripts/validate-built.mjs --site _site`.
 3. Không merge PR, không bật generation, không chạy pilot nếu chưa được yêu cầu rõ ràng.

@@ -32,3 +32,11 @@ Nguyên tắc: mỗi cổng phải FAIL khi nội dung sai; không cổng nào �
 
 - Fail = exit khác 0 = KHÔNG push, KHÔNG deploy. Trong CI, bước fail chặn các bước sau; validate.yml upload `reports/` kể cả khi fail và post comment chẩn đoán lên PR.
 - Không bao giờ: nới ngưỡng, bắt gate "warn", bỏ bước, hoặc sửa report thay vì sửa nội dung.
+
+
+## Browser QA (Playwright — Chromium thật, workflow `visual-qa.yml`)
+
+- Chuỗi: build Jekyll THẬT của nhánh repair → HTTP server local (MIME chuẩn) → `scripts/tests/browser-qa.mjs` (Playwright 1.49.1 pin, Chromium).
+- 151 check tự động: không console/page error và không tràn ngang ở 5 viewport × mọi page chính (home, danh-mục index, parent, child có/không bài, bài giàu nội dung nhất, bài title dài nhất, static page); dark theme; label + destination header/footer theo `data/navigation.yml`; action button theo `data-qa`; bottom-nav; mở/đóng + Escape + focus restoration cho nav drawer / search / saved / topic sheet; TOC anchor resolve; table-wrap; copy feedback trung thực; stylesheet applied (CSSOM dump chẩn đoán); reading width 600–760px; reduced-motion; 200% zoom.
+- Fail = exit 1; comment chẩn đoán lên PR; screenshots upload artifact `visual-qa-screenshots` kể cả khi fail.
+- GIỚI HẠN trung thực: browser test THẬT nhưng KHÔNG thay thế visual QA của người — screenshot chưa từng được con người xem thì VISUAL QA CHƯA hoàn tất.

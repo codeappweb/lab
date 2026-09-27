@@ -214,7 +214,8 @@ const overflow = (page) => page.evaluate(() =>
   let drawerHidden = await page.$eval('#navDrawer', el => el.hidden);
   check('nav drawer opens on [data-nav-open]', drawerHidden === false, 'hidden=' + drawerHidden);
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(150);
+  // main.js closes sheets on a setTimeout (220ms) — wait well past it.
+  await page.waitForTimeout(400);
   drawerHidden = await page.$eval('#navDrawer', el => el.hidden);
   check('Escape closes the nav drawer', drawerHidden === true, 'hidden=' + drawerHidden);
   // search palette
@@ -223,7 +224,7 @@ const overflow = (page) => page.evaluate(() =>
   const searchOpen = await page.$eval('#searchOverlay', el => !el.hidden);
   check('search palette opens on [data-search-open]', searchOpen === true, 'hidden? ' + !searchOpen);
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(150);
+  await page.waitForTimeout(400);
   const searchClosed = await page.$eval('#searchOverlay', el => el.hidden);
   check('Escape closes the search palette', searchClosed === true);
   // saved sheet via data-qa
@@ -234,7 +235,7 @@ const overflow = (page) => page.evaluate(() =>
     const savedReacted = await page.$eval('#savedSheet', el => !el.hidden);
     check('saved sheet opens on [data-qa="saved"] click', savedReacted === true, 'hidden? ' + !savedReacted);
     await page.keyboard.press('Escape');
-    await page.waitForTimeout(150);
+    await page.waitForTimeout(400);
   } else {
     check('saved surface: [data-qa="saved"] button present', false, 'button missing');
   }
@@ -244,7 +245,7 @@ const overflow = (page) => page.evaluate(() =>
   const topicOpen = await page.$eval('#topicSheet', el => !el.hidden).catch(() => null);
   check('topic sheet opens from bottom-nav', topicOpen === true, 'state=' + topicOpen);
   await page.keyboard.press('Escape');
-  await page.waitForTimeout(150);
+  await page.waitForTimeout(400);
   // focus restoration: focus returns to a focusable element (not body-lost)
   const activeTag = await page.evaluate(() => document.activeElement && document.activeElement.tagName);
   check('focus restored after Escape (active element is focusable)', activeTag && activeTag !== 'BODY', 'active=' + activeTag);
@@ -281,8 +282,28 @@ const overflow = (page) => page.evaluate(() =>
     } else {
       console.log('NOTE: no .h-link found (no eligible headings?)');
     }
-    const proseWidth = await page.$eval('.article .prose', el => el.getBoundingClientRect().width).catch(() => null);
-    if (proseWidth !== null) check('reading width within 600-760px at desktop', proseWidth >= 600 && proseWidth <= 760, 'width=' + Math.round(proseWidth));
+    // CSS must be applied before measuring: an unstyled page reports the raw
+    // body width (1264px at a 1280px viewport) and would be misreported as a
+    // layout defect. Wait for stylesheets, then report full diagnostics so a
+    // stylesheet load failure is distinguishable from a real grid problem.
+    await page.waitForFunction(() => document.styleSheets.length > 0, null, { timeout: 5000 }).catch(() => {});
+    const m = await page.evaluate(() => {
+      const prose = document.querySelector('.article .prose');
+      const wrap = prose ? prose.closest('.article-body-wrap') : null;
+      return {
+        sheets: document.styleSheets.length,
+        display: wrap ? getComputedStyle(wrap).display : null,
+        cols: wrap ? getComputedStyle(wrap).gridTemplateColumns : null,
+        width: prose ? prose.getBoundingClientRect().width : null
+      };
+    });
+    check('article page stylesheets applied', m.sheets >= 4, 'sheets=' + m.sheets);
+    if (m.width !== null) {
+      check('reading width within 600-760px at desktop', m.width >= 600 && m.width <= 760,
+        'width=' + Math.round(m.width) + ' sheets=' + m.sheets + ' wrapDisplay=' + m.display + ' cols=' + m.cols);
+    } else {
+      check('reading width: .article .prose present', false, 'element missing');
+    }
     await page.close();
   } else {
     check('article page exists in the build', false, 'no posts found');

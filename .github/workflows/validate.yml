@@ -25,7 +25,7 @@ jobs:
       - name: Parse-check every executable script
         run: |
           for f in scripts/*.mjs scripts/lib/*.mjs scripts/engine/*.mjs; do
-            node --check "$f"
+            node --check "$f" || { echo "::error::Syntax check FAILED for $f"; exit 1; }
           done
       - name: Selftest (ok fixture passes, bad fixture fails)
         run: node scripts/selftest.mjs

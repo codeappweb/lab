@@ -12,8 +12,10 @@ name: Content Factory Scheduled
 #     rows from data/article-manifest.jsonl — HARD CAP 20 rows
 #   - exports writer manifests/instructions (topics only, no prose)
 #   - runs deterministic QA on drafts the writer already produced
+#   - publishes ONLY a 100% ready batch (assert-ready + all-or-nothing
+#     publish: any FAIL row => ZERO articles published)
 #   - promotes PASS drafts to _posts, regenerates canonical artifacts
-#     and publishes — never overwriting anything
+#     — never overwriting anything
 #
 # SECRETS: none. Only the default GITHUB_TOKEN (checkout/commit/push).
 # No MISTRAL/OPENAI/GEMINI/ANTHROPIC keys, no external LLM HTTP API,
@@ -29,6 +31,25 @@ name: Content Factory Scheduled
 # 2026-09-27; in any other year the same cron exits successfully
 # without processing a batch. workflow_dispatch stays available for
 # manual testing later.
+#
+# GATE SEMANTICS (production-safety hardening):
+#   - Jekyll build is a BLOCKING gate: bundle install + bundle exec
+#     jekyll build, no error swallowing. A failed build fails the
+#     workflow BEFORE commit/push.
+#   - self-heal-audit.mjs and legal-freshness-audit.mjs are BLOCKING
+#     (same semantics as content-pipeline.yml: validation failure =
+#     no commit). Legal validation of legal-sensitive articles stays
+#     blocking per data/legal-sources.yml rules.
+#   - publish is gated by `assert-ready --expected-size 20` (exactly
+#     20 rows, all PASS, all drafts present, zero claimed/fail/review)
+#     AND the controller-side all-or-nothing publish gate. 19 PASS +
+#     1 FAIL => publish ZERO articles; QA/state/reports are persisted
+#     by the failure-path step below.
+#   - git push is FAIL-CLOSED: a `pushed` flag is set only after a
+#     successful push; if all bounded retries fail the workflow exits
+#     non-zero even though a local commit exists.
+#   - commit scope is verified: every staged path must match the
+#     deterministic-output allowlist or the workflow refuses to commit.
 # ======================================================================
 
 on:
@@ -114,7 +135,7 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Set up Ruby (Jekyll smoke build)
+      - name: Set up Ruby (Jekyll blocking build)
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.1"
@@ -158,23 +179,35 @@ jobs:
         if: env.OP == 'production' || env.OP == 'prepare-next'
         run: node scripts/factory-batch.mjs prepare-next --batch-size "$BATCH_SIZE"
 
+      # Standalone op=qa records findings (exit 3 tolerated) without
+      # publishing anything. Production publish is separately blocked
+      # by assert-ready + the all-or-nothing publish gate below.
       - name: qa — deterministic QA of writer-produced drafts (if present)
         if: env.OP == 'production' || env.OP == 'qa'
         run: |
           code=0
           node scripts/factory-batch.mjs qa || code=$?
-          echo "qa exit code: $code (3 = FAIL rows recorded, not fatal)"
+          echo "qa exit code: $code (3 = FAIL rows recorded in state; publish stays blocked)"
           if [ "$code" -ne 0 ] && [ "$code" -ne 3 ]; then exit "$code"; fi
           exit 0
 
-      - name: publish — promote PASS rows only (never FAIL/REVIEW, never overwrite)
+      # BLOCKING production gate: exactly 20 rows, all PASS, all drafts
+      # on disk, zero claimed/fail/review. 19 PASS + 1 FAIL => the step
+      # fails and ZERO articles are published.
+      - name: assert-ready — 100% batch readiness gate (BLOCKING)
         if: env.OP == 'production' || env.OP == 'publish'
-        run: |
-          set -eu
-          node scripts/factory-batch.mjs consistency
-          node scripts/factory-batch.mjs publish
+        run: node scripts/factory-batch.mjs assert-ready --expected-size 20
 
-      - name: Rebuild category/index/sitemap artifacts (canonical scripts)
+      - name: publish — all-or-nothing, PASS-only, never overwrite (BLOCKING)
+        if: env.OP == 'production' || env.OP == 'publish'
+        run: node scripts/factory-batch.mjs publish
+
+      # Canonical artifact rebuild. self-heal-audit and
+      # legal-freshness-audit are BLOCKING gates, identical to
+      # content-pipeline.yml ("validation failure = no commit").
+      # Legal validation for legal-sensitive articles remains blocking
+      # per data/legal-sources.yml.
+      - name: Rebuild category/index/sitemap artifacts (canonical scripts, BLOCKING)
         if: env.OP == 'production' || env.OP == 'publish'
         run: |
           set -eu
@@ -185,8 +218,8 @@ jobs:
           node scripts/seo-score.mjs
           node scripts/compute-content-hashes.mjs
           node scripts/gen-dashboard.mjs
-          node scripts/self-heal-audit.mjs || true
-          node scripts/legal-freshness-audit.mjs || true
+          node scripts/self-heal-audit.mjs
+          node scripts/legal-freshness-audit.mjs
 
       - name: requeue — eligible FAIL/REVIEW rows only (stale-safe)
         if: env.OP == 'requeue'
@@ -199,39 +232,106 @@ jobs:
           if [ "$code" -ne 0 ] && [ "$code" -ne 4 ]; then exit "$code"; fi
           exit 0
 
-      - name: Full test suite (all deploy gates)
+      - name: Full test suite (all deploy gates, BLOCKING)
         run: |
           set -eu
           node scripts/validate-deploy.mjs
           node scripts/check-links.mjs
 
-      - name: Jekyll build smoke test
+      # BLOCKING production build using the repository Gemfile
+      # (github-pages). No || true, no error swallowing: a failed
+      # build fails the workflow BEFORE commit/push.
+      - name: Jekyll production build (BLOCKING gate)
         run: |
-          gem install jekyll -N || true
-          bundle exec jekyll build 2>/dev/null || jekyll build || true
+          set -eu
+          bundle install --jobs 4 --retry 2
+          bundle exec jekyll build
 
       - name: Save progress
         run: node scripts/factory-batch.mjs progress
 
-      - name: Commit and push deterministic outputs
+      # Commit scope verification + fail-closed push. Every staged path
+      # must be a legitimate deterministic output of this batch; pushes
+      # are bounded-retried and the workflow fails if origin/main was
+      # never reached.
+      - name: Commit and push deterministic outputs (scope-verified, fail-closed)
         run: |
           set -eu
           git config user.name "content-factory-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          echo "== git status --short =="
+          git status --short
+          echo "== git diff --name-only (unstaged changes) =="
+          git diff --name-only
+          echo "== staging allowlisted deterministic outputs =="
+          # `|| true` here only tolerates an empty pathspec (nothing to
+          # stage); it never masks a validation failure.
           git add -A -- _posts _drafts data sitemaps sitemap.xml reports 2>/dev/null || true
+          echo "== git diff --cached --name-only (staged scope) =="
+          git diff --cached --name-only
+
+          # Refuse to commit anything outside the deterministic-output
+          # allowlist (no caches, secrets, diagnostics or unrelated files).
+          bad="$(git diff --cached --name-only | grep -vE '^(_posts/|_drafts/|data/|sitemaps/|sitemap\.xml$|reports/)' || true)"
+          if [ -n "$bad" ]; then
+            echo "::error::refusing to commit out-of-scope paths:"
+            echo "$bad"
+            exit 1
+          fi
+
           if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard -- _posts _drafts data sitemaps sitemap.xml reports)" ]; then
             echo "nothing to commit"
             exit 0
           fi
+
           git commit -m "content-factory: ${OP} (deterministic outputs of canonical tooling only; article prose written by the authenticated Vibe writer session)"
+
+          pushed=false
           if git push; then
-            :
+            pushed=true
           else
             for i in 1 2 3 4 5; do
               git fetch origin main
               git rebase origin/main || { git rebase --abort; exit 1; }
-              if git push; then
-                break
-              fi
+              if git push; then pushed=true; break; fi
             done
+          fi
+          if [ "$pushed" != "true" ]; then
+            echo "::error::push failed after retries — no commit reached origin/main"
+            exit 1
+          fi
+          echo "push confirmed: commit reached origin/main"
+
+      # Failure path for production/publish: persist QA findings, state
+      # and factory reports so a refused batch (e.g. 19 PASS + 1 FAIL)
+      # leaves inspectable results in the repository. The workflow
+      # still finishes RED because the blocking gate already failed.
+      - name: Persist QA/state/reports when a blocking gate refused the batch
+        if: ${{ failure() && (env.OP == 'production' || env.OP == 'publish') }}
+        run: |
+          set -eu
+          git config user.name "content-factory-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # `|| true` here only tolerates an empty pathspec (no state or
+          # reports produced); it never masks a validation failure.
+          git add -A -- data/factory-state.json reports/factory 2>/dev/null || true
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "no QA state or reports to persist"
+            exit 0
+          fi
+          git commit -m "content-factory: persist QA/state after refused batch (no articles published)"
+          pushed=false
+          if git push; then
+            pushed=true
+          else
+            for i in 1 2 3 4 5; do
+              git fetch origin main
+              git rebase origin/main || { git rebase --abort; exit 1; }
+              if git push; then pushed=true; break; fi
+            done
+          fi
+          if [ "$pushed" != "true" ]; then
+            echo "::error::push of QA state failed after retries"
+            exit 1
           fi

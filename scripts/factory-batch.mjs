@@ -14,6 +14,10 @@
 //   - Hard batch cap: BATCH_SIZE_LIMIT rows (20 for the 2026-09-27 test).
 //   - Never overwrite a published article, never reset progress, never
 //     regenerate completed rows, never publish FAIL/REVIEW rows.
+//   - PUBLISH IS ALL-OR-NOTHING (first 20-article integration test):
+//     production may publish only when the batch is 100% ready —
+//     exactly the expected number of rows, every row PASS with its
+//     draft on disk. If even ONE row fails QA, ZERO articles publish.
 //
 // EXISTING ENGINE REUSED (this controller only adds the deterministic
 // claim/QA/promote glue; it does not replace any repository logic):
@@ -30,11 +34,16 @@
 //   schema       : docs/SCHEMA-ARTICLE.md (front-matter contract)
 //
 // Whitelisted operator commands (anything else exits 1):
-//   check-config | consistency | recover | prepare-next | qa | publish |
-//   requeue | progress
+//   check-config | consistency | recover | prepare-next | qa |
+//   assert-ready | publish | requeue | progress
 //
-// Exit codes: 0 ok, 1 tool/config error, 2 usage error, 3 FAIL rows found
-// (recorded, not fatal), 4 refused requeue requests (recorded).
+// Exit codes:
+//   0 ok
+//   1 tool/config error, or a BLOCKING gate refused the operation
+//   2 usage error
+//   3 FAIL rows found by qa (recorded in state; production publish is
+//     blocked by assert-ready / the all-or-nothing publish gate)
+//   4 refused requeue requests (recorded, not fatal)
 
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync, renameSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -50,7 +59,7 @@ const SCHEMA_DOC = 'docs/SCHEMA-ARTICLE.md';
 const BATCH_SIZE_LIMIT = 20;            // HARD cap for the 2026-09-27 test
 const ALLOWED_OPS = [
   'check-config', 'consistency', 'recover',
-  'prepare-next', 'qa', 'publish', 'requeue', 'progress'
+  'prepare-next', 'qa', 'assert-ready', 'publish', 'requeue', 'progress'
 ];
 const TERMINAL_ROW = 'published';
 const REQUEUEABLE = ['fail', 'review'];
@@ -415,34 +424,85 @@ function cmdQa() {
   if (fails) process.exit(3);
 }
 
+// assert-ready: BLOCKING production gate. The first 20-article
+// integration test publishes only a 100% ready batch:
+//   - exactly --expected-size rows (20)
+//   - every row status PASS with QA recorded as PASS
+//   - every draft file on disk
+//   - zero claimed / fail / review / published rows
+// If ANY check fails, exit 1 — the workflow must publish ZERO articles.
+function cmdAssertReady(expectedArg) {
+  const expected = parseInt(expectedArg, 10) || BATCH_SIZE_LIMIT;
+  if (expected > BATCH_SIZE_LIMIT) {
+    fail('expected-size ' + expected + ' exceeds the hard batch cap ' + BATCH_SIZE_LIMIT);
+  }
+  const manifest = loadManifest();
+  const state = loadState();
+  if (!state) fail('assert-ready: no active batch state — run prepare-next first');
+  const errs = [];
+  if (state.rows.length !== expected) {
+    errs.push('batch has ' + state.rows.length + ' rows, expected exactly ' + expected);
+  }
+  const counts = { pass: 0, claimed: 0, fail: 0, review: 0, published: 0 };
+  for (const row of state.rows) {
+    if (counts[row.status] !== undefined) counts[row.status]++;
+    if (row.status !== 'pass') errs.push(row.id + ': status "' + row.status + '" (must be PASS)');
+    if (row.qa && row.qa.status === 'absent') errs.push(row.id + ': draft absent');
+    if (!existsSync(draftPath(state.batch, row.slug))) {
+      errs.push(row.id + ': draft file missing');
+    } else if (!row.qa || row.qa.status !== 'pass') {
+      errs.push(row.id + ': QA not recorded as PASS — run qa first');
+    }
+  }
+  if (counts.claimed) errs.push(counts.claimed + ' claimed row(s) (awaiting writer or QA)');
+  if (counts.fail) errs.push(counts.fail + ' FAIL row(s)');
+  if (counts.review) errs.push(counts.review + ' REVIEW row(s)');
+  if (counts.published) errs.push(counts.published + ' row(s) already published');
+  if (errs.length) {
+    for (const e of errs) console.error('::error::assert-ready: ' + e);
+    fail('assert-ready FAILED — production publish is blocked; ZERO articles may be published');
+  }
+  console.log('assert-ready OK: exactly ' + expected + ' rows, all PASS with drafts on disk');
+}
+
+// publish: ALL-OR-NOTHING for the first 20-article integration test.
+// Every row must be PASS with its draft on disk, and no target post may
+// already exist (never overwrite a published article). Any violation
+// refuses the entire publish: ZERO articles are promoted, state and
+// QA results stay persisted for inspection.
 function cmdPublish() {
   const manifest = loadManifest();
   const state = loadState();
   if (!state) fail('publish: no active batch');
+  if (state.rows.length === 0) fail('publish: active batch has no rows');
   const posts = publishedSlugs();
-  mkdirSync(POSTS_DIR, { recursive: true });
-  let published = 0, skipped = 0, blocked = 0;
+  const violations = [];
   for (const row of state.rows) {
-    if (row.status === 'published') continue;
-    if (row.status !== 'pass') { blocked++; continue; } // FAIL/REVIEW/claimed never publish
-    const draft = draftPath(state.batch, row.slug);
-    if (!existsSync(draft)) { blocked++; console.error('SKIP ' + row.id + ': no draft file'); continue; }
-    const parsed = parseFrontMatter(readFileSync(draft, 'utf8'));
+    if (row.status !== 'pass') violations.push(row.id + ': status "' + row.status + '" (only a 100% PASS batch may publish)');
+    if (!existsSync(draftPath(state.batch, row.slug))) violations.push(row.id + ': draft file missing');
+    if (posts.has(row.slug)) violations.push(row.id + ': already published (never overwrite a published article)');
+  }
+  if (violations.length) {
+    for (const v of violations) console.error('::error::publish refused: ' + v);
+    fail('publish refused: batch is not 100% ready — ZERO articles published (requeue FAIL rows, rerun qa, then retry)');
+  }
+  mkdirSync(POSTS_DIR, { recursive: true });
+  let published = 0;
+  for (const row of state.rows) {
+    const parsed = parseFrontMatter(readFileSync(draftPath(state.batch, row.slug), 'utf8'));
     const date = (parsed && /^\d{4}-\d{2}-\d{2}$/.test(parsed.fm.date || '')) ? parsed.fm.date : today();
     const target = join(POSTS_DIR, date + '-' + row.slug + '.md');
     if (existsSync(target)) {
-      skipped++; console.error('SKIP ' + row.id + ': ' + target + ' already exists (never overwrite a published article)');
-      continue;
+      fail('publish aborted: ' + target + ' already exists (never overwrite a published article)');
     }
-    renameSync(draft, target);
+    renameSync(draftPath(state.batch, row.slug), target);
     row.status = 'published'; row.published = true; row.published_at = date;
     published++;
     console.log('published ' + row.id + ' -> _posts/' + date + '-' + row.slug + '.md');
   }
   saveState(state);
   writeProgress(state, manifest);
-  console.log('publish: ' + published + ' published, ' + skipped +
-    ' skipped (existing), ' + blocked + ' blocked (not PASS)');
+  console.log('publish: ' + published + ' published (all-or-nothing: full batch only)');
 }
 
 function cmdRequeue(idsArg) {
@@ -476,7 +536,8 @@ function cmdProgress() {
 // -------------------------------------------------------------------- main
 
 function usage() {
-  console.error('usage: factory-batch.mjs <' + ALLOWED_OPS.join('|') + '> [--batch-size N] [--ids a,b]');
+  console.error('usage: factory-batch.mjs <' + ALLOWED_OPS.join('|') +
+    '> [--batch-size N] [--expected-size N] [--ids a,b]');
   process.exit(2);
 }
 
@@ -497,6 +558,7 @@ switch (op) {
   case 'recover': cmdRecover(); break;
   case 'prepare-next': cmdPrepareNext(arg('--batch-size')); break;
   case 'qa': cmdQa(); break;
+  case 'assert-ready': cmdAssertReady(arg('--expected-size')); break;
   case 'publish': cmdPublish(); break;
   case 'requeue': cmdRequeue(arg('--ids')); break;
   case 'progress': cmdProgress(); break;

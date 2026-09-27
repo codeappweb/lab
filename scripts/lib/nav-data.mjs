@@ -43,11 +43,15 @@ export function parseTaxonomy(text) {
   for (const raw of text.split('\n')) {
     let m = /^ {2}- id:\s*"?([^"\n]*)"?\s*$/.exec(raw);
     if (m) { cur = { id: m[1] }; parents.push(cur); child = null; continue; }
-    m = /^ {4}- id:\s*"?([^"\n]*)"?\s*$/.exec(raw);
+    // Child items appear at BOTH indent styles in the wild (4-space and the
+    // 6-space style data/taxonomy.yml actually uses, with 8-space fields).
+    // Both must parse — missing the 6-space style silently emptied every
+    // parent's children list and disabled all child-item validation.
+    m = /^ {6}- id:\s*"?([^"\n]*)"?\s*$/.exec(raw) || /^ {4}- id:\s*"?([^"\n]*)"?\s*$/.exec(raw);
     if (m && cur) { child = { id: m[1] }; cur.children = cur.children || []; cur.children.push(child); continue; }
     m = /^ {4}([\w-]+):\s*(.+)$/.exec(raw);
     if (m && cur && !child) { cur[m[1]] = unq(m[2]); continue; }
-    m = /^ {6}([\w-]+):\s*(.+)$/.exec(raw);
+    m = /^ {6}([\w-]+):\s*(.+)$/.exec(raw) || /^ {8}([\w-]+):\s*(.+)$/.exec(raw);
     if (m && child) { child[m[1]] = unq(m[2]); continue; }
   }
   return parents.filter(p => p.slug);

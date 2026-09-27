@@ -1,0 +1,37 @@
+name: temp-dump (temporary; delete after use)
+
+# TEMPORARY diagnostic: dumps the two large engine files as base64 PR
+# comments so an agent without direct file access can verify byte-exact
+# remote content after push corruption incidents. Delete this workflow
+# once the dump has been collected.
+on:
+  push:
+    branches: [repair/engine-v2]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dump:
+    name: Dump engine files (temporary)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dump base64 to PR comments
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: "1"
+        run: |
+          for f in scripts/engine/runner.mjs scripts/engine-selftest.mjs; do
+            base64 -w 0 "$f" > /tmp/f.b64
+            total=$(wc -c < /tmp/f.b64)
+            parts=$(( (total + 48999) / 49000 ))
+            for i in $(seq 1 $parts); do
+              skip=$(( (i - 1) * 49000 ))
+              dd if=/tmp/f.b64 bs=49000 skip=$skip count=1 2>/dev/null > /tmp/part.txt
+              n=$(wc -c < /tmp/part.txt)
+              { echo "### TEMPFILEDUMP $f part $i of $parts ($n bytes of base64; temporary; safe to delete)"; echo '~~~'; cat /tmp/part.txt; echo '~~~'; } > /tmp/c.md
+              gh pr comment "$PR" --body-file /tmp/c.md
+            done
+          done

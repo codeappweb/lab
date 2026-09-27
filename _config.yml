@@ -15,7 +15,10 @@ exclude:
   - scripts
   - docs
   - reports
+  - drafts
+  - _tmpchunks
   - .github
+  - AGENTS.md
   - Gemfile
   - Gemfile.lock
   - package.json

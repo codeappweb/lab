@@ -4,8 +4,9 @@ name: Content Pipeline (audit + regen + verified deploy)
 # Pages builds from the branch; GITHUB_TOKEN pushes do NOT trigger branch
 # builds, so after committing regenerated artifacts we explicitly request a
 # Pages build via the API and verify the deployed revision.
-# Article GENERATION is a separate, dispatch-only job gated twice and
-# DISABLED by default (data/engine-config.json: generation_enabled=false).
+# This pipeline NEVER writes articles. The dispatch-only writer-preflight job
+# at the end only checks configuration and provider capability; the actual
+# writer is a local Mistral/Vibe session (see docs/ENGINE-RUNBOOK.md).
 
 on:
   schedule:
@@ -81,8 +82,12 @@ jobs:
           path: reports/
           if-no-files-found: warn
 
-  # Article generation: dispatch-only, disabled by config, never scheduled.
-  generation:
+  # Writer preflight: dispatch-only, checks config + provider capability.
+  # This job does NOT write articles and cannot enable generation by itself;
+  # data/engine-config.json must also explicitly enable it (it is false by
+  # default). Real writing happens in a local Mistral/Vibe session.
+  writer-preflight:
+    name: Writer preflight (dispatch-only; writes no articles)
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     needs: audit-regen-deploy
@@ -91,8 +96,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Preflight writer provider
+      - name: Preflight writer provider (config + capability only)
         run: |
+          node scripts/engine/runner.mjs status
           node scripts/engine/runner.mjs preflight
           # Double gate: workflow_dispatch is NOT enough; the durable config
           # must also explicitly enable generation. It is false by default.

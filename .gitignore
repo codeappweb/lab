@@ -3,3 +3,8 @@ _site/
 .jekyll-metadata/
 Gemfile.lock
 node_modules/
+# Engine runtime artifacts — never commit the cross-process lock or archived
+# corrupt state; engine-state.json itself IS committed (durable by design).
+data/engine-lock.json
+data/engine-state.corrupt-*.json
+data/topic-candidates.json

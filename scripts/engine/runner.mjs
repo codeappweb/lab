@@ -902,6 +902,31 @@ function processJob(job, opts) {
       // no-op when everything is already committed.
       const syncRes = persistState(ROOT, 'sync durable milestones for ' + job.slug);
       requirePersisted(syncRes, job, 'pending durable milestones');
+      // The sync may have created a NEW state commit (e.g. verified_live
+      // recorded locally by `verify`, or a retried milestone). With --push,
+      // push it so remote durability is actually reached — never claim
+      // durability while the state commit is local-only. Ambiguous network
+      // outcomes are resolved via ls-remote, as everywhere else.
+      if (syncRes.status === 'committed' && wantPush) {
+        try {
+          execFileSync('git', ['push'], { cwd: ROOT });
+          log(job.slug + ': durable-milestone state commit pushed (job state is remote-durable)');
+        } catch (e) {
+          const why = (e.message || e);
+          let remoteHeadS = null, localHeadS = null;
+          try {
+            const lrS = execFileSync('git', ['ls-remote', 'origin', 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
+            remoteHeadS = (lrS.split('\t')[0] || '').trim() || null;
+            localHeadS = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+          } catch { /* remote unreachable: genuinely failed */ }
+          if (remoteHeadS && localHeadS && remoteHeadS === localHeadS) {
+            log(job.slug + ': sync push command failed BUT ls-remote shows the remote already at the state commit — ambiguous outcome resolved as ACCEPTED (job state is remote-durable)');
+          } else {
+            store.recordArtifact(job.id, 'state_sync_pending', { at: new Date().toISOString(), reason: 'sync state commit push failed: ' + String(why).slice(0, 300), content_sha: sha });
+            log('WARNING: durable-milestone state commit NOT pushed (' + why + ') — PENDING SYNC recorded; the job state is local-only until synchronized. Finish with: node scripts/engine/runner.mjs run --resume --push');
+          }
+        }
+      }
     }
 
     // M5: push (only with --push, only once).

@@ -785,7 +785,7 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
     const bare = mkBare();
     g(t.root, 'remote', 'add', 'origin', bare);
     const wrap = gitPushWrapper(t.root, 'failNth', 2);
-    const r = runEnv(['run', '--resume', '--push'], t.root, { PATH: wrap.bin + ':' + process.env.PATH });
+    const r = runEnv(['run', '--resume', '--push'], t.root, { PATH: wrap.bin + ':' + t.env.PATH });
     const job = state(t.root).jobs[0];
     check('pending-sync: content push recorded as pushed (real)', !!job.pushed, r.stdout.slice(-250) + r.stderr.slice(-200));
     check('pending-sync: state_sync_pending recorded (retryable, explicit)', !!job.state_sync_pending && /state commit push failed/.test(job.state_sync_pending.reason || ''), JSON.stringify(job.state_sync_pending || null));
@@ -809,7 +809,7 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
     const bare = mkBare();
     g(t.root, 'remote', 'add', 'origin', bare);
     const wrap = gitPushWrapper(t.root, 'realThenFail', 1);
-    const r = runEnv(['run', '--resume', '--push'], t.root, { PATH: wrap.bin + ':' + process.env.PATH });
+    const r = runEnv(['run', '--resume', '--push'], t.root, { PATH: wrap.bin + ':' + t.env.PATH });
     const job = state(t.root).jobs[0];
     check('ambiguous-push: pushed recorded honestly via ls-remote (no false failure)', !!job.pushed && !/push failed/.test((job.errors || []).map(e => e.msg).join(' ')), JSON.stringify(job.pushed || null) + ' :: ' + r.stdout.slice(-200));
     check('ambiguous-push: stdout explains the ls-remote resolution', /ls-remote/.test(r.stdout), r.stdout.slice(-250));
@@ -848,8 +848,8 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
     mkdirSync(join(archRoot, 'scripts', 'lib'), { recursive: true });
     mkdirSync(join(archRoot, 'data'), { recursive: true });
     writeFileSync(join(archRoot, 'scripts', 'lib', 'lab.mjs'), readFileSync(join(HERE, 'lib', 'lab.mjs')));
-    writeFileSync(join(archRoot, 'scripts', 'gen-archive-pages.mjs'), readFileSync(join(HERE, '..', 'gen-archive-pages.mjs')));
-    writeFileSync(join(archRoot, 'data', 'taxonomy.yml'), readFileSync(join(HERE, '..', '..', 'data', 'taxonomy.yml')));
+    writeFileSync(join(archRoot, 'scripts', 'gen-archive-pages.mjs'), readFileSync(join(HERE, 'gen-archive-pages.mjs')));
+    writeFileSync(join(archRoot, 'data', 'taxonomy.yml'), readFileSync(join(HERE, '..', 'data', 'taxonomy.yml')));
     const gen = () => spawnSync(process.execPath, [join(archRoot, 'scripts', 'gen-archive-pages.mjs')], { cwd: archRoot, encoding: 'utf8' });
     const cards = (n) => Array.from({ length: n }, (_, i) => ({ url: '/bai-' + i + '/', title: 'Bài ' + i, date: '2026-01-05' }));
     const setMembers = (n) => writeFileSync(join(archRoot, 'data', 'category-members.json'), JSON.stringify({ parents: { 'xe-may': cards(n) } }));
@@ -896,8 +896,8 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
     // real archive generator + its lib + taxonomy + synthetic members
     mkdirSync(join(t.root, 'scripts', 'lib'), { recursive: true });
     writeFileSync(join(t.root, 'scripts', 'lib', 'lab.mjs'), readFileSync(join(HERE, 'lib', 'lab.mjs')));
-    writeFileSync(join(t.root, 'scripts', 'gen-archive-pages.mjs'), readFileSync(join(HERE, '..', 'gen-archive-pages.mjs')));
-    writeFileSync(join(t.root, 'data', 'taxonomy.yml'), readFileSync(join(HERE, '..', '..', 'data', 'taxonomy.yml')));
+    writeFileSync(join(t.root, 'scripts', 'gen-archive-pages.mjs'), readFileSync(join(HERE, 'gen-archive-pages.mjs')));
+    writeFileSync(join(t.root, 'data', 'taxonomy.yml'), readFileSync(join(HERE, '..', 'data', 'taxonomy.yml')));
     writeFileSync(join(t.root, 'data', 'category-members.json'), JSON.stringify({
       parents: { 'xe-may': Array.from({ length: 50 }, (_, i) => ({ url: '/bai-' + i + '/', title: 'Bài ' + i, date: '2026-01-05' })) }
     }));

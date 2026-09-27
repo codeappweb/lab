@@ -46,7 +46,20 @@ jobs:
       - name: Selftest (ok fixture passes, bad fixture fails)
         run: node scripts/selftest.mjs
       - name: "Article runtime regression test (real DOM environment: tables, permalinks, clipboard honesty)"
-        run: node scripts/tests/article-runtime.test.mjs
+        run: |
+          set -o pipefail
+          if ! node scripts/tests/article-runtime.test.mjs 2>&1 | tee /tmp/art.log; then
+            { echo '--- BAD checks ---'; grep -E 'BAD' /tmp/art.log | head -n 15; echo '--- tail ---'; tail -n 30 /tmp/art.log; } | while IFS= read -r l; do echo "::error::$l"; done
+            exit 1
+          fi
+      - name: Post article runtime log to PR (diagnostics)
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          { echo '### article-runtime log (tail 40)'; echo '```'; tail -n 40 /tmp/art.log 2>/dev/null || echo '(art.log missing)'; echo '```'; } > /tmp/art-comment.md
+          gh pr comment "$PR_NUMBER" --body-file /tmp/art-comment.md || true
       - name: "Navigation consistency check (single source: navigation.yml + menu-cats.yml + taxonomy.yml)"
         run: node scripts/validate-navigation.mjs
       - name: "Engine selftest (offline orchestration: state, locks, retries, blocking)"

@@ -40,9 +40,12 @@ function normUrl(u) {
 const files = [...posts, ...pages, ...hubs, ...statics];
 for (const f of files) {
   const text = f.text;
-  // whitespace or encoded newline inside any link target — malformed URL
+  // whitespace or encoded newline inside any link target — malformed URL.
+  // Liquid targets ({{ ... }}) legitimately contain spaces/pipes and are
+  // validated separately below.
   for (const m of text.matchAll(/\]\(([^)]*)\)/g)) {
     const t = m[1];
+    if (t.trimStart().startsWith('{{')) continue;
     if (/[ \t\n]/.test(t) || t.includes('%0A') || t.includes('%0D')) {
       errors.push(`${f.path}: link target contains whitespace/newline: "${t.slice(0, 60)}"`);
     }

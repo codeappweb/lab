@@ -8,7 +8,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findRoot } from './lib/lab.mjs';
 
-const ROOT = findRoot(process.argv, path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..'));
+const ROOT = findRoot(process.argv, path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const PER_PAGE = 48;
 const BASE = '/lab'; // Pages baseurl prefix for literal content links
 const members = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'category-members.json'), 'utf8'));

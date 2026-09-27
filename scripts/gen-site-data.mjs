@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findRoot, parseFM, postSlug, postUrl, postDate } from './lib/lab.mjs';
 
-const ROOT = findRoot(process.argv, path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..'));
+const ROOT = findRoot(process.argv, path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const POSTS = path.join(ROOT, '_posts');
 
 function card(p) {

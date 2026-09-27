@@ -77,6 +77,10 @@
   }
   if (savedBackdrop) savedBackdrop.addEventListener('click', closeSaved);
   document.querySelectorAll('[data-saved-close]').forEach(function (b) { b.addEventListener('click', closeSaved); });
+  /* Escape closes the saved sheet like every other overlay (search, topic sheet, drawer). */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && savedSheet && !savedSheet.hidden) closeSaved();
+  });
 
   /* ---- share / copy ---- */
   function copyLink() {

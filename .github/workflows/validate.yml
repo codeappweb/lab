@@ -61,7 +61,12 @@ jobs:
           { echo '### article-runtime log (tail 40)'; echo '```'; tail -n 40 /tmp/art.log 2>/dev/null || echo '(art.log missing)'; echo '```'; } > /tmp/art-comment.md
           gh pr comment "$PR_NUMBER" --body-file /tmp/art-comment.md || true
       - name: "Navigation consistency check (identity-based: canonical data vs every rendered surface)"
-        run: node scripts/validate-navigation.mjs
+        run: |
+          set -o pipefail
+          if ! node scripts/validate-navigation.mjs 2>&1 | tee /tmp/nav-canon.log; then
+            { grep -E 'NAV ERROR' /tmp/nav-canon.log | head -n 25; } | while IFS= read -r l; do echo "::error::$l"; done
+            exit 1
+          fi
       - name: "Navigation regression fixtures (each defect variant MUST fail; brand/Tat-ca exceptions MUST pass)"
         run: |
           set -o pipefail
@@ -84,6 +89,20 @@ jobs:
         run: |
           { echo '### engine-selftest log (tail 80)'; echo '```'; tail -n 80 /tmp/eng.log 2>/dev/null || echo '(eng.log missing)'; echo '```'; } > /tmp/eng-comment.md
           gh pr comment "$PR_NUMBER" --body-file /tmp/eng-comment.md || true
+      - name: Post failed step log to PR (generic diagnostics)
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          {
+            echo '### Selftest job failed — logs of failed steps'
+            echo '```'
+            gh run view "$GITHUB_RUN_ID" --log-failed 2>&1 | tail -n 150 || true
+            echo '```'
+            echo '(Full logs: check-run page. Gates are never weakened to pass CI.)'
+          } > /tmp/failed-comment.md
+          gh pr comment "$PR_NUMBER" --body-file /tmp/failed-comment.md || true
 
   manifest-reconcile:
     name: Manifest reconcile (sync published posts; generates nothing)
@@ -195,6 +214,10 @@ jobs:
               if [ -f "$f" ]; then echo "--- $f ---"; head -c 4000 "$f"; echo; fi
             done
             if [ -f reports/navigation-inventory.json ]; then echo '--- reports/navigation-inventory.json (tail: errors + warnings) ---'; tail -c 3500 reports/navigation-inventory.json; echo; fi
+            echo '```'
+            echo "--- failed step log (tail 120) ---"
+            echo '```'
+            gh run view "$GITHUB_RUN_ID" --log-failed 2>&1 | tail -n 120 || true
             echo '```'
             echo "(Full logs: check-run page. Gates are never weakened to pass CI.)"
           } > /tmp/pr-body.md

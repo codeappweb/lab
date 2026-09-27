@@ -16,6 +16,7 @@ concurrency:
 
 permissions:
   contents: read
+  pull-requests: write # failure diagnostics comment only
 
 jobs:
   browser-qa:
@@ -31,10 +32,11 @@ jobs:
           ruby-version: '3.2'
       - name: Build the repair branch (real Jekyll build)
         run: |
-          node scripts/gen-site-data.mjs
-          node scripts/gen-archive-pages.mjs
-          bundle install --jobs 4
-          bundle exec jekyll build
+          set -o pipefail
+          node scripts/gen-site-data.mjs 2>&1 | tee /tmp/build.log
+          node scripts/gen-archive-pages.mjs 2>&1 | tee -a /tmp/build.log
+          bundle install --jobs 4 2>&1 | tee -a /tmp/build.log
+          bundle exec jekyll build 2>&1 | tee -a /tmp/build.log
       - name: Install pinned Playwright + Chromium
         run: |
           npm install --no-save playwright@1.49.1
@@ -50,3 +52,21 @@ jobs:
           name: visual-qa-screenshots
           path: screenshots/
           if-no-files-found: warn
+      - name: Post failure diagnostics to the PR
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          {
+            echo "### Visual QA failed — diagnostics"
+            echo '```'
+            gh run view "$GITHUB_RUN_ID" --log-failed 2>&1 | tail -n 150 || true
+            echo '```'
+            echo '--- build log (tail 60, when the build step failed) ---'
+            echo '```'
+            tail -n 60 /tmp/build.log 2>/dev/null || echo '(build log missing)'
+            echo '```'
+            echo "(Full logs: check-run page. Gates are never weakened to pass CI.)"
+          } > /tmp/pr-body.md
+          gh pr comment "$PR_NUMBER" --body-file /tmp/pr-body.md || true

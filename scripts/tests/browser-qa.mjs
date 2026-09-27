@@ -298,6 +298,25 @@ const overflow = (page) => page.evaluate(() =>
       };
     });
     check('article page stylesheets applied', m.sheets >= 4, 'sheets=' + m.sheets);
+    // CSSOM dump: which sheet carries the .article-body-wrap rules, and how
+    // many rules Chromium actually parsed per sheet. Distinguishes a served-
+    // file problem (0 rules / missing rule) from a cascade problem.
+    const cssInfo = await page.evaluate(() => {
+      const found = [];
+      for (let i = 0; i < document.styleSheets.length; i++) {
+        const s = document.styleSheets[i];
+        let rules = -1, hits = [];
+        try {
+          rules = s.cssRules.length;
+          for (const r of s.cssRules) {
+            if (r.selectorText && r.selectorText.indexOf('article-body-wrap') >= 0) hits.push(r.cssText.slice(0, 140));
+          }
+        } catch (e) { rules = 'ERR:' + e.message; }
+        found.push({ i, file: (s.href || '').split('/').pop(), rules, wrapRules: hits });
+      }
+      return found;
+    });
+    console.log('CSSOM ' + JSON.stringify(cssInfo));
     if (m.width !== null) {
       check('reading width within 600-760px at desktop', m.width >= 600 && m.width <= 760,
         'width=' + Math.round(m.width) + ' sheets=' + m.sheets + ' wrapDisplay=' + m.display + ' cols=' + m.cols);

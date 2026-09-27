@@ -127,7 +127,8 @@ export class StateStore {
         const d = JSON.parse(raw);
         if (d && typeof d === 'object' && Array.isArray(d.jobs)) disk = d;
       }
-    } catch (e) { /* unreadable/absent disk state: full overwrite is correct */ }
+    } catch (e) { /* unreadable/absent disk state:
+ full overwrite is correct */ }
     if (disk) {
       // Another process wrote since we loaded: merge, never clobber.
       if (disk.paused === true) this.data.paused = true;

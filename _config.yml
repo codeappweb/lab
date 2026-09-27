@@ -10,6 +10,15 @@ markdown: kramdown
 theme: null
 plugins:
   - jekyll-feed
+exclude:
+  - tests
+  - scripts
+  - docs
+  - reports
+  - .github
+  - Gemfile
+  - Gemfile.lock
+  - package.json
 defaults:
   - scope: { path: "", type: posts }
     values: { layout: post }

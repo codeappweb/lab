@@ -21,6 +21,15 @@
   --art-note-bg: var(--surface-2);
 }
 
+/* app4.css caps single-column reading surfaces (.post, .page-narrow, .article)
+   at 740px. That cap must NOT constrain the .article ROOT: this page is a
+   two-column grid (720px measure + 220px sticky TOC + 64px gap = 1004px)
+   inside a .container; capping the root shrank the reading column to 456px
+   at desktop (caught by the browser-QA reading-width check). Inner blocks
+   (.article-head, .article-related, .post-nav) keep their own
+   max-width:var(--content) so the centered single-column look is preserved. */
+.article{ max-width: none; }
+
 /* ===== Reading column ===== */
 .article .article-body-wrap{ gap: var(--sp-8); }
 @media (min-width: 1100px){

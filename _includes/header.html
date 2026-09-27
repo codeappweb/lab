@@ -2,6 +2,9 @@
   <div class="container app-bar__inner">
     {% include logo.html %}
     <nav class="main-nav" aria-label="Điều hướng chính">
+      {% for item in site.data.navigation.main limit: 3 offset: 1 %}
+      <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+      {% endfor %}
       <div class="mega-wrap">
         <button type="button" class="mega-trigger" aria-haspopup="true" aria-expanded="false">
           Danh mục

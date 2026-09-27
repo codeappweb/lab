@@ -124,8 +124,8 @@ description: "Kiến thức thực dụng về xe máy, xe điện, xe đạp, s
     </a>
     {% endfor %}
   </div>
+  <p class="more-note"><a href="{{ '/danh-muc/' | relative_url }}">{% include icon.html name="arrow" %} Xem tất cả danh mục và chuyên mục</a></p>
 </section>
-  <p><a href="{{ '/danh-muc/' | relative_url }}">Xem tất cả danh mục và chuyên mục</a></p>
 
 <section class="section section--tight container" id="doc-tiep" hidden>
   <h2 class="section-title">Đọc tiếp</h2>

@@ -27,10 +27,12 @@ jobs:
             node --check "$f"
           done
       - name: Selftest (ok fixture passes, bad fixture fails)
-        run: node scripts/selftest.mjs
-      - name: Selftest report (always)
-        if: always()
-        run: node scripts/selftest.mjs --verbose
+        run: |
+          rc=0
+          node scripts/selftest.mjs > selftest.log 2>&1 || rc=$?
+          cat selftest.log >> "$GITHUB_STEP_SUMMARY"
+          cat selftest.log
+          exit $rc
 
   validate:
     name: Content + sitemap + build gates

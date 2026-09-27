@@ -47,8 +47,7 @@ for (const f of walkFiles(siteDir).filter(f => f.endsWith('.html'))) {
   checkedPages++;
   const html = fs.readFileSync(f, 'utf8');
   for (const m of html.matchAll(/href="([^"]*)"/g)) {
-    const href
- = m[1];
+    const href = m[1];
     if (!href || href.startsWith('#') || /^(mailto:|tel:|javascript:)/.test(href)) continue;
     checkedLinks++;
     if (/^https?:\/\//.test(href)) {

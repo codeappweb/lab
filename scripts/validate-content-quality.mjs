@@ -3,7 +3,7 @@
 // static pages. Excludes docs/ and tests/ fixtures by design (they are not
 // site content). Nonzero exit on any violation.
 // Usage: node scripts/validate-content-quality.mjs [--root <dir>]
-import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { findRoot, parseFM, discover, isExcluded, postSlug, fail } from './lib/lab.mjs';
 
@@ -75,6 +75,18 @@ if (existsSync(manifest)) {
 in manifest (run scripts/sync-manifest.mjs)`);
   }
 }
+
+// Always write a machine-readable report so CI diagnostics can show exactly
+// what failed (docs/VALIDATION.md: report locations).
+mkdirSync(join(ROOT, 'reports'), { recursive: true });
+writeFileSync(join(ROOT, 'reports', 'content-quality.json'), JSON.stringify({
+  at: new Date().toISOString(),
+  passed: errors.length === 0,
+  error_count: errors.length,
+  warning_count: warnings.length,
+  errors, warnings,
+  counts: { posts: posts.length, pages: pages.length, statics: statics.length }
+}, null, 2) + '\n');
 
 for (const w of warnings) console.warn('WARN: ' + w);
 if (warnings.length) console.warn(`content-quality: ${warnings.length} warning(s).`);

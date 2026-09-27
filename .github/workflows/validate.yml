@@ -102,7 +102,7 @@ jobs:
           {
             echo "### Validate failed — diagnostics from reports/"
             echo '```'
-            for f in reports/link-errors.json reports/validation-errors.json reports/seo-scores.json reports/capacity.json; do
+            for f in reports/link-errors.json reports/validation-errors.json reports/content-quality.json reports/seo-scores.json reports/capacity.json; do
               if [ -f "$f" ]; then echo "--- $f ---"; head -c 4000 "$f"; echo; fi
             done
             echo '```'

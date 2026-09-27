@@ -1,0 +1,94 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    name: Script selftest (fixtures must pass AND fail correctly)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Parse-check every executable script
+        run: |
+          for f in scripts/*.mjs scripts/lib/*.mjs scripts/engine/*.mjs; do
+            node --check "$f"
+          done
+      - name: Selftest (ok fixture passes, bad fixture fails)
+        run: node scripts/selftest.mjs
+
+  validate:
+    name: Content + sitemap + build gates
+    runs-on: ubuntu-latest
+    needs: selftest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Derive site data
+        run: |
+          node scripts/gen-site-data.mjs
+          node scripts/gen-archive-pages.mjs
+      - name: Validate content quality
+        run: node scripts/validate-content-quality.mjs
+      - name: Detect duplicates
+        run: node scripts/detect-duplicates.mjs
+      - name: Check internal links
+        run: node scripts/check-links.mjs
+      - name: Regenerate sitemap shards
+        run: node scripts/gen-sitemap-shards.mjs
+      - name: Validate sitemap
+        run: node scripts/validate-sitemap.mjs
+      - name: Self-heal audit
+        run: node scripts/self-heal-audit.mjs
+      - name: Legal freshness audit (gate mode)
+        run: node scripts/legal-freshness-audit.mjs --gate
+      - name: SEO scoring
+        run: node scripts/seo-score.mjs
+      - name: Compute content hashes
+        run: node scripts/compute-content-hashes.mjs
+      - name: Manifest sync (dry-run; conflicts are failures)
+        run: node scripts/sync-manifest.mjs --dry-run
+      - name: Engine preflight (never generates, never publishes)
+        run: |
+          node scripts/engine/runner.mjs status
+          node scripts/engine/runner.mjs preflight
+      - name: Measure output capacity (source estimate)
+        run: node scripts/measure-output.mjs
+
+      # Real Jekyll build with the github-pages gem. No || true: a build
+      # failure fails this job and blocks the pipeline.
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Build site (must succeed)
+        run: |
+          bundle install --jobs 4
+          bundle exec jekyll build
+      - name: Measure built output
+        run: node scripts/measure-output.mjs
+      - name: Validate built output (rendered links + sitemap membership)
+        run: node scripts/validate-built.mjs --site _site
+
+      - name: Upload reports (always, even on failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-reports
+          path: reports/
+          if-no-files-found: warn

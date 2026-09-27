@@ -1,0 +1,11 @@
+---
+---
+{"cluster":"C11","items":[
+{% assign found = false %}
+{% assign posts = site.posts | where: 'cluster', 'C11' %}
+{% for i in posts %}
+{% if found %},{% endif %}{% assign found = true %}
+{% assign t = site.data['article-taxonomy'][i.slug] %}
+{"title": {{ i.title | jsonify }},"url": {{ i.url | relative_url | jsonify }},"desc": {{ i.description | default: '' | strip_html | strip | jsonify }},"cluster": {{ i.cluster | default: '' | jsonify }},"parent": {{ i.parent_category | default: t.parent | default: '' | jsonify }},"child": {{ i.child_category | default: t.child | default: '' | jsonify }},"kind": "bai"}
+{% endfor %}
+]}

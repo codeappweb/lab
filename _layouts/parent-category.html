@@ -8,6 +8,7 @@ layout: default
   {% if pc == '' %}{% assign t = site.data['article-taxonomy'][p.slug] %}{% if t %}{% assign pc = t.parent %}{% endif %}{% endif %}
   {% if pc == parent.slug %}{% assign mine = mine | push: p %}{% endif %}
 {% endfor %}
+{% capture purl %}/danh-muc/{{ parent.slug }}/{% endcapture %}
 <section class="hub-hero">
   <div class="container">
     <p class="eyebrow">Danh mục</p>
@@ -68,7 +69,7 @@ layout: default
       {% for p in shown %}{% include article-card.html post=p %}{% endfor %}
     </div>
     {% if mine.size > 12 %}
-    <p class="empty-note">Còn {{ mine.size | minus: 12 }} bài khác trong danh mục — dùng tìm kiếm (Ctrl K) hoặc duyệt từng chuyên mục.</p>
+    <p class="empty-note">Còn {{ mine.size | minus: 12 }} bài khác trong danh mục — xem <a href="{{ purl | append: 'trang-1/' | relative_url }}">danh sách đầy đủ</a>, dùng tìm kiếm (Ctrl K) hoặc duyệt từng chuyên mục.</p>
     {% endif %}
   </section>
   {% else %}

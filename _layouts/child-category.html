@@ -44,7 +44,7 @@ layout: default
     {% for p in shown %}{% include article-card.html post=p %}{% endfor %}
   </div>
   {% if mine.size > 24 %}
-  <p class="empty-note">Còn {{ mine.size | minus: 24 }} bài khác — dùng tìm kiếm (Ctrl K) để lọc nhanh hơn.</p>
+  <p class="empty-note">Còn {{ mine.size | minus: 24 }} bài khác — xem <a href="{{ purl | append: 'trang-1/' | relative_url }}">toàn bộ bài trong danh mục</a> hoặc dùng tìm kiếm (Ctrl K).</p>
   {% endif %}
   {% else %}
   <div class="empty-note">

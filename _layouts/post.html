@@ -45,6 +45,15 @@ layout: default
       <nav id="tocNav"></nav>
     </aside>
   </div>
+  {% assign rmap = site.data['related-posts'][page.slug] %}
+  {% if rmap and rmap.related and rmap.related.size > 0 %}
+  <section class="article-related" aria-label="Bài liên quan">
+    <h2>Bài liên quan</h2>
+    <div class="card-grid">
+      {% for c in rmap.related %}{% include article-card-data.html card=c %}{% endfor %}
+    </div>
+  </section>
+  {% else %}
   {% assign related = site.posts | where: 'cluster', page.cluster | where_exp: 'p', 'p.url != page.url' | limit: 3 %}
   {% if related.size > 0 %}
   <section class="article-related" aria-label="Bài liên quan">
@@ -54,15 +63,24 @@ layout: default
     </div>
   </section>
   {% endif %}
+  {% endif %}
   {% if hub_page %}
   <p class="back-hub"><a href="{{ hub_page.url | relative_url }}">{% include icon.html name="arrow" %} Xem tất cả bài trong {{ hub_page.title }}</a></p>
   {% endif %}
+  {% if rmap %}
+  {% if rmap.prev %}{% assign pp = rmap.prev %}{% endif %}
+  {% if rmap.next %}{% assign np = rmap.next %}{% endif %}
+  {% endif %}
+  {% unless pp or np %}
   {% assign sorted_posts = site.posts | sort: 'date' %}
   {% for p in sorted_posts %}{% if p.url == page.url %}{% assign cur = forloop.index0 %}{% endif %}{% endfor %}
   {% assign pi = cur | minus: 1 %}{% assign ni = cur | plus: 1 %}
+  {% if pi >= 0 %}{% assign pp = sorted_posts[pi] %}{% endif %}
+  {% if ni < sorted_posts.size %}{% assign np = sorted_posts[ni] %}{% endif %}
+  {% endunless %}
   <nav class="post-nav" aria-label="Bài trước, bài sau">
-    {% if pi >= 0 %}{% assign pp = sorted_posts[pi] %}<a href="{{ pp.url | relative_url }}"><span>Bài trước</span><b>{{ pp.title }}</b></a>{% endif %}
-    {% if ni < sorted_posts.size %}{% assign np = sorted_posts[ni] %}<a class="pn-next" href="{{ np.url | relative_url }}"><span>Bài tiếp theo</span><b>{{ np.title }}</b></a>{% endif %}
+    {% if pp %}<a href="{{ pp.url | relative_url }}"><span>Bài trước</span><b>{{ pp.title }}</b></a>{% endif %}
+    {% if np %}<a class="pn-next" href="{{ np.url | relative_url }}"><span>Bài tiếp theo</span><b>{{ np.title }}</b></a>{% endif %}
   </nav>
 </article>
 <script type="application/ld+json">

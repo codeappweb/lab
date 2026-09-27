@@ -65,7 +65,23 @@
   function fetchIndex() {
     if (searchIndex) return Promise.resolve(searchIndex);
     return fetch(BASE + '/assets/search.json').then(function (r) { return r.json(); })
-      .then(function (d) { searchIndex = d; return d; });
+      .then(function (d) {
+        if (Array.isArray(d)) { searchIndex = d; return d; }
+        // schema 2: { schema: 2, chunks: [url...], pages: [...] }
+        var manifest = d || {};
+        var pages = manifest.pages || [];
+        var chunkUrls = (manifest.chunks || []).map(function (u) { return String(u); });
+        return Promise.all(chunkUrls.map(function (u) {
+          return fetch(u).then(function (r) { return r.json(); })
+            .then(function (c) { return (c && c.items) || []; })
+            .catch(function () { return []; });
+        })).then(function (groups) {
+          var items = pages.slice();
+          for (var g = 0; g < groups.length; g++) items = items.concat(groups[g]);
+          searchIndex = items;
+          return items;
+        });
+      });
   }
   function normalize(s) {
     return (s || '').toLowerCase()

@@ -23,8 +23,11 @@ layout: default
   </div>
   {% if cluster_posts.size > 0 %}
   <div class="card-grid">
-    {% for p in cluster_posts %}{% include article-card.html post=p %}{% endfor %}
+    {% for p in cluster_posts limit: 12 %}{% include article-card.html post=p %}{% endfor %}
   </div>
+  {% if cluster_posts.size > 12 %}
+  <p class="empty-note">Đang hiển thị 12/{{ cluster_posts.size }} bài — <a href="{{ '/danh-muc/' | relative_url }}">duyệt theo danh mục</a> để xem tiếp.</p>
+  {% endif %}
   {% else %}
   <div class="empty-note">
     <p>Chủ đề này nằm trong kế hoạch nội dung. Bài viết sẽ được xuất bản theo từng đợt sau khi qua kiểm định.</p>

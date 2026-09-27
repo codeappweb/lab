@@ -1,0 +1,12 @@
+{% assign c = include.card %}
+<a class="card" href="{{ c.url | relative_url }}">
+  <div class="card__body">
+    <div class="card__meta">
+      {% if c.cluster != '' %}<span class="badge">{{ c.cluster | upcase }}</span>{% endif %}
+      <time datetime="{{ c.date }}">{{ c.date }}</time>
+    </div>
+    <h3 class="card__title">{{ c.title | escape }}</h3>
+    {% if c.description %}<p class="card__desc">{{ c.description | escape | truncate: 140 }}</p>{% endif %}
+  </div>
+  <span class="card__more">Đọc tiếp {% include icon.html name="arrow" %}</span>
+</a>

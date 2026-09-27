@@ -1,12 +1,11 @@
 ---
 ---
-{% assign found = false %}
-[
-{% for i in site.posts %}
-{% if found %},{% endif %}{% assign found = true %}
-{% assign t = site.data['article-taxonomy'][i.slug] %}
-{"title": {{ i.title | jsonify }},"url": {{ i.url | relative_url | jsonify }},"desc": {{ i.description | default: '' | strip_html | strip | jsonify }},"cluster": {{ i.cluster | default: '' | jsonify }},"parent": {{ i.parent_category | default: t.parent | default: '' | jsonify }},"child": {{ i.child_category | default: t.child | default: '' | jsonify }},"kind": "bai"}
+{"schema":2,"chunked":true,"chunks":[
+{% for c in '01,02,03,04,05,06,07,08,09,10,11,12' | split: ',' %}
+{{ '/assets/search/c' | append: c | append: '.json' | relative_url | jsonify }}{% unless forloop.last %},{% endunless %}
 {% endfor %}
+],"pages":[
+{% assign found = false %}
 {% for c in site.pages %}
 {% if c.layout == 'parent-category' and c.noindex != true %}
 {% unless c.url contains 'undefined' %}
@@ -23,4 +22,4 @@
 {% endunless %}
 {% endif %}
 {% endfor %}
-]
+]}

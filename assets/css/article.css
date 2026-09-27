@@ -82,7 +82,8 @@
 .article .table-wrap th, .article .table-wrap td{ white-space: normal; }
 .article .table-wrap .nw{ white-space: nowrap; }
 .article .table-wrap th:first-child, .article .table-wrap td:first-child{ padding-left: 14px; }
-.article .table-wrap :focus-visible{ outline-offset: -2px; }
+.article .table
+-wrap :focus-visible{ outline-offset: -2px; }
 
 /* ===== Notes / tips / warnings (opt-in via kramdown classes) ===== */
 .article .prose .note, .article .prose .tip, .article .prose .warning{

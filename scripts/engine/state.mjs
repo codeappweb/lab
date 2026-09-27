@@ -49,6 +49,9 @@ export class StateStore {
     this.file = path.join(root, 'data', 'engine-state.json');
     this.lockFile = path.join(root, 'data', 'engine-lock.json');
     this.data = this.load();
+    // Persist durable state from the very first invocation so every command
+    // (including ones that fail validation) leaves a readable state file.
+    if (!fs.existsSync(this.file)) this.save();
   }
 
   load() {

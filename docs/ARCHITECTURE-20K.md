@@ -1,36 +1,48 @@
-# Kiến trúc 20K (v2 — sau sửa chữa)
+# ARCHITECTURE 20K (v3)
 
-Mục tiêu: 20.000 bài tổng (tính cả bài hiện có), xuất bản có kiểm soát, đo được, không sinh hàng loạt tự động.
+Mục tiêu: 20.000 bài đã xuất bản (tính cả bài hiện có), sản xuất có kiểm soát, đo được, không tự sinh hàng loạt. Trạng thái chi tiết: [PROJECT-STATUS.md](PROJECT-STATUS.md).
 
-## Luồng xuất bản
+## Luồng xuất bản (engine v2, thực thi thật)
 
 ```
-topic (manifest, status=planned, đã duyệt)
-  → engine job planned → researching → drafting → validating → ready
-  → gate: scripts/validate-deploy.mjs (mọi validator + build Jekyll thật)
-  → publishing (ghi file _posts) → commit → Pages build → verify-deployment.mjs
-  → published (ghi verified_live trong data/engine-state.json)
+topic đã duyệt (data/article-manifest.jsonl, status=planned)
+  → job planned
+  → researching: evidence (mistral_vibe_local: drafts/<slug>.meta.json sources[] bắt buộc)
+  → drafting: draft vào drafts/<slug>.md — KHÔNG đụng _posts/
+  → validating: draft-level check thật; (publish thật: cả gate suite)
+  → ready: đủ điều kiện xuất bản
+  → publishing: gate suite trước + sau khi chép vào _posts/; commit (committed_sha)
+  → verify <slug> --sha <sha>: URL live 200 + đúng nội dung + revision Pages khớp sha
+  → published (verified_live chỉ ghi khi cả ba điều kiện trên đúng)
+  | blocked | failed tại mọi giai đoạn
 ```
 
-Mọi giai đoạn có checkpoint bền vững trong `data/engine-state.json`; crash/restart resume không trùng lặp. Xem `docs/ENGINE.md`.
+Ba sự kiện deploy là ba sự kiện riêng: `file_written` (tệp tồn tại), `committed_sha` (đã commit), `verified_live` (đã xác minh trên site). Không bao giờ suy diễn cái này từ cái kia.
+
+## Ranh giới trách nhiệm
+
+- Local (máy tác giả / phiên Mistral-Vibe): duyệt topic vào manifest, soạn draft + evidence (writer thật, human-in-the-loop), dry-run, controlled publishing (gates + commit), verify.
+- GitHub Actions: KHÔNG viết bài. `validate.yml` = kiểm định + build Jekyll thật + validate-built. `content-pipeline.yml` = audit + regen artifacts + request Pages build + verify deployed revision; job `writer-preflight` dispatch-only chỉ check cấu hình/năng lực provider.
+- Writer: `mock` = test only (từ chối publish tuyệt đối); `mistral_vibe_local` = manual draft ingestion (không phải automated writing); `mistral_api` = BLOCKED (không adapter, không credentials; subscription chat không phải API access).
 
 ## Thành phần
 
-- **Sitemap**: `sitemap.xml` (index) → `sitemaps/articles-NNN.xml` (~1000 URL/shard, sinh từ `_posts` thật), `sitemaps/categories.xml`, `sitemaps/static.xml`. Sinh từ URL canonical thật; permalink overrides, `published:false`, future dates, `sitemap:false`, `noindex` đều được loại. `validate-sitemap.mjs` kiểm exact membership; `validate-built.mjs` kiểm lại trên HTML build.
-- **Validators** (shared lib `scripts/lib/lab.mjs`): content-quality (gồm _posts), check-links (Liquid + markdown + fragment + whitespace/%0A), detect-duplicates (LSH banding), self-heal-audit (CRITICAL/HIGH/MEDIUM/LOW), legal-freshness (`--gate` chặn), seo-score (đếm âm tiết tiếng Việt có tài liệu hóa), sync-manifest (đối chiếu posts↔manifest, derive progress.json), gen-dashboard, measure-output, selftest (fixture ok/bad).
-- **Engine**: `scripts/engine/` — state machine + idempotency + lock + emergency stop + hard stop 20000. Generation dispatch-only, tắt mặc định (`data/engine-config.json`).
-- **CI**: `.github/workflows/validate.yml` (push/PR: selftest fixture, mọi gate, build Jekyll thật không nuốt lỗi, validate-built, upload reports kể cả fail) và `content-pipeline.yml` (hằng ngày: audit → regen → commit → POST /pages/builds → verify deployed revision; job generation riêng, chỉ workflow_dispatch + double-gate).
-- **Site scale**: related-posts.json precomputed (max 3, O(1)/trang), archive pagination `danh-muc/<parent>/trang-NN` (48/trang, HTML tiền tính), search chunk theo cluster (`assets/search/cNN.json` + manifest, `main.js` tương thích cả shape cũ), assistant index đã có shard theo cluster.
+- Engine: `scripts/engine/{config,state,provider,topics,runner}.mjs` + selftest `scripts/engine-selftest.mjs`. State machine + idempotency theo slug + lock O_EXCL theo heartbeat + atomic writes + explicit recover.
+- Validators (shared lib `scripts/lib/lab.mjs`): xem [VALIDATION.md](VALIDATION.md).
+- Sitemap: `sitemap.xml` (index) → `sitemaps/articles-NNN.xml` (sinh từ `_posts` thật), `categories.xml`, `static.xml`; `validate-sitemap.mjs` exact membership; `validate-built.mjs` kiểm lại trên HTML render.
+- Site scale: related-posts precomputed (max 3, cả fallback path), archive pagination `danh-muc/<parent>/trang-NN` (48/trang, crawlable), search index chunk theo cluster.
 
-## Điều kiện thí nghiệm (giữ nguyên)
+## Lưu trữ state & cơ chế deploy
 
-Không kết nối Search Console. Không thẻ xác minh Google. Không submit sitemap/indexing thủ công. Không thêm noindex vào bài đã publish. Quan sát discovery trong `reports/google-discovery.json` (ghi thủ công, không ping).
+- `data/engine-state.json` (commit) — jobs/runs/checkpoint/pause/stop; `data/engine-config.json` (commit) — cấu hình + safety defaults; `data/engine-lock.json` (runtime, gitignore) — lock; `data/engine-state.corrupt-*.json` (archive khi recover).
+- Deploy: Pages branch build; token push không kích hoạt build nên pipeline POST `/pages/builds` rồi `verify-deployment.mjs` đối chiếu revision + URL đại diện. Chi tiết + rollback: [DEPLOYMENT.md](DEPLOYMENT.md).
 
-## Giới hạn hosting
+## Giả định scaling & giới hạn đã biết
 
-GitHub Pages site đã publish ~1 GB. `measure-output.mjs` đo toàn bộ `_site`; CI ghi `reports/capacity.json`. Ngoại suy 20K là ƯỚC TÍNH (ghi rõ nhãn), tách khỏi số đo.
+- Bản đo và ngoại suy (ghi nhãn rõ) nằm ở [SCALING.md](SCALING.md); không dùng số mock làm bằng chứng.
+- Giới hạn: GitHub Pages ~1 GB published site; build time tăng theo số bài; search index chunk hóa nhưng vẫn cần theo dõi kích thước.
 
 ## Phụ thuộc ngoài repo
 
-- `https://codeappweb.github.io/robots.txt` (host root) 404 — cần repo user-site `codeappweb/codeappweb.github.io`; không sửa từ repo này. `/lab/robots.txt` hợp lệ.
-- Writer tự động qua API: chưa có credentials; dùng `mistral_vibe_local` (draft trong phiên local, human-in-the-loop).
+- `https://codeappweb.github.io/robots.txt` 404 — cần user-site repo (ngoài phạm vi).
+- Writer tự động qua API: chưa có (xem PROJECT-STATUS Blocked).

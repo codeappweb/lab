@@ -28,6 +28,13 @@ layout: default
     {% if page.description %}<p class="lede">{{ page.description | escape }}</p>{% endif %}
     <div class="article-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d.%m.%Y' }}</time>
+      {% if page.updated_at %}
+      {% capture upd_d %}{{ page.updated_at | date: '%Y-%m-%d' }}{% endcapture %}
+      {% capture pub_d %}{{ page.date | date: '%Y-%m-%d' }}{% endcapture %}
+      {% if upd_d != pub_d and upd_d != '' %}
+      <time class="meta-updated" datetime="{{ page.updated_at | date_to_xmlschema }}">Cập nhật {{ page.updated_at | date: '%d.%m.%Y' }}</time>
+      {% endif %}
+      {% endif %}
       <span id="readingTime" aria-hidden="true"></span>
     </div>
   </header>
@@ -93,3 +100,4 @@ layout: default
   "url": {{ page.url | absolute_url | jsonify }}
 }
 </script>
+

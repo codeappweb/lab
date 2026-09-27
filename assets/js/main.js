@@ -224,8 +224,7 @@
   function openSheet() {
     if (!sheet) return;
     sheet.hidden = false; if (backdrop) backdrop.hidden = false;
-    requestAnimationFrame(function () { sheet.class
-List.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
+    requestAnimationFrame(function () { sheet.classList.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
     document.body.style.overflow = 'hidden';
     var first = sheet.querySelector('a'); if (first) first.focus();
   }
@@ -266,8 +265,7 @@ List.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
   }
   if (drawer) {
     $$('[data-nav-open]').forEach(function (b) { b.addEventListener('click', openNav); });
-    $$
-('[data-nav-close]').forEach(function (b) { b.addEventListener('click', closeNav); });
+    $('[data-nav-close]').forEach(function (b) { b.addEventListener('click', closeNav); });
     if (navBackdrop) navBackdrop.addEventListener('click', closeNav);
     drawer.addEventListener('keydown', function (e) {
       if (e.key !== 'Tab') return;
@@ -339,6 +337,45 @@ List.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
     }
   }
 
+  /* ---------- Article: accessible table scroll + heading permalinks ---------- */
+  if (prose) {
+    // Wrap tables in a labelled scroll region (keeps wide tables usable at 360px).
+    $('table', prose).forEach(function (t) {
+      if (t.parentElement.classList.contains('table-wrap')) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'table-wrap';
+      wrap.setAttribute('role', 'region');
+      wrap.setAttribute('tabindex', '0');
+      wrap.setAttribute('aria-label', 'Bảng dữ liệu — có thể cuộn ngang');
+      t.parentElement.insertBefore(wrap, t);
+      wrap.appendChild(t);
+    });
+    // Quiet heading permalinks (progressive enhancement; anchors work without JS).
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $('h2[id], h3[id]', prose).forEach(function (h) {
+      if (h.querySelector('.h-link')) return;
+      var a = document.createElement('a');
+      a.className = 'h-link';
+      a.href = '#' + h.id;
+      a.textContent = '#';
+      a.setAttribute('aria-label', 'Liên kết đến mục "' + h.textContent.trim() + '"');
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        try { history.replaceState(null, '', '#' + h.id); } catch (err) {}
+        var url = location.href;
+        var copied = function () {
+          a.classList.add('is-copied');
+          setTimeout(function () { a.classList.remove('is-copied'); }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(copied, function () {});
+        } else { copied(); }
+        h.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      });
+      h.appendChild(a);
+    });
+  }
+
   /* ---------- Reading time ---------- */
   var rt = $('#readingTime');
   if (rt && prose) {
@@ -346,3 +383,4 @@ List.add('is-open'); if (backdrop) backdrop.classList.add('is-open'); });
     rt.textContent = Math.max(1, Math.round(words / 200)) + ' phút đọc';
   }
 })();
+

@@ -54,6 +54,25 @@ jobs:
           node scripts/gen-dashboard.mjs
           node scripts/measure-output.mjs
 
+      # Real Jekyll build + rendered-output validation BEFORE any deployment.
+      # A failed build or a rendered-link/sitemap error fails this job and
+      # prevents the Pages build request below. The deploy step depends on
+      # this — branch-based Pages deployment does NOT inherit the separate
+      # pull_request validation workflow, so the gates must run here too.
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Build site (must succeed; no || true)
+        run: |
+          bundle install --jobs 4
+          bundle exec jekyll build
+      - name: Validate rendered output (links + sitemap membership)
+        run: node scripts/validate-built.mjs --site _site
+      # Re-run self-heal audit against the rendered corpus: orphan warnings
+      # are verified against rendered links, not source-only estimates.
+      - name: Self-heal audit (rendered corpus)
+        run: node scripts/self-heal-audit.mjs
+
       - name: Commit regenerated artifacts if changed
         run: |
           git config user.name "content-bot"
@@ -103,3 +122,4 @@ jobs:
           # Double gate: workflow_dispatch is NOT enough; the durable config
           # must also explicitly enable generation. It is false by default.
           node -e "const c=require('./data/engine-config.json'); if(!c.generation_enabled){console.error('generation_enabled=false — unattended generation stays disabled'); process.exit(1);}"
+

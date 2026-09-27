@@ -42,8 +42,7 @@
     });
   }
   if (isArticle) {
-    var r = read
-(KEY_RECENT).filter(function (x) { return x.url !== location.pathname; });
+    var r = read(KEY_RECENT).filter(function (x) { return x.url !== location.pathname; });
     r.unshift({ title: pageMeta().title, url: location.pathname, ts: Date.now() });
     write(KEY_RECENT, r.slice(0, 8));
   }
@@ -87,8 +86,7 @@
       navigator.clipboard.writeText(url).then(done).catch(fallback);
     } else fallback();
     function fallback() {
-      var ta = document.crea
-teElement('textarea');
+      var ta = document.createElement('textarea');
       ta.value = url; document.body.appendChild(ta); ta.select();
       try { document.execCommand('copy'); done(); } catch (e) { toast('Không sao chép được'); }
       document.body.removeChild(ta);
@@ -182,3 +180,4 @@ teElement('textarea');
     }
   }
 })();
+

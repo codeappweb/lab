@@ -59,7 +59,7 @@
       var a = doc.createElement('a');
       var headingText = (h.textContent || '').trim();
       a.className = 'h-link';
-      a.href = '#' + h.id;
+      a.setAttribute('href', '#' + h.id);
       a.textContent = '#';
       a.setAttribute('aria-label', 'Liên kết đến mục "' + headingText + '"');
       a.addEventListener('click', (function (anchor, heading) {

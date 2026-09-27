@@ -57,7 +57,7 @@ layout: default
   <section class="article-related" aria-label="Bài liên quan">
     <h2>Bài liên quan</h2>
     <div class="card-grid">
-      {% for c in rmap.related %}{% include article-card-data.html card=c %}{% endfor %}
+      {% for c in rmap.related limit: 3 %}{% include article-card-data.html card=c %}{% endfor %}
     </div>
   </section>
   {% else %}
@@ -100,4 +100,3 @@ layout: default
   "url": {{ page.url | absolute_url | jsonify }}
 }
 </script>
-

@@ -3,138 +3,139 @@
    Loaded LAST so article rules stay centralized and win the cascade
    without `!important`. No images, no third-party fonts, no frameworks.
    Documented in docs/ARTICLE-DESIGN.md.
+
+   SCOPING CONTRACT (Task E): every rule below is scoped under the
+   `.article` root (the <article class="container article"> element of the
+   post layout). Nothing here may restyle the homepage, category pages or
+   utility pages; genuinely shared rules live in main.css / app*.css.
    ===================================================================== */
 
-/* ===== Article tokens (centralized) ===== */
-:root{
-  --art-measure: 720px;          /* reading column, max-width */
+/* ===== Article tokens (centralized, article pages only) ===== */
+.article{
+  --art-measure: 720px;          /* reading column, max-width (680–760 range) */
   --art-body: clamp(1.0625rem, .34vw + .98rem, 1.1875rem); /* 17 → 19px */
   --art-leading: 1.78;           /* long-form line-height */
-  --art-gap: 1.15em;             /* rhythm between paragraphs */
   --art-h2: clamp(1.35rem, 1.1vw + 1.15rem, 1.55rem);
   --art-h3: clamp(1.12rem, .5vw + 1rem, 1.2rem);
   --art-pad: 20px;               /* mobile horizontal padding */
   --art-note-bg: var(--surface-2);
 }
-[data-theme="dark"]{
-  --art-note-bg: var(--surface-2);
-}
 
 /* ===== Reading column ===== */
 .article .article-body-wrap{ gap: var(--sp-8); }
-.prose{
-  font-size: var(--art-body);
-  line-height: var(--art-leading);
-  overflow-wrap: break-word;    /* long Vietnamese compounds never clip */
-}
 @media (min-width: 1100px){
   .article .article-body-wrap{
     grid-template-columns: minmax(0, var(--art-measure)) 220px;
     justify-content: center;
   }
 }
+.article .prose{
+  font-size: var(--art-body);
+  line-height: var(--art-leading);
+  overflow-wrap: break-word;    /* long Vietnamese compounds never clip */
+}
 @media (max-width: 640px){
-  .container{ padding-inline: var(--art-pad); }
-  .prose{ font-size: 1.0625rem; } /* ≥17px on mobile */
+  /* Scoped: only the article's own container, never every .container. */
+  .article.container{ padding-inline: var(--art-pad); }
+  .article .prose{ font-size: 1.0625rem; } /* ≥17px on mobile */
 }
 
 /* ===== Headings ===== */
-.prose :is(h2,h3,h4){ overflow-wrap: break-word; scroll-margin-top: 104px; }
-.prose h2{ font-size: var(--art-h2); margin-top: 2.1em; }
-.prose h3{ font-size: var(--art-h3); margin-top: 1.7em; }
-.prose h4{ font-size: 1.03rem; font-weight: 700; margin-top: 1.5em; }
-.prose h2 + h3, .prose h3 + h4{ margin-top: .7em; }
+.article .prose :is(h2,h3,h4){ overflow-wrap: break-word; scroll-margin-top: 104px; }
+.article .prose h2{ font-size: var(--art-h2); margin-top: 2.1em; }
+.article .prose h3{ font-size: var(--art-h3); margin-top: 1.7em; }
+.article .prose h4{ font-size: 1.03rem; font-weight: 700; margin-top: 1.5em; }
+.article .prose h2 + h3, .article .prose h3 + h4{ margin-top: .7em; }
 
 /* Heading permalinks: quiet, keyboard-focusable, icon-like */
-.h-link{
+.article .h-link{
   margin-left: .35em; font-size: .62em; font-weight: 600;
   color: var(--faint); text-decoration: none; vertical-align: middle;
   border: 1px solid transparent; border-radius: 6px; padding: 2px 6px;
   user-select: none;
 }
-.h-link:hover{ color: var(--accent); border-color: var(--border); }
-.h-link:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
-.h-link.is-copied{ color: var(--accent); }
+.article .h-link:hover{ color: var(--accent); border-color: var(--border); }
+.article .h-link:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+.article .h-link.is-copied{ color: var(--accent); }
 
-/* ===== Lists — tasteful ordered counters ===== */
-.prose ol{ list-style: none; counter-reset: art-step; padding-left: 0; }
-.prose ol > li{
-  counter-increment: art-step; position: relative;
-  padding-left: 2.35em; margin-top: .65em;
-}
-.prose ol > li::before{
-  content: counter(art-step);
-  position: absolute; left: 0; top: .12em;
-  width: 1.7em; height: 1.7em; display: inline-flex;
-  align-items: center; justify-content: center;
-  font-size: .8rem; font-weight: 700; color: var(--accent);
-  background: var(--surface-2); border-radius: 999px; line-height: 1;
-}
-.prose ol ol > li::before{ background: none; width: auto; height: auto; border-radius: 0; font-size: .95em; }
-.prose ul li::marker{ color: var(--faint); }
-.prose li::marker{ color: var(--faint); }
+/* ===== Lists =====
+   NATIVE markers only. Decorative custom counters were removed because
+   CSS counters ignore the start/value attributes and displayed wrong
+   numbers; native ::marker preserves ordered-list semantics exactly. */
+.article .prose ol{ padding-left: 1.7em; }
+.article .prose ol > li{ margin-top: .65em; }
+.article .prose ul{ padding-left: 1.5em; }
+.article .prose li::marker{ color: var(--faint); }
+.article .prose li + li{ margin-top: .5em; }
+.article .prose li > ul, .article .prose li > ol{ margin-top: .5em; }
 
-/* ===== Tables — accessible scroll container ===== */
-.table-wrap{
+/* ===== Tables — accessible scroll container =====
+   article.js wraps each table in <div class="table-wrap" role="region"
+   tabindex="0" aria-label>. Cells wrap by default; `.nw` is the explicit
+   opt-in for genuinely non-wrapping values (numbers, short codes). */
+.article .table-wrap{
   overflow-x: auto; margin-block: 1.4em;
   border: 1px solid var(--border); border-radius: var(--r-md);
   -webkit-overflow-scrolling: touch;
 }
-.table-wrap table{ margin: 0; border: 0; min-width: 100%; }
-.table-wrap th, .table-wrap td{ white-space: nowrap; }
-.table-wrap th:first-child, .table-wrap td:first-child{ padding-left: 14px; }
-.table-wrap :focus-visible{ outline-offset: -2px; }
+.article .table-wrap table{ margin: 0; border: 0; min-width: 100%; }
+.article .table-wrap th, .article .table-wrap td{ white-space: normal; }
+.article .table-wrap .nw{ white-space: nowrap; }
+.article .table-wrap th:first-child, .article .table-wrap td:first-child{ padding-left: 14px; }
+.article .table-wrap :focus-visible{ outline-offset: -2px; }
 
 /* ===== Notes / tips / warnings (opt-in via kramdown classes) ===== */
-.prose .note, .prose .tip, .prose .warning{
+.article .prose .note, .article .prose .tip, .article .prose .warning{
   margin: 1.5em 0; padding: var(--sp-4) var(--sp-5);
   border-left: 3px solid var(--accent);
   background: var(--art-note-bg);
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
   font-size: .96em;
 }
-.prose .warning{ border-left-color: #b45309; }
-[data-theme="dark"] .prose .warning{ border-left-color: #f59e0b; }
-.prose .note > :first-child, .prose .tip > :first-child, .prose .warning > :first-child{ margin-top: 0; }
-.prose .note > :last-child, .prose .tip > :last-child, .prose .warning > :last-child{ margin-bottom: 0; }
+.article .prose .warning{ border-left-color: #b45309; }
+[data-theme="dark"] .article .prose .warning{ border-left-color: #f59e0b; }
+.article .prose .note > :first-child, .article .prose .tip > :first-child, .article .prose .warning > :first-child{ margin-top: 0; }
+.article .prose .note > :last-child, .article .prose .tip > :last-child, .article .prose .warning > :last-child{ margin-bottom: 0; }
 
 /* ===== Blockquote — genuine quotes only ===== */
-.prose blockquote{ font-size: 1.02em; }
-.prose blockquote p{ text-wrap: balance; }
+.article .prose blockquote{ font-size: 1.02em; }
+.article .prose blockquote p{ text-wrap: balance; }
 
 /* ===== TOC — sticky but contained ===== */
-.toc{ max-height: calc(100vh - 132px); overflow-y: auto; overscroll-behavior: contain; }
-.toc a{ scroll-margin-top: 104px; }
-.toc::-webkit-scrollbar{ width: 4px; }
-.toc::-webkit-scrollbar-thumb{ background: var(--border-strong); border-radius: 4px; }
-.toc-mobile{ margin: var(--sp-4) 0 0; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
-.toc-mobile summary{ cursor: pointer; padding: 12px 16px; font-weight: 600; font-size: .92rem; }
-.toc-mobile #tocMobileNav{ padding: 0 16px 12px; font-size: .92rem; }
-.toc-mobile ul{ list-style: none; margin: 0; padding: 0; }
-.toc-mobile a{ display: block; padding: 6px 0; color: var(--muted); }
-.toc-mobile a:hover{ color: var(--text); }
+.article .toc{ max-height: calc(100vh - 132px); overflow-y: auto; overscroll-behavior: contain; }
+.article .toc a{ scroll-margin-top: 104px; }
+.article .toc::-webkit-scrollbar{ width: 4px; }
+.article .toc::-webkit-scrollbar-thumb{ background: var(--border-strong); border-radius: 4px; }
+.article .toc-mobile{ margin: var(--sp-4) 0 0; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+.article .toc-mobile summary{ cursor: pointer; padding: 12px 16px; font-weight: 600; font-size: .92rem; min-height: 44px; display: flex; align-items: center; }
+.article .toc-mobile #tocMobileNav{ padding: 0 16px 12px; font-size: .92rem; }
+.article .toc-mobile ul{ list-style: none; margin: 0; padding: 0; }
+.article .toc-mobile a{ display: block; padding: 8px 0; min-height: 44px; color: var(--muted); }
+.article .toc-mobile a:hover{ color: var(--text); }
 
 /* ===== Article tools — 44px touch targets ===== */
-.article-tools{ gap: 10px; }
-.tool-btn{
+.article .article-tools{ gap: 10px; }
+.article .tool-btn{
   min-height: 44px; min-width: 44px; padding-inline: 14px;
   border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
 }
 @media (min-width: 768px){
-  .tool-btn{ min-height: 38px; }
+  .article .tool-btn{ min-height: 38px; }
 }
-.tool-btn svg{ width: 16px; height: 16px; }
-.tool-btn.is-active{ background: var(--surface-2); }
+.article .tool-btn svg{ width: 16px; height: 16px; }
+.article .tool-btn.is-active{ background: var(--surface-2); }
 
-/* ===== Updated date + meta row ===== */
-.article-meta .meta-updated{ color: var(--muted); font-style: normal; }
+/* ===== Published / updated meta row ===== */
+.article .article-meta{ color: var(--muted); }
+.article .article-meta .meta-updated{ color: var(--muted); font-style: normal; }
+.article .article-meta time{ color: var(--muted); }
 
 /* ===== Post nav balanced wrapping ===== */
-.post-nav b{ text-wrap: balance; overflow-wrap: anywhere; }
-.post-nav a{ min-height: 44px; }
+.article .post-nav b{ text-wrap: balance; overflow-wrap: anywhere; }
+.article .post-nav a{ min-height: 44px; }
 
 /* ===== Motion & density ===== */
 @media (prefers-reduced-motion: reduce){
-  .prose *, .toc *, .tool-btn, .post-nav a{ transition: none !important; animation: none !important; }
+  .article .prose *, .article .toc *, .article .tool-btn, .article .post-nav a{ transition: none !important; animation: none !important; }
   html{ scroll-behavior: auto; }
 }

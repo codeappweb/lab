@@ -532,5 +532,160 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
 
 
 console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
+// ===== 25–30. State & artifact persistence (durable publication state) =====
+// Full offline publish path against a REAL local git repo and a REAL bare
+// remote: the Jekyll toolchain is faked (`bundle`/`jekyll` stubs on PATH) and
+// gen-site-data / validate-built are stubbed in the isolated root, so M3 build
+// gates pass offline. Nothing real is ever published (remote is a local bare
+// repository under tmp).
+{
+  const mkPublishRoot = () => {
+    const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+    const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+    run(['run', '--topics', tf, '--dry-run'], root); // job exists (blocked: no evidence)
+    seedPublishing(root, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true });
+    gateStub(root, {});
+    // Offline build-gate environment: deterministic regen + rendered-output
+    // validator stubs, and a fake bundle/jekyll toolchain on PATH.
+    writeFileSync(join(root, 'scripts', 'gen-site-data.mjs'), 'process.exit(0);\n');
+    writeFileSync(join(root, 'scripts', 'validate-built.mjs'), 'process.exit(0);\n');
+    const bin = join(root, 'fakebin');
+    mkdirSync(bin, { recursive: true });
+    writeFileSync(join(bin, 'bundle'), '#!/bin/sh\nexit 0\n');
+    writeFileSync(join(bin, 'jekyll'), '#!/bin/sh\nexit 0\n');
+    spawnSync('chmod', ['+x', join(bin, 'bundle'), join(bin, 'jekyll')]);
+    // A real git work tree (no commits yet).
+    spawnSync('git', ['init', '-q', '-b', 'main'], { cwd: root });
+    spawnSync('git', ['config', 'user.email', 'selftest@example.invalid'], { cwd: root });
+    spawnSync('git', ['config', 'user.name', 'selftest'], { cwd: root });
+    spawnSync('git', ['config', 'push.default', 'current'], { cwd: root });
+    return { root, env: { PATH: bin + ':' + process.env.PATH } };
+  };
+  const g = (root, ...args) => spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+
+  // 25. persistence sequence: content commit identity is SEPARATE from the
+  //     state commit, and an unrelated staged file from another session
+  //     rides along with NEITHER.
+  {
+    const t = mkPublishRoot();
+    writeFileSync(join(t.root, 'SESSION-B-NOTES.md'), 'unrelated staged work from another session\n');
+    g(t.root, 'add', 'SESSION-B-NOTES.md'); // staged by "another session"
+    const r = runEnv(['run', '--resume'], t.root, t.env);
+    const subjects = g(t.root, 'log', '--pretty=%s').stdout.trim().split('\n');
+    check('persist: content commit AND separate state commit created (exactly 2)', subjects.length === 2 && /content\(engine\)/.test(subjects[1]) && /state\(engine\)/.test(subjects[0]), subjects.join(' | ') + ' :: ' + r.stdout.slice(-300) + r.stderr.slice(-300));
+    const contentSha = g(t.root, 'rev-parse', 'HEAD^').stdout.trim();
+    const stateSha = g(t.root, 'rev-parse', 'HEAD').stdout.trim();
+    const contentFiles = g(t.root, 'show', '--pretty=format:', '--name-only', contentSha).stdout.split('\n').map(s => s.trim()).filter(Boolean);
+    const stateFiles = g(t.root, 'show', '--pretty=format:', '--name-only', stateSha).stdout.split('\n').map(s => s.trim()).filter(Boolean);
+    check('persist: content commit contains ONLY the post file', contentFiles.length === 1 && contentFiles[0].endsWith('_posts/2026-01-05-thu-nghiem-orchestration.md'), contentFiles.join(','));
+    check('persist: state commit contains engine-state.json (durable job milestones)', stateFiles.includes('data/engine-state.json'), stateFiles.join(','));
+    check('persist: unrelated staged file NOT committed by either commit', g(t.root, 'cat-file', '-e', contentSha + ':SESSION-B-NOTES.md').status !== 0 && g(t.root, 'cat-file', '-e', stateSha + ':SESSION-B-NOTES.md').status !== 0);
+    check('persist: unrelated staged file still staged, untouched', /A {1,2}SESSION-B-NOTES\.md/.test(g(t.root, 'status', '--porcelain').stdout), g(t.root, 'status', '--porcelain').stdout.trim());
+    const s25 = state(t.root).jobs[0];
+    check('persist: committed_sha recorded and identical to the content commit', s25.committed_sha === contentSha);
+    check('persist: no second content commit and no empty state commit loop (2 commits total)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '2');
+    // re-running must NOT create any further commit (nothing new to persist)
+    const r2 = runEnv(['run', '--resume'], t.root, t.env);
+    check('persist: re-run creates no additional commits (no state-commit loop)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '2' && r2.status === 0, r2.stderr.slice(0, 200));
+  }
+
+  // 26. push interruption: content + state commits exist locally, the push
+  //     fails honestly (pushed NOT recorded), then a fixed remote resumes
+  //     without duplicate posts or duplicate commits.
+  {
+    const t = mkPublishRoot();
+    const bare = mkdtempSync(join(tmpdir(), 'engine-selftest-bare-')) + '.git';
+    spawnSync('git', ['init', '-q', '--bare', bare]);
+    g(t.root, 'remote', 'add', 'origin', bare);
+    g(t.root, 'remote', 'set-url', 'origin', join(bare, 'does-not-exist')); // broken remote
+    const rBad = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    const job = state(t.root).jobs[0];
+    check('push-interrupt: push failed honestly, pushed NOT recorded', !job.pushed && job.committed_sha && /push failed/.test((job.errors || []).map(e => e.msg).join(' ') + rBad.stdout + rBad.stderr), JSON.stringify(job.pushed || null) + ' :: ' + rBad.stderr.slice(0, 200));
+    check('push-interrupt: content + state commits survive locally (2)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '2');
+    g(t.root, 'remote', 'set-url', 'origin', bare); // remote fixed
+    const rOk = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    const job2 = state(t.root).jobs[0];
+    check('push-resume: pushed recorded, remote durability honest', !!job2.pushed && /content commit .* pushed/.test(rOk.stdout), rOk.stdout.slice(-300));
+    check('push-resume: no duplicate commits (still exactly 2)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '2');
+    check('push-resume: no duplicate posts (one file in _posts)', readdirSync(join(t.root, '_posts')).length === 1);
+  }
+
+  // 27. fresh clone recovery: a clone of the bare remote recovers the latest
+  //     persisted job state and resumes WITHOUT duplicate posts or commits.
+  {
+    const t = mkPublishRoot();
+    const bare = mkdtempSync(join(tmpdir(), 'engine-selftest-bare2-')) + '.git';
+    spawnSync('git', ['init', '-q', '--bare', bare]);
+    g(t.root, 'remote', 'add', 'origin', bare);
+    const rPush = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    check('clone-prep: publishing run with push succeeded', rPush.status === 0 && state(t.root).jobs[0].pushed, rPush.stderr.slice(0, 200));
+    const clone = mkdtempSync(join(tmpdir(), 'engine-selftest-clone-'));
+    spawnSync('git', ['clone', '-q', bare, clone]);
+    const cs = JSON.parse(readFileSync(join(clone, 'data', 'engine-state.json'), 'utf8'));
+    const cj = cs.jobs[0];
+    check('fresh clone: engine state recovered (committed_sha + pushed)', cj.state === 'publishing' && !!cj.committed_sha && !!cj.pushed, JSON.stringify({ state: cj.state, sha: !!cj.committed_sha, pushed: !!cj.pushed }));
+    check('fresh clone: article file present in clone (content commit)', existsSync(join(clone, '_posts', '2026-01-05-thu-nghiem-orchestration.md')));
+    // A fresh checkout carries the repo code: restore the offline gate/build
+    // environment and the tracked engine config exactly like a real checkout
+    // would. (drafts/ is intentionally NOT restored: a fresh clone has none,
+    // and the milestones + content commit must be enough to resume.)
+    writeFileSync(join(clone, 'data', 'engine-config.json'), readFileSync(join(t.root, 'data', 'engine-config.json')));
+    gateStub(clone, {});
+    writeFileSync(join(clone, 'scripts', 'gen-site-data.mjs'), 'process.exit(0);\n');
+    writeFileSync(join(clone, 'scripts', 'validate-built.mjs'), 'process.exit(0);\n');
+    const cbin = join(clone, 'fakebin');
+    mkdirSync(cbin, { recursive: true });
+    writeFileSync(join(cbin, 'bundle'), '#!/bin/sh\nexit 0\n');
+    writeFileSync(join(cbin, 'jekyll'), '#!/bin/sh\nexit 0\n');
+    spawnSync('chmod', ['+x', join(cbin, 'bundle'), join(cbin, 'jekyll')]);
+    const before = g(clone, 'rev-list', '--count', 'HEAD').stdout.trim();
+    const rResume = runEnv(['run', '--resume'], clone, { PATH: cbin + ':' + process.env.PATH });
+    const after = g(clone, 'rev-list', '--count', 'HEAD').stdout.trim();
+    check('fresh clone: resume changes nothing (already pushed, verified pending)', rResume.status === 0 && before === after, 'commits ' + before + ' -> ' + after + ' :: ' + rResume.stderr.slice(0, 150));
+    check('fresh clone: no duplicate post (exactly one _posts file)', readdirSync(join(clone, '_posts')).length === 1);
+    check('fresh clone: job NOT duplicated (one job)', state(clone).jobs.length === 1);
+  }
+
+  // 28. generated artifacts ride with the state commit: sitemap shards /
+  //     topic-queue regenerated by gates are persisted, not left in the tree
+  {
+    const t = mkPublishRoot();
+    // simulate deterministic artifacts regenerated by the gate suite
+    mkdirSync(join(t.root, 'sitemaps'), { recursive: true });
+    writeFileSync(join(t.root, 'sitemaps', 'articles-1.xml'), '<urlset/>');
+    writeFileSync(join(t.root, 'data', 'topic-queue.json'), '{"queued": 1}');
+    runEnv(['run', '--resume'], t.root, t.env);
+    const stateFiles = g(t.root, 'show', '--pretty=format:', '--name-only', 'HEAD').stdout.split('\n').map(s => s.trim()).filter(Boolean);
+    check('persist: regenerated sitemap shard included in state commit', stateFiles.includes('sitemaps/articles-1.xml'), stateFiles.join(','));
+    check('persist: regenerated topic-queue included in state commit', stateFiles.includes('data/topic-queue.json'), stateFiles.join(','));
+  }
+
+  // 29. non-git root: persistState is a no-op and publishing still completes
+  {
+    const t = mkPublishRoot();
+    rmSync(join(t.root, '.git'), { recursive: true, force: true }); // not a git repo at all
+    const r = runEnv(['run', '--resume'], t.root, t.env);
+    check('persist: non-git root runs honestly (no state commit path, no crash)', r.status === 0, r.stderr.slice(0, 300));
+    check('persist: non-git root job records committed_sha=null (no commit possible)', state(t.root).jobs[0].committed_sha === undefined || state(t.root).jobs[0].committed_sha === null, JSON.stringify(state(t.root).jobs[0].committed_sha));
+  }
+
+  // 30. content-commit purity is enforced: a poisoned commit that touches a
+  //     second file must be refused (integrity check in M4)
+  {
+    const t = mkPublishRoot();
+    writeFileSync(join(t.root, 'data', 'extra-artifact.json'), '{"poison": true}');
+    // poison the state-artifact set so the state commit would exist; then
+    // tamper: make the runner's content commit include the extra file by
+    // pre-staging it is NOT enough (pathspec commit excludes it) — instead
+    // verify directly that the content commit purity check holds:
+    runEnv(['run', '--resume'], t.root, t.env);
+    const subjects = g(t.root, 'log', '--pretty=%s').stdout.trim().split('\n');
+    const contentSha = g(t.root, 'rev-parse', 'HEAD^').stdout.trim();
+    const contentFiles = g(t.root, 'show', '--pretty=format:', '--name-only', contentSha).stdout.split('\n').map(s => s.trim()).filter(Boolean);
+    check('persist: content commit stays pure when other artifacts exist', subjects.length === 2 && contentFiles.length === 1 && contentFiles[0].endsWith('.md'), subjects.join(' | ') + ' :: ' + contentFiles.join(','));
+  }
+}
+
+console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
 if (failed) process.exit(1);
 process.exit(0);

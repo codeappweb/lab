@@ -32,7 +32,7 @@ const TRANSITIONS = {
   ready: ['publishing', 'blocked'],
   publishing: ['published', 'blocked', 'failed'],
   published: [],
-  blocked: ['planned', 'failed'],
+  blocked: ['planned', 'publishing', 'failed'], // blocked -> publishing: ONLY for push-stage recovery (committed_sha recorded, not yet pushed)
   failed: ['planned', 'blocked']
 };
 

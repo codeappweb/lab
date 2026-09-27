@@ -15,6 +15,7 @@ const steps = [
   ['sitemap generation', 'scripts/gen-sitemap-shards.mjs'],
   ['sitemap validation', 'scripts/validate-sitemap.mjs'],
   ['self-heal audit', 'scripts/self-heal-audit.mjs'],
+  ['navigation consistency', 'scripts/validate-navigation.mjs'],
   ['legal freshness', 'scripts/legal-freshness-audit.mjs'],
   ['seo scoring', 'scripts/seo-score.mjs'],
   ['content hashes', 'scripts/compute-content-hashes.mjs'],

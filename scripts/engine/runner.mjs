@@ -31,8 +31,9 @@
 // Safety: `run` without --dry-run REFUSES unless generation_enabled=true in
 // data/engine-config.json. The mock provider refuses to publish at all.
 // `verify` never trusts flags: it checks the live URL, the content identity
-// and the deployed revision (compare API) before recording verified_live,
-// and it NEVER commits — so no commit/deploy/verify loop can occur.
+// and the deployed revision (compare API) before recording verified_live.
+// It persists the recorded state as a LOCAL state commit and never pushes —
+// so no commit/deploy/verify loop can occur.
 //
 // Concurrency & durability contract:
 //   - the execution lock is acquired BEFORE any job is created or mutated;
@@ -103,6 +104,73 @@ function approvedQueueSize(root) {
     seen.add(slug); n++;
   }
   return n;
+}
+
+// ---------------------------------------------------------------------------
+// Durable state/artifact persistence.
+//
+// The CONTENT commit (M4) and the STATE commits are deliberately separate:
+// the content commit contains the post file ONLY, so its SHA is a stable,
+// reviewable content identity; every later mutation of engine state
+// (committed_sha, pushed, verified_live, regenerated artifacts: manifest,
+// sitemap shards, progress, related-posts, taxonomy, topic queue) is
+// committed through persistState() as its own "state(engine): ..." commit.
+//
+// persistState commits ONLY the engine-owned artifact paths (git commit with
+// a pathspec — never touches unrelated staged files from another session),
+// and ONLY when at least one of them actually changed (`git status
+// --porcelain` guard), so re-running can never produce an empty state commit
+// or a state-commit -> deploy -> verify -> state-commit loop: verify persists
+// verified_live in the LOCAL tree and does NOT push (documented behavior;
+// the next publishing run or a manual push carries it).
+const STATE_ARTIFACT_PATHS = [
+  'data/engine-state.json',
+  'data/article-manifest.jsonl',
+  'data/progress.json',
+  'data/related-posts.json',
+  'data/category-members.json',
+  'data/article-taxonomy.yml',
+  'data/topic-queue.json',
+  'sitemaps',
+  'reports',
+];
+
+// Returns true when a state commit was created. Returns false when there was
+// nothing to commit, or when the root is not a git work tree (isolated
+// selftest roots without git stay fully supported).
+function persistState(root, label) {
+  try {
+    execFileSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: root, stdio: 'ignore' });
+  } catch {
+    return false;
+  }
+  let raw;
+  try {
+    raw = execFileSync('git', ['status', '--porcelain', '-z', '--', ...STATE_ARTIFACT_PATHS], { cwd: root, encoding: 'utf8' });
+  } catch (e) {
+    log('WARNING: cannot inspect state artifact status — state NOT committed: ' + (e.message || e));
+    return false;
+  }
+  // Parse -z entries. A rename ('R ') carries the old path as an extra
+  // NUL-separated token that is NOT a path to commit.
+  const toks = raw.split('\0').filter(t => t !== '');
+  const entries = [];
+  for (let i = 0; i < toks.length; i++) {
+    entries.push(toks[i].slice(3));
+    if (toks[i].startsWith('R ')) i++;
+  }
+  if (!entries.length) return false;
+  try {
+    // Intent-to-add untracked engine artifacts (harmless for tracked ones),
+    // then a pathspec commit that stages and commits exactly these paths,
+    // leaving any unrelated staged files still staged and untouched.
+    execFileSync('git', ['add', '-N', '--', ...entries], { cwd: root, stdio: 'pipe' });
+    execFileSync('git', ['commit', '-m', 'state(engine): ' + label, '--', ...entries], { cwd: root, stdio: 'pipe' });
+    return true;
+  } catch (e) {
+    log('WARNING: state commit failed — engine state remains valid in the working tree, persist manually with: git commit -m "state(engine): ' + label + '" -- data sitemaps reports (' + (e.message || e) + ')');
+    return false;
+  }
 }
 
 // Vietnamese word count — documented method: whitespace-split syllable tokens
@@ -317,6 +385,11 @@ switch (cmd) {
           // its recorded milestones without duplicates.
           for (const j of store.data.jobs) {
             if (['planned', 'researching', 'drafting', 'validating', 'ready', 'publishing'].includes(j.state)) jobs.push(j.id);
+            // Push-stage recovery: a job blocked by a FAILED PUSH has its
+            // content commit recorded (committed_sha) but not pushed. It is
+            // resumable directly at the push stage — no re-draft, no
+            // duplicate post, no duplicate commit.
+            else if (j.state === 'blocked' && j.committed_sha && !j.pushed) jobs.push(j.id);
           }
           log('resume: ' + jobs.length + ' in-flight job(s) eligible from durable state');
         }
@@ -501,6 +574,13 @@ switch (cmd) {
     }
     store.recordArtifact(job.id, 'verified_live', { at: new Date().toISOString(), url: expectedUrl, status, deployed_commit: latestBuild.commit, compare: compareStatus });
     if (job.state === 'publishing') store.transition(job.id, 'published', 'verified live at expected URL; deployed revision contains content commit (' + compareStatus + ')');
+    // Persist verified_live as a LOCAL state commit only. Deliberately NOT
+    // pushed here: pushing from `verify` would re-trigger a Pages build and
+    // invite a state-commit -> deploy -> verify -> state-commit loop. The
+    // state commit travels with the next publishing run or a manual push;
+    // until then verified_live is durable in the local branch only.
+    const persisted = persistState(ROOT, 'record verified_live for ' + slug);
+    if (persisted) log(slug + ': verified_live persisted in a local state commit (NOT pushed — no verify/deploy loop)');
     log(slug + ': verified live — URL 200, content identity matched, deployed revision contains ' + sha + ' (' + compareStatus + ')');
     break;
   }
@@ -529,6 +609,14 @@ function processJob(job, opts) {
     store.transition(job.id, 'blocked', 'post file already exists in _posts; refusing duplicate work');
     log(job.slug + ': BLOCKED — post file already exists in _posts');
     return store.jobById(job.id);
+  }
+
+  // Push-stage recovery: a job blocked by a failed push (content commit
+  // exists, not pushed) re-enters publishing directly. The milestone-driven
+  // flow below then skips copy/gates/commit (all milestones present) and
+  // retries only the push — no duplicate post, no duplicate commit.
+  if (job.state === 'blocked' && job.committed_sha && !job.pushed) {
+    store.transition(job.id, 'publishing', 'resume: recovering push stage after failed push (content commit ' + String(job.committed_sha).slice(0, 8) + ' already exists)');
   }
 
   if (job.state === 'planned') store.transition(job.id, 'researching');
@@ -596,7 +684,10 @@ function processJob(job, opts) {
     // Resume derives the next action from these + repository state; ambiguous
     // evidence blocks with E_RESUME_AMBIGUOUS instead of guessing.
     const draftPath = path.join(ROOT, 'drafts', job.slug + '.md');
-    if (!fs.existsSync(draftPath)) {
+    if (!fs.existsSync(draftPath) && !job.committed_sha) {
+      // Pre-commit the draft is the reference content. After the content
+      // commit exists it is the durable record — a fresh checkout (which
+      // has no drafts/) must still be able to resume from the milestones.
       const e = new Error('draft missing at ' + draftPath + ' — cannot publish/resume');
       e.code = 'E_NO_DRAFT';
       throw e;
@@ -639,7 +730,11 @@ function processJob(job, opts) {
       const e = new Error('file_written milestone records ' + job.file_written + ' but that file no longer exists — ambiguous state; restore or clear the milestone explicitly');
       e.code = 'E_RESUME_AMBIGUOUS';
       throw e;
-    } else if (fs.readFileSync(job.file_written, 'utf8') !== fs.readFileSync(draftPath, 'utf8')) {
+    } else if (!job.committed_sha && fs.readFileSync(job.file_written, 'utf8') !== fs.readFileSync(draftPath, 'utf8')) {
+      // Pre-commit crash recovery: the draft is the reference. Once the
+      // content commit exists it is the durable record (a fresh checkout has
+      // no drafts/ — it must still be able to resume from the milestones),
+      // and the draft may legitimately diverge afterwards.
       const e = new Error('post file ' + job.file_written + ' differs from the draft — the draft was modified after publication copying started; resolve manually (E_RESUME_AMBIGUOUS)');
       e.code = 'E_RESUME_AMBIGUOUS';
       throw e;
@@ -654,23 +749,45 @@ function processJob(job, opts) {
       runBuildGates(ROOT);
     }
 
-    // M4: content commit — post file ONLY (durable separation of the content
-    // revision from later state/report commits).
+    // M4: content commit — post file ONLY, via a pathspec commit so no
+    // unrelated staged file (another session's work) can ride along, and so
+    // the content revision stays separate from later state commits.
     let sha = null;
+    let stateCommitted = false;
     if (!job.committed_sha) {
       assertNotHalted(); // pause/stop BEFORE the commit
       try {
         const rel = path.relative(ROOT, postPath);
-        execFileSync('git', ['add', '--', rel], { cwd: ROOT });
-        execFileSync('git', ['commit', '-m', 'content(engine): publish ' + job.slug + ' (controlled; gates + build green)'], { cwd: ROOT });
+        // Intent-to-add marks ONLY this path (unlike a full `git add`, it
+        // never stages another session's files). The pathspec commit below
+        // then commits exactly this file.
+        execFileSync('git', ['add', '-N', '--', rel], { cwd: ROOT });
+        // Pathspec commit: commits exactly this path even if other files are
+        // staged. The post file does not need a full `git add` first.
+        execFileSync('git', ['commit', '-m', 'content(engine): publish ' + job.slug + ' (controlled; gates + build green)', '--', rel], { cwd: ROOT });
         sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+        // Integrity check: the content commit must contain the post file and
+        // NOTHING else — a stray staged file caught here means the commit is
+        // not a pure content identity, so refuse to trust it.
+        const committedFiles = execFileSync('git', ['show', '--pretty=format:', '--name-only', sha], { cwd: ROOT, encoding: 'utf8' })
+          .split('\n').map(s => s.trim()).filter(Boolean);
+        if (committedFiles.length !== 1 || committedFiles[0] !== rel) {
+          const err = new Error('content commit ' + sha.slice(0, 8) + ' contains [' + committedFiles.join(', ') + '] instead of exactly [' + rel + '] — refusing to record an impure content identity; reset and retry the commit manually');
+          err.code = 'E_COMMIT_FAILED';
+          store.recordError(job.id, err.message);
+          throw err;
+        }
       } catch (e) {
+        if (e.code === 'E_COMMIT_FAILED') throw e;
         const err = new Error('commit failed: ' + (e.message || e) + ' — file written but NOT committed; commit/push manually (post file only), then run `verify ' + job.slug + ' --sha <content-commit-sha>`');
         err.code = 'E_COMMIT_FAILED';
         store.recordError(job.id, err.message);
         throw err;
       }
       store.recordArtifact(job.id, 'committed_sha', sha);
+      // Persist the recorded milestone (and any regenerated artifacts) as a
+      // SEPARATE state commit so a fresh checkout can recover the job.
+      stateCommitted = persistState(ROOT, 'record committed_sha for ' + job.slug);
     } else {
       sha = job.committed_sha;
       // Durable-state consistency: the recorded content commit must still
@@ -695,6 +812,18 @@ function processJob(job, opts) {
         err.code = 'E_COMMIT_FAILED';
         store.recordError(job.id, err.message);
         throw err;
+      }
+      // The state commit (committed_sha etc.) is only remote-durable once it
+      // is pushed too. If the content push just succeeded, push the state
+      // commit as well; if that fails, say so honestly instead of claiming
+      // remote durability.
+      if (stateCommitted) {
+        try {
+          execFileSync('git', ['push'], { cwd: ROOT });
+          log(job.slug + ': engine state commit pushed (job state is remote-durable)');
+        } catch (e) {
+          log('WARNING: state commit NOT pushed (' + (e.message || e) + ') — job state is committed locally only; push manually or it will not survive a fresh clone');
+        }
       }
       log(job.slug + ': content commit ' + sha.slice(0, 8) + ' pushed — wait for the Pages build, then run: node scripts/engine/runner.mjs verify ' + job.slug + ' --sha ' + sha);
     } else if (!wantPush && !job.pushed) {

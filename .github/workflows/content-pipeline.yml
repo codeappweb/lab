@@ -68,6 +68,10 @@ jobs:
           bundle exec jekyll build
       - name: Validate rendered output (links + sitemap membership)
         run: node scripts/validate-built.mjs --site _site
+      # Navigation consistency on the rendered surfaces (identical labels per
+      # URL, every nav URL resolves in the build).
+      - name: Navigation consistency (rendered surfaces)
+        run: node scripts/validate-navigation.mjs --site _site
       # Re-run self-heal audit against the rendered corpus: orphan warnings
       # are verified against rendered links, not source-only estimates.
       - name: Self-heal audit (rendered corpus)
@@ -122,4 +126,3 @@ jobs:
           # Double gate: workflow_dispatch is NOT enough; the durable config
           # must also explicitly enable generation. It is false by default.
           node -e "const c=require('./data/engine-config.json'); if(!c.generation_enabled){console.error('generation_enabled=false — unattended generation stays disabled'); process.exit(1);}"
-

@@ -18,7 +18,9 @@
 - Docs: README (entry point mới), AGENTS.md (mới), docs/PROJECT-STATUS.md, ENGINE-RUNBOOK.md, VALIDATION.md, DEPLOYMENT.md, SCALING.md, CONTENT-POLICY.md, ARCHITECTURE-20K.md, HANDOFF.md (mới), ENGINE.md (chuyển thành pointer).
 
 Commit của phiên này trên nhánh `repair/engine-v2` (mới nhất trước, lịch sử đầy đủ: git log):
-- `6faa74e` — bot CI reconcile: manifest + progress đồng bộ 8 bài đã xuất bản (job `manifest-reconcile`).
+- `6faa74e`, `9460204` — bot CI reconcile: manifest + progress đồng bộ 8 bài đã xuất bản (job `manifest-reconcile`; idempotent từ đây).
+- `771c095` — docs/HANDOFF cập nhật.
+- `86e7a08` — docs/PROJECT-STATUS: run `36301349863` toàn bộ xanh (selftest + reconcile no-op + gates).
 - `9fdc4fb` — lab.mjs loại AGENTS.md; validate-content-quality ghi report; workflow thêm job manifest-reconcile.
 - `3e03e39` — content-quality ghi `reports/content-quality.json`; CI đăng report lên PR.
 - `a3d596d` — sửa check archive trong engine-selftest.

@@ -13,7 +13,7 @@
 
 ## Verified
 
-- CI run `36301258171` (2026-09-27): "Script + engine selftest" pass (34/34 offline checks) và "Manifest reconcile" thành công — 8 bài đã xuất bản được đồng bộ vào `data/article-manifest.jsonl` (commit `6faa74e`), progress.json re-derived: 30 published / 67 planned, khớp 30 post thực tế.
+- CI run `36301349863` (2026-09-27, commit `86e7a08`): TOÀN BỘ XANH — selftest, manifest reconcile (no-op) và "Content + sitemap + build gates" (content-quality, duplicates, check-links, sitemap, audits, manifest dry-run, engine preflight, Jekyll build, validate-built) đều pass. Run `36301258171` trước đó: selftest pass + reconcile đồng bộ manifest (commit `6faa74e`) và "Manifest reconcile" thành công — 8 bài đã xuất bản được đồng bộ vào `data/article-manifest.jsonl` (commit `6faa74e`), progress.json re-derived: 30 published / 67 planned, khớp 30 post thực tế.
 - Gate content-quality giờ ghi `reports/content-quality.json` và CI đăng report lên PR khi fail.
 - `AGENTS.md` đã bị loại khỏi tập nội dung site (như README.md) — không còn lỗi "page missing title".
 - Cổng check-links/build/sitemap được CI xác nhận lại ở run trên commit `771c095a` trở đi (xem run cuối trên [PR #1](https://github.com/codeappweb/lab/pull/1)).

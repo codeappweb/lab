@@ -21,8 +21,7 @@ Chuyên mục phục vụ người mua xe lần đầu cần hiểu thủ tục,
 
 **Đăng ký xe** ([dang-ky-xe]({{ '/danh-muc/phap-ly/dang-ky-xe/' | relative_url }})) là nhóm thủ tục mua bán, sang tên xe, đăng ký xe mới và các giấy tờ bắt buộc khi mua xe cũ.
 
-**Biển số** ([bien-so]({{ '/danh-muc/phap-ly/bien-so/' | relative_url }})) nói về các quy định biển số 
-xe máy, và các lỗi thường gặp khi gắn biển số sai cách.
+**Biển số** ([bien-so]({{ '/danh-muc/phap-ly/bien-so/' | relative_url }})) nói về các quy định biển số xe máy, và các lỗi thường gặp khi gắn biển số sai cách.
 
 **Bảo hiểm** ([bao-hiem]({{ '/danh-muc/phap-ly/bao-hiem/' | relative_url }})) là mảng bắt buộc cần hiểu đúng: bảo hiểm TNDS bắt buộc với phạm vi và mức chi trả theo quy định, khác với bảo hiểm tai nạn tự nguyện.
 
@@ -44,8 +43,7 @@ Nếu bạn vừa bị xử phạt và muốn hiểu căn cứ, bắt đầu t�
 
 ## Những vấn đề thường gặp
 
-Vấn đề phổ biến nhất là tin mức phạt từ bài viết cũ. Ví dụ gần đây nhất: mức phạt lỗi khô
-ng đội mũ bảo hiểm đã được điều chỉnh theo Nghị định 168/2024/NĐ-CP (vùng khung phạt 400.000–600.000 đồng); đến nay khung mức này giữ nguyên sau khi Nghị định 238/2026/NĐ-CP sửa đổi, bổ sung một số nội dung của Nghị định 168. Mẹo an toàn: luôn tìm năm ban hành của nghị định được viện dẫn trong bài viết, và ưu tiên nguồn chính thống như công báo, trang của Bộ Công an.
+Vấn đề phổ biến nhất là tin mức phạt từ bài viết cũ. Ví dụ gần đây nhất: mức phạt lỗi không đội mũ bảo hiểm đã được điều chỉnh theo Nghị định 168/2024/NĐ-CP (vùng khung phạt 400.000–600.000 đồng); đến nay khung mức này giữ nguyên sau khi Nghị định 238/2026/NĐ-CP sửa đổi, bổ sung một số nội dung của Nghị định 168. Mẹo an toàn: luôn tìm năm ban hành của nghị định được viện dẫn trong bài viết, và ưu tiên nguồn chính thống như công báo, trang của Bộ Công an.
 
 Thứ hai là nhầm lẫn giữa bảo hiểm bắt buộc và bảo hiểm tự nguyện. Bảo hiểm TNDS bắt buộc là nghĩa vụ để xe được lưu hành, còn bảo hiểm tai nạn người lái là tự nguyện — nhiều người tưởng mua một trong hai là đủ. Nhóm bảo hiểm phân biệt rõ phạm vi từng loại.
 

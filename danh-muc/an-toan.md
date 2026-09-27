@@ -23,8 +23,7 @@ Chuyên mục này phục vụ người mới chạy xe muốn xây thói quen �
 
 **Đi trong đêm** ([di-dem]({{ '/danh-muc/an-toan/di-dem/' | relative_url }})) bao gồm nhận diện rủi ro buổi tối: tầm nhìn hạn chế, đèn xe khác gây chói, đường vắng dễ chạy nhanh quá ngưỡng phản xạ.
 
-**Đường t
-rơn** ([duong-tron]({{ '/danh-muc/an-toan/duong-tron/' | relative_url }})) là nhóm chuyên
+**Đường trơn** ([duong-tron]({{ '/danh-muc/an-toan/duong-tron/' | relative_url }})) là nhóm chuyên
 
  sâu về các bề mặt mất độ bám: đường mới rải nhựa, vệt dầu, lá ướt, gờ giảm tốc sơn trơn — và cách nhận biết từ xa.
 
@@ -50,8 +49,7 @@ Vấn đề số một là phanh gấp trên đường trơn. Phản xạ tự n
  Kỹ năng thay thế — phanh sau giữ ổn định, phanh trước tăng dần — có trong nhóm đường trơn và kỹ năng lái. Đây là kỹ năng nên tập chủ động trong chỗ vắng trước khi cần dùng thật.
 
 Thứ hai là chạy đêm
- 
-quá nhanh so với tầm đèn: phản xạ của người thường cần ít nhất một giây để nhận biết vật cản, và ở 50km/h xe đã đi gần 14m trong một giây. Chạy đêm an toàn là giữ tốc độ trong ngưỡng đèn chiếu gần dừng được xe — chi tiết hơn ở nhóm đi trong đêm.
+ quá nhanh so với tầm đèn: phản xạ của người thường cần ít nhất một giây để nhận biết vật cản, và ở 50km/h xe đã đi gần 14m trong một giây. Chạy đêm an toàn là giữ tốc độ trong ngưỡng đèn chiếu gần dừng được xe — chi tiết hơn ở nhóm đi trong đêm.
 
 Thứ ba là giữ khoảng cách: đa số tai nạn đuôi xe nằm ở khoảng cách dưới hai giây, không đủ thời gian phanh lại khi xe trước dừng gấp. Kỹ năng đếm "một-ngàn-lẻ-một" khi xe trước qua một mốc cố định là cách đơn giản nhất để giữ đúng khoảng cách.
 
@@ -63,8 +61,7 @@ Cuối cùng, về hành vi: chạy xe sau khi uống rượu bia là vi phạm 
 
 Ba nguyên tắc nền tảng của an toàn xe máy. Thứ nhất, "nhìn xa chạy gần": quan sát 10–15 giây phía trước để có thời gian phản ứng, thay vì chỉ nhìn bánh xe trước. Thứ hai, luôn chừa lối thoát: khi dừng đèn đỏ, giữ khoảng cách với xe phía trước đủ để rẽ né ra nếu có xe phía sau không phanh kịp. Thứ ba, giả định "không ai thấy mình": xe máy nhỏ, dễ nằm trong điểm mù của ô tô và xe tải — chạy với tư duy luôn chủ động né chứ không trông chờ người khác nhường.
 
-Về trang bị, mũ bảo hiểm đạt chuẩn (có tem CR đầy đủ) là khoản đầu tư có lợi nhất trong mọi loại trang bị — chấn thương đầu là loại chấn thương gây hậu quả nặng nhất và khó hồi phục nhất. Về kỹ năng, phối hợp phanh trước – sau là kỹ năng đáng luyện tập nhất: nó áp dụng cho mọi tình huống, t
-ừ phố đông đến đèo núi.
+Về trang bị, mũ bảo hiểm đạt chuẩn (có tem CR đầy đủ) là khoản đầu tư có lợi nhất trong mọi loại trang bị — chấn thương đầu là loại chấn thương gây hậu quả nặng nhất và khó hồi phục nhất. Về kỹ năng, phối hợp phanh trước – sau là kỹ năng đáng luyện tập nhất: nó áp dụng cho mọi tình huống, từ phố đông đến đèo núi.
 
 
 ## Tình huống nguy hiểm điển hình và cách xử lý
@@ -82,9 +79,7 @@ Bảo hộ chỉ phát huy tác dụng nếu đúng tình trạng: dây mũ bả
 
 ## Khám phá nội dung
 
-Đọc theo tình huống bạn thường gặp nhất, rồi mở dần các nhóm còn lại. Với kỹ năng chuẩn bị xe trước khi đi xa — kiểm tra phanh, lốp, đèn — chuyên mục [Sửa chữa]({{ '/danh-muc/sua-ch
-ua/' | relative_url }}) và [Phượt xe]({{ '/danh-muc/phuot-xe/' | relative_url }}) có hướng dẫn chi tiết. Với quy định về trang bị bắt buộc khi lưu hành, xem [Pháp lý]({{ '/danh-muc/phap-ly/' | relative_url }}
-).
+Đọc theo tình huống bạn thường gặp nhất, rồi mở dần các nhóm còn lại. Với kỹ năng chuẩn bị xe trước khi đi xa — kiểm tra phanh, lốp, đèn — chuyên mục [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}) và [Phượt xe]({{ '/danh-muc/phuot-xe/' | relative_url }}) có hướng dẫn chi tiết. Với quy định về trang bị bắt buộc khi lưu hành, xem [Pháp lý]({{ '/danh-muc/phap-ly/' | relative_url }}).
 
 ## Thói quen hằng ngày tạo nên sự an toàn
 

@@ -15,8 +15,7 @@ Nội dung trong danh mục Xe máy phục vụ ba nhóm nhu cầu lớn. Nhóm 
 
 Ba nguyên tắc chạy xuyên suốt các bài trong danh mục. Một: chọn xe theo nhu cầu thật, không theo phong trào — xe ga tiện trong phố nhưng hao xăng và bảo dưỡng đắt hơn xe số; xe côn vui trên đường trường nhưng không hợp kẹt xe. Hai: xe cũ chỉ đáng tiền khi kiểm tra đúng cách — khung thẳng, máy khỏe, giấy tờ rõ ràng, và không từng ngập nước sâu. Ba: phần lớn "bệnh" của xe máy đến từ bảo dưỡng sai kỳ — nhớt, lọc gió, bugi, nhông sên dĩa — chứ không phải do xe kém chất lượng.
 
-Nếu bạn đang phân vân giữa xe xăng v
-à xe điện, đọc thêm danh mục [Xe điện]({{ '/danh-muc/xe-dien/' | relative_url }}) để so sánh chi phí và trải nghiệm. Nếu xe đã có lỗi cụ thể (đề yếu, hao xăng, phanh kêu), đi thẳng vào [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}).
+Nếu bạn đang phân vân giữa xe xăng và xe điện, đọc thêm danh mục [Xe điện]({{ '/danh-muc/xe-dien/' | relative_url }}) để so sánh chi phí và trải nghiệm. Nếu xe đã có lỗi cụ thể (đề yếu, hao xăng, phanh kêu), đi thẳng vào [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}).
 
 ## Các nhóm nội dung chính
 
@@ -32,8 +31,7 @@ Nếu bạn đang phân vân giữa xe xăng v
 
 **[Chọn xe]({{ '/danh-muc/xe-may/mua-xe/' | relative_url }})** và **[So sánh]({{ '/danh-muc/xe-may/so-sanh-xe/' | relative_url }})** tổng hợp cách quyết định theo ngân sách, mục đích đi lại (trong phố, đi làm xa, chở gia đình) và chi phí sở hữu lâu dài — vốn khác nhau rất nhiều giữa các dòng xe.
 
-**[Sử dụng]({{ '/danh-muc/xe-may/su-dung-xe/' | relative_url }})** cuối cùng là các kỹ năng hằng ngày: đề máy mùa lạnh, giữ 
-xe bền khi chạy quãng ngắn liên tục, và thói quen lái giúp tiết kiệm xăng mà không cần sửa gì thêm.
+**[Sử dụng]({{ '/danh-muc/xe-may/su-dung-xe/' | relative_url }})** cuối cùng là các kỹ năng hằng ngày: đề máy mùa lạnh, giữ xe bền khi chạy quãng ngắn liên tục, và thói quen lái giúp tiết kiệm xăng mà không cần sửa gì thêm.
 
 ## Bắt đầu từ đâu?
 
@@ -52,8 +50,7 @@ Nóng máy mùa hè đứng thứ ba: bầu tản nhiệt bẩn, nhớt đến h
 
 ## Kiến thức cần biết
 
-Vài khái niệm nên thuộc lòng trước khi ra tiệm. Chu kỳ nhớt: xe số thay nhớt láp theo km, xe ga thay dầu láp — nhầm hai loại này là lỗi phổ biến. Cỡ lốp ghi trên thành lốp, không phải "lốp to hơn là chắc hơn". Bugi có tuổi thọ và màu điện cực nói lên tình trạng 
-đốt cháy. Nhông sên dĩa là bộ ba phải thay cùng nhau, thay riêng sên sẽ mòn lại dĩa rất nhanh.
+Vài khái niệm nên thuộc lòng trước khi ra tiệm. Chu kỳ nhớt: xe số thay nhớt láp theo km, xe ga thay dầu láp — nhầm hai loại này là lỗi phổ biến. Cỡ lốp ghi trên thành lốp, không phải "lốp to hơn là chắc hơn". Bugi có tuổi thọ và màu điện cực nói lên tình trạng đốt cháy. Nhông sên dĩa là bộ ba phải thay cùng nhau, thay riêng sên sẽ mòn lại dĩa rất nhanh.
 
 Về pháp lý, mọi xe máy đều cần đăng ký, biển số, bảo hiểm trách nhiệm bắt buộc và người điều khiển phải có GPLX đúng hạng — chi tiết trong [Pháp lý]({{ '/danh-muc/phap-ly/' | relative_url }}). Và điều ảnh hưởng đến tuổi thọ xe nhiều nhất vẫn là cách chạy 1.000 km đầu sau mua mới: chạy rà đúng giúp các bộ khớp mòn đều.
 
@@ -71,8 +68,7 @@ Một nguyên tắc đáng nhớ: giá mua chỉ là một phần chi phí. Hai 
 
 ## Vận hành hằng ngày và tiết kiệm nhiên liệu
 
-Thói quen vận hành quyết định mức tiêu hao nhiều hơn nhiều 
-người nghĩ. Ba thói quen tiết kiệm xăng rõ nhất: giữ tốc độ đều thay vì tăng – giảm ga liên tục, dùng đúng loại nhiên liệu nhà xe khuyến nghị, và không chở tải vượt thiết kế. Ngược lại, chạy quá chậm cũng không tiết kiệm thêm mà khiến động cơ làm việc trong vùng không tối ưu.
+Thói quen vận hành quyết định mức tiêu hao nhiều hơn nhiều người nghĩ. Ba thói quen tiết kiệm xăng rõ nhất: giữ tốc độ đều thay vì tăng – giảm ga liên tục, dùng đúng loại nhiên liệu nhà xe khuyến nghị, và không chở tải vượt thiết kế. Ngược lại, chạy quá chậm cũng không tiết kiệm thêm mà khiến động cơ làm việc trong vùng không tối ưu.
 
 Việc ra số đúng lúc trên xe số và để bộ nồi xe ga được bảo dưỡng theo chu kỳ cũng ảnh hưởng trực tiếp: xích quá khô hoặc bộ nồi mòn đều làm một phần công suất bị tiêu hao thành ma sát, biểu hiện bằng xe đuối và hao xăng. Các dấu hiệu này được phân tích trong [sử dụng xe]({{ '/danh-muc/xe-may/su-dung-xe/' | relative_url }}) và nhóm chẩn đoán ở [Sửa chữa]({{ '/danh-muc/sua-chua/chan-doan-loi/' | relative_url }}).
 

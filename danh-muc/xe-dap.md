@@ -15,8 +15,7 @@ Kiến thức trong danh mục phục vụ ba nhóm người. Nhóm đi lại h�
 
 Ba quyết định quan trọng khi mua xe đạp. Một: loại xe theo mục đích — dùng xe phố leo dốc trail mòn sẽ mau hỏng, dùng MTB đi làm thì nặng và chậm. Hai: cỡ khung theo chiều cao người — khung quá to hoặc quá nhỏ đều làm đau lưng, đau cổ đầu gối dù xe đắt đến đâu. Ba: mức độ phân biệt "đồ tốt ở đúng chỗ" — xích, lốp, phanh là hạng mục hao mòn nên chọn loại thay được dễ; khung và bộ truyền động mới là nơi đáng đầu tư lâu dài.
 
-Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dưỡng gần như toàn bộ với vài dụng cụ cơ bản. Nội dung bảo dưỡng trong danh mục vì thế viết theo hướng tự làm 
-được: [bôi trơn xích]({{ '/danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}), chỉnh phanh, vá lốp, siết ớt.
+Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dưỡng gần như toàn bộ với vài dụng cụ cơ bản. Nội dung bảo dưỡng trong danh mục vì thế viết theo hướng tự làm được: [bôi trơn xích]({{ '/danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}), chỉnh phanh, vá lốp, siết ớt.
 
 ## Các nhóm nội dung
  chính
@@ -43,8 +42,7 @@ Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dư
 - **
 Bạn muốn vận động cuối tuần, đường quanh hồ hoặc đường trường** — đọc Xe đường trường và phần tư thế trong Chọn xe.
 - **Bạn muốn đi đường mòn, vườn, dốc đất** — Xe địa hình, chú ý phần giảm xóc.
-- **Bạn định đi du lịch nhiều ngày bằng xe đạp** — Xe touring kết hợp kinh nghiệm trong [Phượt xe]({{ '/danh-muc/phuot
--xe/' | relative_url }}), vì hai loại chuyến đi dùng nhiều nguyên tắc giống nhau.
+- **Bạn định đi du lịch nhiều ngày bằng xe đạp** — Xe touring kết hợp kinh nghiệm trong [Phượt xe]({{ '/danh-muc/phuot-xe/' | relative_url }}), vì hai loại chuyến đi dùng nhiều nguyên tắc giống nhau.
 
 ## Những vấn đề thường gặp
 
@@ -62,15 +60,13 @@ Chất liệu khung: thép bền và rẻ nhưng nặng, nhôm nhẹ và phổ b
 
 ---
 
-Xe đạp rẻ nhất để sở hữu nhưng dễ bị bỏ quên nhất — chỉ vì chọn sai 
-loại xe ban đầu. Chọn đúng, bảo dưỡng 30 phút mỗi tháng, và một chiếc xe đạp tốt sẽ đi cùng bạn nhiều năm.
+Xe đạp rẻ nhất để sở hữu nhưng dễ bị bỏ quên nhất — chỉ vì chọn sai loại xe ban đầu. Chọn đúng, bảo dưỡng 30 phút mỗi tháng, và một chiếc xe đạp tốt sẽ đi cùng bạn nhiều năm.
 
 Cân nhắc xe đạp điện cho quãng đường dài hơn? Xem [Xe điện]({{ '/danh-muc/xe-dien/xe-dap-dien/' | relative_url }}).
 
 ## Chọn khung xe và cỡ xe đúng người
 
-Hai quyết định kỹ thuật quan trọng nhất khi mua xe đạp: chất liệu khung và cỡ khung. Về chất liệu, khung thép bền và rẻ nhưng nặng; khun
-g nhôm nhẹ và không rỉ, hợp người đi lại hằng ngày; khung carbon nhẹ nhất nhưng đắt và cần cẩn trọng khi va chạm. Người đi phố trong điều kiện Việt Nam thường hợp nhất với khung nhôm: đủ nhẹ để leo cầu vượt, đủ bền cho vỉa hè xấu.
+Hai quyết định kỹ thuật quan trọng nhất khi mua xe đạp: chất liệu khung và cỡ khung. Về chất liệu, khung thép bền và rẻ nhưng nặng; khung nhôm nhẹ và không rỉ, hợp người đi lại hằng ngày; khung carbon nhẹ nhất nhưng đắt và cần cẩn trọng khi va chạm. Người đi phố trong điều kiện Việt Nam thường hợp nhất với khung nhôm: đủ nhẹ để leo cầu vượt, đủ bền cho vỉa hè xấu.
 
 Về cỡ khung, chiều cao người lái quyết định cỡ khung. Khung quá to khiến người lái phải với tay, mỏi lưng và khó xử lý khi gấp rẽ; khung quá nhỏ làm khớp gối gập quá, đau đầu gối sau vài chục km. Cách đo nhanh: đứng vượt qua khung, khoảng hở giữa khung và thân người cỡ một bàn tay; khi ngồi lên yên, mũi bàn chân chạm đất. Hướng dẫn chọn chi tiết nằm ở [chọn xe]({{ '/danh-muc/xe-dap/chon-xe/' | relative_url }}).
 
@@ -82,13 +78,11 @@ Về trang bị, đèn trước và sau cùng đồ phản quang không phải t
 
 ## Bảo dưỡng tại nhà
 
-Xe đạp là phương tiện dễ tự bảo dưỡng nhất: gần như toàn bộ bảo dưỡng định kỳ làm được tại nhà với bộ dụng cụ cơ bản. Ba hạng mục nên làm đều đặn: bôi trơn xích sau mỗi tuần chạy ướt hoặc bụi, kiểm tra áp suất lốp mỗi tuần (lốp non làm đạp nặng 
-và mau mòn), và siết bu-long sau 200km đầu với xe mới.
+Xe đạp là phương tiện dễ tự bảo dưỡng nhất: gần như toàn bộ bảo dưỡng định kỳ làm được tại nhà với bộ dụng cụ cơ bản. Ba hạng mục nên làm đều đặn: bôi trơn xích sau mỗi tuần chạy ướt hoặc bụi, kiểm tra áp suất lốp mỗi tuần (lốp non làm đạp nặng và mau mòn), và siết bu-long sau 200km đầu với xe mới.
 
 Hai tín hiệu cần xử lý sớm: xích có tiếng lách cách dù đã bôi trơn (xích giãn, cần cắt hoặc thay), và phanh kêu dù đã chỉnh (má phanh mòn hoặc vành bánh lệch). Chi tiết các hạng mục nằm ở [bảo dưỡng]({{ '/danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}).
 
-Về độ bền tổng thể, cách giữ xe đơn giản nhất là để trong nhà có mái che: mưa và nắng gắt là hai tác nhân làm mục ổ trục và làm giòn cao su nhanh nhất. Một chiếc xe phố đư
-ợc để trong nhà dễ dàng bền gấp đôi so với xe phơi ngoài trời.
+Về độ bền tổng thể, cách giữ xe đơn giản nhất là để trong nhà có mái che: mưa và nắng gắt là hai tác nhân làm mục ổ trục và làm giòn cao su nhanh nhất. Một chiếc xe phố được để trong nhà dễ dàng bền gấp đôi so với xe phơi ngoài trời.
 
 ## Bảo trì tại nhà cho người mới
 

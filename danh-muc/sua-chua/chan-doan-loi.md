@@ -37,8 +37,7 @@ Chẩn đoán sai phần nhiều vì mô tả triệu chứng không đủ cụ 
 
 Sau khi sửa xong, nên giữ thói quen quan sát lại vài ngày đầu: triệu chứng cũ hết hẳn, thuyên giảm, hay đổi sang dạng khác. Đây là cách kiểm tra chẩn đoán có đúng hay không — và là thông tin đầu tiên cần nói với thợ nếu mang xe đi tiếp.
 
-## Kiểm tr
-a tại nhà so với mang đi tiệm
+## Kiểm tra tại nhà so với mang đi tiệm
 
 Nguyên tắc phân chia: các kiểm tra nhìn thấy được, dùng tay và dụng cụ cơ bản (bugi, lọc gió, áp suất lốp, mức nhớt, siết xích) làm được tại nhà; các kiểm tra cần tháo sâu (tháo máy, đo điện chi tiết) nên để cho thợ có dụng cụ chuyên dụng. Giới hạn này không phải vì thiếu kỹ năng mà vì tháo sai chỗ dễ tạo thêm lỗi mới. Mỗi bài chẩn đoán trong mục này đều đánh dấu rõ bước nào dừng lại và chuyển sang tiệm.
 

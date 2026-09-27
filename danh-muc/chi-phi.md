@@ -17,12 +17,11 @@ Chuyên mục này phục vụ người đang cân nhắc mua xe muốn ước t
 
 ## Các nhóm nội dung chính
 
-**Mua xe** ([mua-xe]({{ '/danh-muc/xe-may/mua-xe/' | relative_url }})) nói về cấu trúc giá khi mua xe mới và xe cũ: giá niêm yết, phí trước bạ, phụ phí, và các điểm cần cân nhắc khi quyết định ngân sách mua.
+**Mua xe** ([mua-xe]({{ '/danh-muc/chi-phi/mua-xe/' | relative_url }})) nói về cấu trúc giá khi mua xe mới và xe cũ: giá niêm yết, phí trước bạ, phụ phí, và các điểm cần cân nhắc khi quyết định ngân sách mua.
 
 **Nuôi xe** ([nuoi-xe]({{ '/danh-muc/chi-phi/nuoi-xe/' | relative_url }})) là nhóm tổng hợp chi phí hằng tháng của xe: xăng, gửi xe, bảo dưỡng, để bạn có khung ước tính cho ngân sách định kỳ.
 
-**Nhiên liệu** ([nhien-lieu]({{ '/danh-muc/chi-phi/nhien-lieu/' | relative_url }})) phân tích chi phí xăng theo quãng đường và mức tiêu thụ thực tế của các dòng xe phổ biến, kèm các 
-thói quen chạy xe giúp tiết kiệm xăng.
+**Nhiên liệu** ([nhien-lieu]({{ '/danh-muc/chi-phi/nhien-lieu/' | relative_url }})) phân tích chi phí xăng theo quãng đường và mức tiêu thụ thực tế của các dòng xe phổ biến, kèm các thói quen chạy xe giúp tiết kiệm xăng.
 
 **Tiền điện** ([tien-dien]
 
@@ -46,8 +45,7 @@ Người mua xe cũ nên đọc nhóm mua xe và sửa chữa cùng nhau, vì xe
 
 ## Những vấn đề thường gặp
 
-Vấn đề phổ biến nhất là ước tính nuôi xe chỉ tính xăng. Với xe chạy phố hàng ngày, gửi xe và bảo 
-dưỡng cộng lại có khi không thua kém tiền xăng — bỏ sót hai hạng mục này khiến ngân sách thực tế luôn vượt kế hoạch.
+Vấn đề phổ biến nhất là ước tính nuôi xe chỉ tính xăng. Với xe chạy phố hàng ngày, gửi xe và bảo dưỡng cộng lại có khi không thua kém tiền xăng — bỏ sót hai hạng mục này khiến ngân sách thực tế luôn vượt kế hoạch.
 
 Thứ hai là chi phí sửa chữa bất thường không được trích lũy
 :
@@ -68,8 +66,7 @@ Thứ ba, chi phí bảo dưỡng theo chu kỳ là khoản có thể tối ưu 
 
 ## Cách lập bảng chi phí nuôi xe
 
-Cách đơn giản nhất để nắm chi phí là ghi lại từng khoản trong ba tháng đầu, sau đó tính mức trung bình hằng tháng. Bảng ghi nên tách bốn nhóm: xăng 
-hoặc tiền điện nếu chạy xe điện, nhớt và bảo dưỡng định kỳ, sửa chữa ngoài kế hoạch, và các khoản phí cố định như gửi xe, bảo hiểm. Sau vài tháng, bạn sẽ thấy trọng số thật của từng nhóm và biết cắt ở
+Cách đơn giản nhất để nắm chi phí là ghi lại từng khoản trong ba tháng đầu, sau đó tính mức trung bình hằng tháng. Bảng ghi nên tách bốn nhóm: xăng hoặc tiền điện nếu chạy xe điện, nhớt và bảo dưỡng định kỳ, sửa chữa ngoài kế hoạch, và các khoản phí cố định như gửi xe, bảo hiểm. Sau vài tháng, bạn sẽ thấy trọng số thật của từng nhóm và biết cắt ở
  đâu hợp lý nhất.
 
 Vài quy luật thực tế đáng lưu ý. Chi phí bảo dưỡng định kỳ chiếm phần nhỏ, nhưng nếu bỏ qua sẽ chuyển thành chi phí sửa chữa lớn. Chi phí xăng dao động theo thói quen ga và độ dày giao hơn là theo thông số xe trên giấy. Và hạng mục dễ làm đội chi phí nhất là sửa vặt ở những thời điểm không kiểm soát giá, ví dụ hỏng giữa đường và phải thay linh kiện ở tiệm gần nhất.
@@ -86,7 +83,6 @@ Bắt đầu từ nhóm khớp với quyết định bạn đang đứng trướ
 
 ## Chi phí ẩn khi đổi xe mới
 
-Nhiều người tính chi phí đổi xe chỉ bằng chênh lệch giá bán và giá mua, rồi quên nhóm chi phí ẩn đi kèm. Phí trước bạ và đăng ký cho xe mới, chi phí chuyển nhượng xe cũ, thời gian chạy thủ tục, và khoản lỗ khi bán xe cũ gấp giá so với mong đợi ở thời điểm mua. Với 
-xe điện, cần tính thêm chi phí lắp điểm sạc ở nhà nếu chung cư chưa có hạ sẵn, và tiền thuê bình pin nếu hãng áp dụng hình thức cho thuê pin. Cộng đủ các khoản này trước khi quyết định giúp so sánh trung thực giữa tiếp tục nuôi xe cũ và chuyển sang xe mới.
+Nhiều người tính chi phí đổi xe chỉ bằng chênh lệch giá bán và giá mua, rồi quên nhóm chi phí ẩn đi kèm. Phí trước bạ và đăng ký cho xe mới, chi phí chuyển nhượng xe cũ, thời gian chạy thủ tục, và khoản lỗ khi bán xe cũ gấp giá so với mong đợi ở thời điểm mua. Với xe điện, cần tính thêm chi phí lắp điểm sạc ở nhà nếu chung cư chưa có hạ sẵn, và tiền thuê bình pin nếu hãng áp dụng hình thức cho thuê pin. Cộng đủ các khoản này trước khi quyết định giúp so sánh trung thực giữa tiếp tục nuôi xe cũ và chuyển sang xe mới.
 
 Quy tắc thực dụng: nếu mục đổi xe chỉ để tiết kiệm xăng, hãy tính xem bao lâu khoản tiết kiệm bù lại được phần lỗ bán xe cũ và các khoản phí. Con số này thường dài hơn nhiều so với tưởng tượng ban đầu.

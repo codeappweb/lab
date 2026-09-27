@@ -29,9 +29,9 @@ legal_sensitivity: false
 
 ## Khác biệt cơ bản giữa xe ga và xe số
 
-Xe số yêu cầu thao tác tay côn và chân gạt số, đồng thời cân bằng tốc độ với mức số. Xe ga dùng bộ truyền động tự động, chỉ cần vặn ga là đi, phanh thì bóp tay. Với người chưa quen xe số, việc đề máy, ra số và dừng ở ngã tư có thể gây lúng túng, nhất là khi xe tải cũ, cần ga lớn. Xe ga vì thế phổ biến hơn trong dịch vụ cho thuê ở phố thị.
+Xe số yêu cầu thao tác tay côn và chân gạt số, đồng thời cân bằng tốc độ với mức số. Xe ga dùng bộ truyền động tự động, chỉ cần vặn ga là đi, phanh thì bóp tay. Với người chưa quen xe số, việc đề máy, ra số và dừng ở ngã tư có thể gây lúng túng, nhất là khi xe tải cũ cần ga lớn. Xe ga vì thế phổ biến hơn trong dịch vụ cho thuê ở phố thị.
 
-Xe số bù lại gọn nhẹ hơn, dễ luồn lách, và với xe côn tay thì còn phù hợp đường đèo dốc. Động cơ xe số cũ thường bền, ít phụ tùng điện tử, sữa chữa rẻ. Khuyết điểm lớn nhất của xe số cho khách thuê là thao tác: nếu bạn chỉ từng đi xe ga, đừng mạo hiểm thuê xe số ngay ngày có lịch trình dày.
+Xe số bù lại gọn nhẹ hơn, dễ luồn lách, và với xe côn tay thì còn phù hợp đường đèo dốc. Động cơ xe số cũ thường bền, ít phụ tùng điện tử, sửa chữa rẻ. Khuyết điểm lớn nhất của xe số cho khách thuê là thao tác: nếu bạn chỉ từng đi xe ga, đừng mạo hiểm thuê xe số ngay ngày có lịch trình dày.
 
 ## So sánh theo từng tiêu chí
 
@@ -49,7 +49,7 @@ Xe số cấu tạo đơn giản, hỏng vặt thường chỉ là bugi hoặc �
 
 ### Sự thoải mái
 
-Xe ga có sàn để chân phẳng, cốp đựng đồ, thường kèm chắn bùn tốt hơn, nên thoải mái khi đi phố lâu hoặc chở đồ. Xe số để chân ở yên trục, chở đồ phải dùng còng hoặc ba lô. Với khách nữ đi裙子 hoặc mang nhiều đồ, xe ga tiện hơn hẳn.
+Xe ga có sàn để chân phẳng, cốp đựng đồ, thường kèm chắn bùn tốt hơn, nên thoải mái khi đi phố lâu hoặc chở đồ. Xe số để chân ở yên trục, chở đồ phải dùng còng hoặc ba lô. Với khách nữ mặc váy hoặc người mang nhiều đồ, xe ga tiện hơn hẳn.
 
 ### Phù hợp đường Hà Nội
 

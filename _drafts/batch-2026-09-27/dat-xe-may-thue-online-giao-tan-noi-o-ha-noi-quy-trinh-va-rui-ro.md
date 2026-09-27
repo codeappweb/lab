@@ -38,11 +38,11 @@ Giấy tờ cần mang khi thuê được liệt kê trong bài [thuê xe máy t
 
 ### Xác minh dịch vụ và xe
 
-Yêu cầu dịch vụ gửi hình thực tế của xe sẽ giao, kèm biển số, và đối chiếu khi nhận. Kiểm tra đăng ký xe khớp biển số ngay tại điểm giao. Dịch vụ chỉ gửi ảnh stock, từ chối cho xem đăng ký hoặc hẹn giao ở nơi vắng vẻ là ba dấu hiệu cảnh báo. Nhóm dấu hiệu nhận biết dịch vụ kém chất lượng được tổng hợp tại [thuê xe máy giá rẻ ở Hà Nội: dấu hiệu của dịch vụ kém chất lượng]({{ '/thue-xe-may-gia-re-o-ha-noi-dau-hieu-cua-dich-vu-kem-chat-luong/' | relative_url }}).
+Yêu cầu dịch vụ gửi hình thực tế của xe sẽ giao, kèm biển số, và đối chiếu khi nhận. Kiểm tra đăng ký xe khớp biển số ngay tại điểm giao. Dịch vụ chỉ gửi ảnh quảng cáo, từ chối cho xem đăng ký hoặc hẹn giao ở nơi vắng vẻ là ba dấu hiệu cảnh báo. Nhóm dấu hiệu nhận biết dịch vụ kém chất lượng được tổng hợp tại [thuê xe máy giá rẻ ở Hà Nội: dấu hiệu của dịch vụ kém chất lượng]({{ '/thue-xe-may-gia-re-o-ha-noi-dau-hieu-cua-dich-vu-kem-chat-luong/' | relative_url }}).
 
 ### Hợp đồng và biên nhận
 
-Kể cả khi đặt online, hợp đồng giấy vẫn nên có: loại xe, biển số, giá, cọc, thời gian, số điện thoại hai bên. Nếu dịch vụ chỉ làm việc qua tin nhắn, lưu toàn bộ nội dung chốt thỏa thuận. Biên nhận cọc phải ghi rõ số tiền và điều kiện hoàn. Tránh chuyển khoản vào tài khoản cá nhân không rõ danh tính: yêu cầu tài khoản企业 của cửa hàng hoặc thanh toán qua nền tảng có lưu vết.
+Kể cả khi đặt online, hợp đồng giấy vẫn nên có: loại xe, biển số, giá, cọc, thời gian, số điện thoại hai bên. Nếu dịch vụ chỉ làm việc qua tin nhắn, lưu toàn bộ nội dung chốt thỏa thuận. Biên nhận cọc phải ghi rõ số tiền và điều kiện hoàn. Tránh chuyển khoản vào tài khoản cá nhân không rõ danh tính: yêu cầu tài khoản công khai của cửa hàng hoặc thanh toán qua nền tảng có lưu vết.
 
 ### Điểm giao nhận
 

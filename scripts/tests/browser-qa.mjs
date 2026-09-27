@@ -194,7 +194,7 @@ const overflow = (page) => page.evaluate(() =>
       check('footer action "' + a.label + '" (data-qa=' + a.data_qa + ') @' + w, !!found && found[0] === a.label, JSON.stringify(actionButtons));
     }
     // bottom nav (always in the DOM)
-    const bottom = await page.$eval('nav.bottom-nav > *', els => els.map(e => ({
+    const bottom = await page.$$eval('nav.bottom-nav > *', els => els.map(e => ({
       text: e.textContent.trim(), href: e.getAttribute('href'), sheet: e.hasAttribute('data-sheet-open'), search: e.hasAttribute('data-search-open')
     })));
     check('bottom-nav has home + topics + search @' + w,

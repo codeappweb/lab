@@ -43,8 +43,7 @@ const related = {};
 for (const p of posts) {
   const pool = posts.filter(x => x.slug !== p.slug);
   const inChild = new Set(pool.filter(x => x.parent && x.parent === p.parent && x.child === p.child && x.child).map(x => x.slug));
-  const inParent = new Set(pool.filter(x => x.parent && x.pa
-rent === p.parent && !inChild.has(x.slug)).map(x => x.slug));
+  const inParent = new Set(pool.filter(x => x.parent && x.parent === p.parent && !inChild.has(x.slug)).map(x => x.slug));
   const picked = [];
   for (const cand of pool) {
     if (picked.length >= 3) break;

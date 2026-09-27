@@ -96,9 +96,18 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           {
-            echo '### Selftest job failed — logs of failed steps'
+            echo '### Selftest job failed — step logs'
             echo '```'
-            gh run view "$GITHUB_RUN_ID" --log-failed 2>&1 | tail -n 150 || true
+            echo '--- /tmp/nav-canon.log (tail 40) ---'
+            tail -n 40 /tmp/nav-canon.log 2>/dev/null || echo '(nav-canon.log missing — step not reached)'
+            echo '--- /tmp/nav-fx.log (tail 40) ---'
+            tail -n 40 /tmp/nav-fx.log 2>/dev/null || echo '(nav-fx.log missing — step not reached)'
+            echo '--- /tmp/art.log (tail 20) ---'
+            tail -n 20 /tmp/art.log 2>/dev/null || echo '(art.log missing — step not reached)'
+            echo '--- /tmp/eng.log (tail 20) ---'
+            tail -n 20 /tmp/eng.log 2>/dev/null || echo '(eng.log missing — step not reached)'
+            echo '--- failed-step log (when the run has completed) ---'
+            gh run view "$GITHUB_RUN_ID" --log-failed 2>&1 | tail -n 120 || true
             echo '```'
             echo '(Full logs: check-run page. Gates are never weakened to pass CI.)'
           } > /tmp/failed-comment.md

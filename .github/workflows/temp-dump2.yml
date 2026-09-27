@@ -1,0 +1,45 @@
+name: temp-dump2 (temporary diagnostics; delete after collection)
+
+on:
+  push:
+    branches: [repair/engine-v2]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dump selected files as verified base64 chunks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          PR_NUMBER=$(gh pr list --head repair/engine-v2 --state open --json number -q '.[0].number')
+          echo "PR number: $PR_NUMBER"
+          for f in scripts/lib/lab.mjs scripts/selftest.mjs data/taxonomy.yml; do
+            [ -f "$f" ] || { echo "missing $f"; continue; }
+            b64=$(base64 -w0 "$f")
+            total=$(printf '%s' "$b64" | wc -c)
+            sha=$(printf '%s' "$b64" | sha256sum | cut -d' ' -f1)
+            n=$(( (total + 7999) / 8000 ))
+            echo "dump $f: b64len=$total sha256=$sha chunks=$n"
+            i=0
+            while [ $i -lt $n ]; do
+              i=$((i + 1))
+              off=$(( (i - 1) * 8000 ))
+              end=$(( off + 8000 ))
+              part=$(printf '%s' "$b64" | cut -c $((off + 1))-$end)
+              if [ "$i" -eq "$n" ]; then
+                printf '===CHUNK2 %s %d %d %d %s\n~~~\n%s\n===END2===\n' "$f" "$i" "$n" "$off" "$sha" "$part" > /tmp/c2.md
+              else
+                printf '===CHUNK2 %s %d %d %d %s\n~~~\n%s\n' "$f" "$i" "$n" "$off" "$sha" "$part" > /tmp/c2.md
+              fi
+              gh pr comment "$PR_NUMBER" --body-file /tmp/c2.md
+              sleep 3
+            done
+          done
+          echo done

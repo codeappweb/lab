@@ -191,8 +191,8 @@ switch (cmd) {
     const report = provider.preflight(ROOT, cfg);
     console.log(JSON.stringify(report, null, 2));
     if (report.status === 'blocked') fail('provider is BLOCKED: ' + report.reason);
-    if (report.status === 'test-only') log('NOTE: mock is orchestration-test only — never a real writer; nothing can be published from mock');
-    if (report.status === 'manual-draft-ingestion') log('NOTE: manual draft ingestion — drafts must be authored in a local Mistral/Vibe session into drafts/; this is not automated writing');
+    if (report.status === 'test-only') console.error('[engine] NOTE: mock is orchestration-test only — never a real writer; nothing can be published from mock');
+    if (report.status === 'manual-draft-ingestion') console.error('[engine] NOTE: manual draft ingestion — drafts must be authored in a local Mistral/Vibe session into drafts/; this is not automated writing');
     break;
   }
 

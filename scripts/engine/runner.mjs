@@ -214,7 +214,7 @@ function persistState(root, label) {
 // run retries the persistence from the milestones, without duplicate work.
 function requirePersisted(result, job, what) {
   if (result.status === 'committed' || result.status === 'noop' || result.status === 'non-git') return;
-  const err = new Error('state persistence FAILED while persisting ' + what + ' (' + (result.reason || 'unknown') + ') — publication is BLOCKED until the state commit succeeds; nothing was pushed');
+  const err = new Error('state persistence FAILED while persisting ' + what + ' (' + (result.reason || 'unknown') + ') — publication is BLOCKED until the state commit succeeds; nothing was pushed (E_PERSIST_FAILED)');
   err.code = 'E_PERSIST_FAILED';
   store.recordError(job.id, err.message);
   throw err;

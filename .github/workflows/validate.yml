@@ -87,7 +87,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          { echo '### engine-selftest log (tail 80)'; echo '```'; tail -n 80 /tmp/eng.log 2>/dev/null || echo '(eng.log missing)'; echo '```'; } > /tmp/eng-comment.md
+          { echo '### engine-selftest log (all BAD lines + tail 80)'; echo '```'; echo '--- all BAD lines ---'; grep -n 'BAD' /tmp/eng.log 2>/dev/null || echo '(no BAD lines)'; echo '--- tail 80 ---'; tail -n 80 /tmp/eng.log 2>/dev/null || echo '(eng.log missing)'; echo '```'; } > /tmp/eng-comment.md
           gh pr comment "$PR_NUMBER" --body-file /tmp/eng-comment.md || true
       - name: Post failed step log to PR (generic diagnostics)
         if: failure() && github.event_name == 'pull_request'

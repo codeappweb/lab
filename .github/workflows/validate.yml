@@ -46,6 +46,7 @@ jobs:
         run: |
           bash scripts/ci-run.sh node scripts/gen-site-data.mjs
           bash scripts/ci-run.sh node scripts/gen-archive-pages.mjs
+          echo "::warning title=dbg-src::$(ls danh-muc/sua-chua/ 2>/dev/null | tr '\n' ' ')"
       - name: Validate content quality
         run: bash scripts/ci-run.sh node scripts/validate-content-quality.mjs
       - name: Detect duplicates
@@ -59,7 +60,8 @@ jobs:
       - name: Self-heal audit
         run: bash scripts/ci-run.sh node scripts/self-heal-audit.mjs
       - name: Legal freshness audit (gate mode)
-        run: bash scripts/ci-run.sh node scripts/legal-freshness-audit.mjs --gate
+        run: bash scripts/ci-run.sh node s
+cripts/legal-freshness-audit.mjs --gate
       - name: SEO scoring
         run: bash scripts/ci-run.sh node scripts/seo-score.mjs
       - name: Compute content hashes
@@ -82,6 +84,8 @@ jobs:
         run: |
           bundle install --jobs 4
           bundle exec jekyll build
+      - name: Debug listing
+        run: echo "::warning title=dbg-site::$(ls _site/danh-muc/sua-chua/ 2>/dev/null | tr '\n' ' ')"; echo "::warning title=dbg-src2::$(ls danh-muc/sua-chua/ | tr '\n' ' ')"
       - name: Measure built output
         run: bash scripts/ci-run.sh node scripts/measure-output.mjs
       - name: Validate built output (rendered links + sitemap membership)

@@ -1,0 +1,41 @@
+name: Temp dump (delete me)
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dump files as base64 PR comments
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -e
+          mkdir -p /tmp/d
+          i=0
+          for f in assets/js/main.js assets/js/app-extras.js _includes/head.html _layouts/post.html assets/css/article.css .github/workflows/validate.yml _includes/header.html _includes/footer.html _includes/nav-drawer.html _includes/topic-sheet.html _includes/search.html _includes/saved-sheet.html _includes/quick-actions.html data/navigation.yml data/taxonomy.yml data/menu-cats.yml assets/js/nav2.js _layouts/default.html; do
+            if [ -f "$f" ]; then
+              i=$((i+1))
+              { echo "===FILE:$f==="; cat "$f"; } >> /tmp/d/blob.txt
+              echo "dumped $f" >&2
+            else
+              echo "MISSING $f" >&2
+            fi
+          done
+          echo "total $(wc -c < /tmp/d/blob.txt) bytes" >&2
+          split -b 60000 /tmp/d/blob.txt /tmp/d/part-
+          n=0
+          for p in /tmp/d/part-*; do
+            n=$((n+1))
+            nparts=$(ls /tmp/d/part-* | wc -l)
+            { echo "### FILEDUMP2 part $n of $nparts (temporary base64 dump; safe to delete)"; echo '```'; base64 -w 0 "$p"; echo; echo '```'; } > /tmp/d/c.md
+            gh pr comment "$PR_NUMBER" --body-file /tmp/d/c.md
+          done
+          echo "posted $n comments" >&2

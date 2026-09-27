@@ -177,13 +177,13 @@ function runBuildGates(root) {
     } catch (e) { buildErr = buildErr || e.message; }
   }
   if (!buildOk) {
-    const e = new Error('Jekyll build unavailable or failed (' + (buildErr || 'unknown') + ') — publication BLOCKED. Install the toolchain (bundle install) or fix the build; rendering checks are never skipped.');
+    const e = new Error('Jekyll build unavailable or failed (' + (buildErr || 'unknown') + ') — publication BLOCKED (E_BUILD_MISSING). Install the toolchain (bundle install) or fix the build; rendering checks are never skipped.');
     e.code = 'E_BUILD_MISSING';
     throw e;
   }
   const vb = path.join(root, 'scripts', 'validate-built.mjs');
   if (!fs.existsSync(vb)) {
-    const e = new Error('rendered-output validator scripts/validate-built.mjs not found under ' + root + ' — publication BLOCKED (rendered checks are mandatory on every publication path)');
+    const e = new Error('rendered-output validator scripts/validate-built.mjs not found under ' + root + ' — publication BLOCKED (E_BUILD_MISSING; rendered checks are mandatory on every publication path)');
     e.code = 'E_BUILD_MISSING';
     throw e;
   }

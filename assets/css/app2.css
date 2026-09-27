@@ -38,7 +38,8 @@
 .chat-examples button,.chat-examples .chip{font-size:.8rem;border:1px solid var(--border);border-radius:999px;padding:6px 12px;color:var(--muted);background:var(--surface);cursor:pointer}
 .chat-examples button:hover,.chat-examples .chip:hover{color:var(--text);border-color:var(--border-strong)}
 .chat-foot{border-top:1px solid var(--border);padding:12px 14px;display:flex;gap:8px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
-.chat-foot input{flex:1;min-width:0;border:1px solid var(--border);border-radius:var(--r-md);padding:10px 14px;background:var(--surface);color:var(--text);font:inherit;font-size:.92rem;outline:none;transition:border-color .15s}
+.chat-foot input{flex:1;min-width:0;border:1px solid var(--border);border-radius:var(--r-md);padding:10px 14px;background:var(--surface);color:var(--text);font:inherit;font-
+size:.92rem;outline:none;transition:border-color .15s}
 .chat-foot input:focus{border-color:var(--accent)}
 .chat-send{background:var(--text);color:var(--bg);border-radius:var(--r-md);padding:0 16px;display:flex;align-items:center;flex:none}
 .chat-send svg{width:17px;height:17px}

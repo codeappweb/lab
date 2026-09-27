@@ -234,6 +234,8 @@ function runEnv(args, root, env) {
 
 // ~minTokens Vietnamese syllable-tokens in total (documented counting method),
 // spread over three H2 sections.
+// unit = 8 syllable-tokens per repetition (whitespace-split counting).
+const unit = 'thử nghiệm orchestration engine kiểm thử tự động ';
 function vnBody(minTokens) {
   const reps = Math.ceil(minTokens / 8);
   const a = unit.repeat(Math.ceil(reps * 0.5));

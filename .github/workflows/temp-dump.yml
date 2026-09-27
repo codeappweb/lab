@@ -1,0 +1,30 @@
+name: Temp file dump (delete me)
+on:
+  pull_request:
+    branches: ['**']
+jobs:
+  dump:
+    if: github.event.pull_request.head.ref == 'repair/engine-v2'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Dump files to PR comments (temporary diagnostic; safe to delete)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -e
+          for f in scripts/engine/runner.mjs scripts/engine-selftest.mjs; do
+            base64 -w 30000 "$f" > /tmp/chunks.b64
+            n=$(wc -l < /tmp/chunks.b64)
+            i=0
+            while IFS= read -r line; do
+              i=$((i+1))
+              { echo "### TEMPFILEDUMP $f part $i of $n (temporary base64 dump; safe to delete)"; echo '```'; echo "$line"; echo '```'; } > /tmp/c.md
+              gh pr comment "$PR_NUMBER" --body-file /tmp/c.md
+            done < /tmp/chunks.b64
+          done

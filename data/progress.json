@@ -6,20 +6,11 @@
     "published": 30,
     "by_manifest_status": {
       "planned": 67,
-      "published": 22
+      "published": 30
     }
   },
   "changes": {
-    "created": [
-      "C05-0023",
-      "C05-0024",
-      "C05-0025",
-      "C05-0026",
-      "C05-0027",
-      "C05-0028",
-      "C05-0029",
-      "C05-0030"
-    ],
+    "created": [],
     "updated": []
   }
 }

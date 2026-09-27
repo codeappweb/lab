@@ -42,6 +42,14 @@ jobs:
             { grep -E 'BAD|engine-selftest:' /tmp/eng.log | head -n 15; echo '--- tail ---'; tail -n 25 /tmp/eng.log; } | while IFS= read -r l; do echo "::error::$l"; done
             exit 1
           fi
+      - name: Post engine selftest log to PR (diagnostics)
+        if: failure() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          { echo '### engine-selftest log (tail 80)'; echo '```'; tail -n 80 /tmp/eng.log 2>/dev/null || echo '(eng.log missing)'; echo '```'; } > /tmp/eng-comment.md
+          gh pr comment "$PR_NUMBER" --body-file /tmp/eng-comment.md || true
 
   manifest-reconcile:
     name: Manifest reconcile (sync published posts; generates nothing)

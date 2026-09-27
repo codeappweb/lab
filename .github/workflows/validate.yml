@@ -39,7 +39,7 @@ jobs:
         run: |
           set -o pipefail
           if ! node scripts/engine-selftest.mjs --verbose 2>&1 | tee /tmp/eng.log; then
-            grep -E 'BAD|engine-selftest:' /tmp/eng.log | head -n 15 | while IFS= read -r l; do echo "::error::$l"; done
+            { grep -E 'BAD|engine-selftest:' /tmp/eng.log | head -n 15; echo '--- tail ---'; tail -n 25 /tmp/eng.log; } | while IFS= read -r l; do echo "::error::$l"; done
             exit 1
           fi
 

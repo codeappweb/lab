@@ -214,10 +214,19 @@ function extractBlock(html, startMarker, endTag) {
 function anchors(block) {
   const out = [];
   if (!block) return out;
+  // The footer/header BRAND wordmark (logo/brand link, e.g. the site name
+  // linking to /) is not a navigation label: it is the site identity.
+  // Documented exception — see docs/ARTICLE-DESIGN.md (navigation source of
+  // truth). Everything else must match the canonical label per URL.
+  const brandBlock = block.match(/<[^>]*class="[^"]*foot-brand[^"]*"[^>]*>[\s\S]*?<\/div>/);
+  if (brandBlock) block = block.replace(brandBlock[0], '');
   const re = /<a\b[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g;
   let m;
   while ((m = re.exec(block))) {
-    const text = m[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (/class="[^"]*\b(?:logo|brand)\b[^"]*"/.test(m[0])) continue; // brand wordmark — not a nav label
+    const text = m[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ')
+      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
     out.push({ href: m[1], text });
   }
   return out;

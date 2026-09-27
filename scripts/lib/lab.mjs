@@ -80,10 +80,11 @@ export function discover(root) {
     }
   }
   const statics = [];
-  // README.md is repository documentation, never site content (spec:
-  // exclude documentation and fixtures). It has no front matter and Jekyll
-  // copies it verbatim, so it must not enter any content/URL set.
-  for (const f of readdirSync(root).filter(f => f.endsWith('.md') && f !== 'README.md')) {
+  // README.md and AGENTS.md are repository/agent documentation, never site
+  // content (spec: exclude documentation and fixtures). They have no front
+  // matter and Jekyll copies them verbatim, so they must not enter any
+  // content/URL set.
+  for (const f of readdirSync(root).filter(f => f.endsWith('.md') && !['README.md', 'AGENTS.md'].includes(f))) {
     const text = readFileSync(join(root, f), 'utf8');
     const fm = parseFM(text);
     const url = fm.data.permalink || (f === 'index.md' ? '/' : '/' + basename(f, '.md') + '/');

@@ -77,7 +77,8 @@
         return function (e) {
           e.preventDefault();
           try { win.history.replaceState(null, '', '#' + heading.id); } catch (err) { /* non-fatal */ }
-          var url = win.location.href;
+       
+   var url = win.location.href;
           var copied = function () {
             anchor.classList.add('is-copied');
             setTimeout(function () { anchor.classList.remove('is-copied'); }, 1600);

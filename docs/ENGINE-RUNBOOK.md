@@ -59,10 +59,10 @@ Job `publishing` ghi milestone tuần tự vào state; `--resume` suy luận hà
 | Milestone | Nghĩa | Resume khi đã đạt |
 |---|---|---|
 | `M1 file_write_planned` | sắp chép draft vào `_posts/` | kiểm tra file trước khi chép |
-| `M2 file_written` | file `_posts/<...>.md` đã chép (đối chiếu nội dung với draft) | file giống draft → không chép lại; KHÁC draft → `E_RESUME_AMBIGUOUS` (blocked, không ghi đè) |
+| `M2 file_written` | file `_posts/<...>.md` đã chép (đối chiếu nội dung với draft — CHỈ khi CHƯA có `committed_sha`; sau khi content commit tồn tại thì commit là bản ghi bền vững, checkout mới không có `drafts/` vẫn resume được) | file giống draft → không chép lại; KHÁC draft → `E_RESUME_AMBIGUOUS` (blocked, không ghi đè) |
 | `M3 gates_passed` | gate suite + Jekyll build + validate-built đã xanh | không chạy lại trước commit; thiếu toolchain (bundle/jekyll) → `E_BUILD_MISSING`, KHÔNG bỏ qua |
 | `M4 committed` | content commit đã tạo (`committed_sha` qua `git cat-file -e`) | không commit lại; SHA không tồn tại trong repo → `E_RESUME_AMBIGUOUS` |
-| `M5 pushed` | content commit đã push | không push lại |
+| `M5 pushed` | content commit đã push | không push lại. Push fail → job `blocked` (kèm `committed_sha`), và `run --resume [--push]` VÀO THẲNG stage push (không re-draft, không commit/article trùng) |
 | `verified_live` | deploy đã xác minh (xem dưới) | không lặp verify |
 
 - File `_posts/` đã tồn tại NHƯNG KHÔNG có milestone M1/M2 → `E_DUPLICATE_POST`
@@ -101,6 +101,12 @@ Job `publishing` ghi milestone tuần tự vào state; `--resume` suy luận hà
 6. Push, chờ Pages build, rồi: `node scripts/engine/runner.mjs verify <slug> --sha <sha>`.
 7. TẮT LẠI: `generation_enabled=false`, `dry_run=true`, commit config.
 
-## Bền vững state (documented strategy)
+## Bền vững state (documented strategy — hành vi THẬT của runner)
 
-- `data/engine-state.json` là nguồn duy nhất, được commit vào repo; mỗi `save()` là tmp+fsync+rename (atomic). Nhà xuất bản commit state cùng bài publish. Runner chạy local ghi state trên đĩa; state trong git cập nhật khi commit tiếp theo (publish hoặc manual). Lock file và bản state hỏng được lưu thì bị gitignore.
+- `data/engine-state.json` là nguồn duy nhất, được commit vào repo; mỗi `save()` là tmp+fsync+rename (atomic). Lock file và bản state hỏng (nếu lưu) bị gitignore.
+- **Content commit và state commit là HAI commit TÁCH BIỆT** (từ commit `fa9d647`):
+  - Content commit (`content(engine): publish <slug> ...`) chứa CHỈ file `_posts/<...>.md`, tạo bằng pathspec commit (`git add -N -- <file>` + `git commit -m ... -- <file>`) — file staged của phiên khác KHÔNG BAO GIỜ đi kèm; sau commit, runner kiểm tra `git show --name-only` và từ chối nếu commit chứa gì khác file bài (`E_COMMIT_FAILED`).
+  - Ngay sau đó, `persistState()` tạo state commit riêng (`state(engine): ...`) cho CÁC artifact của engine: `data/engine-state.json`, `data/article-manifest.jsonl`, `data/progress.json`, `data/related-posts.json`, `data/category-members.json`, `data/article-taxonomy.yml`, `data/topic-queue.json`, `sitemaps/`, `reports/` — chỉ khi có thay đổi thật (`git status --porcelain` guard), nên không bao giờ tạo commit rỗng hay vòng lặp state-commit → deploy → verify → state-commit.
+- **Thứ tự bền vững**: content commit → state commit → push (một lần push đưa cả hai lên remote). Nếu push state commit fail, runner log cảnh báo trung thực — state chỉ bền vững local cho đến khi push thủ công. `committed_sha`/`pushed` do đó sống sót qua checkout mới.
+- **`verify` không bao giờ push**: sau khi xác minh live thành công, `verified_live` được persist bằng state commit LOCAL (không push) — push từ `verify` sẽ kích hoạt Pages build mới và tạo vòng lặp. State commit đó đi cùng lần publish sau hoặc push thủ công.
+- **Fresh checkout/clone** đọc `data/engine-state.json` từ git để phục hồi job mới nhất; các job đang `publishing` (hoặc `blocked` sau push-fail, có `committed_sha` + chưa `pushed`) được `run --resume` nhận lại từ milestone, KHÔNG cần `drafts/` (tự test: selftest nhóm 27 clone từ bare remote rồi resume không tạo trùng).

@@ -27,6 +27,38 @@ Segoe UI, Roboto, Noto Sans…`) — fully Vietnamese-capable, zero external fon
 requests. Both themes use the existing `[data-theme="dark"]` token overrides;
 `article.css` adds no new colors except an amber warning accent.
 
+## CSS scoping contract
+
+Every rule in `article.css` is scoped under the `.article` root (the
+`<article class="container article">` element of the post layout). Article
+styling must never leak into the homepage, category pages or utility pages;
+genuinely shared rules belong in `main.css` / `app*.css` by deliberate change,
+not by accident. Known leaks that were fixed and must not return: bare
+`.prose` selectors, the mobile `.container` padding override (now
+`.article.container`), and bare `.tool-btn` / `.toc` selectors.
+
+## Navigation source of truth (menu/footer consistency rule)
+
+Navigation has exactly one source of truth per concern, rendered everywhere
+from data — never re-hardcoded per surface:
+
+- `data/navigation.yml` — static pages (main + utility) for header
+  `.main-nav`, the nav drawer "Thông tin" column, the footer "Thông tin"
+  column.
+- `data/menu-cats.yml` + `data/taxonomy.yml` — parent categories for the
+  header mega menu (the group string must cover EXACTLY primary + more),
+  the footer "Khám phá" columns, the nav drawer "Khám phá" list.
+- `data/taxonomy.yml` — parent/child labels and slugs for mega menu,
+  nav drawer detail screens and the topic sheet.
+
+Rule: a shared destination URL must carry the SAME visible label on every
+surface. Group headings may differ (they describe different groupings), and
+the full form "Tất cả <label>" is a legitimate variant — but no casual
+shortening or alternate spelling of a shared label. The gate
+`scripts/validate-navigation.mjs` enforces this at source level (always) and
+against the rendered build (`--site _site`), and writes
+`reports/navigation-inventory.json` (item → label → URL → surfaces).
+
 ## Article page structure (_layouts/post.html)
 
 One `H1` per page. Order: breadcrumb → category badge → H1 → lead (`page.description`)
@@ -47,15 +79,23 @@ Rules:
 
 - **Headings**: H2/H3/H4 with `overflow-wrap: break-word` and
   `scroll-margin-top: 104px` (clears the sticky header for anchors).
-- **Heading permalinks**: `assets/js/main.js` appends a quiet `#` link
-  (`.h-link`) to each `h2[id]`/`h3[id]`. Clicking updates the hash, scrolls to
-  the heading, and copies the section URL. Anchors work without JS because
-  Kramdown auto-generates heading IDs.
-- **Ordered lists**: custom circular counters (`.prose ol > li::before`);
-  nested lists fall back to plain markers.
-- **Tables**: `main.js` wraps each `.prose table` in `div.table-wrap`
-  (`role="region"`, `tabindex="0"`, labelled, horizontally scrollable) so wide
-  tables never break the 360px layout.
+- **Heading permalinks**: `assets/js/article.js` (loaded AFTER `main.js` so the
+  TOC is built from pristine heading text) appends a quiet `#` link
+  (`.h-link`) to each `h2[id]`/`h3[id]`, idempotently. Clicking updates the
+  hash, scrolls to the heading, and copies the section URL — with HONEST
+  feedback: the "copied" state appears only when a real copy succeeded
+  (clipboard API resolve, or the `execCommand` fallback returning true).
+  Anchors work without JS because Kramdown auto-generates heading IDs.
+  The runtime contract is asserted by `scripts/tests/article-runtime.test.mjs`
+  (a real DOM environment, not a syntax check).
+- **Ordered lists**: NATIVE markers (`::marker`). Decorative custom counters
+  were removed because CSS counters ignore the `start`/`value` attributes and
+  displayed wrong numbers; native markers preserve ordered-list semantics.
+- **Tables**: `article.js` wraps each `.prose table` in `div.table-wrap`
+  (`role="region"`, `tabindex="0"`, labelled, horizontally scrollable, wrapped
+  exactly once) so wide tables never break the 360px layout. Cells wrap by
+  default; `.nw` on a cell is the explicit opt-in for genuinely non-wrapping
+  values (numbers, short codes) — there is NO blanket `white-space: nowrap`.
 - **Notes / tips / warnings**: opt-in only. Use Kramdown block attributes:
   `{:.note}`, `{:.tip}`, `{:.warning}`. They are styled boxes with a left rule;
   nothing converts plain paragraphs automatically.

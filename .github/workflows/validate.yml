@@ -154,7 +154,7 @@ jobs:
         run: node scripts/measure-output.mjs
       - name: Validate built output (rendered links + sitemap membership)
         run: node scripts/validate-built.mjs --site _site
-      - name: Navigation consistency (rendered surfaces: identical labels per URL, every URL resolves)
+      - name: "Navigation consistency (rendered surfaces: identical labels per URL, every URL resolves)"
         run: node scripts/validate-navigation.mjs --site _site
 
       - name: Post failure diagnostics to the PR

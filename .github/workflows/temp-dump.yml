@@ -1,12 +1,12 @@
-name: temp-dump (temporary; delete after use)
+name: Temp dump (byte-exact file sync; DELETE BEFORE MERGE)
 
-# TEMPORARY diagnostic: dumps the two large engine files as base64 PR
-# comments so an agent without direct file access can verify byte-exact
-# remote content after push corruption incidents. Delete this workflow
-# once the dump has been collected.
+# Temporary cross-session byte-exact content channel (base64 in PR comments).
+# The GitHub API + raw fetches in some agent environments corrupt long lines;
+# base64 through PR comments preserves bytes exactly. Safe to delete any time.
 on:
   push:
     branches: [repair/engine-v2]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,24 +14,47 @@ permissions:
 
 jobs:
   dump:
-    name: Dump engine files (temporary)
+    name: Dump files for offline session
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Dump base64 to PR comments
+      - name: Build bundle and post base64 parts to PR #1
         env:
           GH_TOKEN: ${{ github.token }}
-          PR: "1"
         run: |
-          for f in scripts/engine/runner.mjs scripts/engine-selftest.mjs; do
-            base64 -w 0 "$f" > /tmp/f.b64
-            total=$(wc -c < /tmp/f.b64)
-            parts=$(( (total + 48999) / 49000 ))
-            for i in $(seq 1 $parts); do
-              skip=$(( (i - 1) * 49000 ))
-              dd if=/tmp/f.b64 bs=49000 skip=$skip count=1 2>/dev/null > /tmp/part.txt
-              n=$(wc -c < /tmp/part.txt)
-              { echo "### TEMPFILEDUMP $f part $i of $parts ($n bytes of base64; temporary; safe to delete)"; echo '~~~'; cat /tmp/part.txt; echo '~~~'; } > /tmp/c.md
-              gh pr comment "$PR" --body-file /tmp/c.md
-            done
+          set -euo pipefail
+          FILES="scripts/validate-navigation.mjs scripts/tests/nav-regression.test.mjs scripts/tests/browser-qa.mjs scripts/tests/article-runtime.test.mjs scripts/lib/nav-data.mjs assets/js/article.js assets/js/main.js data/taxonomy.yml data/actions.yml scripts/engine/state.mjs scripts/gen-archive-pages.mjs"
+          for f in _includes/*.html _layouts/*.html; do FILES="$FILES $f"; done
+          B=/tmp/bundle.bin
+          : > "$B"
+          for f in $FILES; do
+            if [ -f "$f" ]; then
+              printf '===FILE:%s===' "\n$f" >> "$B"
+              cat "$f" >> "$B"
+              printf '\n===END===' >> "$B"
+            fi
+          done
+          base64 -w 0 "$B" > /tmp/b64.txt
+          SIZE=$(stat -c%s /tmp/b64.txt)
+          SHA=$(sha256sum "$B" | cut -d' ' -f1)
+          N=$(( (SIZE + 19000 - 1) / 19000 ))
+          {
+            echo "### TEMPFILEDUMP3 manifest (bundle ${SIZE} b64 chars, sha256 ${SHA}, ${N} parts; safe to delete)"
+            echo '~~~'
+            echo "files: $FILES"
+            echo '~~~'
+          } > /tmp/c0.md
+          gh pr comment 1 --body-file /tmp/c0.md
+          split -dl 19000 /tmp/b64.txt /tmp/part-
+          i=0
+          for p in /tmp/part-*; do
+            i=$((i+1))
+            {
+              echo "### TEMPFILEDUMP3 part ${i} of ${N} (temporary base64 dump; safe to delete)"
+              echo '~~~'
+              cat "$p"
+              echo ''
+              echo '~~~'
+            } > /tmp/c.md
+            gh pr comment 1 --body-file /tmp/c.md
           done

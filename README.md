@@ -20,6 +20,7 @@ Trạng thái chi tiết và bằng chứng: [docs/PROJECT-STATUS.md](docs/PROJE
 - Cơ chế deploy + xác minh revision + rollback: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 - Đo dung lượng và điều kiện đủ để tuyên bố 20K: [docs/SCALING.md](docs/SCALING.md).
 - Chuẩn nội dung, độ dài, nguồn pháp lý: [docs/CONTENT-POLICY.md](docs/CONTENT-POLICY.md) + [docs/SCHEMA-ARTICLE.md](docs/SCHEMA-ARTICLE.md).
+- Thiết kế trang bài (typography, token, TOC, toolbar, a11y, cách format bài mới): [docs/ARTICLE-DESIGN.md](docs/ARTICLE-DESIGN.md).
 
 Hai chế độ vận hành:
 
@@ -76,3 +77,4 @@ Chi tiết từng lệnh, pilot có kiểm soát, crash/lock recovery: [docs/ENG
 ## Bước tiếp theo
 
 Xem "Next concrete actions" trong [docs/PROJECT-STATUS.md](docs/PROJECT-STATUS.md) và [docs/HANDOFF.md](docs/HANDOFF.md).
+

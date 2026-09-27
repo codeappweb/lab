@@ -1,22 +1,26 @@
 # PROJECT STATUS — snapshot 2026-09-27
 
 - Baseline audit: main @ `3ee557c0`, audited repair commit `ed79277` (branch `repair/engine-v2`, PR #1).
-- Phiên làm việc này tiếp tục từ HEAD nhánh `repair/engine-v2` (sau `150316b`), không merge PR, không đổi cài đặt publish.
+- Phiên làm việc này tiếp tục từ HEAD nhánh `repair/engine-v2`, không merge PR, không đổi cài đặt publish.
 
-## Implemented (có bằng chứng trong repo)
+## Session 2026-09-27 (engine correctness + article UI)
 
-- Bộ kiểm định đầy đủ: content-quality, check-links (markdown + Liquid + href thô + fragment + whitespace/%0A), detect-duplicates (LSH banding), self-heal-audit, legal-freshness (--gate), seo-score, sync-manifest, validate-sitemap, validate-built (HTML render), selftest fixtures ok/bad. Xem [VALIDATION.md](VALIDATION.md).
-- Engine v2 (session 2026-09-27): pipeline thật approved → researching (evidence bắt buộc) → drafting (drafts/, không đụng `_posts/`) → validating (draft-level check thật; mock bị cấm publish) → ready → publishing (chạy lại toàn bộ gate suite, chép vào `_posts/`, commit) → `verify` live thật (URL 200 + đúng nội dung + revision Pages không khớp `--sha` thì KHÔNG ghi `verified_live`).
-- State bền vững: ghi atomic (tmp + fsync + rename), lock file O_EXCL với stale-detection theo HEARTBEAT, job identity ổn định theo slug (kể cả failed/blocked không cho tạo job trùng), reload state mỗi vòng lặp (pause/stop từ tiến trình khác được thấy), corrupt state phải `recover` tường minh (archive, không tự reset im lặng), retry re-plan và `run --resume` thực sự làm lại công việc.
-- Offline engine selftest (`scripts/engine-selftest.mjs`): 14 nhóm kiểm thử state/lock/retry/blocking trên root tạm cách ly; chạy trong CI.
-- Docs: README (entry point), AGENTS.md, ARCHITECTURE-20K, ENGINE-RUNBOOK, CONTENT-POLICY, VALIDATION, DEPLOYMENT, SCALING, HANDOFF.
+- Cổng xác minh pháp lý fail-closed (`legal-freshness-audit.mjs`): `verified_source` + `last_verified` (không tương lai) + `next_review` (hợp lệ, chưa quá hạn) + `verification_status: verified` NHẮNG; URL + ngày tương lai KHÔNG cấu thành verification; URL khai báo phải khớp registry `data/legal-sources.yml`; field legacy `legal_source` bị gắn MEDIUM yêu cầu migrate; fixture regression ok/bad trong `tests/fixtures/`.
+- Milestone resume cho `publishing` (M1 file_write_planned → M2 file_written → M3 gates+build → M4 content commit → M5 push → verified_live): `run --resume` suy luận bước tiếp theo từ bằng chứng bền vững; file khác draft → `E_RESUME_AMBIGUOUS`; file `_posts/` không milestone → `E_DUPLICATE_POST`; SHA không tồn tại → `E_RESUME_AMBIGUOUS`; pause/stop kiểm tra lại giữa các stage và trước mọi bước không đảo ngược (`E_RUN_HALTED`, job giữ resumable).
+- Durable state: `committed_sha` là SHA của CONTENT COMMIT (chỉ `_posts/<file>.md`), tách khỏi state/report commits; `verify` dùng `gh api compare` + `deployedRevisionOk` (identical/ahead pass, behind/diverged/unknown fail closed) — không còn SHA-equality giả định.
+- Build gates trên MỌI đường publish: runner chạy gate suite + gen-site-data + `bundle exec jekyll build` + `validate-built.mjs --site _site` trước khi commit; `content-pipeline.yml` chạy Jekyll build + rendered validation TRƯỚC khi commit artifacts và request Pages build (build/render fail → không deploy).
+- Concurrency: lock được TRƯỚC khi tạo job; save merge (pause/stop ngoài không bị clobber, jobs union theo id); heartbeat/releaseLock chỉ bởi owner; stale recovery theo heartbeat freshness; tmp file theo pid; retry đúng `max_retries`. Kiểm thử đa tiến trình THẬT (spawn) trong engine-selftest.
+- Độ dài bài: chuẩn 1.200–2.000 âm tiết cho bài mới; legacy đóng (manifest_id VÀ ≤ 2026-09-26); allowlist tường minh `data/short-article-allowlist.json` (8 slug batch-001, JSON hỏng = fail closed); fixture ok có allowlist riêng (positive regression).
+- Orphan: đối chiếu corpus rendered khi có `_site/`; không có thì ghi nhãn "possible orphan (source-only estimate)".
+- Article UI (không ảnh): `assets/css/article.css` (token typography 17→19px, measure 720px, counter ol, note/tip/warning opt-in, TOC containment, 44px toolbar, table scroll, reduced-motion); `main.js` thêm `.table-wrap` + heading permalinks; sửa 2 lỗi corruption JS thật (`sheet.class\nList.add` — topic sheet; `document.crea\nteElement` — copy-link fallback); `post.html` hiển thị "Cập nhật" chỉ khi `updated_at` thật khác ngày publish; related ≤ 3 cả 2 đường. Thiết kế tài liệu hóa trong [ARTICLE-DESIGN.md](ARTICLE-DESIGN.md).
+- Visual QA: KHÔNG hoàn tất — không có browser tooling trong môi trường này; chỉ inspect source (Liquid/CSS/JS). Không claim visual QA từ source inspection.
 
 ## Verified
 
-- CI run `36301349863` (2026-09-27, commit `86e7a08`): TOÀN BỘ XANH — selftest, manifest reconcile (no-op) và "Content + sitemap + build gates" (content-quality, duplicates, check-links, sitemap, audits, manifest dry-run, engine preflight, Jekyll build, validate-built) đều pass. Run `36301258171` trước đó: selftest pass + reconcile đồng bộ manifest (commit `6faa74e`) và "Manifest reconcile" thành công — 8 bài đã xuất bản được đồng bộ vào `data/article-manifest.jsonl` (commit `6faa74e`), progress.json re-derived: 30 published / 67 planned, khớp 30 post thực tế.
-- Gate content-quality giờ ghi `reports/content-quality.json` và CI đăng report lên PR khi fail.
+- CI run `36303778295` (2026-09-27, commit `3d4d17e`-era head of `repair/engine-v2`): TOÀN BỘ XANH — "Script + engine selftest" (75 checks gồm 24 nhóm: resume milestone, concurrency đa tiến trình thật, durable state, deployedRevisionOk), "Manifest reconcile" (no-op), và "Content + sitemap + build gates" (content-quality với allowlist, duplicates, check-links, sitemap, self-heal + legal gate, manifest dry-run, engine preflight, Jekyll build THẬT với article.css/post.html mới, validate-built) đều pass. Xem run trên [PR #1](https://github.com/codeappweb/lab/pull/1).
+- Gate content-quality ghi `reports/content-quality.json` và CI đăng report lên PR khi fail.
 - `AGENTS.md` đã bị loại khỏi tập nội dung site (như README.md) — không còn lỗi "page missing title".
-- Cổng check-links/build/sitemap được CI xác nhận lại ở run trên commit `771c095a` trở đi (xem run cuối trên [PR #1](https://github.com/codeappweb/lab/pull/1)).
+- Cổng check-links/build/sitemap được CI xác nhận lại ở run trên commit `771c095a` trở đi.
 
 ## Blocked (external, không tự ý xử lý)
 

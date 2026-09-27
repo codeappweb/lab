@@ -3,7 +3,20 @@
 ## Cơ chế thật
 
 - GitHub Pages, build từ branch (source = branch deploy). Live: https://codeappweb.github.io/lab/
-- GITHUB_TOKEN push KHÔNG kích hoạt branch build của Pages → `content-pipeline.yml` gọi `POST /repos/codeappweb/lab/pages/builds` sau khi commit artifacts, rồi `verify-deployment.mjs` chờ status `built` và kiểm tra các URL đại diện (home, sitemap index, 3 post mới nhất, 3 trang danh mục).
+- `content-pipeline.yml` chạy ĐẦY ĐỦ chuỗi gate trên MỌI đường deploy của nó:
+  content checks → deterministic regen → **Jekyll build thật (bundle install +
+  `bundle exec jekyll build`, không `|| true`) → `validate-built.mjs --site _site`
+  (link/rendered + sitemap membership) → self-heal-audit trên corpus rendered** —
+  TẤT CẢ trước khi commit artifacts và request Pages build. Build/render fail
+  → job fail → KHÔNG commit, KHÔNG deploy.
+- Workflow `validate.yml` (pull_request) KHÔNG tự bảo vệ branch-based Pages
+  deployment — dependency này chỉ được enforce vì pipeline deploy tự chạy lại
+  các build gate đó (xem Batch "Gates first" + build steps trong
+  `content-pipeline.yml`).
+- GITHUB_TOKEN push KHÔNG kích hoạt branch build của Pages → pipeline gọi
+  `POST /repos/codeappweb/lab/pages/builds` sau khi commit artifacts, rồi
+  `verify-deployment.mjs` chờ status `built` và kiểm tra các URL đại diện
+  (home, sitemap index, 3 post mới nhất, 3 trang danh mục).
 
 ## Phụ thuộc và quyền
 

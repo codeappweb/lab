@@ -6,19 +6,19 @@ Nguyên tắc: mỗi cổng phải FAIL khi nội dung sai; không cổng nào �
 
 | Script | Kiểm tra gì | Khi fail |
 |---|---|---|
-| `validate-content-quality.mjs` | Front matter, title/description, CJK artifact, H1 trùng, permalink chuẩn, id bắt buộc, bài mỏng <300 từ, trang indexable <40 từ, manifest trùng slug | exit 1, chặn mọi đường |
+| `validate-content-quality.mjs` | Front matter, title/description, CJK artifact, H1 trùng, permalink chuẩn, id bắt buộc, bài mỏng <300 từ, trang indexable <40 từ, manifest trùng slug; độ dài bài MỚI (schema mới) phải 1.200–2.000 âm tiết — dưới 1.200 là ERROR trừ khi slug nằm trong `data/short-article-allowlist.json` (allowlist JSON hỏng = fail closed), trên 2.000 là warning; legacy = có `manifest_id` VÀ ngày file ≤ 2026-09-26 (miễn loại đóng, không mở rộng cho bài tương lai) | exit 1, chặn mọi đường |
 | `detect-duplicates.mjs` | Gần trùng (LSH banding) giữa các bài | exit 1 |
 | `check-links.mjs` | Link nội bộ markdown + Liquid `relative_url` + `href` thô; fragment; whitespace/`%0A` trong target; đối chiếu FULL URL set (indexable + noindex + hub) | exit 1 + `reports/link-errors.json` |
 | `gen-sitemap-shards.mjs` + `validate-sitemap.mjs` | Sinh shard từ URL canonical thật; exact membership (permalink override, `published:false`, future date, `noindex`, `sitemap:false` bị loại) | exit 1 |
-| `self-heal-audit.mjs` | Orphan/noindex/mismatch cấu trúc (CRITICAL/HIGH/MEDIUM/LOW) | exit 1 khi có lỗi nghiêm trọng |
-| `legal-freshness-audit.mjs --gate` | `next_review` quá hạn hoặc source thiếu trong `data/legal-sources.yml` | exit 1 |
+| `self-heal-audit.mjs` | Orphan/noindex/mismatch cấu trúc (CRITICAL/HIGH/MEDIUM/LOW). Cảnh báo orphan đối chiếu corpus RENDERED: bài chỉ bị báo orphan khi KHÔNG có link nguồn VÀ rendered chả về nó (đã loại index.html của chính bài). Không có `_site/` → ghi nhãn "possible orphan (source-only estimate)" — không được coi là orphan xác nhận | exit 1 khi có lỗi nghiêm trọng |
+| `legal-freshness-audit.mjs --gate` | Cổng xác minh pháp lý fail-closed: bài legal-sensitive PHẢI có `verified_source` (URL đã kiểm tra; field legacy `legal_source` vẫn bị đánh dấu MEDIUM yêu cầu migrate), `last_verified` (ngày lịch sử hợp lệ, không tương lai), `next_review` (ngày hợp lệ, chưa quá hạn, không sớm hơn last_verified), và `verification_status: verified` NHẮNG; thiếu/needs-review/expired/mâu thuẫn (verified + needs_legal_review) đều CRITICAL. URL + ngày tương lai KHÔNG là verification; URL khai báo phải khớp entry trong `data/legal-sources.yml` (bằng chứng kiểm tra nguồn thật). Gate KHÔNG bao giờ tự cập nhật ngày hoặc bịa source check | exit 1 |
 | `seo-score.mjs` | Điểm SEO; đếm âm tiết tiếng Việt (phương pháp có tài liệu hóa) | report |
 | `sync-manifest.mjs` | Đối chiếu `_posts` ↔ manifest ↔ progress; conflict là lỗi | exit 1 |
 | `measure-output.mjs` | Dung lượng `_site` hoàn chỉnh (hoặc estimate nguồn, ghi nhãn) | report `reports/capacity.json` |
 | `validate-deploy.mjs` | Orchestrator chạy tuần tự các gate trên | fail-fast |
 | Jekyll build (CI) | Build thật với gem github-pages; KHÔNG `|| true` | job fail |
 | `validate-built.mjs --site _site` | Mọi href HTML render phải trỏ tới file build; URL sitemap phải tồn tại trong build; href chứa newline/whitespace là lỗi | exit 1 |
-| `engine-selftest.mjs` | Orchestration engine offline: state atomic, corrupt→recover, lock O_EXCL + heartbeat, identity theo slug, retry thật, mock không tới production, verify không ghi verified_live nếu thiếu bằng chứng | exit 1 |
+| `engine-selftest.mjs` | Orchestration engine offline (root mkdtemp, ~65 checks): state atomic + concurrent-writer merge save, corrupt→recover, lock O_EXCL + heartbeat + stale recovery + non-owner release, identity theo slug, retry đúng max_retries, mock không tới production, verify không ghi verified_live nếu thiếu bằng chứng, MILESTONE RESUME (resume giữa các giai đoạn publishing không trùng bài/commit, ambiguous → blocked không ghi đè), concurrency ĐA TIẾN TRÌNH thật (spawn), deployedRevisionOk (containment, không SHA-equality) | exit 1 |
 | `selftest.mjs` | Fixture `tests/fixtures/ok` phải pass, `bad` phải fail từng gate | exit 1 |
 
 ## Fixture và kiểm thử

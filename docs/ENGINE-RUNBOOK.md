@@ -47,8 +47,43 @@ Mọi lệnh hỗ trợ `--root <dir>` (root cách ly cho kiểm thử).
 ## Crash recovery / lock recovery
 
 - State hỏng (không đọc được JSON): mọi lệnh fail kèm chỉ dẫn; chạy `recover` — file hỏng được lưu thành `data/engine-state.corrupt-<ts>.json` (không bị ghi đè), state mới được ghi kèm record `recovery`. Không bao giờ tự reset im lặng.
-- Lock (`data/engine-lock.json`) lấy bằng `open(..., 'wx')` — atomic giữa các tiến trình. Lock cũ được thu hồi khi HEARTBEAT cũ hơn `lock_ttl_seconds` (mặc định 1800s), kèm record `recovered_from`.
-- Run bị gián đoạn: `run --resume` tiếp tục các job planned/researching/drafting/validating/ready từ state bền vững; identity theo slug đảm bảo không làm trùng.
+- Lock (`data/engine-lock.json`) lấy bằng `open(..., 'wx')` — atomic giữa các tiến trình; job CHỈ được tạo sau khi giữ lock. Lock cũ được thu hồi khi HEARTBEAT cũ hơn `lock_ttl_seconds` (mặc định 1800s), kèm record `recovered_from`; thu hồi dựa trên heartbeat freshness nên không giành nhầm lock đang sống.
+- Heartbeat/releaseLock chỉ tác động khi tiến trình giữ lock (`run_id` khớp); tiến trình khác không refresh/unlink được lock của ai khác.
+- Run bị gián đoạn: `run --resume` tiếp tục các job planned/researching/drafting/validating/ready VÀ `publishing` từ state bền vững; identity theo slug đảm bảo không làm trùng.
+
+## Milestone resume (phục hồi gián đoạn trong lúc publishing)
+
+Job `publishing` ghi milestone tuần tự vào state; `--resume` suy luận hành động
+đúng từ bằng chứng đã lưu + trạng thái repo, KHÔNG lặp lại bước đã xong:
+
+| Milestone | Nghĩa | Resume khi đã đạt |
+|---|---|---|
+| `M1 file_write_planned` | sắp chép draft vào `_posts/` | kiểm tra file trước khi chép |
+| `M2 file_written` | file `_posts/<...>.md` đã chép (đối chiếu nội dung với draft) | file giống draft → không chép lại; KHÁC draft → `E_RESUME_AMBIGUOUS` (blocked, không ghi đè) |
+| `M3 gates_passed` | gate suite + Jekyll build + validate-built đã xanh | không chạy lại trước commit; thiếu toolchain (bundle/jekyll) → `E_BUILD_MISSING`, KHÔNG bỏ qua |
+| `M4 committed` | content commit đã tạo (`committed_sha` qua `git cat-file -e`) | không commit lại; SHA không tồn tại trong repo → `E_RESUME_AMBIGUOUS` |
+| `M5 pushed` | content commit đã push | không push lại |
+| `verified_live` | deploy đã xác minh (xem dưới) | không lặp verify |
+
+- File `_posts/` đã tồn tại NHƯNG KHÔNG có milestone M1/M2 → `E_DUPLICATE_POST`
+  (blocked): file trùng tên chưa từng do job này tạo — yêu cầu con người xử lý.
+- Pause/stop được kiểm tra lại TRƯỚC mỗi bước không thể đảo ngược (chép file,
+  commit, push) và giữa các stage (`E_RUN_HALTED`, job giữ nguyên để resume).
+- Retry trong run loop: đúng `max_retries` lần gate attempts (1 + max_retries),
+  backoff `backoff_ms × n`; hết lượt → `failed`.
+
+## Durable state: phân biệt content commit và state commit
+
+- `committed_sha` là SHA của COMMIT NỘI DUNG (chỉ `_posts/<file>.md`), KHÔNG
+  phải commit state/report. State (`data/engine-state.json`), sitemap shards,
+  reports có thể tạo các commit SAU content commit — so sánh SHA bằng đẳng
+  thức sẽ sai; `verify` dùng `gh api compare` (content_commit...deployed_head):
+  `identical` hoặc `ahead` (deployed chứa content commit) → pass; `behind`/
+  `diverged`/unknown → fail closed (`deployedRevisionOk` trong state.mjs).
+- Job lưu `content_commit` (revision bài đã publish) tách biệt với state commits;
+  các milestone được persist qua restart/checkout mới vì state file được commit.
+- Một file tồn tại trong `_posts/` KHÔNG đồng nghĩa bài đã publish: `published`
+  chỉ được ghi sau `verify` thành công với bằng chứng live thật.
 
 ## Xử lý lỗi
 

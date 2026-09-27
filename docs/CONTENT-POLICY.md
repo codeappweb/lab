@@ -3,7 +3,13 @@
 ## Độ dài và phương pháp đếm
 
 - Bài production MỚI: 1.200–2.000 "âm tiết" tiếng Việt — phương pháp đếm có tài liệu hóa: tách theo whitespace, mỗi token chứa ký tự tiếng Việt/số tính 1 (identical trong `scripts/validate-content-quality.mjs`, `seo-score.mjs` và engine `validateDraft`). Front matter không tính.
-- Bài legacy (có `manifest_id`) không bị mass-rewrite; chuẩn áp cho bài mới.
+- Bài dưới 1.200 (schema mới) là ERROR trong `validate-content-quality.mjs`; trên 2.000 là warning.
+- Ngoại lệ NGẮN chỉ qua allowlist tường minh: `data/short-article-allowlist.json`
+  (mảng slug đã publish, có `manifest_id`, JSON hỏng = fail closed). Không có
+  miễn loại mở: legacy = có `manifest_id` VÀ ngày file ≤ 2026-09-26. Bài mới
+  không bao giờ được thêm vào allowlist để né cổng độ dài; muốn nới chuẩn phải
+  đổi chính sách trong docs này trước.
+- Bài legacy ngắn KHÔNG bị dãn filler trong tác vụ sửa chữa; giữ nguyên văn.
 
 ## Intent và bằng chứng
 

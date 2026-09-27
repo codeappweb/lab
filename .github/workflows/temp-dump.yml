@@ -1,60 +1,49 @@
-name: Temp dump (byte-exact file sync; DELETE BEFORE MERGE)
+name: temp-dump
 
-# Temporary cross-session byte-exact content channel (base64 in PR comments).
-# The GitHub API + raw fetches in some agent environments corrupt long lines;
-# base64 through PR comments preserves bytes exactly. Safe to delete any time.
 on:
+  workflow_dispatch:
   push:
     branches: [repair/engine-v2]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pull-requests: write
+    paths: ['.github/workflows/temp-dump.yml']
 
 jobs:
   dump:
-    name: Dump files for offline session
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Build bundle and post base64 parts to PR #1
+      - name: Dump text files as base64 PR comments
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          FILES="scripts/validate-navigation.mjs scripts/tests/nav-regression.test.mjs scripts/tests/browser-qa.mjs scripts/tests/article-runtime.test.mjs scripts/lib/nav-data.mjs assets/js/article.js assets/js/main.js data/taxonomy.yml data/actions.yml scripts/engine/state.mjs scripts/gen-archive-pages.mjs"
-          for f in _includes/*.html _layouts/*.html; do FILES="$FILES $f"; done
-          B=/tmp/bundle.bin
-          : > "$B"
-          for f in $FILES; do
-            if [ -f "$f" ]; then
-              printf '===FILE:%s===' "\n$f" >> "$B"
-              cat "$f" >> "$B"
-              printf '\n===END===' >> "$B"
-            fi
+          post() {
+            for i in 1 2 3; do
+              if gh pr comment 1 --repo "$GITHUB_REPOSITORY" --body-file "$1"; then return 0; fi
+              echo "post attempt $i failed; retrying"
+              sleep 10
+            done
+            echo "posting failed for $1"
+            return 1
+          }
+          files=$(git ls-files | grep -E '\.(mjs|js|css|yml|yaml|json|html|md|txt|gemspec|svg|csv)$|^Gemfile$|^Rakefile$|^CNAME$|^LICENSE$|^\.gitattributes$|^\.gitignore$' | sort)
+          part=0
+          total=0
+          for f in $files; do
+            b=$(base64 -w0 "$f")
+            sha=$(printf '%s' "$b" | sha256sum | cut -c1-12)
+            n=$(( (${#b} + 49999) / 50000 ))
+            for i in $(seq 1 $n); do
+              s=$(( (i-1)*50000 ))
+              e=$(( i*50000 ))
+              chunk=$(printf '%s' "$b" | cut -c $((s+1))-$e)
+              part=$((part+1))
+              printf '===CHUNK %s %s %s %s %s\n~~~\n%s\n' "$f" "$i" "$n" "$sha" "$s" "$chunk" > /tmp/c.txt
+              post /tmp/c.txt
+            done
+            total=$((total+1))
           done
-          base64 -w 0 "$B" > /tmp/b64.txt
-          SIZE=$(stat -c%s /tmp/b64.txt)
-          SHA=$(sha256sum "$B" | cut -d' ' -f1)
-          N=$(( (SIZE + 19000 - 1) / 19000 ))
-          {
-            echo "### TEMPFILEDUMP3 manifest (bundle ${SIZE} b64 chars, sha256 ${SHA}, ${N} parts; safe to delete)"
-            echo '~~~'
-            echo "files: $FILES"
-            echo '~~~'
-          } > /tmp/c0.md
-          gh pr comment 1 --body-file /tmp/c0.md
-          split -dl 19000 /tmp/b64.txt /tmp/part-
-          i=0
-          for p in /tmp/part-*; do
-            i=$((i+1))
-            {
-              echo "### TEMPFILEDUMP3 part ${i} of ${N} (temporary base64 dump; safe to delete)"
-              echo '~~~'
-              cat "$p"
-              echo ''
-              echo '~~~'
-            } > /tmp/c.md
-            gh pr comment 1 --body-file /tmp/c.md
-          done
+          { printf '===DUMPDONE files=%s comments=%s head=%s\n' "$total" "$part" "$GITHUB_SHA"; } > /tmp/d.txt
+          post /tmp/d.txt

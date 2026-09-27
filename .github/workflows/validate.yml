@@ -28,6 +28,9 @@ jobs:
           done
       - name: Selftest (ok fixture passes, bad fixture fails)
         run: node scripts/selftest.mjs
+      - name: Selftest report (always)
+        if: always()
+        run: node scripts/selftest.mjs --verbose
 
   validate:
     name: Content + sitemap + build gates
@@ -40,6 +43,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Reconcile manifest with actual posts (derive state in CI)
+        run: node scripts/sync-manifest.mjs
       - name: Derive site data
         run: |
           node scripts/gen-site-data.mjs
@@ -62,9 +67,9 @@ jobs:
         run: node scripts/seo-score.mjs
       - name: Compute content hashes
         run: node scripts/compute-content-hashes.mjs
-      - name: Manifest sync (dry-run; conflicts are failures)
+      - name: Manifest sync idempotency (dry-run must be a no-op)
         run: node scripts/sync-manifest.mjs --dry-run
-      - name: Engine preflight (never generates, never publishes)
+      - name: Engine status and preflight (never generates, never publishes)
         run: |
           node scripts/engine/runner.mjs status
           node scripts/engine/runner.mjs preflight

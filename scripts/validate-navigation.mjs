@@ -64,7 +64,8 @@ const act = (id) => CANON.actions.find(a => a.id === id);
 const navItem = (i) => ({ id: 'nav.main[' + i + ']', label: CANON.navMain[i].label, url: CANON.navMain[i].url });
 const parentLink = (p) => ({ id: 'parent:' + p.slug, label: p.name, url: '/danh-muc/' + p.slug + '/' });
 const parentAllLink = (p) => ({ id: 'parent-all:' + p.slug, label: 'Tất cả ' + p.name, url: '/danh-muc/' + p.slug + '/' });
-const childLink = (p, c) => ({ id: 'child:' + p.slug + '/' + c.slug, label: c.name, url: '/danh-muc/' + p.slug + '/' + c.slug + '/' });
+const childLink = (p, c) => ({ id: 'child:' + p.slug + '/' + c.slug, label: c.name, url: '/danh-muc/' + p
+.slug + '/' + c.slug + '/' });
 
 /* ---------------- expected items per surface (EXPLICIT contract) ---------------- */
 function expectedSurfaces() {
@@ -149,7 +150,8 @@ function tokenize(html) {
     if (html.startsWith('<!--', i)) { const e = html.indexOf('-->', i); i = e < 0 ? n : e + 3; continue; }
     const lt = html.indexOf('<', i);
     if (lt < 0) break;
-    if (lt > i) ev.push({ type: 'text', text: html.slice(i, lt) });
+    if (lt > i) ev.push({ type: 'text', text: html.slice(i,
+ lt) });
     const gt = html.indexOf('>', lt);
     if (gt < 0) break;
     let t = html.slice(lt + 1, gt);
@@ -198,7 +200,8 @@ function extractSurface(html, spec) {
       }
       continue;
     }
-    if (e.type === 'open' && e.tag === spec.tag && !e.selfClose) depth++;
+    if (e.type === 'open' && e.tag === spec.tag && 
+!e.selfClose) depth++;
     else if (e.type === 'close' && e.tag === spec.tag) { depth--; if (depth === 0) return out.join(''); }
     if (e.type === 'text') out.push(e.text);
     else if (e.type === 'open') out.push(' ');
@@ -250,6 +253,7 @@ function stripBase(href, base) {
   return decodeURIComponent(h.split('#')[0].split('?')[0]) || '/';
 }
 
+
 /* ---------------- canonical sanity ---------------- */
 {
   if (!CANON.navMain.length) err('canonical data: data/navigation.yml has no main items');
@@ -284,7 +288,8 @@ if (SITE) {
         else if (f.name.endsWith('.html')) htmlFiles.push(path.join(d, f.name));
       }
     })(SITE);
-    if (!htmlFiles.length) err('no rendered HTML pages found under ' + SITE);
+   
+ if (!htmlFiles.length) err('no rendered HTML pages found under ' + SITE);
 
     const pagesWithChrome = htmlFiles.filter(p => {
       const h = fs.readFileSync(p, 'utf8');
@@ -359,7 +364,8 @@ if (SITE) {
         if (inner === null) { err('required surface MISSING: ' + surface + ' (on ' + path.relative(SITE, page) + ')'); continue; }
         const items = surfaceItems(inner);
         const links = items.filter(i => i.kind === 'link' && !isBrandWordmark(i));
-        const buttons = items.filter(i => i.kind === 'button');
+        const buttons 
+= items.filter(i => i.kind === 'button');
         if (spec.links) checkLinks(surface, links, spec.links, page, base);
         if (spec.buttons) checkButtons(surface, buttons, spec.buttons, page);
       }
@@ -406,7 +412,8 @@ if (SITE) {
 /* ---------------- report ---------------- */
 fs.mkdirSync(path.join(DATA_ROOT, 'reports'), { recursive: true });
 writeReport(DATA_ROOT, 'navigation-inventory.json', {
-  generated_at: new Date().toISOString(),
+  generated_at:
+ new Date().toISOString(),
   mode: SITE ? 'canonical+rendered' : 'canonical',
   data_root: DATA_ROOT,
   items: inventory,

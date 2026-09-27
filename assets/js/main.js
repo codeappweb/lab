@@ -100,7 +100,8 @@
       var items = data;
       if (q) {
         var terms = q.split(/\s+/);
-        items = data.filter(function (it) {
+   
+     items = data.filter(function (it) {
           var hay = normalize(it.title + ' ' + (it.desc || '') + ' ' + (it.cluster || '') + ' ' + (it.parent || '') + ' ' + (it.child || ''));
           return terms.every(function (t) { return hay.indexOf(t) !== -1; });
         });
@@ -150,7 +151,8 @@
     var nSrc = normalize(src); var nQ = normalize(q);
     var pos = 0; var idx;
     while (q.length && (idx = nSrc.indexOf(nQ, pos)) !== -1) {
-      out += escapeHtml(src.slice(pos, idx)) + '<mark>' + escapeHtml(src.substr(idx, q.length)) + '</mark>';
+      out += escapeHtml(src.slice(pos, idx)) + 
+'<mark>' + escapeHtml(src.substr(idx, q.length)) + '</mark>';
       pos = idx + q.length;
     }
     out += escapeHtml(src.slice(pos));
@@ -202,7 +204,8 @@
       if (overlay.hidden) {
         if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
           e.preventDefault(); openSearch();
-        } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+       
+ } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
           e.preventDefault(); openSearch();
         }
       } else if (e.key === 'Escape') {
@@ -290,7 +293,8 @@
         a.classList.add('is-active'); a.setAttribute('aria-current', 'page');
       }
     } else if (location.pathname.indexOf(href) === 0) {
-      a.classList.add('is-active'); a.setAttribute('aria-current', 'page');
+      a.classList.add('is-active');
+ a.setAttribute('aria-current', 'page');
     }
   });
 

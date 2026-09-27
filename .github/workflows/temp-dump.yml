@@ -14,24 +14,29 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - name: Dump text files as base64 PR comments
+      - name: Dump selected text files as base64 PR comments
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           post() {
-            for i in 1 2 3; do
+            for i in 1 2 3 4 5; do
               if gh pr comment 1 --repo "$GITHUB_REPOSITORY" --body-file "$1"; then return 0; fi
-              echo "post attempt $i failed; retrying"
-              sleep 10
+              echo "post attempt $i failed for $1"
+              sleep 30
             done
             echo "posting failed for $1"
             return 1
           }
-          files=$(git ls-files | grep -E '\.(mjs|js|css|yml|yaml|json|html|md|txt|gemspec|svg|csv)$|^Gemfile$|^Rakefile$|^CNAME$|^LICENSE$|^\.gitattributes$|^\.gitignore$' | sort)
+          files='scripts/validate-navigation.mjs scripts/tests/nav-regression.test.mjs scripts/tests/browser-qa.mjs scripts/tests/article-runtime.test.mjs scripts/lib/nav-data.mjs scripts/gen-archive-pages.mjs scripts/gen-site-data.mjs scripts/engine/state.mjs scripts/engine/runner.mjs scripts/engine-selftest.mjs scripts/validate-deploy.mjs scripts/measure-output.mjs data/actions.yml data/navigation.yml data/menu-cats.yml data/taxonomy.yml docs/VALIDATION.md docs/ENGINE-RUNBOOK.md docs/ARTICLE-DESIGN.md docs/PROJECT-STATUS.md docs/HANDOFF.md docs/DEPLOYMENT.md .github/workflows/visual-qa.yml .github/workflows/validate.yml .github/workflows/content-pipeline.yml README.md AGENTS.md _config.yml Gemfile _includes/header.html _includes/footer.html _includes/nav-drawer.html _includes/quick-actions.html _includes/search.html _includes/saved-sheet.html _includes/topic-sheet.html _includes/theme-toggle.html _includes/assistant.html _layouts/default.html _layouts/post.html assets/js/article.js assets/js/main.js assets/js/nav2.js assets/js/app-extras.js assets/css/article.css'
           part=0
-          total=0
+          fail=0
           for f in $files; do
+            if [ ! -f "$f" ]; then
+              printf '===MISSING %s\n' "$f" > /tmp/c.txt
+              post /tmp/c.txt || fail=1
+              continue
+            fi
             b=$(base64 -w0 "$f")
             sha=$(printf '%s' "$b" | sha256sum | cut -c1-12)
             n=$(( (${#b} + 49999) / 50000 ))
@@ -41,9 +46,10 @@ jobs:
               chunk=$(printf '%s' "$b" | cut -c $((s+1))-$e)
               part=$((part+1))
               printf '===CHUNK %s %s %s %s %s\n~~~\n%s\n' "$f" "$i" "$n" "$sha" "$s" "$chunk" > /tmp/c.txt
-              post /tmp/c.txt
+              post /tmp/c.txt || fail=1
+              sleep 2
             done
-            total=$((total+1))
           done
-          { printf '===DUMPDONE files=%s comments=%s head=%s\n' "$total" "$part" "$GITHUB_SHA"; } > /tmp/d.txt
-          post /tmp/d.txt
+          printf '===DUMPDONE comments=%s head=%s fail=%s\n' "$part" "$GITHUB_SHA" "$fail" > /tmp/d.txt
+          post /tmp/d.txt || true
+          exit $fail

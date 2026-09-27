@@ -1,331 +1,418 @@
 #!/usr/bin/env node
-// validate-navigation.mjs — navigation single-source-of-truth consistency check.
+// Navigation consistency validator — v2 (identity-based).
 //
-// data/navigation.yml (main + utility), data/menu-cats.yml (primary/more
-// parent slugs) and data/taxonomy.yml (parents + children) are the ONLY
-// navigation registries. Header .main-nav + mega menu, footer, nav drawer,
-// topic sheet and bottom nav all render from them.
+// Three independent layers:
+//   1. CANONICAL data loads: data/navigation.yml (main links), data/actions.yml
+//      (shared action buttons — ONE source for every surface that renders them),
+//      data/taxonomy.yml (parents/children), data/menu-cats.yml (which parents
+//      appear in drawer/footer discovery columns). The canonical data itself is
+//      sanity-checked (e.g. home label must be "Trang chủ").
+//   2. RENDERED surfaces are validated by STABLE IDENTITY, not by cross-surface
+//      agreement alone:
+//        - links    -> identity = canonical item id, matched by URL; the visible
+//                      label must equal the canonical label EXACTLY (accents,
+//                      capitalization). A label wrong the same way on EVERY
+//                      surface still fails here.
+//        - buttons  -> identity = data-qa / data-nav-cat / data-*-open
+//                      attributes; where the action renders a visible text
+//                      label it must equal the canonical label.
+//   3. REQUIRED surfaces and required items per surface are EXPLICIT
+//      (EXPECTED_SURFACES): every page with site chrome must contain every
+//      required surface, and each surface its required items. A missing
+//      surface/item is a hard error — a half-rendered menu can never pass.
 //
-// This check has two levels:
-//   1. SOURCE level (always): registry integrity (unique labels/slugs/URLs),
-//      menu-cats ⊆ taxonomy, header mega-menu group string covers EXACTLY the
-//      primary+more parent set, no orphan/unknown slugs.
-//   2. RENDERED level (--site _site): parse the built HTML surfaces and
-//      enforce that the SAME destination URL carries the IDENTICAL visible
-//      label on every surface, and that every navigation URL resolves to a
-//      built file. Documented exception: the full form "Tất cả <label>" is a
-//      legitimate label variant, not a casual shortening.
+// HTML is parsed with a real tokenizer (tags, attributes, entities, balanced
+// nesting) — never substring extraction, which can silently skip part of a
+// surface. Hidden mobile menu screens (nav-drawer screens[hidden]) and
+// collapsed footer <details> sections are part of the DOM and are validated.
 //
-// Output: reports/navigation-inventory.json — item -> label -> URL -> the
-// surfaces where it appears. Exit 1 on any error.
-// Usage: node scripts/validate-navigation.mjs [--root <dir>] [--site <dir>]
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+// Documented, narrowly-scoped exceptions:
+//   - BRAND WORDMARK: the logo/site-name link to "/" (class contains logo,
+//     brand or foot-brand__link) is the site identity, not a navigation label.
+//   - "Tất cả <label>" is a legitimate long form of a parent category label in
+//     drawer child screens and the topic sheet.
+//
+// Output: reports/navigation-inventory.json. Exit 1 on any error.
+//
+// Usage:
+//   node scripts/validate-navigation.mjs                          # canonical only
+//   node scripts/validate-navigation.mjs --site _site            # + rendered
+//   node scripts/validate-navigation.mjs --site DIR --data-root DIR   # fixtures
+import fs from 'node:fs';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findRoot, writeReport } from './lib/lab.mjs';
+import { loadCanonical } from './lib/nav-data.mjs';
 
-const ROOT = findRoot(process.argv);
-const siteArgIdx = process.argv.indexOf('--site');
-const SITE = siteArgIdx >= 0 && process.argv[siteArgIdx + 1] ? resolve(process.argv[siteArgIdx + 1]) : null;
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = findRoot(process.argv, path.resolve(HERE, '..'));
+const SITE = (() => { const i = process.argv.indexOf('--site'); return i > 0 ? path.resolve(process.argv[i + 1]) : null; })();
+const DATA_ROOT = (() => { const i = process.argv.indexOf('--data-root'); return i > 0 ? path.resolve(process.argv[i + 1]) : ROOT; })();
 
 const errors = [];
 const warnings = [];
+const inventory = [];
 const err = (m) => { errors.push(m); console.error('NAV ERROR: ' + m); };
 const warn = (m) => { warnings.push(m); console.error('NAV WARN: ' + m); };
 
-// ---------------------------------------------------------------------------
-// Minimal YAML-subset readers for the three navigation registries (the repo
-// deliberately has no YAML dependency; these files use a fixed simple shape).
-function readLines(root, rel) {
-  const p = join(root, rel);
-  if (!existsSync(p)) return null;
-  return readFileSync(p, 'utf8').split('\n');
-}
+/* ---------------- canonical data (shared, single source) ---------------- */
+let CANON;
+try { CANON = loadCanonical(DATA_ROOT); }
+catch (e) { console.error('NAV ERROR: cannot load canonical data from ' + DATA_ROOT + ': ' + e.message); process.exit(1); }
+const parentBySlug = new Map(CANON.parents.map(p => [p.slug, p]));
+const act = (id) => CANON.actions.find(a => a.id === id);
+const navItem = (i) => ({ id: 'nav.main[' + i + ']', label: CANON.navMain[i].label, url: CANON.navMain[i].url });
+const parentLink = (p) => ({ id: 'parent:' + p.slug, label: p.name, url: '/danh-muc/' + p.slug + '/' });
+const parentAllLink = (p) => ({ id: 'parent-all:' + p.slug, label: 'Tất cả ' + p.name, url: '/danh-muc/' + p.slug + '/' });
+const childLink = (p, c) => ({ id: 'child:' + p.slug + '/' + c.slug, label: c.name, url: '/danh-muc/' + p.slug + '/' + c.slug + '/' });
 
-function unquote(v) {
-  v = v.trim();
-  if (v.length >= 2 && ((v[0] === '"' && v.endsWith('"')) || (v[0] === "'" && v.endsWith("'")))) return v.slice(1, -1);
-  return v;
-}
-
-// navigation.yml: sections `main:` and `utility:` of `- label: "X"` / `url: "/x/"`.
-function readNavigationYml(root) {
-  const lines = readLines(root, join('data', 'navigation.yml'));
-  if (!lines) return null;
-  const out = { main: [], utility: [] };
-  let section = null;
-  for (const raw of lines) {
-    const line = raw.replace(/#.*$/, '');
-    if (/^\s*main:\s*$/.test(line)) { section = 'main'; continue; }
-    if (/^\s*utility:\s*$/.test(line)) { section = 'utility'; continue; }
-    if (!section) continue;
-    const labelM = line.match(/^\s*-\s*label:\s*(.+)$/);
-    if (labelM) { out[section].push({ label: unquote(labelM[1]) }); continue; }
-    const urlM = line.match(/^\s*url:\s*(.+)$/);
-    if (urlM && out[section].length) out[section][out[section].length - 1].url = unquote(urlM[1]);
+/* ---------------- expected items per surface (EXPLICIT contract) ---------------- */
+function expectedSurfaces() {
+  const exp = {
+    'header.main-nav': {
+      locate: { tag: 'nav', attr: 'class', value: 'main-nav' },
+      links: CANON.navMain.map((_, i) => navItem(i)).slice(1, 4), // header renders main[1..3]
+      buttons: [{ id: 'mega-trigger', cls: 'mega-trigger', label: 'Danh mục' }],
+    },
+    'header.mega': {
+      locate: { tag: 'div', attr: 'class', value: 'mega' },
+      links: CANON.parents.flatMap(p => [parentLink(p), ...(p.children || []).map(c => childLink(p, c))]),
+    },
+    'header.actions': {
+      locate: { tag: 'div', attr: 'class', value: 'app-bar__actions' },
+      // icon buttons: identity only — the visible label is a short
+      // abbreviation by design (aria-label carries the full action label)
+      buttons: [
+        { id: 'action:search', attrOpen: 'data-search-open' },
+        { id: 'action:assistant', qa: 'assistant' },
+        { id: 'action:saved', qa: 'saved' },
+        { id: 'chrome:theme-toggle', attrOpen: 'data-theme-toggle' },
+        { id: 'chrome:nav-open', attrOpen: 'data-nav-open' },
+      ],
+    },
+    'footer.quick-actions': {
+      locate: { tag: 'div', attr: 'class', value: 'foot-links--actions' },
+      links: CANON.actions.filter(a => a.url).map(a => ({ id: 'action:' + a.id, label: a.label, url: a.url })),
+      buttons: CANON.actions.filter(a => !a.url && a.data_qa).map(a => ({ id: 'action:' + a.id, qa: a.data_qa, label: a.label })),
+    },
+    'footer.discover': {
+      locate: { tag: 'div', attr: 'class', value: 'foot-discover' },
+      links: [...(CANON.menuCats.primary || []), ...(CANON.menuCats.more || [])]
+        .map(s => parentBySlug.get(s)).filter(Boolean).map(parentLink),
+    },
+    'footer.info': { special: 'footer-info' },
+    'nav-drawer.actions': {
+      locate: { tag: 'div', attr: 'class', value: 'nav-actions' },
+      links: CANON.actions.filter(a => a.url).map(a => ({ id: 'action:' + a.id, label: a.label, url: a.url })),
+      buttons: CANON.actions.filter(a => !a.url && a.data_qa).map(a => ({ id: 'action:' + a.id, qa: a.data_qa, label: a.label })),
+    },
+    'nav-drawer.discover': {
+      locate: { tag: 'div', attr: 'class', value: 'nav-cats' },
+      buttons: [...(CANON.menuCats.primary || []), ...(CANON.menuCats.more || [])]
+        .map(s => parentBySlug.get(s)).filter(Boolean)
+        .map(p => ({ id: 'parent:' + p.slug, navCat: p.slug, label: p.name })),
+    },
+    'nav-drawer.info': {
+      locate: { tag: 'nav', attr: 'class', value: 'nav-info' },
+      links: CANON.navMain.map((_, i) => navItem(i)),
+    },
+    'topic-sheet': {
+      locate: { tag: 'nav', attr: 'class', value: 'sheet__nav' },
+      links: CANON.parents.flatMap(p => [parentAllLink(p), ...(p.children || []).map(c => childLink(p, c))]),
+    },
+    'bottom-nav': {
+      locate: { tag: 'nav', attr: 'class', value: 'bottom-nav' },
+      links: [navItem(0)],
+      buttons: [
+        { id: 'action:topics', attrOpen: 'data-sheet-open', label: act('topics') ? act('topics').label : 'Chủ đề' },
+        { id: 'action:search', attrOpen: 'data-search-open', label: act('search') ? act('search').label : 'Tìm kiếm' },
+      ],
+    },
+  };
+  for (const p of CANON.parents) {
+    exp['nav-drawer.screen:' + p.slug] = {
+      locate: { tag: 'div', attr: 'id', value: 'navScr-' + p.slug },
+      links: [parentAllLink(p), ...(p.children || []).map(c => childLink(p, c))],
+    };
   }
-  return out;
+  return exp;
 }
 
-// menu-cats.yml: `primary:` and `more:` lists of `- slug`.
-function readMenuCats(root) {
-  const lines = readLines(root, join('data', 'menu-cats.yml'));
-  if (!lines) return null;
-  const out = { primary: [], more: [] };
-  let section = null;
-  for (const raw of lines) {
-    const line = raw.replace(/#.*$/, '');
-    if (/^\s*primary:\s*$/.test(line)) { section = 'primary'; continue; }
-    if (/^\s*more:\s*$/.test(line)) { section = 'more'; continue; }
-    if (!section) continue;
-    const m = line.match(/^\s*-\s*(\S+)\s*$/);
-    if (m) out[section].push(m[1]);
-  }
-  return out;
-}
+const EXPECTED = expectedSurfaces();
+const REQUIRED_SURFACES = Object.keys(EXPECTED);
 
-// taxonomy.yml: parents (slug/name) with children (slug/name) at fixed indents.
-function readTaxonomy(root) {
-  const lines = readLines(root, join('data', 'taxonomy.yml'));
-  if (!lines) return null;
-  const parents = [];
-  let cur = null, curChild = null;
-  for (const raw of lines) {
-    const line = raw.replace(/#.*$/, '');
-    const indent = (line.match(/^ */) || [''])[0].length;
-    const parentM = line.match(/^\s{2}-\s*id:\s*(.+)$/);
-    const childM = line.match(/^\s{6}-\s*id:\s*(.+)$/);
-    if (parentM && indent === 2) { cur = { id: unquote(parentM[1]), children: [] }; parents.push(cur); curChild = null; continue; }
-    if (childM && indent === 6 && cur) { curChild = { id: unquote(childM[1]) }; cur.children.push(curChild); continue; }
-    const kv = line.match(/^\s*([a-z_]+):\s*(.+)$/);
-    if (!kv) continue;
-    const key = kv[1], val = unquote(kv[2]);
-    if (indent === 4 && cur) cur[key] = val;
-    else if (indent === 8 && curChild) curChild[key] = val;
-  }
-  return parents;
-}
-
-// header.html mega-menu group string: 'Group:slug,slug|Group:slug'.
-function readMegaGroups(root) {
-  const p = join(root, '_includes', 'header.html');
-  if (!existsSync(p)) return null;
-  const html = readFileSync(p, 'utf8');
-  const m = html.match(/assign\s+mega\s*=\s*'([^']+)'/);
-  if (!m) return null;
-  const groups = [];
-  for (const g of m[1].split('|')) {
-    const [name, slugs] = g.split(':');
-    groups.push({ name, slugs: slugs.split(',') });
-  }
-  return groups;
-}
-
-// ---------------------------------------------------------------------------
-// 1. SOURCE-level checks
-const nav = readNavigationYml(ROOT);
-const cats = readMenuCats(ROOT);
-const tax = readTaxonomy(ROOT);
-if (!nav) err('data/navigation.yml missing — the single menu source must exist');
-if (!cats) err('data/menu-cats.yml missing — the shared menu/footer category list must exist');
-if (!tax) err('data/taxonomy.yml missing — the public taxonomy must exist');
-if (!nav || !cats || !tax) fail();
-
-const parentBySlug = new Map(tax.map(p => [p.slug, p]));
-const childUrls = new Map(); // url -> label (global child-URL uniqueness)
-const inventory = []; // {id, label, url, surfaces, origin}
-
-if (nav) {
-  for (const section of ['main', 'utility']) {
-    const seenLabels = new Map(), seenUrls = new Map();
-    nav[section].forEach((item, i) => {
-      const id = 'nav.' + section + '[' + i + ']';
-      if (!item.label || !item.url) { err(id + ': incomplete item (needs both label and url)'); return; }
-      if (!item.url.startsWith('/')) err(id + ': url "' + item.url + '" must be root-relative (start with "/")');
-      if (seenLabels.has(item.label)) err(id + ': duplicate label "' + item.label + '" (also ' + seenLabels.get(item.label) + ')');
-      else seenLabels.set(item.label, id);
-      if (seenUrls.has(item.url)) err(id + ': duplicate url "' + item.url + '" (also ' + seenUrls.get(item.url) + ')');
-      else seenUrls.set(item.url, id);
-      inventory.push({ id, label: item.label, url: item.url, canonical_surfaces: section === 'main' ? ['header.main-nav', 'nav-drawer.nav-info', 'footer.thong-tin'] : [], origin: 'data/navigation.yml#' + section });
-    });
-  }
-  if (!nav.main.length || !nav.main.some(i => i.url === '/')) err('navigation main must contain the homepage item (url "/")');
-}
-if (tax) {
-  const seenParentSlugs = new Map();
-  for (const p of tax) {
-    if (!p.slug || !p.name) { err('taxonomy parent ' + (p.id || '?') + ' needs slug + name'); continue; }
-    if (seenParentSlugs.has(p.slug)) err('taxonomy: duplicate parent slug "' + p.slug + '" (' + seenParentSlugs.get(p.slug) + ' and ' + p.id + ')');
-    else seenParentSlugs.set(p.slug, p.id);
-    const url = '/danh-muc/' + p.slug + '/';
-    inventory.push({ id: 'parent:' + p.slug, label: p.name, url, canonical_surfaces: ['header.mega', 'footer.kham-pha', 'nav-drawer.kham-pha', 'topic-sheet'], origin: 'data/taxonomy.yml' });
-    const seenChild = new Map();
-    for (const c of p.children || []) {
-      if (!c.slug || !c.name) { err('taxonomy child ' + (c.id || p.id + '/*') + ' needs slug + name'); continue; }
-      if (seenChild.has(c.slug)) err('taxonomy: duplicate child slug "' + c.slug + '" under parent "' + p.slug + '"');
-      else seenChild.set(c.slug, c.id);
-      const curl = '/danh-muc/' + p.slug + '/' + c.slug + '/';
-      if (childUrls.has(curl) && childUrls.get(curl) !== c.name) err('taxonomy: duplicate child URL ' + curl + ' with differing labels');
-      else childUrls.set(curl, c.name);
-      inventory.push({ id: 'child:' + p.slug + '/' + c.slug, label: c.name, url: curl, canonical_surfaces: ['header.mega', 'nav-drawer.children', 'topic-sheet'], origin: 'data/taxonomy.yml' });
+/* ---------------- HTML tokenizer (no substring extraction) ---------------- */
+function tokenize(html) {
+  const ev = [];
+  let i = 0, n = html.length;
+  while (i < n) {
+    if (html.startsWith('<!--', i)) { const e = html.indexOf('-->', i); i = e < 0 ? n : e + 3; continue; }
+    const lt = html.indexOf('<', i);
+    if (lt < 0) break;
+    if (lt > i) ev.push({ type: 'text', text: html.slice(i, lt) });
+    const gt = html.indexOf('>', lt);
+    if (gt < 0) break;
+    let t = html.slice(lt + 1, gt);
+    if (t.startsWith('!') || t.startsWith('?')) { i = gt + 1; continue; }
+    if (t.startsWith('/')) { ev.push({ type: 'close', tag: t.slice(1).trim().split(/\s+/)[0].toLowerCase() }); i = gt + 1; continue; }
+    const nameM = /^([a-zA-Z][a-zA-Z0-9-]*)/.exec(t);
+    if (!nameM) { i = gt + 1; continue; }
+    const tag = nameM[1].toLowerCase();
+    const attrs = {};
+    const are = /([:@\w.-]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s"'>]+))?/g;
+    let am;
+    while ((am = are.exec(t.slice(nameM[1].length)))) {
+      const raw = am[2] !== undefined ? am[2] : '';
+      attrs[am[1].toLowerCase()] = raw.startsWith('"') && raw.endsWith('"') ? raw.slice(1, -1)
+        : (raw.startsWith("'") && raw.endsWith("'") ? raw.slice(1, -1) : raw);
+    }
+    ev.push({ type: 'open', tag, attrs, selfClose: /\/\s*$/.test(t) });
+    i = gt + 1;
+    if (tag === 'script' || tag === 'style') {
+      const ci = html.toLowerCase().indexOf('</' + tag, i);
+      const ng = ci < 0 ? n : html.indexOf('>', ci);
+      i = ng < 0 ? n : ng + 1;
     }
   }
-}
-if (cats && tax) {
-  const all = [...cats.primary, ...cats.more];
-  const dup = all.filter((s, i) => all.indexOf(s) !== i);
-  if (dup.length) err('menu-cats: slug(s) listed twice: ' + dup.join(', '));
-  for (const s of all) if (!parentBySlug.has(s)) err('menu-cats: slug "' + s + '" is not a taxonomy parent — the menu must not invent categories');
-  const taxSlugs = new Set(tax.map(p => p.slug));
-  const missing = [...taxSlugs].filter(s => !all.includes(s));
-  if (missing.length) warn('taxonomy parents absent from menu-cats (not reachable from menu/footer): ' + missing.join(', '));
-  const mega = readMegaGroups(ROOT);
-  if (mega) {
-    const megaSlugs = new Set(mega.flatMap(g => g.slugs));
-    for (const s of megaSlugs) if (!parentBySlug.has(s)) err('header mega-menu references unknown parent slug "' + s + '"');
-    for (const s of all) if (!megaSlugs.has(s)) err('header mega-menu does not cover menu-cats parent "' + s + '" — a shared item missing from a navigation surface');
-    for (const s of megaSlugs) if (!all.includes(s)) err('header mega-menu includes parent "' + s + '" that menu-cats does not list — competing registry');
-  } else {
-    warn('header.html mega-menu group string not found (structure changed? rendered check still applies)');
-  }
+  return ev;
 }
 
-// ---------------------------------------------------------------------------
-// 2. RENDERED-level checks
-function fail() {
-  mkdirSync(join(ROOT, 'reports'), { recursive: true });
-  writeReport(ROOT, 'navigation-inventory.json', {
-    generated_at: new Date().toISOString(),
-    mode: SITE ? 'source+rendered' : 'source-only',
-    items: inventory,
-    errors, warnings,
-  });
-  console.error('validate-navigation: ' + errors.length + ' error(s), ' + warnings.length + ' warning(s)');
-  process.exit(1);
-}
+const decodeEntities = (s) => String(s)
+  .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ');
 
-function extractBlock(html, startMarker, endTag) {
-  const i = html.indexOf(startMarker);
-  if (i < 0) return null;
-  const j = html.indexOf(endTag, i);
-  return j < 0 ? null : html.slice(i, j + endTag.length);
-}
+function hasClass(attrs, value) { return String(attrs.class || '').split(/\s+/).includes(value); }
 
-function anchors(block) {
+// Inner HTML of the element matching (tag, attr=class|id, value); nesting-aware.
+function extractSurface(html, spec) {
+  const ev = tokenize(html);
+  let depth = -1;
   const out = [];
-  if (!block) return out;
-  // The footer/header BRAND wordmark (logo/brand link, e.g. the site name
-  // linking to /) is not a navigation label: it is the site identity.
-  // Documented exception — see docs/ARTICLE-DESIGN.md (navigation source of
-  // truth). Everything else must match the canonical label per URL.
-  const brandBlock = block.match(/<[^>]*class="[^"]*foot-brand[^"]*"[^>]*>[\s\S]*?<\/div>/);
-  if (brandBlock) block = block.replace(brandBlock[0], '');
-  const re = /<a\b[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g;
-  let m;
-  while ((m = re.exec(block))) {
-    if (/class="[^"]*\b(?:logo|brand)\b[^"]*"/.test(m[0])) continue; // brand wordmark — not a nav label
-    const text = m[2].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ')
-      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
-    out.push({ href: m[1], text });
+  for (const e of ev) {
+    if (depth < 0) {
+      if (e.type === 'open' && e.tag === spec.tag &&
+          ((spec.attr === 'class' && hasClass(e.attrs, spec.value)) ||
+           (spec.attr === 'id' && e.attrs.id === spec.value))) {
+        if (e.selfClose) return '';
+        depth = 1; continue;
+      }
+      continue;
+    }
+    if (e.type === 'open' && e.tag === spec.tag && !e.selfClose) depth++;
+    else if (e.type === 'close' && e.tag === spec.tag) { depth--; if (depth === 0) return out.join(''); }
+    if (e.type === 'text') out.push(e.text);
+    else if (e.type === 'open') out.push(' ');
   }
-  return out;
+  return depth > 0 ? out.join('') : null;
 }
 
-function stripBase(href, base) {
-  let h = href;
-  if (base && base !== '/' && h.startsWith(base)) h = h.slice(base.length);
-  if (!h.startsWith('/')) return null; // external / anchor — not a nav destination
-  return h;
+// Parse a surface's inner HTML into link/button items with identity attrs.
+function surfaceItems(inner) {
+  const norm = (ts) => ts.join(' ').replace(/\s+/g, ' ').trim();
+  const ev = tokenize(inner);
+  const items = [];
+  let curA = null, curB = null;
+  const flushA = () => { if (curA) { items.push({ kind: 'link', attrs: curA.attrs, href: curA.attrs.href || '', label: norm(curA.texts) }); curA = null; } };
+  const flushB = () => { if (curB) { items.push({ kind: 'button', attrs: curB.attrs, label: norm(curB.texts) }); curB = null; } };
+  for (const e of ev) {
+    if (e.type === 'open') {
+      if (e.tag === 'a') { flushA(); curA = { attrs: e.attrs, texts: [] }; }
+      else if (e.tag === 'button') { flushB(); curB = { attrs: e.attrs, texts: [] }; }
+    } else if (e.type === 'close') {
+      if (e.tag === 'a') flushA();
+      else if (e.tag === 'button') flushB();
+    } else if (e.type === 'text') {
+      if (curA) curA.texts.push(decodeEntities(e.text));
+      if (curB) curB.texts.push(decodeEntities(e.text));
+    }
+  }
+  flushA(); flushB();
+  return items;
+}
+
+// Documented brand-wordmark exception (narrowly scoped: only the site identity
+// link to "/", marked with a brand/logo class).
+function isBrandWordmark(a) {
+  const cls = String(a.attrs.class || '');
+  return /(^|\s)(logo|brand|foot-brand__link)(\s|$)/.test(cls);
 }
 
 function sameLabel(a, b) {
   if (a === b) return true;
-  // Documented legitimate variant: the full form "Tất cả <label>".
   if (a === 'Tất cả ' + b || b === 'Tất cả ' + a) return true;
   return false;
 }
 
-if (SITE) {
-  if (!existsSync(SITE)) { err('--site directory does not exist: ' + SITE); fail(); }
-  // baseurl from _config.yml (rendered hrefs carry it)
-  let base = '';
-  const cfgp = join(ROOT, '_config.yml');
-  if (existsSync(cfgp)) {
-    const m = readFileSync(cfgp, 'utf8').match(/^baseurl:\s*["']?([^"'\n]*)["']?\s*$/m);
-    if (m) base = m[1].trim();
-  }
-  const htmlFiles = [];
-  (function walk(d) {
-    for (const f of readdirSync(d, { withFileTypes: true })) {
-      if (f.isDirectory()) walk(join(d, f.name));
-      else if (f.name.endsWith('.html')) htmlFiles.push(join(d, f.name));
-    }
-  })(SITE);
-
-  const surfacesOf = (name) => ({
-    'header.main-nav': (h) => extractBlock(h, 'class="main-nav"', '</nav>'),
-    'header.mega': (h) => extractBlock(h, 'class="mega"', '</div></div>'), // mega block ends before </nav>
-    'footer': (h) => extractBlock(h, '<footer', '</footer>'),
-    'nav-drawer': (h) => extractBlock(h, 'class="nav-drawer"', '</aside>'),
-    'topic-sheet': (h) => extractBlock(h, 'class="sheet__nav"', '</nav>'),
-    'bottom-nav': (h) => extractBlock(h, 'class="bottom-nav"', '</nav>'),
-  });
-
-  // url -> Map(surface -> label)
-  const byUrl = new Map();
-  let checkedPages = 0;
-  for (const page of htmlFiles) {
-    const html = readFileSync(page, 'utf8');
-    const hasNav = html.includes('class="main-nav"') || html.includes('class="site-footer"');
-    if (!hasNav) continue;
-    checkedPages++;
-    for (const [surface, getter] of Object.entries(surfacesOf())) {
-      for (const a of anchors(getter(html))) {
-        const url = stripBase(a.href, base);
-        if (url === null) continue;
-        if (!byUrl.has(url)) byUrl.set(url, new Map());
-        const prev = byUrl.get(url).get(surface);
-        if (prev === undefined) byUrl.get(url).set(surface, a.text);
-        else if (!sameLabel(prev, a.text)) err('label mismatch for ' + url + ' within surface ' + surface + ' on ' + page + ': "' + prev + '" vs "' + a.text + '"');
-      }
-    }
-  }
-  if (checkedPages === 0) warn('no rendered pages with navigation found under ' + SITE);
-
-  // cross-surface label consistency + URL resolution
-  for (const [url, surfaces] of byUrl) {
-    const labels = [...new Set([...surfaces.values()])];
-    if (labels.length > 1) {
-      const compatible = labels.every(l => labels.every(o => sameLabel(l, o)));
-      if (!compatible) err('label mismatch for ' + url + ' across surfaces: ' + labels.map(l => '"' + l + '" (' + [...surfaces].filter(([, v]) => v === l).map(([s]) => s).join(',') + ')').join(' | '));
-    }
-    // resolution: every nav URL must exist in the build
-    let rel = decodeURIComponent(url.split('#')[0].split('?')[0]);
-    if (/\.(xml|json|txt|webmanifest)$/.test(rel)) {
-      const fp = join(SITE, rel.slice(1));
-      if (!existsSync(fp)) err('navigation URL does not resolve in build: ' + url);
-    } else {
-      if (rel.endsWith('/')) rel += 'index.html';
-      else if (!rel.endsWith('.html')) rel += '/index.html';
-      const fp = join(SITE, rel.slice(1));
-      if (!existsSync(fp)) err('navigation URL does not resolve in build: ' + url);
-    }
-    // record the surfaces actually observed in the rendered build
-    const item = inventory.find(i => sameLabel(i.label, [...surfaces.values()][0]) && (i.url === url || i.url === stripBase(url, base)));
-    if (item) item.rendered_surfaces = [...surfaces.keys()].sort();
-  }
-  console.log('validate-navigation: rendered check over ' + checkedPages + ' page(s), ' + byUrl.size + ' unique nav destination(s)');
+function stripBase(href, base) {
+  let h = String(href || '');
+  if (base && base !== '/' && h.startsWith(base)) h = h.slice(base.length);
+  if (!h.startsWith('/')) return null;
+  return decodeURIComponent(h.split('#')[0].split('?')[0]) || '/';
 }
 
-// ---------------------------------------------------------------------------
-mkdirSync(join(ROOT, 'reports'), { recursive: true });
-writeReport(ROOT, 'navigation-inventory.json', {
+/* ---------------- canonical sanity ---------------- */
+{
+  if (!CANON.navMain.length) err('canonical data: data/navigation.yml has no main items');
+  const homeIdx = CANON.navMain.findIndex(n => n.url === '/');
+  if (homeIdx < 0) err('canonical data: navigation.main must contain the home item (url "/")');
+  else if (CANON.navMain[homeIdx].label !== 'Trang chủ') err('canonical data: home label must be "Trang chủ" (got "' + CANON.navMain[homeIdx].label + '")');
+  for (const a of CANON.actions) {
+    if (!a.url && !a.data_qa) err('canonical data: action ' + a.id + ' needs url or data_qa');
+  }
+  for (const s of [...(CANON.menuCats.primary || []), ...(CANON.menuCats.more || [])]) {
+    if (!parentBySlug.has(s)) err('canonical data: menu-cats slug "' + s + '" not found in taxonomy parents');
+  }
+  for (const p of CANON.parents) inventory.push({ id: 'parent:' + p.slug, label: p.name, url: '/danh-muc/' + p.slug + '/', origin: 'data/taxonomy.yml', children: (p.children || []).map(c => c.slug) });
+  for (const a of CANON.actions) inventory.push({ id: 'action:' + a.id, label: a.label, url: a.url || null, data_qa: a.data_qa || null, origin: 'data/actions.yml' });
+  CANON.navMain.forEach((n, i) => inventory.push({ id: 'nav.main[' + i + ']', label: n.label, url: n.url, origin: 'data/navigation.yml#main' }));
+}
+
+/* ---------------- rendered identity checks ---------------- */
+if (SITE) {
+  if (!fs.existsSync(SITE)) err('--site directory does not exist: ' + SITE);
+  else {
+    let base = '';
+    const cfgp = path.join(ROOT, '_config.yml');
+    if (fs.existsSync(cfgp)) {
+      const m = fs.readFileSync(cfgp, 'utf8').match(/^baseurl:\s*["']?([^"'\n]*)["']?\s*$/m);
+      if (m) base = m[1].trim();
+    }
+    const htmlFiles = [];
+    (function walk(d) {
+      for (const f of fs.readdirSync(d, { withFileTypes: true })) {
+        if (f.isDirectory()) walk(path.join(d, f.name));
+        else if (f.name.endsWith('.html')) htmlFiles.push(path.join(d, f.name));
+      }
+    })(SITE);
+    if (!htmlFiles.length) err('no rendered HTML pages found under ' + SITE);
+
+    const pagesWithChrome = htmlFiles.filter(p => {
+      const h = fs.readFileSync(p, 'utf8');
+      return /class="main-nav"/.test(h) || /class="site-footer"/.test(h) || /class="bottom-nav"/.test(h);
+    });
+    if (!pagesWithChrome.length) err('no rendered pages with navigation chrome found under ' + SITE);
+
+    const observed = new Map(); // surface -> Map(id -> {label,url,firstPage})
+    function record(surface, id, label, url, page) {
+      if (!observed.has(surface)) observed.set(surface, new Map());
+      const m = observed.get(surface);
+      const prev = m.get(id);
+      if (!prev) m.set(id, { label, url, page: path.relative(SITE, page) });
+      else if (prev.label !== label && !sameLabel(prev.label, label)) {
+        err('label mismatch across pages for ' + id + ' on ' + surface + ': "' + prev.label + '" (on ' + prev.page + ') vs "' + label + '" (on ' + path.relative(SITE, page) + ')');
+      }
+    }
+
+    function checkLinks(surface, links, expected, page, base) {
+      const rel = path.relative(SITE, page);
+      for (const exp of expected) {
+        const found = links.find(l => stripBase(l.href, base) === exp.url);
+        if (!found) { err('required item MISSING: ' + exp.id + ' on surface ' + surface + ' (' + rel + ')'); continue; }
+        if (!sameLabel(found.label, exp.label)) {
+          err('label mismatch: ' + exp.id + ' on surface ' + surface + ' (' + rel + '): expected "' + exp.label + '", got "' + found.label + '"');
+        }
+        record(surface, exp.id, found.label, exp.url, page);
+      }
+      // within-surface: one URL must never carry two different labels
+      const byUrl = new Map();
+      for (const l of links) {
+        const u = stripBase(l.href, base);
+        if (!u) continue;
+        const prev = byUrl.get(u);
+        if (prev === undefined) byUrl.set(u, l.label);
+        else if (!sameLabel(prev, l.label)) err('label mismatch for ' + u + ' within surface ' + surface + ' (' + rel + '): "' + prev + '" vs "' + l.label + '"');
+      }
+    }
+
+    function checkButtons(surface, buttons, expected, page) {
+      const rel = path.relative(SITE, page);
+      for (const exp of expected) {
+        const found = buttons.find(b => {
+          if (exp.qa) return b.attrs['data-qa'] === exp.qa;
+          if (exp.navCat) return b.attrs['data-nav-cat'] === exp.navCat;
+          if (exp.attrOpen) return Object.prototype.hasOwnProperty.call(b.attrs, exp.attrOpen);
+          if (exp.cls) return hasClass(b.attrs, exp.cls);
+          return false;
+        });
+        if (!found) { err('required item MISSING: ' + exp.id + ' on surface ' + surface + ' (' + rel + ')'); continue; }
+        if (exp.label !== undefined && exp.label !== null && !sameLabel(found.label, exp.label)) {
+          err('action label mismatch: ' + exp.id + ' on surface ' + surface + ' (' + rel + '): expected "' + exp.label + '", got "' + found.label + '"');
+        }
+        record(surface, exp.id, found.label, null, page);
+      }
+    }
+
+    let checked = 0;
+    for (const page of pagesWithChrome) {
+      checked++;
+      const html = fs.readFileSync(page, 'utf8');
+      for (const [surface, spec] of Object.entries(EXPECTED)) {
+        let inner = null;
+        if (spec.special === 'footer-info') {
+          // footer.info = the .foot-sec <details> whose <summary> is "Thông tin"
+          const blocks = html.match(/<details[^>]*class="[^"]*foot-sec[^"]*"[^>]*>[\s\S]*?<\/details>/g) || [];
+          const info = blocks.find(b => /<summary[^>]*>\s*Thông tin\s*<\/summary>/.test(b)) || null;
+          inner = info;
+        } else {
+          inner = extractSurface(html, spec.locate);
+        }
+        if (inner === null) { err('required surface MISSING: ' + surface + ' (on ' + path.relative(SITE, page) + ')'); continue; }
+        const items = surfaceItems(inner);
+        const links = items.filter(i => i.kind === 'link' && !isBrandWordmark(i));
+        const buttons = items.filter(i => i.kind === 'button');
+        if (spec.links) checkLinks(surface, links, spec.links, page, base);
+        if (spec.buttons) checkButtons(surface, buttons, spec.buttons, page);
+      }
+    }
+
+    // cross-surface consistency for one canonical id
+    const labelById = new Map();
+    for (const [surface, m] of observed) {
+      for (const [id, v] of m) {
+        const prev = labelById.get(id);
+        if (!prev) labelById.set(id, { label: v.label, surfaces: [surface] });
+        else {
+          prev.surfaces.push(surface);
+          if (!sameLabel(prev.label, v.label)) err('label mismatch across surfaces for ' + id + ': "' + prev.label + '" (' + prev.surfaces.join(',') + ') vs "' + v.label + '" (' + surface + ')');
+        }
+      }
+    }
+
+    // URL resolution: every canonical nav URL must exist in the build
+    const allUrls = new Set();
+    for (const spec of Object.values(EXPECTED)) {
+      for (const l of spec.links || []) allUrls.add(l.url);
+    }
+    for (const url of allUrls) {
+      let r = url;
+      if (/\.(xml|json|txt|webmanifest)$/.test(r)) {
+        if (!fs.existsSync(path.join(SITE, r.slice(1)))) err('navigation URL does not resolve in build: ' + url);
+      } else {
+        if (r.endsWith('/')) r += 'index.html';
+        else if (!r.endsWith('.html')) r += '/index.html';
+        if (!fs.existsSync(path.join(SITE, r.slice(1)))) err('navigation URL does not resolve in build: ' + url);
+      }
+    }
+
+    for (const it of inventory) {
+      const surfs = [];
+      for (const [surface, m] of observed) if (m.has(it.id)) surfs.push(surface);
+      if (surfs.length) it.rendered_surfaces = surfs.sort();
+    }
+    console.log('validate-navigation: rendered identity check over ' + checked + ' page(s), ' + observed.size + ' required surface(s) observed');
+  }
+}
+
+/* ---------------- report ---------------- */
+fs.mkdirSync(path.join(DATA_ROOT, 'reports'), { recursive: true });
+writeReport(DATA_ROOT, 'navigation-inventory.json', {
   generated_at: new Date().toISOString(),
-  mode: SITE ? 'source+rendered' : 'source-only',
+  mode: SITE ? 'canonical+rendered' : 'canonical',
+  data_root: DATA_ROOT,
   items: inventory,
+  required_surfaces: REQUIRED_SURFACES,
   errors, warnings,
 });
-console.log('validate-navigation: ' + inventory.length + ' inventory item(s), ' + errors.length + ' error(s), ' + warnings.length + ' warning(s)');
+console.log('validate-navigation: ' + inventory.length + ' inventory item(s), ' + REQUIRED_SURFACES.length + ' required surface(s), ' + errors.length + ' error(s), ' + warnings.length + ' warning(s)');
 if (errors.length) process.exit(1);
 process.exit(0);

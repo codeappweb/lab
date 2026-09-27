@@ -1,9 +1,16 @@
 /* Article reading enhancements — table scroll regions + heading permalinks.
    Loaded AFTER main.js so main.js builds the TOC from pristine heading text.
+   SCOPE: article enhancements run ONLY inside the `.article` component — the
+   same scope as the scoped article.css styles (`.article .prose`). Prose on
+   category/static pages is intentionally left untouched; a shared component
+   for other pages would have to be designed and documented explicitly, with
+   matching styles.
    This module is deliberately dependency-free and runs against an injectable
    (doc, win) pair: scripts/tests/article-runtime.test.mjs exercises it against
-   a minimal DOM implementation (a DOM/browser environment, not just syntax
-   checks) and asserts the contracts below.
+   a minimal in-memory DOM implementation — a LOGIC-TEST HARNESS that models
+   browser DOM behavior; it is not a real browser, and passing it does not
+   certify rendered layout (see the browser QA job for that). Note: assigning
+   an anchor's href (attribute) is normal, valid browser behavior.
 
    Contracts (all asserted by the runtime test):
    - enhanceArticle is IDEMPOTENT: repeated initialization never wraps a
@@ -15,6 +22,8 @@
    - clipboard feedback is HONEST: the "copied" state is applied only when a
      real copy succeeded (clipboard API resolves, or the execCommand fallback
      returns true). A failed copy never announces success.
+   - enhancements apply ONLY within `.article`; bare `.prose` outside an
+     `.article` root is never modified.
    - no uncaught exceptions on any path.
 */
 (function (global) {
@@ -22,8 +31,10 @@
 
   function enhanceArticle(doc, win, opts) {
     opts = opts || {};
+    // Intentional scope: .article .prose ONLY (matches the scoped article.css).
+    // A bare `.prose` (no .article root) must stay untouched.
     var prose = (typeof opts.prose !== 'undefined') ? opts.prose
-      : doc.querySelector('.article .prose, .prose');
+      : doc.querySelector('.article .prose');
     if (!prose) return { tablesWrapped: 0, headingsLinked: 0 };
 
     var tablesWrapped = 0;

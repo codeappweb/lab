@@ -8,12 +8,15 @@
     <details class="foot-sec">
       <summary class="foot-sec__h">Truy cập nhanh</summary>
       <div class="foot-links foot-links--actions">
-        <button type="button" class="foot-act" data-qa="search">Tìm kiếm</button>
-        <button type="button" class="foot-act" data-qa="assistant">Trợ lý AI</button>
-        <button type="button" class="foot-act" data-qa="saved">Đã lưu</button>
-        <button type="button" class="foot-act" data-qa="latest">Mới nhất</button>
-        <button type="button" class="foot-act" data-qa="topics">Chủ đề</button>
-        <a class="foot-act" href="{{ '/danh-muc/' | relative_url }}">Danh mục</a>
+        {%- comment -%} Single source: data/actions.yml (labels + identities are
+        validated by scripts/validate-navigation.mjs against that file). {%- endcomment -%}
+        {% for a in site.data.actions.quick %}
+        {% if a.url %}
+        <a class="foot-act" href="{{ a.url | relative_url }}">{{ a.label }}</a>
+        {% else %}
+        <button type="button" class="foot-act" data-qa="{{ a.data_qa }}">{{ a.label }}</button>
+        {% endif %}
+        {% endfor %}
       </div>
     </details>
 

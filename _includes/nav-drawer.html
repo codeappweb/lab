@@ -11,30 +11,32 @@
     <div class="nav-scr" id="navScrHome">
       <p class="nav-title">Truy cập nhanh</p>
       <div class="nav-actions" aria-label="Truy cập nhanh">
-        <button type="button" class="nav-action" data-qa="search">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <span>Tìm kiếm</span>
-        </button>
-        <button type="button" class="nav-action" data-qa="assistant">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.6-.8L3 20l1-4.9a8.4 8.4 0 1 1 17-3.6z"/></svg>
-          <span>Trợ lý AI</span>
-        </button>
-        <button type="button" class="nav-action" data-qa="saved">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
-          <span>Đã lưu</span>
-        </button>
-        <button type="button" class="nav-action" data-qa="latest">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          <span>Mới nhất</span>
-        </button>
-        <button type="button" class="nav-action" data-qa="topics">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-          <span>Chủ đề</span>
-        </button>
-        <a class="nav-action" href="{{ '/danh-muc/' | relative_url }}">
+        {%- comment -%} Single source: data/actions.yml — the SAME data the
+        footer and the validators use. Icons render by action id. {%- endcomment -%}
+        {% for a in site.data.actions.quick %}
+        {% if a.url %}
+        <a class="nav-action" href="{{ a.url | relative_url }}">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          <span>Danh mục</span>
+          <span>{{ a.label }}</span>
         </a>
+        {% else %}
+        <button type="button" class="nav-action" data-qa="{{ a.data_qa }}">
+          {% case a.id %}
+          {% when "search" %}
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          {% when "assistant" %}
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.6-.8L3 20l1-4.9a8.4 8.4 0 1 1 17-3.6z"/></svg>
+          {% when "saved" %}
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
+          {% when "latest" %}
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          {% when "topics" %}
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          {% endcase %}
+          <span>{{ a.label }}</span>
+        </button>
+        {% endif %}
+        {% endfor %}
       </div>
 
       <p class="nav-title">Khám phá</p>
@@ -52,13 +54,12 @@
         <button type="button" class="nav-cat nav-cat--more" data-nav-cat="{{ p.slug }}" hidden>
           <span class="nav-cat__icon" aria-hidden="true">{% include icon.html name=p.icon %}</span>
           <span class="nav-cat__label">{{ p.name }}</span>
-    
-      <svg class="nav-cat__chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          <svg class="nav-cat__chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
         </button>
         {% endfor %}
         <button type="button" class="nav-more-toggle" id="navMoreToggle" aria-expanded="false">
           <span>Xem thêm</span>
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
       </div>
 

@@ -1,0 +1,25 @@
+# Canonical quick-action buttons — SINGLE SOURCE shared by every surface
+# that renders them (footer "Truy cập nhanh", nav drawer screen 1, bottom
+# navigation). scripts/validate-navigation.mjs and the regression fixture test
+# validate rendered labels/identities against THIS file.
+# An action with `url` renders as a link (identity = URL); an action with
+# `data_qa` renders as a button (identity = data-qa attribute).
+quick:
+  - id: "search"
+    label: "Tìm kiếm"
+    data_qa: "search"
+  - id: "assistant"
+    label: "Trợ lý AI"
+    data_qa: "assistant"
+  - id: "saved"
+    label: "Đã lưu"
+    data_qa: "saved"
+  - id: "latest"
+    label: "Mới nhất"
+    data_qa: "latest"
+  - id: "topics"
+    label: "Chủ đề"
+    data_qa: "topics"
+  - id: "danh-muc"
+    label: "Danh mục"
+    url: "/danh-muc/"

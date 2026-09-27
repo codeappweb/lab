@@ -2,12 +2,20 @@
 // Article enhancement runtime regression test.
 //
 // Loads assets/js/article.js in Node (CommonJS-compatible IIFE) and runs its
-// exported factory against a minimal DOM implementation — a real DOM/browser
-// ENVIRONMENT, not a syntax check. Covers the required matrix:
+// exported factory against a minimal in-memory DOM implementation. This stub
+// is a LOGIC-TEST HARNESS: it models browser DOM behavior to assert the
+// module's contracts, but it is NOT a real browser — passing this test does
+// not certify rendered layout or styling (the browser QA job covers rendered
+// behavior). Note on fidelity: assigning an anchor's href attribute reflects
+// the href property in real browsers; that is valid behavior, not a stub
+// limitation, and is not reported as a browser defect.
+//
+// Covers the required matrix:
 //
 //   tables: none | one | multiple | already-wrapped (repeated init)
 //   headings: none | one | multiple | without ids | already-linked (repeated init)
 //   clipboard: success (announced), failure (NOT announced), fallback success/failure
+//   scope: enhancements run ONLY within .article; bare .prose stays untouched
 //
 // Run: node scripts/tests/article-runtime.test.mjs
 import { createRequire } from 'node:module';
@@ -50,7 +58,8 @@ class Elem {
     this.hidden = false;
   }
   get parentElement() { return this.parentNode; }
-  set className(v) { this.classList = new ClassList(); String(v).split(/\s+/).filter(Boolean).forEach(c => this.classList.add(c)); this._cls = String(v); }
+  set className(v) { this.classList = new ClassList(); String(v).split(/\s+/).filter(Boolean).forEach(c => this.classList.add(c))
+; this._cls = String(v); }
   get className() { return this._cls || ''; }
   get textContent() {
     let s = this._text;
@@ -89,10 +98,25 @@ function matchAll(root, sel) {
   });
   return out;
 }
-function walk(node, fn) { for (const c of node.children) { fn(c); walk(c, fn); } }
+// Descendant combinator support (".article .prose") plus simple selectors:
+// tag, .class, tag.class, [attr], tag[attr], comma lists.
 function matches(n, s) {
+  const parts = s.split(/\s+/).filter(Boolean);
+  if (parts.length < 2) return matchSimple(n, s);
+  // rightmost part matches the node; earlier parts must match an ancestor chain
+  let idx = parts.length - 1;
+  if (!matchSimple(n, parts[idx])) return false;
+  idx--;
+  let p = n.parentNode;
+  while (idx >= 0 && p) {
+    if (matchSimple(p, parts[idx])) idx--;
+    p = p.parentNode;
+  }
+  return idx < 0;
+}
+function walk(node, fn) { for (const c of node.children) { fn(c); walk(c, fn); } }
+function matchSimple(n, s) {
   if (s === '*') return true;
-  let m = /^([a-z0-9]+)?((?:\.[a-z0-9-]+)*)((?:\[theme-[a-z]+\])*)$/i.exec(s.replace(/\s+/g, ' '));
   // generic: support "tag", "tag.cls", ".cls", "tag[attr]"
   const re = /^([a-zA-Z0-9]+)?((?:\.[\w-]+)*)?(\[[^\]]+\])?$/;
   const r = re.exec(s);
@@ -141,7 +165,8 @@ function makeWin(doc, clipboardBehavior) {
   // 'none' -> no clipboard API, legacy execCommand path used
   return win;
 }
-/* ------------------------------------------------------------ */
+/* ------------------------------------------------------------ 
+*/
 
 // Load the module (registers globalThis.XDCArticleEnhance).
 await import(pathToFileURL(path.join(HERE, '..', '..', 'assets', 'js', 'article.js')).href);
@@ -230,7 +255,8 @@ function articleDom({ tables = 0, headings = 0, headingIds = true, extraHeadingN
   const win = makeWin(doc, 'none');
   enhance(doc, win);
   const links = doc.body.querySelectorAll('.h-link');
-  doc.execCommandResult = true;
+ 
+ doc.execCommandResult = true;
   links[0].dispatch('click', { preventDefault() {} });
   check('legacy fallback success: copied announced, textarea cleaned up', links[0].classList.contains('is-copied') && doc.execCommandCalls === 1 && doc.body.querySelectorAll('textarea').length === 0);
   doc.execCommandResult = false;
@@ -250,13 +276,25 @@ function articleDom({ tables = 0, headings = 0, headingIds = true, extraHeadingN
   check('click scrolls the heading into view', doc.scrollIntoViewCalls.length === 1);
 }
 
-// 9. prose outside an .article root still enhances (defensive)
+// 9. SCOPE: bare .prose outside an .article root is NOT enhanced (the
+//    enhancements are scoped to the .article component, matching the scoped
+//    article.css styles). Category/static-page prose stays untouched.
 {
   const doc = new MiniDoc();
   const prose = doc.createElement('div'); prose.className = 'prose';
   const t = doc.createElement('table'); prose.appendChild(t); doc.body.appendChild(prose);
+  const h = doc.createElement('h2'); h.setAttribute('id', 'muc-ngoai'); h.textContent = 'Mục ngoài article'; prose.appendChild(h);
   const r = enhance(doc, makeWin(doc));
-  check('bare .prose (no article root) still wraps the table', r.tablesWrapped === 1);
+  check('bare .prose (no .article root) NOT enhanced — table stays unwrapped', r.tablesWrapped === 0 && doc.body.querySelectorAll('.table-wrap').length === 0);
+  check('bare .prose (no .article root) NOT enhanced — heading gets no permalink', r.headingsLinked === 0 && doc.body.querySelectorAll('.h-link').length === 0);
+}
+
+// 10. prose INSIDE .article receives enhancements (positive scope case —
+//     covered above via articleDom(), asserted explicitly here once more).
+{
+  const { doc } = articleDom({ tables: 1, headings: 1 });
+  const r = enhance(doc, makeWin(doc));
+  check('.article .prose IS enhanced (scoped selector finds it)', r.tablesWrapped === 1 && r.headingsLinked === 1);
 }
 
 console.log('\narticle-runtime: ' + passed + ' passed, ' + failed + ' failed.');

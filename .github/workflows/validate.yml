@@ -45,14 +45,15 @@ jobs:
           exit $fail
       - name: Selftest (ok fixture passes, bad fixture fails)
         run: node scripts/selftest.mjs
-      - name: "Article runtime regression test (real DOM environment: tables, permalinks, clipboard honesty)"
+      - name: "Article runtime regression test (logic harness: tables, permalinks, clipboard honesty, .article scope)"
         run: |
           set -o pipefail
           if ! node scripts/tests/article-runtime.test.mjs 2>&1 | tee /tmp/art.log; then
             { echo '--- BAD checks ---'; grep -E 'BAD' /tmp/art.log | head -n 15; echo '--- tail ---'; tail -n 30 /tmp/art.log; } | while IFS= read -r l; do echo "::error::$l"; done
             exit 1
           fi
-      - name: Post article runtime log to PR (diagnostics)
+      - name: Post article runtime log to PR (diagn
+ostics)
         if: failure() && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,8 +61,15 @@ jobs:
         run: |
           { echo '### article-runtime log (tail 40)'; echo '```'; tail -n 40 /tmp/art.log 2>/dev/null || echo '(art.log missing)'; echo '```'; } > /tmp/art-comment.md
           gh pr comment "$PR_NUMBER" --body-file /tmp/art-comment.md || true
-      - name: "Navigation consistency check (single source: navigation.yml + menu-cats.yml + taxonomy.yml)"
+      - name: "Navigation consistency check (identity-based: canonical data vs every rendered surface)"
         run: node scripts/validate-navigation.mjs
+      - name: "Navigation regression fixtures (each defect variant MUST fail; brand/Tat-ca exceptions MUST pass)"
+        run: |
+          set -o pipefail
+          if ! node scripts/tests/nav-regression.test.mjs 2>&1 | tee /tmp/nav-fx.log; then
+            { grep -E 'BAD' /tmp/nav-fx.log | head -n 15; } | while IFS= read -r l; do echo "::error::$l"; done
+            exit 1
+          fi
       - name: "Engine selftest (offline orchestration: state, locks, retries, blocking)"
         run: |
           set -o pipefail
@@ -85,7 +93,8 @@ jobs:
     # `node scripts/sync-manifest.mjs` (docs/ENGINE-RUNBOOK.md): it reconciles
     # ALREADY-PUBLISHED posts into data/article-manifest.jsonl and derives
     # data/progress.json. It does NOT generate, draft, validate or publish any
-    # article. It is idempotent: when posts and manifest already agree, it
+    # article. It is idempotent: when posts and manifest already agree
+, it
     # changes nothing and pushes nothing.
     permissions:
       contents: write
@@ -140,7 +149,8 @@ jobs:
       - name: Self-heal audit
         run: node scripts/self-heal-audit.mjs
       - name: Legal freshness audit (gate mode)
-        run: node scripts/legal-freshness-audit.mjs --gate
+     
+   run: node scripts/legal-freshness-audit.mjs --gate
       - name: SEO scoring
         run: node scripts/seo-score.mjs
       - name: Compute content hashes
@@ -184,7 +194,8 @@ jobs:
           {
             echo "### Validate failed — diagnostics from reports/"
             echo '```'
-            for f in reports/link-errors.json reports/validation-errors.json reports/content-quality.json reports/seo-scores.json reports/capacity.json reports/navigation-inventory.json; do
+            for f in reports/link-errors.json reports/validation-errors.json reports/content-quality.json reports/seo-sc
+ores.json reports/capacity.json reports/navigation-inventory.json; do
               if [ -f "$f" ]; then echo "--- $f ---"; head -c 4000 "$f"; echo; fi
             done
             if [ -f reports/navigation-inventory.json ]; then echo '--- reports/navigation-inventory.json (tail: errors + warnings) ---'; tail -c 3500 reports/navigation-inventory.json; echo; fi

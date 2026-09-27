@@ -26,7 +26,10 @@ function urlToFile(u) {
   if (!p.startsWith('/')) p = '/' + p;
   if (p.endsWith('/')) p = p.slice(0, -1);
   if (p === '') return 'index.html';
-  return p.replace(/^\//, '') + '/index.html';
+  p = p.replace(/^\//, '');
+  // asset-style targets (own file extension) map to the file itself, not a directory index
+  if (/\.[A-Za-z0-9]+$/.test(p)) return p;
+  return p + '/index.html';
 }
 
 for (const shard of ['articles-001', 'categories', 'static']) {
@@ -44,7 +47,8 @@ for (const f of walkFiles(siteDir).filter(f => f.endsWith('.html'))) {
   checkedPages++;
   const html = fs.readFileSync(f, 'utf8');
   for (const m of html.matchAll(/href="([^"]*)"/g)) {
-    const href = m[1];
+    const href
+ = m[1];
     if (!href || href.startsWith('#') || /^(mailto:|tel:|javascript:)/.test(href)) continue;
     checkedLinks++;
     if (/^https?:\/\//.test(href)) {

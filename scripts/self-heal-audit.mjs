@@ -1,154 +1,104 @@
 #!/usr/bin/env node
-// self-heal-audit.mjs — self-healing audit for codeappweb/lab.
-// Detects: broken internal links, duplicate titles/descriptions, orphan posts,
-// accidental noindex, sitemap mismatches. Classifies CRITICAL/HIGH/MEDIUM/LOW.
-// Auto-repairs only deterministic issues that are safe to fix in-place
-// (regenerating sitemaps). Everything else is reported for human/AI review.
-// Exit code 1 = CRITICAL issues found = do not deploy.
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+// Self-healing audit. Severity classes:
+//   CRITICAL: broken internal links, duplicate permalinks/canonicals,
+//             accidental noindex on published posts, missing required files
+//   HIGH: orphan posts (no inbound internal link), duplicate titles/descriptions
+//   MEDIUM: stale shards, missing reports
+//   LOW: cosmetic
+// Only DETERMINISTIC repairs are auto-applied with --fix (regenerating
+// sitemap shards). Everything else is reported, never guessed.
+// Usage: node scripts/self-heal-audit.mjs [--root <dir>] [--fix]
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { findRoot, discover, isExcluded, SITE, writeReport } from './lib/lab.mjs';
 
-const ROOT = new URL('..', import.meta.url).pathname;
-const SITE = 'https://codeappweb.github.io/lab';
-const issues = [];
+const ROOT = findRoot(process.argv);
+const FIX = process.argv.includes('--fix');
+const findings = [];
+const add = (severity, issue, fix) => findings.push({ severity, issue, fix });
 
-function read(p) { return readFileSync(join(ROOT, p), 'utf8'); }
-function walk(dir, out = []) {
-  if (!existsSync(join(ROOT, dir))) return out;
-  for (const e of readdirSync(join(ROOT, dir))) {
-    const p = join(dir, e);
-    if (existsSync(join(ROOT, p)) && readdirSync(join(ROOT, p), { withFileTypes: true }).some(() => false)) continue;
-    out.push(p);
-  }
-  return out;
-}
-function walkDeep(dir, out = []) {
-  const full = join(ROOT, dir);
-  if (!existsSync(full)) return out;
-  for (const e of readdirSync(full, { withFileTypes: true })) {
-    const p = join(dir, e.name);
-    if (e.isDirectory()) walkDeep(p, out);
-    else out.push(p);
-  }
-  return out;
-}
+const { posts, pages, hubs, statics } = discover(ROOT);
 
-// ---- collect pages -----------------------------------------------------------
-const posts = existsSync(join(ROOT, '_posts')) ? readdirSync(join(ROOT, '_posts')).filter(f => f.endsWith('.md')).map(f => '_posts/' + f) : [];
-const pages = [...walkDeep('danh-muc'), ...(existsSync(join(ROOT, 'hub')) ? walkDeep('hub').map(p => 'hub/' + p) : [])];
-const rootPages = readdirSync(ROOT).filter(f => f.endsWith('.md')).map(f => f);
-const allMd = [...posts, ...pages, ...rootPages];
+// URL set (ALL pages incl. noindex stubs, hubs)
+const urlSet = new Set(['/']);
+for (const c of [...pages, ...hubs, ...statics]) if (c.url) urlSet.add(c.url);
+for (const p of posts) urlSet.add('/' + p.slug + '/');
 
-function fm(text) {
-  if (!text.startsWith('---')) return {};
-  const end = text.indexOf('\n---', 3);
-  if (end === -1) return {};
-  const raw = text.slice(3, end);
-  const o = {};
-  for (const line of raw.split('\n')) {
-    const m = line.match(/^([a-z_]+):\s*"?(.*?)"?\s*$/);
-    if (m) o[m[1]] = m[2];
-  }
-  return o;
-}
-
-// ---- known URL set (internal link targets) -------------------------------------
-const known = new Set(['/', '/danh-muc/', '/sitemap.xml', '/feed.xml',
-  '/gioi-thieu/', '/lien-he/', '/faq/', '/dich-vu/', '/bao-mat/', '/dieu-khoan/']);
-const postSlugs = new Set();
-for (const p of posts) postSlugs.add(p.replace(/^_posts\/\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, ''));
-for (const s of postSlugs) known.add('/' + s + '/');
-for (const f of [...pages, ...rootPages]) {
-  const t = read(f);
-  const m = t.match(/permalink:\s*(\/[^\s]+)\s*$/m);
-  if (m) known.add(m[1].replace(/\/$/, '') + '/');
-  else if (f.endsWith('.md')) {
-    const base = '/' + f.replace(/\.md$/, '').replace(/index$/, '') + '/';
-    known.add(base);
+// accidental noindex on posts
+for (const p of posts) {
+  if (p.fm.data.noindex === true || p.fm.data.noindex === 'true') {
+    add('CRITICAL', `${p.path}: published post marked noindex (experiment forbids noindex on articles)`, 'manual review — do not auto-remove');
   }
 }
-const hubSlugs = new Set();
-for (const f of walkDeep('hub')) hubSlugs.add('/' + f.replace(/\.md$/, '').replace(/index$/, '') + '/');
-
-// ---- 1. broken internal links ---------------------------------------------------
-for (const f of allMd) {
-  const text = read(f);
-  for (const m of text.matchAll(/\]\(\{\{\s*'([^']+)'\s*\|\s*relative_url\s*\}\}\)/g)) {
-    const loc = m[1];
-    if (!loc.startsWith('/')) continue;
-    const norm = loc.endsWith('/') ? loc : loc + '/';
-    if (!known.has(norm)) issues.push({ sev: 'CRITICAL', file: f, msg: 'broken internal link: ' + loc });
-  }
-  for (const m of text.matchAll(/\]\((\/lab\/[^\)]+)\)/g)) {
-    issues.push({ sev: 'MEDIUM', file: f, msg: 'hardcoded /lab/ link, use relative_url: ' + m[1] });
-  }
+// duplicate permalinks
+const seen = new Map();
+for (const c of [...pages, ...statics]) {
+  if (!c.url) continue;
+  if (seen.has(c.url)) add('CRITICAL', `duplicate permalink ${c.url}: ${c.path} and ${seen.get(c.url)}`, 'manual');
+  else seen.set(c.url, c.path);
 }
-
-// ---- 2. duplicate titles / descriptions / permalinks ------------------------------
-const titles = new Map(), descs = new Map(), perms = new Map();
-for (const f of allMd) {
-  const t = read(f); const o = fm(t);
-  if (o.title) {
-    const key = o.title.toLowerCase();
-    if (titles.has(key)) issues.push({ sev: 'HIGH', msg: 'duplicate title: ' + o.title + ' (' + f + ' and ' + titles.get(key) + ')' });
-    else titles.set(key, f);
-  }
-  if (o.description) {
-    const key = o.description.toLowerCase().slice(0, 120);
-    if (descs.has(key)) issues.push({ sev: 'MEDIUM', msg: 'near-duplicate description (' + f + ' and ' + descs.get(key) + ')' });
-    else descs.set(key, f);
-  }
-  if (o.permalink) {
-    if (perms.has(o.permalink)) issues.push({ sev: 'CRITICAL', msg: 'duplicate permalink ' + o.permalink + ' (' + f + ' and ' + perms.get(o.permalink) + ')' });
-    else perms.set(o.permalink, f);
-  }
+// duplicate titles/descriptions among indexable posts
+const tMap = new Map(), dMap = new Map();
+for (const p of posts) {
+  if (isExcluded(p.fm.data)) continue;
+  const t = String(p.fm.data.title || '').toLowerCase();
+  if (tMap.has(t)) add('HIGH', `duplicate title: ${p.path} and ${tMap.get(t)}`, 'manual');
+  else tMap.set(t, p.path);
+  const d = String(p.fm.data.description || '').toLowerCase();
+  if (dMap.has(d)) add('HIGH', `duplicate description: ${p.path} and ${dMap.get(d)}`, 'manual');
+  else dMap.set(d, p.path);
 }
-
-// ---- 3. accidental noindex on posts ----------------------------------------------
-for (const f of posts) {
-  if (/noindex:\s*true/.test(read(f).split('\n---')[0] || '')) {
-    issues.push({ sev: 'CRITICAL', file: f, msg: 'post has noindex: true' });
-  }
-}
-
-// ---- 4. orphan posts ----------------------------------------------------------------
-// a post is an orphan if no other file links to it
-const linkText = allMd.map(f => { try { return read(f); } catch { return ''; } }).join('\n');
-for (const s of postSlugs) {
-  const pat = '/' + s + '/';
-  const occurrences = (linkText.split(pat).length - 1);
-  // count only links (not the post's own existence)
-  const linkOcc = (linkText.match(new RegExp("\\]\\(\\{\\{\\s*'" + s + "'", 'g')) || []).length
-    + (linkText.match(new RegExp("\\]\\(\\{\\{\\s*'" + s.replace(/[-]/g, '[-]') + "'", 'g')) || []).length;
-  if (linkOcc === 0) issues.push({ sev: 'MEDIUM', msg: 'orphan post (no internal links to it): ' + s });
-}
-
-// ---- 5. sitemap mismatch (URL count vs posts) ----------------------------------------
-if (existsSync(join(ROOT, 'data/sitemap-shards.json'))) {
-  try {
-    const meta = JSON.parse(read('data/sitemap-shards.json'));
-    if (meta.counts.articles !== posts.length) {
-      issues.push({ sev: 'HIGH', msg: 'sitemap-shards.json stale (' + meta.counts.articles + ' != ' + posts.length + ' posts) — run gen-sitemap-shards.mjs' });
+// broken internal links (markdown + Liquid targets)
+for (const f of [...posts, ...pages, ...statics]) {
+  const text = f.text;
+  for (const m of text.matchAll(/\]\((\/[^)#\s]*)(#[^)\s]*)?\)/g)) {
+    let t = m[1];
+    if (t.startsWith('/lab')) t = t.slice(4);
+    const u = t.endsWith('/') || t.includes('.') ? t : t + '/';
+    if (!urlSet.has(u) && !u.startsWith('/danh-muc/') || (u.startsWith('/danh-muc/') && !urlSet.has(u) && !isDirIndex(u, pages))) {
+      if (!urlSet.has(u) && !isDirIndex(u, pages)) add('CRITICAL', `${f.path}: broken link "${m[1]}"`, 'fix source link to the real published URL');
     }
-  } catch (e) {
-    issues.push({ sev: 'HIGH', msg: 'cannot parse data/sitemap-shards.json: ' + e.message });
+  }
+  for (const m of text.matchAll(/\{\{\s*'([^']+)'\s*\|\s*relative_url\s*\}\}/g)) {
+    let t = m[1];
+    if (t.startsWith('/lab')) t = t.slice(4);
+    const u = t.endsWith('/') || t === '/' || t.includes('.') ? t : t + '/';
+    if (!urlSet.has(u) && !isDirIndex(u, pages)) add('CRITICAL', `${f.path}: broken Liquid link "${m[1]}"`, 'fix source link');
+  }
+}
+function isDirIndex(u, pgs) {
+  if (u === '/danh-muc/') return pgs.some(p => p.url === '/danh-muc/');
+  return false;
+}
+// orphan posts: no inbound link from any other content file
+const allText = [...pages, ...hubs, ...statics].map(x => x.text).join('\n') +
+  posts.filter(p => true).map(p => p.text).join('\n');
+for (const p of posts) {
+  const needle = '/' + p.slug;
+  if (!allText.includes(needle)) add('MEDIUM', `${p.path}: orphan — no inbound internal link`, 'add a relevant link from a category/hub page');
+}
+// stale shards vs current post count
+const sdir = join(ROOT, 'sitemaps');
+if (existsSync(sdir)) {
+  const shards = readdirSync(sdir).filter(f => /^articles-\d+\.xml$/.test(f));
+  const need = Math.max(1, Math.ceil(posts.filter(p => !isExcluded(p.fm.data)).length / 1000));
+  if (shards.length !== need) add('MEDIUM', `shard count ${shards.length} != expected ${need}`, FIX ? 'regenerated' : 'run gen-sitemap-shards');
+}
+
+if (FIX) {
+  try {
+    execFileSync('node', [join(ROOT, 'scripts/gen-sitemap-shards.mjs'), '--root', ROOT], { stdio: 'inherit' });
+  } catch { add('CRITICAL', 'sitemap regeneration failed', 'check scripts');
   }
 }
 
-// ---- report ---------------------------------------------------------------------------
-const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
-issues.sort((a, b) => order[a.sev] - order[b.sev]);
-const report = {
-  generated_for_run: true,
-  counts: { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 },
-  issues
-};
-for (const i of issues) report.counts[i.sev]++;
-const fs = await import('node:fs');
-fs.writeFileSync(join(ROOT, 'reports/self-heal-audit.json'), JSON.stringify(report, null, 2) + '\n');
-
-console.log('== self-heal audit ==');
-for (const i of issues) console.log(i.sev + ': ' + i.file + ' ' + i.msg);
-console.log(JSON.stringify(report.counts));
-if (report.counts.CRITICAL > 0) { console.error('CRITICAL issues found. DO NOT DEPLOY.'); process.exit(1); }
-console.log('OK (no CRITICAL).');
+writeReport(ROOT, 'self-heal-audit.json', { generated_at: new Date().toISOString(), findings });
+const bySeverity = {};
+for (const f of findings) {
+  bySeverity[f.severity] = (bySeverity[f.severity] || 0) + 1;
+  console.error(`${f.severity}: ${f.issue} -> ${f.fix}`);
+}
+console.log(`self-heal-audit: ${findings.length} finding(s) ${JSON.stringify(bySeverity)}`);
+if ((bySeverity.CRITICAL || 0) > 0) process.exit(1);
+process.exit(0);

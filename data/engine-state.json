@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "emergency_stop": false,
+  "paused": false,
+  "checkpoint": null,
+  "lock": null,
+  "jobs": [],
+  "runs": []
+}

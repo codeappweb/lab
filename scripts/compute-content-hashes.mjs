@@ -1,22 +1,16 @@
 #!/usr/bin/env node
-// compute-content-hashes.mjs — SHA-256 of each post body for change detection.
-// Writes reports/content-hashes.json. Used to avoid rebuilding unchanged articles.
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+// Content body hashes — the basis for resumability: unchanged articles are
+// skipped; changed ones are re-processed by the engine/audits. Stable ordering.
 import { createHash } from 'node:crypto';
+import { findRoot, discover, writeReport } from './lib/lab.mjs';
 
-const ROOT = new URL('..', import.meta.url).pathname;
-const postsDir = join(ROOT, '_posts');
+const ROOT = findRoot(process.argv);
+const { posts, pages, statics } = discover(ROOT);
 const hashes = {};
-
-if (existsSync(postsDir)) {
-  for (const f of readdirSync(postsDir).filter(f => f.endsWith('.md')).sort()) {
-    const text = readFileSync(join(postsDir, f), 'utf8');
-    const body = text.slice(text.indexOf('\n---', 3) + 4);
-    hashes[f] = createHash('sha256').update(body, 'utf8').digest('hex');
-  }
+for (const it of [...posts, ...pages, ...statics]) {
+  const key = it.path;
+  const body = it.fm.body || it.text;
+  hashes[key] = createHash('sha256').update(body).digest('hex').slice(0, 16);
 }
-const fs = await import('node:fs');
-fs.mkdirSync(join(ROOT, 'reports'), { recursive: true });
-fs.writeFileSync(join(ROOT, 'reports/content-hashes.json'), JSON.stringify(hashes, null, 2) + '\n');
-console.log('content-hashes: ' + Object.keys(hashes).length + ' articles hashed');
+writeReport(ROOT, 'content-hashes.json', { generated_at: new Date().toISOString(), algorithm: 'sha256(body)[0:16]', files: hashes });
+console.log('compute-content-hashes: ' + Object.keys(hashes).length + ' files hashed');

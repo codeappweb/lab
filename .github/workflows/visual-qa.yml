@@ -42,7 +42,9 @@ jobs:
           npm install --no-save playwright@1.49.1
           npx playwright install --with-deps chromium
       - name: Run browser QA (screenshots -> screenshots/)
-        run: node scripts/tests/browser-qa.mjs
+        run: |
+          set -o pipefail
+          node scripts/tests/browser-qa.mjs 2>&1 | tee /tmp/qa.log
         env:
           SITE_DIR: _site
       - name: Upload screenshots (for HUMAN visual inspection)
@@ -60,6 +62,11 @@ jobs:
         run: |
           {
             echo "### Visual QA failed — diagnostics"
+            echo '--- browser-qa output (tail 100) ---'
+            echo '```'
+            tail -n 100 /tmp/qa.log 2>/dev/null || echo '(qa.log missing)'
+            echo '```'
+            echo '--- failed step log (run may still be completing) ---'
             echo '```'
             gh run view "$GITHUB_RUN_ID" --log-failed 2>&1 | tail -n 150 || true
             echo '```'

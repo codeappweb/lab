@@ -14,7 +14,15 @@ export const unq = (s) => s.replace(/^["']|["']$/g, '');
 export function parseNavMain(text) {
   const out = [];
   let cur = null;
+  let inMain = false;
   for (const raw of text.split('\n')) {
+    // A top-level key (no indentation) starts a new section: only the
+    // `main:` list is the main navigation. `utility:` (Sitemap, RSS) is a
+    // SEPARATE list — conflating it with main made the validator require
+    // utility links in footer/drawer surfaces that intentionally render
+    // only main items.
+    if (raw && /^\S/.test(raw)) { inMain = /^main:\s*$/.test(raw); cur = null; continue; }
+    if (!inMain) continue;
     let m = /^ {2}- label:\s*(.+?)\s*$/.exec(raw);
     if (m) { cur = { label: unq(m[1]) }; out.push(cur); continue; }
     m = /^ {4}url:\s*(.+?)\s*$/.exec(raw);

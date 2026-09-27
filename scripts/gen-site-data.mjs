@@ -13,19 +13,20 @@ const ROOT = findRoot(process.argv, path.resolve(path.dirname(fileURLToPath(impo
 const POSTS = path.join(ROOT, '_posts');
 
 function card(p) {
+  const d = p.fm.data || {};
   return {
     url: postUrl(p.file),
-    title: p.fm.title || '',
-    description: (p.fm.description || '').replace(/\s+/g, ' ').trim().slice(0, 160),
-    cluster: p.fm.cluster || '',
-    date: (p.fm.date || '').toString().slice(0, 10)
+    title: d.title || '',
+    description: (d.description || '').replace(/\s+/g, ' ').trim().slice(0, 160),
+    cluster: d.cluster || '',
+    date: (d.date || p.date || '').toString().slice(0, 10)
   };
 }
 
 const posts = fs.readdirSync(POSTS).filter(f => f.endsWith('.md')).map(f => {
   const fm = parseFM(fs.readFileSync(path.join(POSTS, f), 'utf8'));
   return { file: f, fm, slug: postSlug(f), date: postDate(f),
-    parent: fm.parent_category || '', child: fm.child_category || '', cluster: fm.cluster || '' };
+    parent: fm.data.parent_category || '', child: fm.data.child_category || '', cluster: fm.data.cluster || '' };
 });
 
 // taxonomy fallback for legacy posts without parent/child front matter
@@ -42,7 +43,8 @@ const related = {};
 for (const p of posts) {
   const pool = posts.filter(x => x.slug !== p.slug);
   const inChild = new Set(pool.filter(x => x.parent && x.parent === p.parent && x.child === p.child && x.child).map(x => x.slug));
-  const inParent = new Set(pool.filter(x => x.parent && x.parent === p.parent && !inChild.has(x.slug)).map(x => x.slug));
+  const inParent = new Set(pool.filter(x => x.parent && x.pa
+rent === p.parent && !inChild.has(x.slug)).map(x => x.slug));
   const picked = [];
   for (const cand of pool) {
     if (picked.length >= 3) break;

@@ -21,7 +21,7 @@ verification_status: verified
 
 ## Thân bài
 
-Cổng xác minh đọc các trường đã khai báo và kiểm tra tính nhất quán: ngày kiểm tra nguồn phải là ngày lịch hợp lệ trong quá khứ, ngày tái kiểm tra phải là ngày lịch hợp lệ sau ngày kiểm tra và chưa quá hạn, trạng thái xác thực phải là verified, và không được tồn tại cờ cần kiểm tra pháp lý còn treo. Bài này thỏa toàn bộ các điều kiện đó nên cổng phải cho đi qua. Phương thức đếm từ của validator áp dụng cho thân bài: mỗi token chứa ký tự chữ hoặc số tính một âm tiết, và thân phải vượt ngưỡng ba trăm âm tiết để không bị coi là nội dung mỏng. Bài có liên kết nội bộ hợp lệ tới [danh mục mẫu](/danh-muc/sua-chu/) và [trang chủ](/) để trình kiểm tra liên kết xác nhận đích tồn tại trong cây fixture.
+Cổng xác minh đọc các trường đã khai báo và kiểm tra tính nhất quán: ngày kiểm tra nguồn phải là ngày lịch hợp lệ trong quá khứ, ngày tái kiểm tra phải là ngày lịch hợp lệ sau ngày kiểm tra và chưa quá hạn, trạng thái xác thực phải là verified, và không được tồn tại cờ cần kiểm tra pháp lý còn treo. Bài này thỏa toàn bộ các điều kiện đó nên cổng phải cho đi qua. Phương thức đếm từ của validator áp dụng cho thân bài: mỗi token chứa ký tự chữ hoặc số tính một âm tiết, và thân phải vượt ngưỡng ba trăm âm tiết để không bị coi là nội dung mỏng. Bài có liên kết nội bộ hợp lệ tới [danh mục mẫu](/danh-muc/sua-chua/) và [trang chủ](/) để trình kiểm tra liên kết xác nhận đích tồn tại trong cây fixture.
 
 Fixture này bảo vệ hồi quy tính đúng đắn của cổng: một bản ghi pháp lý đầy đủ, nhất quán và đã kiểm tra nguồn phải được chấp nhận; mọi biến thể thiếu trường, mâu thuẫn hoặc chưa xác thực phải bị chặn ở cây xấu. Không có trường hợp nào được phép đi qua vì cổng bị nới lỏng.
 

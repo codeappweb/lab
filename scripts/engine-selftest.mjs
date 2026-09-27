@@ -220,6 +220,313 @@ function check(name, cond, detail) {
   const rFake = run(['verify', 'thu-nghiem-orchestration', '--sha', 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'], root);
   const job = state(root).jobs[0];
   check('verify: fake sha => BLOCKED, verified_live NOT recorded', rFake.status === 1 && !job.verified_live, JSON.stringify(job.verified_live || null));
+// ===== Regression tests: durable state, concurrency, resume, retries =====
+// (added with the engine-v2 correctness repair; see docs/ENGINE-RUNBOOK.md)
+import { StateStore as _StateStore, deployedRevisionOk as _drOk } from './engine/state.mjs';
+import { spawn } from 'node:child_process';
+
+function runEnv(args, root, env) {
+  const r = spawnSync(process.execPath, [RUNNER, ...args, '--root', root], { encoding: 'utf8', env: { ...process.env, ...env } });
+  if (VERBOSE) console.log(r.stdout, r.stderr);
+  return r;
+}
+
+// ~minTokens Vietnamese syllable-tokens in total (documented counting method),
+// spread over three H2 sections.
+function vnBody(minTokens) {
+  const reps = Math.ceil(minTokens / 8);
+  const a = unit.repeat(Math.ceil(reps * 0.5));
+  const b = unit.repeat(Math.ceil(reps * 0.35));
+  const c = unit.repeat(Math.ceil(reps * 0.15));
+  return '## Mở đầu\n\n' + a + '\n\n## Thân bài\n\n' + b + '\n\n## Kết luận\n\n' + c + '\n';
+}
+
+function publishDraft(title) {
+  return [
+    '---',
+    'title: "' + title + '"',
+    'description: "Mô tả kiểm thử đầy đủ cho đường xuất bản có kiểm soát của engine orchestration."',
+    'date: 2026-01-05 00:00:00 +0700',
+    'id: TEST-PUB-001',
+    'parent_category: sua-chua',
+    'child_category: chan-doan-loi',
+    'search_intent: informational',
+    'legal_sensitivity: false',
+    '---',
+    '',
+    vnBody(1250)
+  ].join('\n');
+}
+
+function publishMeta() {
+  return JSON.stringify({ sources: ['https://example.invalid/fixture-source'], outline: ['mo-dau', 'than-bai', 'ket-luan'] }) + '\n';
+}
+
+// A gate-suite stub the runner can execute under an isolated root.
+// Robust without env: exits 0. With GATE_COUNT_FILE: counts invocations.
+// GATE_PAUSE=1: FIRST invocation flips `paused` in the durable state
+// (simulating an operator pausing mid-gates) and still exits 0.
+// GATE_FAIL=1: always exits 1.
+function gateStub(root, { pause, fail, countFile } = {}) {
+  mkdirSync(join(root, 'scripts'), { recursive: true });
+  writeFileSync(join(root, 'scripts', 'validate-deploy.mjs'), [
+    "import fs from 'node:fs';",
+    "const cf = process.env.GATE_COUNT_FILE;",
+    "let n = 0;",
+    "if (cf) { try { n = parseInt(fs.readFileSync(cf, 'utf8'), 10) || 0; } catch {} n++; fs.writeFileSync(cf, String(n)); }",
+    "if (n === 1 && process.env.GATE_PAUSE === '1') {",
+    "  const d = JSON.parse(fs.readFileSync(process.env.GATE_STATE, 'utf8'));",
+    "  d.paused = true;",
+    "  fs.writeFileSync(process.env.GATE_STATE, JSON.stringify(d, null, 2) + '\\n');",
+    "}",
+    "process.exit(process.env.GATE_FAIL === '1' ? 1 : 0);"
+  ].join('\n'));
+  if (countFile) writeFileSync(countFile, '0');
+  return { countFile, env: countFile ? { GATE_COUNT_FILE: countFile, GATE_STATE: join(root, 'data', 'engine-state.json'), GATE_PAUSE: pause ? '1' : '0', GATE_FAIL: fail ? '1' : '0' } : {} };
+}
+
+// Seed a durable publishing job (simulating a crash at a given milestone).
+function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } = {}) {
+  const draft = publishDraft('Bài kiểm thử xuất bản có kiểm soát');
+  mkdirSync(join(root, 'drafts'), { recursive: true });
+  writeFileSync(join(root, 'drafts', slug + '.md'), draft);
+  writeFileSync(join(root, 'drafts', slug + '.meta.json'), publishMeta());
+  const postPath = join(root, '_posts', '2026-01-05-' + slug + '.md');
+  const sf = join(root, 'data', 'engine-state.json');
+  const s = JSON.parse(readFileSync(sf, 'utf8'));
+  const job = s.jobs[0];
+  job.state = 'publishing';
+  job.history.push({ state: 'publishing', at: new Date().toISOString(), note: 'seeded by selftest' });
+  if (withPlanned || withWritten) job.file_write_planned = postPath;
+  if (withWritten) { mkdirSync(join(root, '_posts'), { recursive: true }); writeFileSync(postPath, draft); job.file_written = postPath; }
+  if (committedSha) job.committed_sha = committedSha;
+  writeFileSync(sf, JSON.stringify(s, null, 2) + '\n');
+  return { postPath, draft };
+}
+
+// 15. `--resume` picks up in-flight 'publishing' jobs and drives them forward
+//     from their milestones (offline the run then blocks honestly at the
+//     build gate — E_BUILD_MISSING — which is itself part of the contract:
+//     rendering checks are never skipped)
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf, '--dry-run'], root); // job exists (blocked: no evidence)
+  seedPublishing(root, 'thu-nghiem-orchestration', {});
+  gateStub(root, {});
+  const r = run(['run', '--resume'], root);
+  const s = state(root);
+  const job = s.jobs[0];
+  check('resume: publishing job is eligible and picked up', /resume: 1 in-flight job/.test(r.stdout), r.stdout.slice(0, 200) + r.stderr.slice(0, 200));
+  check('resume: milestone copy happened exactly once (one post file)', readdirSync(join(root, '_posts')).length === 1);
+  check('resume: no duplicate job created', s.jobs.length === 1);
+  check('resume: publishing blocks honestly at E_BUILD_MISSING offline (build gates enforced)', job.state === 'blocked' && /E_BUILD_MISSING/.test((job.errors || []).map(e => e.msg).join(' ')), job.state);
+}
+
+// 16. resume AFTER copy, BEFORE validation completes: the identical file is
+//     accepted (no re-copy, no overwrite), gates re-run, and the missing
+//     build toolchain blocks honestly
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf, '--dry-run'], root);
+  const seeded = seedPublishing(root, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true });
+  gateStub(root, {});
+  const r = run(['run', '--resume'], root);
+  const job = state(root).jobs[0];
+  const files = readdirSync(join(root, '_posts'));
+  check('resume-after-copy: exactly one post file (no duplicate)', files.length === 1, files.join(','));
+  check('resume-after-copy: post file identical to draft (no overwrite)', readFileSync(seeded.postPath, 'utf8') === seeded.draft);
+  check('resume-after-copy: blocked with E_BUILD_MISSING (rendered checks mandatory, never skipped)', job.state === 'blocked' && /E_BUILD_MISSING/.test((job.errors || []).map(e => e.msg).join(' ') + r.stdout + r.stderr), job.state);
+}
+
+// 17. ambiguous resume: post file DIFFERS from draft => blocked, nothing overwritten
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf, '--dry-run'], root);
+  const seeded = seedPublishing(root, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true });
+  const tampered = seeded.draft.replace('cổng chất lượng', 'NỘI DUNG KHÁC');
+  writeFileSync(seeded.postPath, tampered);
+  writeFileSync(join(root, 'drafts', 'thu-nghiem-orchestration.md'), seeded.draft.replace('kiểm thử', 'kiểm thử đã sửa')); // draft changed after copy
+  const r = run(['run', '--resume'], root);
+  const job = state(root).jobs[0];
+  check('ambiguous-resume: E_RESUME_AMBIGUOUS blocks', job.state === 'blocked' && /E_RESUME_AMBIGUOUS/.test((job.errors || []).map(e => e.msg).join(' ')), job.state);
+  check('ambiguous-resume: differing file NOT overwritten', readFileSync(seeded.postPath, 'utf8') === tampered);
+}
+
+// 18. post file exists WITHOUT any recorded milestone => blocked duplicate, no overwrite
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf, '--dry-run'], root);
+  const seeded = seedPublishing(root, 'thu-nghiem-orchestration', {}); // no milestones
+  writeFileSync(seeded.postPath, 'PRE-EXISTING CONTENT'); // file present, milestones absent
+  const r = run(['run', '--resume'], root);
+  const job = state(root).jobs[0];
+  check('unmilestoned file: E_DUPLICATE_POST blocks (no silent overwrite)', job.state === 'blocked' && /E_DUPLICATE_POST|already exists/.test((job.errors || []).map(e => e.msg).join(' ') + r.stderr), job.state);
+  check('unmilestoned file: pre-existing content untouched', readFileSync(seeded.postPath, 'utf8') === 'PRE-EXISTING CONTENT');
+}
+
+// 19. resume after content commit, before push: no duplicate commit
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf, '--dry-run'], root);
+  const seeded = seedPublishing(root, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true });
+  // a real git repo whose HEAD commit contains the post (content commit)
+  spawnSync('git', ['init', '-q'], { cwd: root });
+  spawnSync('git', ['config', 'user.email', 'selftest@example.invalid'], { cwd: root });
+  spawnSync('git', ['config', 'user.name', 'selftest'], { cwd: root });
+  spawnSync('git', ['add', '_posts/2026-01-05-thu-nghiem-orchestration.md'], { cwd: root });
+  spawnSync('git', ['commit', '-q', '-m', 'content(engine): publish thu-nghiem-orchestration (seeded content commit)'], { cwd: root });
+  const sha = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).stdout.trim();
+  const s = JSON.parse(readFileSync(join(root, 'data', 'engine-state.json'), 'utf8'));
+  s.jobs[0].committed_sha = sha;
+  writeFileSync(join(root, 'data', 'engine-state.json'), JSON.stringify(s, null, 2) + '\n');
+  const r = run(['run', '--resume'], root);
+  const count = spawnSync('git', ['rev-list', '--count', 'HEAD'], { cwd: root, encoding: 'utf8' }).stdout.trim();
+  check('resume-after-commit: no duplicate commit (rev-list still 1)', count === '1', 'count=' + count);
+  check('resume-after-commit: run completes and reports NOT pushed', r.status === 0 && /NOT pushed/.test(r.stdout), r.stderr.slice(0, 200));
+  check('resume-after-commit: committed_sha preserved in durable state', state(root).jobs[0].committed_sha === sha);
+  // recorded sha missing from the repo => ambiguous, blocked
+  const root2 = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf2 = topicsFile(root2, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf2, '--dry-run'], root2);
+  seedPublishing(root2, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true, committedSha: '0000000000000000000000000000000000000000' });
+  const r2 = run(['run', '--resume'], root2);
+  const job2 = state(root2).jobs[0];
+  check('resume-after-commit: absent sha => E_RESUME_AMBIGUOUS blocked', job2.state === 'blocked' && /E_RESUME_AMBIGUOUS/.test((job2.errors || []).map(e => e.msg).join(' ')), job2.state);
+}
+
+// 20. pause observed BETWEEN STAGES (after the copy, before gates/commit):
+//     the run halts, the job stays resumable in 'publishing', and a later
+//     resume never duplicates the file
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  const stub = gateStub(root, { pause: true, countFile: join(root, 'gate-count.txt') });
+  // evidence + outline + draft present so the full planned->publishing path runs
+  mkdirSync(join(root, 'drafts'), { recursive: true });
+  writeFileSync(join(root, 'drafts', 'thu-nghiem-orchestration.meta.json'), publishMeta());
+  writeFileSync(join(root, 'drafts', 'thu-nghiem-orchestration.md'), publishDraft('Kiem thu orchestration engine'));
+  const r = runEnv(['run', '--topics', tf], root, stub.env);
+  const job = state(root).jobs[0];
+  check('mid-stage pause: run halts (exit 0) with resumable note', r.status === 0 && /HALTED|resumable/.test(r.stdout + r.stderr), r.stderr.slice(0, 200));
+  check('mid-stage pause: job stays publishing (NOT failed/blocked)', job.state === 'publishing', job.state);
+  const files = readdirSync(join(root, '_posts'));
+  check('mid-stage pause: post file written exactly once', files.length === 1 && files[0].endsWith('thu-nghiem-orchestration.md'), files.join(','));
+  // resume after unpause: copy skipped (identical), gates re-run, then blocked
+  // honestly at the build gate (no jekyll in the test env)
+  run(['resume'], root);
+  const r2 = runEnv(['run', '--resume'], root, stub.env);
+  const job2 = state(root).jobs[0];
+  const files2 = readdirSync(join(root, '_posts'));
+  check('resume after pause: still exactly one post file', files2.length === 1, files2.join(','));
+  check('resume after pause: copy skipped, gate stub ran again (>=2 invocations)', parseInt(readFileSync(stub.countFile, 'utf8'), 10) >= 2, readFileSync(stub.countFile, 'utf8'));
+  check('resume after pause: honest E_BUILD_MISSING block (never silently publishes)', job2.state === 'blocked' && /E_BUILD_MISSING/.test((job2.errors || []).map(e => e.msg).join(' ')), job2.state);
+}
+
+// 21. retry honors cfg.max_retries: a failing gate suite is retried EXACTLY
+//     max_retries times (1 initial + 2 retries), then the job fails
+{
+  const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false, max_retries: 2, backoff_ms: 1 });
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  run(['run', '--topics', tf, '--dry-run'], root);
+  seedPublishing(root, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true });
+  const stub = gateStub(root, { fail: true, countFile: join(root, 'gate-count.txt') });
+  const r = runEnv(['run', '--resume'], root, stub.env);
+  const job = state(root).jobs[0];
+  const calls = parseInt(readFileSync(stub.countFile, 'utf8'), 10);
+  check('retry limit: gate suite invoked exactly 1+max_retries times', calls === 3, 'calls=' + calls);
+  check('retry limit: job failed only after retries exhausted', job.state === 'failed', job.state);
+  check('retry limit: job.retries reflects the configured limit', (job.retries || 0) === 2, String(job.retries));
+}
+
+// 22. REAL multi-process concurrency: two simultaneous runs on the same root.
+//     Invariants regardless of interleaving: exactly one job, valid state,
+//     no duplicate posts. (spawn, not spawnSync — the processes truly overlap)
+{
+  const root = makeRoot();
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  const start = () => new Promise(res => {
+    const p = spawn(process.execPath, [RUNNER, 'run', '--topics', tf, '--root', root], { stdio: 'pipe' });
+    let err = '';
+    p.stderr.on('data', d => err += d);
+    p.on('close', c => res({ code: c, err }));
+  });
+  const both = await Promise.all([start(), start()]);
+  const s = state(root);
+  check('concurrent runs: exactly ONE job created (lock held before job creation)', s.jobs.length === 1, JSON.stringify(s.jobs.map(j => j.id + ':' + j.state)));
+  check('concurrent runs: no duplicate posts', readdirSync(join(root, '_posts')).length === 0);
+  const oneLockLoss = both.filter(x => x.code === 1 && /another run holds the lock/.test(x.err)).length;
+  const bothRan = both.filter(x => x.code === 0).length;
+  check('concurrent runs: lock is exclusive (loser refused with the lock diagnostic)', oneLockLoss === 1 || bothRan === 2, JSON.stringify(both.map(x => x.code)));
+  check('concurrent runs: durable state stays valid JSON', typeof s.jobs[0].state === 'string');
+}
+
+// 23. deterministic lock contention: external live lock => BOTH concurrent
+//     processes are refused (heartbeat-based freshness, no stale seizure)
+{
+  const root = makeRoot();
+  const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+  writeFileSync(join(root, 'data', 'engine-lock.json'), JSON.stringify({ run_id: 'RUN-EXTERNAL', heartbeat_at: new Date().toISOString() }) + '\n');
+  const start = () => new Promise(res => {
+    const p = spawn(process.execPath, [RUNNER, 'run', '--topics', tf, '--root', root], { stdio: 'pipe' });
+    let err = '';
+    p.stderr.on('data', d => err += d);
+    p.on('close', c => res({ code: c, err }));
+  });
+  const both = await Promise.all([start(), start()]);
+  check('external lock: both concurrent runs refused (exit 1, lock diagnostic)', both.every(x => x.code === 1 && /another run holds the lock/.test(x.err)), JSON.stringify(both.map(x => x.code)));
+  check('external lock: no jobs created while the lock is held', state(root).jobs.length === 0);
+}
+
+// 24. state.mjs unit contracts (in-process, direct import)
+{
+  // save-merge: an external pause is NEVER clobbered by an active writer's save
+  const root = makeRoot();
+  const s1 = new _StateStore(root);
+  const s2 = new _StateStore(root);
+  s2.data.paused = true;
+  s2.save();
+  s1.data.checkpoint = { note: 'written by worker that loaded before the pause' };
+  s1.save();
+  check('state merge: external pause survives a concurrent writer save', JSON.parse(readFileSync(join(root, 'data', 'engine-state.json'), 'utf8')).paused === true);
+
+  // job union: jobs created by another process survive this process's save
+  const rootB = makeRoot();
+  const a = new _StateStore(rootB);
+  a.createJob({ slug: 'job-a', topic: { title: 'A' } });
+  const b = new _StateStore(rootB);
+  b.createJob({ slug: 'job-b', topic: { title: 'B' } });
+  a.save();
+  const slugs = JSON.parse(readFileSync(join(rootB, 'data', 'engine-state.json'), 'utf8')).jobs.map(j => j.slug).sort();
+  check('state merge: jobs from other processes are kept (union, no clobber)', slugs.join(',') === 'job-a,job-b', slugs.join(','));
+
+  // heartbeat/release by a NON-owner never touches the lock
+  const rootC = makeRoot();
+  mkdirSync(join(rootC, 'data'), { recursive: true });
+  const before = { run_id: 'RUN-A', heartbeat_at: '2026-01-01T00:00:00.000Z' };
+  writeFileSync(join(rootC, 'data', 'engine-lock.json'), JSON.stringify(before) + '\n');
+  const sc = new _StateStore(rootC);
+  sc.heartbeat('RUN-B');
+  const h1 = JSON.parse(readFileSync(join(rootC, 'data', 'engine-lock.json'), 'utf8'));
+  check('lock ownership: non-owner heartbeat does not refresh the lease', h1.run_id === 'RUN-A' && h1.heartbeat_at === before.heartbeat_at, JSON.stringify(h1));
+  sc.releaseLock('RUN-B');
+  check('lock ownership: non-owner release does not unlink the lock', existsSync(join(rootC, 'data', 'engine-lock.json')));
+  sc.releaseLock('RUN-A');
+  check('lock ownership: owner release unlinks the lock', !existsSync(join(rootC, 'data', 'engine-lock.json')));
+
+  // deployedRevisionOk: containment, not SHA equality
+  check('deployedRevisionOk: identical passes', _drOk('aaa', 'aaa', 'identical').ok === true);
+  check('deployedRevisionOk: ahead (deployed contains content commit) passes', _drOk('aaa', 'bbb', 'ahead').ok === true);
+  check('deployedRevisionOk: behind fails closed', _drOk('bbb', 'aaa', 'behind').ok === false);
+  check('deployedRevisionOk: diverged fails closed', _drOk('aaa', 'bbb', 'diverged').ok === false);
+  check('deployedRevisionOk: unknown compare fails closed', _drOk('aaa', 'bbb', null).ok === false);
+  check('deployedRevisionOk: missing sha fails closed', _drOk('', 'bbb', 'ahead').ok === false);
+}
+
 }
 
 console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');

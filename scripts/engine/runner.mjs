@@ -7,10 +7,14 @@
 //                    publishing for real)
 //     -> ready (publication eligibility established ONLY after validation
 //               actually succeeds)
-//     -> publishing (file moved into _posts, gates re-run, commit created)
+//     -> publishing (milestone-driven, resumable without duplicates:
+//                    file_write_planned -> file_written -> gates+build green
+//                    -> committed_sha [content commit, post file ONLY]
+//                    -> pushed -> verify)
 //     -> published (ONLY after live verification: expected URL responds 200
-//                   with the expected content identity AND the deployed Pages
-//                   revision matches the expected commit sha)
+//                   with the expected content identity AND the deployed
+//                   Pages revision CONTAINS the content commit — compare
+//                   status identical/ahead, never fragile SHA equality)
 //   | blocked | failed at every stage.
 //
 // Commands (all support --root <dir> for isolated test roots):
@@ -27,13 +31,25 @@
 // Safety: `run` without --dry-run REFUSES unless generation_enabled=true in
 // data/engine-config.json. The mock provider refuses to publish at all.
 // `verify` never trusts flags: it checks the live URL, the content identity
-// and the deployed revision before recording verified_live.
+// and the deployed revision (compare API) before recording verified_live,
+// and it NEVER commits — so no commit/deploy/verify loop can occur.
+//
+// Concurrency & durability contract:
+//   - the execution lock is acquired BEFORE any job is created or mutated;
+//   - the lock is released in a finally block on every path (including
+//     "no eligible work" and validation refusals);
+//   - pause/stop are re-read from durable state before every job, between
+//     stages, and immediately before irreversible publication operations;
+//   - an interrupted publishing job resumes from its recorded milestones
+//     without duplicate posts, duplicate commits or silent overwrites;
+//     ambiguous evidence (file differs from draft, recorded sha absent from
+//     the repository) is BLOCKED with actionable diagnostics.
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { loadConfig } from './config.mjs';
-import { StateStore, freshState } from './state.mjs';
+import { StateStore, freshState, deployedRevisionOk } from './state.mjs';
 import * as provider from './provider.mjs';
 import { expandCandidates } from './topics.mjs';
 import { parseFM } from '../lib/lab.mjs';
@@ -41,6 +57,10 @@ import { parseFM } from '../lib/lab.mjs';
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const ROOT = rootFromArgs(process.argv);
 const SITEDOMAIN = 'https://codeappweb.github.io/lab';
+// Error codes that BLOCK a job (no retry): they are deterministic failures.
+const BLOCKING_CODES = ['E_NO_EVIDENCE', 'E_NO_DRAFT', 'E_NO_OUTLINE', 'E_PROVIDER_UNAVAILABLE', 'E_GATE_MISSING', 'E_DRAFT_INVALID', 'E_RESUME_AMBIGUOUS', 'E_DUPLICATE_POST', 'E_COMMIT_FAILED', 'E_BUILD_MISSING'];
+// Codes that halt the run but leave the job resumable (never 'failed').
+const HALT_CODES = ['E_RUN_HALTED'];
 
 function rootFromArgs(argv) {
   const i = argv.indexOf('--root');
@@ -113,6 +133,7 @@ function validateDraft(draftText, job, cfg, mode, dryRun) {
   return { errors, fm };
 }
 
+// Content gate suite (scripts/validate-deploy.mjs) over the current tree.
 function runGateSuite(root) {
   const gate = path.join(root, 'scripts', 'validate-deploy.mjs');
   if (!fs.existsSync(gate)) {
@@ -123,6 +144,52 @@ function runGateSuite(root) {
   const r = spawnSync(process.execPath, [gate, '--root', root], { stdio: 'inherit', cwd: root });
   if (r.status !== 0) {
     const e = new Error('validation gates FAILED (exit ' + r.status + ') — publication blocked');
+    e.code = 'E_GATES_FAILED';
+    throw e;
+  }
+}
+
+// Build gates: deterministic regeneration + real Jekyll build + rendered-output
+// validation. Every real publication path MUST pass these; a failed build or
+// rendered-link/sitemap check prevents publication. When the toolchain is
+// unavailable the publication is BLOCKED (E_BUILD_MISSING) — never skipped.
+function runBuildGates(root) {
+  const gen = path.join(root, 'scripts', 'gen-site-data.mjs');
+  if (fs.existsSync(gen)) {
+    const g = spawnSync(process.execPath, [gen], { stdio: 'inherit', cwd: root });
+    if (g.status !== 0) {
+      const e = new Error('deterministic regeneration (gen-site-data) FAILED (exit ' + g.status + ') — publication blocked');
+      e.code = 'E_GATES_FAILED';
+      throw e;
+    }
+  }
+  let buildOk = false, buildErr = null;
+  try {
+    const b = spawnSync('bundle', ['exec', 'jekyll', 'build'], { cwd: root, encoding: 'utf8' });
+    if (b.status === 0) buildOk = true;
+    else buildErr = (b.stderr || b.stdout || '').slice(0, 300);
+  } catch (e) { buildErr = e.message; }
+  if (!buildOk) {
+    try {
+      const b2 = spawnSync('jekyll', ['build'], { cwd: root, encoding: 'utf8' });
+      if (b2.status === 0) buildOk = true;
+      else buildErr = buildErr || (b2.stderr || b2.stdout || '').slice(0, 300);
+    } catch (e) { buildErr = buildErr || e.message; }
+  }
+  if (!buildOk) {
+    const e = new Error('Jekyll build unavailable or failed (' + (buildErr || 'unknown') + ') — publication BLOCKED. Install the toolchain (bundle install) or fix the build; rendering checks are never skipped.');
+    e.code = 'E_BUILD_MISSING';
+    throw e;
+  }
+  const vb = path.join(root, 'scripts', 'validate-built.mjs');
+  if (!fs.existsSync(vb)) {
+    const e = new Error('rendered-output validator scripts/validate-built.mjs not found under ' + root + ' — publication BLOCKED (rendered checks are mandatory on every publication path)');
+    e.code = 'E_BUILD_MISSING';
+    throw e;
+  }
+  const r = spawnSync(process.execPath, [vb, '--site', path.join(root, '_site')], { stdio: 'inherit', cwd: root });
+  if (r.status !== 0) {
+    const e = new Error('rendered-output validation FAILED (exit ' + r.status + ') — rendered links/sitemap must be valid before publication');
     e.code = 'E_GATES_FAILED';
     throw e;
   }
@@ -225,94 +292,119 @@ switch (cmd) {
     }
     const wantPush = args.includes('--push');
 
-    // Build the work list ----------------------------------------------------
-    const jobs = [];
-    const rejected = [];
-
-    if (args.includes('--resume')) {
-      store.reload();
-      for (const j of store.data.jobs) {
-        if (['planned','researching','drafting','validating','ready'].includes(j.state)) jobs.push(j.id);
-      }
-      log('resume: ' + jobs.length + ' in-flight job(s) eligible from durable state');
-    }
-
-    const tIdx = args.indexOf('--topics');
-    if (tIdx >= 0 && args[tIdx + 1]) {
-      const topicsFile = path.resolve(args[tIdx + 1]);
-      const topics = JSON.parse(fs.readFileSync(topicsFile, 'utf8'));
-      const list = Array.isArray(topics) ? topics : topics.topics || topics.candidates || [];
-      const manifest = manifestEntries(ROOT);
-      const approved = new Map(manifest.filter(e => e.status === 'planned').map(e => [e.slug || e.id, e]));
-      for (const t of list) {
-        const slug = t.slug;
-        if (!slug) { rejected.push({ slug: null, reason: 'topic without slug' }); continue; }
-        if (!approved.has(slug)) {
-          rejected.push({ slug, reason: 'NOT APPROVED: slug absent from data/article-manifest.jsonl with status=planned. Approve the topic first (docs/ENGINE-RUNBOOK.md).' });
-          continue;
-        }
-        let job = store.jobBySlug(slug);
-        if (!job) job = store.createJob({ slug, topic: t });
-        else if (job.state === 'published') { rejected.push({ slug, reason: 'job already published' }); continue; }
-        if (!jobs.includes(job.id)) jobs.push(job.id);
-      }
-    }
-
-    for (const r of rejected) console.error('[engine] REJECTED: ' + (r.slug || '<no slug>') + ' — ' + r.reason);
-    if (!jobs.length) {
-      fail('no eligible work. Use `run --topics <approved-topics.json>` and/or `run --resume` (docs/ENGINE-RUNBOOK.md)');
-    }
-
+    // CONCURRENCY CONTRACT: acquire the execution lock BEFORE creating or
+    // mutating any job. All failure paths after this point flow through the
+    // finally block, so the lock can never leak (note: process.exit would NOT
+    // run finally — nothing below may call fail()/exit inside the try).
     const runId = 'RUN-' + new Date().toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
     if (!store.acquireLock(runId, cfg)) fail('another run holds the lock (concurrency protection)');
     const started = Date.now();
     let produced = 0;
+    let exitAfterFinally = 0;   // 0 = success path; 1 = no eligible work
+    let haltNote = null;
+    const rejected = [];
+    const jobs = [];
     try {
-      for (const jobId of jobs) {
-        // Re-read DURABLE state every iteration: pause/stop issued by another
-        // process (or before a crash) must be observed here, not stale memory.
-        store.reload();
-        if (store.isStopped()) { log('emergency stop observed mid-run; checkpoint saved'); break; }
-        if (store.data.paused) { log('paused; resumable via `run --resume`'); break; }
-        if (produced >= cfg.per_run_article_limit) { log('per-run article limit reached'); break; }
-        if ((Date.now() - started) / 1000 > cfg.per_run_seconds_limit) { log('per-run time limit reached'); break; }
-        store.heartbeat(runId);
+      store.reload();
+      if (store.isStopped()) { log('emergency stop observed before work; lock released'); haltNote = 'stopped'; }
+      else if (store.data.paused) { log('paused before work; resumable via `run --resume`'); haltNote = 'paused'; }
 
-        let job = store.jobById(jobId);
-        if (!job) { log('job ' + jobId + ' disappeared from state; skipping'); continue; }
-        if (listPosts(ROOT).length >= cfg.target_total) { log('hard stop: target_total ' + cfg.target_total + ' reached'); break; }
-        const alreadyPublished = listPosts(ROOT).some(f => f.endsWith('-' + job.slug + '.md'));
-
-        try {
-          processJob(job, { dryRun, wantPush, alreadyPublished });
-          produced++;
-        } catch (e) {
-          store.reload();
-          job = store.jobById(jobId);
-          store.recordError(jobId, e.message);
-          if (['E_NO_EVIDENCE','E_NO_DRAFT','E_NO_OUTLINE','E_PROVIDER_UNAVAILABLE','E_GATE_MISSING'].includes(e.code)) {
-            if (job.state !== 'blocked' && job.state !== 'failed') store.transition(jobId, 'blocked', e.code + ': ' + e.message);
-            log(job.slug + ': BLOCKED — ' + e.message);
-          } else if ((job.retries || 0) < cfg.max_retries) {
-            job.retries = (job.retries || 0) + 1;
-            store.save();
-            log(job.slug + ': transient failure (attempt ' + job.retries + '/' + cfg.max_retries + '): ' + e.message);
-            await sleep(Math.min(cfg.backoff_ms * job.retries, 30000));
-            // Bounded retry that actually retries the work.
-            try {
-              processJob(store.jobById(jobId), { dryRun, wantPush, alreadyPublished });
-              produced++;
-            } catch (e2) {
-              store.reload();
-              store.recordError(jobId, e2.message);
-              const j2 = store.jobById(jobId);
-              if (j2.state !== 'failed' && j2.state !== 'blocked') store.transition(jobId, 'failed', 'retries exhausted: ' + e2.message);
-              log(j2.slug + ': FAILED after ' + j2.retries + ' retries — ' + e2.message);
-            }
-          } else {
-            if (job.state !== 'failed' && job.state !== 'blocked') store.transition(jobId, 'failed', 'retries exhausted: ' + e.message);
-            log(job.slug + ': FAILED — ' + e.message);
+      // Build the work list AFTER the lock is held.
+      if (!haltNote) {
+        if (args.includes('--resume')) {
+          // --resume includes EVERY resumable state, including in-flight
+          // 'publishing' jobs: an interrupted publication is recovered from
+          // its recorded milestones without duplicates.
+          for (const j of store.data.jobs) {
+            if (['planned', 'researching', 'drafting', 'validating', 'ready', 'publishing'].includes(j.state)) jobs.push(j.id);
           }
+          log('resume: ' + jobs.length + ' in-flight job(s) eligible from durable state');
+        }
+
+        const tIdx = args.indexOf('--topics');
+        if (tIdx >= 0 && args[tIdx + 1]) {
+          const topicsFile = path.resolve(args[tIdx + 1]);
+          const topics = JSON.parse(fs.readFileSync(topicsFile, 'utf8'));
+          const list = Array.isArray(topics) ? topics : topics.topics || topics.candidates || [];
+          const manifest = manifestEntries(ROOT);
+          const approved = new Map(manifest.filter(e => e.status === 'planned').map(e => [e.slug || e.id, e]));
+          for (const t of list) {
+            const slug = t.slug;
+            if (!slug) { rejected.push({ slug: null, reason: 'topic without slug' }); continue; }
+            if (!approved.has(slug)) {
+              rejected.push({ slug, reason: 'NOT APPROVED: slug absent from data/article-manifest.jsonl with status=planned. Approve the topic first (docs/ENGINE-RUNBOOK.md).' });
+              continue;
+            }
+            let job = store.jobBySlug(slug);
+            if (!job) job = store.createJob({ slug, topic: t });
+            else if (job.state === 'published') { rejected.push({ slug, reason: 'job already published' }); continue; }
+            if (!jobs.includes(job.id)) jobs.push(job.id);
+          }
+        }
+
+        for (const r of rejected) console.error('[engine] REJECTED: ' + (r.slug || '<no slug>') + ' — ' + r.reason);
+        if (!jobs.length) {
+          log('no eligible work. Use `run --topics <approved-topics.json>` and/or `run --resume` (docs/ENGINE-RUNBOOK.md)');
+          exitAfterFinally = 1;
+        }
+
+        for (const jobId of jobs) {
+          // Re-read DURABLE state every iteration: pause/stop issued by another
+          // process (or before a crash) must be observed here, not stale memory.
+          store.reload();
+          if (store.isStopped()) { log('emergency stop observed mid-run; checkpoint saved'); break; }
+          if (store.data.paused) { log('paused; resumable via `run --resume`'); break; }
+          if (produced >= cfg.per_run_article_limit) { log('per-run article limit reached'); break; }
+          if ((Date.now() - started) / 1000 > cfg.per_run_seconds_limit) { log('per-run time limit reached'); break; }
+          store.heartbeat(runId);
+
+          let job = store.jobById(jobId);
+          if (!job) { log('job ' + jobId + ' disappeared from state; skipping'); continue; }
+          if (listPosts(ROOT).length >= cfg.target_total) { log('hard stop: target_total ' + cfg.target_total + ' reached'); break; }
+          const alreadyPublished = listPosts(ROOT).some(f => f.endsWith('-' + job.slug + '.md'));
+
+          // Retry loop that HONORS cfg.max_retries (the old code retried once
+          // inline regardless of the configured limit).
+          let attempt = 0;
+          for (;;) {
+            try {
+              processJob(job, { dryRun, wantPush, alreadyPublished });
+              produced++;
+              break;
+            } catch (e) {
+              store.reload();
+              job = store.jobById(jobId);
+              store.recordError(jobId, e.message);
+              if (HALT_CODES.includes(e.code)) {
+                // pause/stop observed between stages: leave the job in its
+                // current state (resumable, NOT failed) and stop the run.
+                haltNote = e.message;
+                log(job.slug + ': HALTED (resumable via `run --resume`) — ' + e.message);
+                break;
+              }
+              if (BLOCKING_CODES.includes(e.code)) {
+                if (job.state !== 'blocked' && job.state !== 'failed') store.transition(jobId, 'blocked', e.code + ': ' + e.message);
+                log(job.slug + ': BLOCKED — ' + e.message);
+                break;
+              }
+              // Transient: bounded retry with backoff.
+              if (attempt < cfg.max_retries) {
+                attempt++;
+                job.retries = (job.retries || 0) + 1;
+                store.save();
+                log(job.slug + ': transient failure (attempt ' + attempt + '/' + cfg.max_retries + '): ' + e.message);
+                await sleep(Math.min(cfg.backoff_ms * attempt, 30000));
+                store.reload();
+                const again = store.jobById(jobId);
+                if (!again || !['planned', 'researching', 'drafting', 'validating', 'ready', 'publishing'].includes(again.state)) break;
+                continue; // actually retry the work
+              }
+              if (job.state !== 'failed' && job.state !== 'blocked') store.transition(jobId, 'failed', 'retries exhausted: ' + e.message);
+              log(job.slug + ': FAILED after ' + cfg.max_retries + ' retries — ' + e.message);
+              break;
+            }
+          }
+          if (haltNote) break;
         }
       }
     } finally {
@@ -321,11 +413,13 @@ switch (cmd) {
         id: runId, started_at: new Date(started).toISOString(), ended_at: new Date().toISOString(),
         counts: { produced, considered: jobs.length, rejected: rejected.length },
         rejected: rejected.map(r => ({ slug: r.slug, reason: r.reason })),
-        status: dryRun ? 'dry-run' : 'run'
+        status: dryRun ? 'dry-run' : 'run',
+        halted: haltNote || null
       });
       store.releaseLock(runId);
       store.save();
     }
+    if (exitAfterFinally) process.exit(1);
     break;
   }
 
@@ -354,6 +448,9 @@ switch (cmd) {
     if (!job) fail('no job for ' + slug);
     if (!sha) fail('expected deployed revision (--sha <commit-sha>) is REQUIRED — verified_live is never recorded without it');
     if (job.committed_sha && job.committed_sha !== sha) fail('--sha ' + sha + ' does not match recorded committed_sha ' + job.committed_sha);
+    // The content commit is recorded FIRST (it is the durable fact); the live
+    // checks below decide whether verified_live may also be recorded. verify
+    // itself NEVER commits — there is no commit/deploy/verify loop.
     store.recordArtifact(job.id, 'committed_sha', sha);
 
     // 1. Live article check: the expected URL must respond 200 AND contain the
@@ -371,7 +468,11 @@ switch (cmd) {
       fail('BLOCKED: page at ' + expectedUrl + ' does not contain the expected article identity — verified_live NOT recorded');
     }
 
-    // 2. The deployed Pages revision must match the expected sha.
+    // 2. The deployed Pages revision must CONTAIN the expected content commit.
+    //    A file in _posts is NOT a verified published article, and later
+    //    state/report commits legitimately follow the content commit, so
+    //    SHA-equality is the wrong test: use the compare API (identical or
+    //    ahead = the deployed revision includes the content commit).
     let pages = null;
     try {
       pages = JSON.parse(execFileSync('gh', ['api', '/repos/codeappweb/lab/pages'], { encoding: 'utf8' }));
@@ -384,12 +485,23 @@ switch (cmd) {
       const builds = JSON.parse(execFileSync('gh', ['api', '/repos/codeappweb/lab/pages/builds?per_page=1'], { encoding: 'utf8' }));
       latestBuild = Array.isArray(builds) ? builds[0] : ((builds.builds || [])[0]);
     } catch { /* handled below */ }
-    if (!latestBuild || latestBuild.commit !== sha) {
-      fail('BLOCKED: latest Pages build commit is ' + (latestBuild && latestBuild.commit) + ', expected ' + sha + ' — the deployed revision does not contain this article; verified_live NOT recorded');
+    if (!latestBuild || !latestBuild.commit) {
+      fail('BLOCKED: latest Pages build commit unknown — verified_live NOT recorded');
     }
-    store.recordArtifact(job.id, 'verified_live', { at: new Date().toISOString(), url: expectedUrl, status, deployed_commit: latestBuild.commit });
-    if (job.state === 'publishing') store.transition(job.id, 'published', 'verified live at expected URL with matching deployed revision');
-    log(slug + ': verified live — URL 200, content identity matched, deployed revision == ' + sha);
+    let compareStatus = null;
+    try {
+      const cmp = JSON.parse(execFileSync('gh', ['api', '/repos/codeappweb/lab/compare/' + sha + '...' + latestBuild.commit], { encoding: 'utf8' }));
+      compareStatus = cmp.status; // identical | ahead | behind | diverged
+    } catch (e) {
+      fail('BLOCKED: cannot compare content commit with deployed revision via `gh api` (' + (e.message || e) + ') — verified_live NOT recorded');
+    }
+    const verdict = deployedRevisionOk(sha, latestBuild.commit, compareStatus);
+    if (!verdict.ok) {
+      fail('BLOCKED: ' + verdict.reason + ' (content ' + sha.slice(0, 8) + ', deployed ' + latestBuild.commit.slice(0, 8) + ') — verified_live NOT recorded');
+    }
+    store.recordArtifact(job.id, 'verified_live', { at: new Date().toISOString(), url: expectedUrl, status, deployed_commit: latestBuild.commit, compare: compareStatus });
+    if (job.state === 'publishing') store.transition(job.id, 'published', 'verified live at expected URL; deployed revision contains content commit (' + compareStatus + ')');
+    log(slug + ': verified live — URL 200, content identity matched, deployed revision contains ' + sha + ' (' + compareStatus + ')');
     break;
   }
 
@@ -403,7 +515,16 @@ switch (cmd) {
 function processJob(job, opts) {
   const { dryRun, wantPush, alreadyPublished } = opts;
 
-  if (alreadyPublished && ['planned','researching','drafting','validating','ready'].includes(job.state)) {
+  // pause/stop are re-checked between stages and BEFORE irreversible operations
+  // (copying into _posts, committing). A pause observed here halts the run and
+  // leaves the job in its current state — resumable, never failed.
+  function assertNotHalted() {
+    store.reload();
+    if (store.isStopped()) { const e = new Error('emergency stop observed between stages'); e.code = 'E_RUN_HALTED'; throw e; }
+    if (store.data.paused) { const e = new Error('pause observed between stages'); e.code = 'E_RUN_HALTED'; throw e; }
+  }
+
+  if (alreadyPublished && ['planned', 'researching', 'drafting', 'validating', 'ready'].includes(job.state)) {
     if (!job.file_written) store.recordArtifact(job.id, 'file_written', 'pre-existing post file detected');
     store.transition(job.id, 'blocked', 'post file already exists in _posts; refusing duplicate work');
     log(job.slug + ': BLOCKED — post file already exists in _posts');
@@ -454,7 +575,7 @@ function processJob(job, opts) {
 
   if (job.state === 'ready') {
     if (dryRun) {
-      log(job.slug + ': ready in DRY-RUN — nothing written to _posts; publishing requires a real run (generation_enabled=true) plus gates + commit + Pages build + live verify');
+      log(job.slug + ': ready in DRY-RUN — nothing written to _posts; publishing requires a real run (generation_enabled=true) plus gates + build + commit + Pages build + live verify');
       return store.jobById(job.id);
     }
     store.transition(job.id, 'publishing');
@@ -462,48 +583,126 @@ function processJob(job, opts) {
 
   if (job.state === 'publishing') {
     if (dryRun) return store.jobById(job.id);
+    // ---------------- MILESTONE-DRIVEN PUBLISHING (resumable) -----------
+    // Recorded milestones, in order:
+    //   file_write_planned : target path chosen (before any copy — survives a
+    //                        crash between planning and copying)
+    //   file_written       : post file copied into _posts and identical to draft
+    //   committed_sha      : CONTENT commit sha (post file ONLY — engine-state
+    //                        and reports are never part of the content commit,
+    //                        so the content revision of a publication stays
+    //                        addressable even after later state commits)
+    //   pushed             : content commit pushed to the remote branch
+    // Resume derives the next action from these + repository state; ambiguous
+    // evidence blocks with E_RESUME_AMBIGUOUS instead of guessing.
     const draftPath = path.join(ROOT, 'drafts', job.slug + '.md');
     if (!fs.existsSync(draftPath)) {
-      const e = new Error('draft missing at ' + draftPath + ' — cannot publish');
+      const e = new Error('draft missing at ' + draftPath + ' — cannot publish/resume');
       e.code = 'E_NO_DRAFT';
       throw e;
     }
-    const postPath = path.join(ROOT, '_posts', new Date().toISOString().slice(0, 10) + '-' + job.slug + '.md');
-    // Full repo gate suite over the current tree, then again with the new
-    // post included. Any failure blocks publishing and reverts the file.
-    runGateSuite(ROOT);
-    fs.mkdirSync(path.dirname(postPath), { recursive: true });
-    fs.copyFileSync(draftPath, postPath);
-    try {
-      runGateSuite(ROOT);
-    } catch (e) {
-      try { fs.unlinkSync(postPath); } catch { /* already gone */ }
+
+    // M1: choose the target path exactly once (stable across restarts, so a
+    // resume never writes a second, differently-dated copy).
+    if (!job.file_write_planned) {
+      const existing = listPosts(ROOT).filter(f => slugOf(f) === job.slug);
+      if (existing.length && !job.file_written) {
+        const e = new Error('post file for ' + job.slug + ' already exists in _posts without a recorded file_written milestone — refusing to overwrite or duplicate; inspect _posts and the job history, then record/rollback explicitly');
+        e.code = 'E_DUPLICATE_POST';
+        throw e;
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      store.recordArtifact(job.id, 'file_write_planned', path.join(ROOT, '_posts', today + '-' + job.slug + '.md'));
+    }
+    const postPath = job.file_write_planned;
+
+    // M2: copy the draft — exactly once, verified against the draft.
+    if (!job.file_written) {
+      assertNotHalted(); // pause/stop BEFORE the irreversible copy
+      if (fs.existsSync(postPath)) {
+        // File present without the milestone: only acceptable as a crash
+        // between copy and record, and ONLY when identical to the draft.
+        const same = fs.readFileSync(postPath, 'utf8') === fs.readFileSync(draftPath, 'utf8');
+        if (!same) {
+          const e = new Error('post file ' + postPath + ' exists but DIFFERS from the draft — ambiguous interruption state; resolve manually (compare, then either delete the file or update the draft) and re-run');
+          e.code = 'E_RESUME_AMBIGUOUS';
+          throw e;
+        }
+      } else {
+        // Content gates on the tree BEFORE the file lands.
+        runGateSuite(ROOT);
+        fs.mkdirSync(path.dirname(postPath), { recursive: true });
+        fs.copyFileSync(draftPath, postPath);
+      }
+      store.recordArtifact(job.id, 'file_written', postPath);
+    } else if (!fs.existsSync(job.file_written)) {
+      const e = new Error('file_written milestone records ' + job.file_written + ' but that file no longer exists — ambiguous state; restore or clear the milestone explicitly');
+      e.code = 'E_RESUME_AMBIGUOUS';
+      throw e;
+    } else if (fs.readFileSync(job.file_written, 'utf8') !== fs.readFileSync(draftPath, 'utf8')) {
+      const e = new Error('post file ' + job.file_written + ' differs from the draft — the draft was modified after publication copying started; resolve manually (E_RESUME_AMBIGUOUS)');
+      e.code = 'E_RESUME_AMBIGUOUS';
       throw e;
     }
-    store.recordArtifact(job.id, 'file_written', postPath);
-    // Commit (never push unless --push was explicitly requested).
-    let sha = null;
-    try {
-      const rel = path.relative(ROOT, postPath);
-      execFileSync('git', ['add', rel, 'data/engine-state.json'], { cwd: ROOT });
-      execFileSync('git', ['commit', '-m', 'content(engine): publish ' + job.slug + ' (controlled, gates green)'], { cwd: ROOT });
-      sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
-      if (wantPush) {
-        execFileSync('git', ['push'], { cwd: ROOT });
-        log(job.slug + ': committed and pushed ' + sha.slice(0, 8));
-      } else {
-        log(job.slug + ': committed ' + sha.slice(0, 8) + ' (NOT pushed). Push, wait for the Pages build, then run: node scripts/engine/runner.mjs verify ' + job.slug + ' --sha ' + sha);
-      }
-    } catch (e) {
-      // Commit infrastructure unavailable: file written and gates green, but
-      // publication is NOT complete — honest failure, nothing hidden.
-      const err = new Error('commit failed: ' + (e.message || e) + ' — file written but not committed; commit/push manually, then verify');
-      err.code = 'E_COMMIT_FAILED';
-      store.recordError(job.id, err.message);
-      throw err;
+
+    // M3: full gates + real build + rendered-output validation on the tree
+    // WITH the post. Skipped only when the content commit already exists
+    // (those gates passed before that commit; the commit is the record).
+    if (!job.committed_sha) {
+      assertNotHalted(); // pause/stop BEFORE gates that may take minutes
+      runGateSuite(ROOT);
+      runBuildGates(ROOT);
     }
-    store.recordArtifact(job.id, 'committed_sha', sha);
-    log(job.slug + ': published ONLY after `verify ' + job.slug + ' --sha ' + sha + '` confirms the live article and deployed revision');
+
+    // M4: content commit — post file ONLY (durable separation of the content
+    // revision from later state/report commits).
+    let sha = null;
+    if (!job.committed_sha) {
+      assertNotHalted(); // pause/stop BEFORE the commit
+      try {
+        const rel = path.relative(ROOT, postPath);
+        execFileSync('git', ['add', '--', rel], { cwd: ROOT });
+        execFileSync('git', ['commit', '-m', 'content(engine): publish ' + job.slug + ' (controlled; gates + build green)'], { cwd: ROOT });
+        sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+      } catch (e) {
+        const err = new Error('commit failed: ' + (e.message || e) + ' — file written but NOT committed; commit/push manually (post file only), then run `verify ' + job.slug + ' --sha <content-commit-sha>`');
+        err.code = 'E_COMMIT_FAILED';
+        store.recordError(job.id, err.message);
+        throw err;
+      }
+      store.recordArtifact(job.id, 'committed_sha', sha);
+    } else {
+      sha = job.committed_sha;
+      // Durable-state consistency: the recorded content commit must still
+      // exist in the repository (fresh checkouts must be able to trust it).
+      try {
+        execFileSync('git', ['cat-file', '-e', sha + '^{commit}'], { cwd: ROOT, stdio: 'ignore' });
+      } catch (e) {
+        const err = new Error('recorded committed_sha ' + sha + ' does not exist in this repository/checkout — pull the branch that contains it, or clear the milestone explicitly after review (E_RESUME_AMBIGUOUS)');
+        err.code = 'E_RESUME_AMBIGUOUS';
+        throw err;
+      }
+    }
+
+    // M5: push (only with --push, only once).
+    if (wantPush && !job.pushed) {
+      assertNotHalted(); // pause/stop BEFORE the push
+      try {
+        execFileSync('git', ['push'], { cwd: ROOT });
+        store.recordArtifact(job.id, 'pushed', { at: new Date().toISOString(), sha });
+      } catch (e) {
+        const err = new Error('push failed: ' + (e.message || e) + ' — content commit ' + sha + ' exists locally; push manually, wait for the Pages build, then verify');
+        err.code = 'E_COMMIT_FAILED';
+        store.recordError(job.id, err.message);
+        throw err;
+      }
+      log(job.slug + ': content commit ' + sha.slice(0, 8) + ' pushed — wait for the Pages build, then run: node scripts/engine/runner.mjs verify ' + job.slug + ' --sha ' + sha);
+    } else if (!wantPush && !job.pushed) {
+      log(job.slug + ': content commit ' + sha.slice(0, 8) + ' created (NOT pushed). Push, wait for the Pages build, then run: node scripts/engine/runner.mjs verify ' + job.slug + ' --sha ' + sha);
+    } else if (job.pushed) {
+      log(job.slug + ': content commit ' + sha.slice(0, 8) + ' already pushed — wait for the Pages build, then run: node scripts/engine/runner.mjs verify ' + job.slug + ' --sha ' + sha);
+    }
+    log(job.slug + ': published ONLY after `verify ' + job.slug + ' --sha ' + sha + '` confirms the live article and that the deployed revision contains the content commit');
     return store.jobById(job.id);
   }
 

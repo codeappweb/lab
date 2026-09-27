@@ -71,8 +71,7 @@ if (existsSync(manifest)) {
   });
   for (const p of posts) {
     if (isExcluded(p.fm.data)) continue;
-    if (!bySlug.has(p.slug)) errors.push(`${p.path}: post not present 
-in manifest (run scripts/sync-manifest.mjs)`);
+    if (!bySlug.has(p.slug)) errors.push(`${p.path}: post not present in manifest (run scripts/sync-manifest.mjs)`);
   }
 }
 

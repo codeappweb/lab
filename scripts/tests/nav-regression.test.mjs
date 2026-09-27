@@ -12,7 +12,8 @@
 // that the real includes render from — no duplicated hardcoded labels — then
 // runs scripts/validate-navigation.mjs against it and asserts:
 //   - the OK fixture passes,
-//   - each defect variant FAILS:
+//   - each defect variant FAILS for the RIGHT reason (the expected NAV ERROR
+//     must appear in the output, not just a nonzero exit):
 //       wrong home label everywhere, wrong label on one surface only,
 //       wrong action-button label, wrong button identity (data-qa),
 //       wrong destination, missing required surface, missing required item,
@@ -21,11 +22,10 @@
 //
 // Run: node scripts/tests/nav-regression.test.mjs
 import { spawnSync } from 'node:child_process';
-import fs from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdtempSync, readdirSync, readFileSync, writeFileSync, mkdirSync, cpSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
 import { loadCanonical } from '../lib/nav-data.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -39,6 +39,8 @@ function check(name, cond, detail) {
 }
 
 // ---------- fixture scaffold ----------
+function join(...segs) { return path.join(...segs); }
+
 function mkFixture() {
   const dataRoot = mkdtempSync(join(tmpdir(), 'nav-fx-data-'));
   const siteDir = mkdtempSync(join(tmpdir(), 'nav-fx-site-'));
@@ -49,15 +51,14 @@ function mkFixture() {
   return { dataRoot, siteDir, canon: loadCanonical(dataRoot) };
 }
 
-function join(...segs) { return path.join(...segs); }
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
 // Render a synthetic site page mirroring the includes' Liquid loops.
 // mut: (rendered) => void — post-render mutation of the HTML string.
 // dataMut: (canon) => void — mutation of the canonical data BEFORE rendering
-// (the validator loads the SAME mutated files, so wrong-everywhere is caught
-// by canonical sanity; a mutation that keeps canonical data intact catches
-// single-surface drift).
+// (the validator loads the canonical FILES, which stay intact, so a mutation
+// of only the rendered output catches single-surface/wrong-everywhere drift
+// by the IDENTITY check).
 function renderPage(canon, dataMut, mut) {
   if (dataMut) dataMut(canon);
   const parents = canon.parents;
@@ -103,7 +104,6 @@ function renderPage(canon, dataMut, mut) {
     const p = parents.find(x => x.slug === s);
     H.push('<a href="/danh-muc/' + p.slug + '/">' + esc(p.name) + '</a>');
   }
-
   H.push('</div></div></details>');
   H.push('<details class="foot-sec"><summary class="foot-sec__h">Thông tin</summary>');
   H.push('<div class="foot-links">');
@@ -181,64 +181,71 @@ function runValidator(fx) {
 }
 
 // ---------- cases ----------
-function caseExpect(label, dataMut, mut, expectFail) {
+// expectErr: RegExp the validator output MUST contain when a failure is
+// expected — the fixture must fail for the RIGHT reason, not for any reason.
+function caseExpect(label, dataMut, mut, expectFail, expectErr) {
   const fx = mkFixture();
-  stubUrls(
-fx, fx.canon);
+  stubUrls(fx, fx.canon);
   const html = renderPage(fx.canon, dataMut, mut);
   writeFileSync(join(fx.siteDir, 'index.html'), html);
   const r = runValidator(fx);
-  const ok = expectFail ? r.status !== 0 : r.status === 0;
-  check(label, ok, 'exit=' + r.status + ' :: ' + (r.stderr || r.stdout || '').split('\n').filter(l => /NAV ERROR/.test(l)).slice(0, 3).join(' | '));
+  const out = (r.stderr || '') + '\n' + (r.stdout || '');
+  let ok = expectFail ? r.status !== 0 : r.status === 0;
+  let detail = 'exit=' + r.status + ' :: ' + out.split('\n').filter(l => /NAV ERROR/.test(l)).slice(0, 3).join(' | ');
+  if (ok && expectErr && !expectErr.test(out)) {
+    ok = false;
+    detail = 'exit=' + r.status + ' but expected error /' + expectErr.source + '/ not found :: ' + detail;
+  }
+  check(label, ok, detail);
   rmSync(fx.dataRoot, { recursive: true, force: true });
   rmSync(fx.siteDir, { recursive: true, force: true });
   return r;
 }
 
 // 1. The reproduced original defect: WRONG HOME LABEL on BOTH surfaces.
-//    Canonical data is wrong too (this is what "consistent everywhere" means
-//    when the wrong value propagated into the source) — canonical sanity must
-//    reject it, and the rendered labels must not match "Trang chủ".
+//    The rendered output is wrong everywhere the home item appears; the
+//    canonical files stay right, so the IDENTITY check must reject it.
 caseExpect('fixture FAILS: wrong home label everywhere (header + footer + drawer)',
   (c) => { c.navMain[0].label = 'WRONG HOME LABEL'; },
-  null, true);
+  null, true, /label mismatch: nav\.main\[0\]/);
 
-// 2. Same wrong label everywhere WITHOUT touching canonical data: the
-//    renderer drifts but the source stays right — identity check must fail.
+// 2. Same wrong label on ONE surface only (footer.info home link).
+//    The rendered fixture joins lines with newlines, so the mutation must
+//    tolerate whitespace between the tags of the "Thông tin" section.
 caseExpect('fixture FAILS: wrong home label on ONE surface only (footer.info)',
   null,
-  (html) => html.replace('<details class="foot-sec"><summary class="foot-sec__h">Thông tin</summary><div class="foot-links"><a href="/">Trang chủ</a>', '<details class="foot-sec"><summary class="foot-sec__h">Thông tin</summary><div class="foot-links"><a href="/">Trang chu</a>'),
-  true);
+  (html) => html.replace(/(<summary class="foot-sec__h">Thông tin<\/summary>\s*<div class="foot-links">\s*<a href="\/">)Trang chủ/, '$1Trang chu'),
+  true, /label mismatch: nav\.main\[0\] on surface footer\.info/);
 
 // 3. Wrong action-button label on one surface (footer search button).
 caseExpect('fixture FAILS: wrong action-button label (footer Tìm kiếm)',
   null,
   (html) => html.replace('<button type="button" class="foot-act" data-qa="search">Tìm kiếm</button>', '<button type="button" class="foot-act" data-qa="search">Tìm kiem</button>'),
-  true);
+  true, /action label mismatch: action:search on surface footer\.quick-actions/);
 
 // 4. Wrong action identity: the data-qa no longer identifies the action.
 caseExpect('fixture FAILS: wrong action identity (data-qa tampered)',
   null,
   (html) => html.replace('data-qa="search"', 'data-qa="search-x"'),
-  true);
+  true, /required item MISSING: action:search/);
 
 // 5. Wrong destination for a canonical link (footer Danh mục link).
 caseExpect('fixture FAILS: wrong destination (footer Danh mục link)',
   null,
   (html) => html.replace('<a class="foot-act" href="/danh-muc/">Danh mục</a>', '<a class="foot-act" href="/danh-muc-x/">Danh mục</a>'),
-  true);
+  true, /required item MISSING: action:danh-muc/);
 
 // 6. Missing required surface (nav drawer entirely absent).
 caseExpect('fixture FAILS: missing required surface (nav drawer)',
   null,
   (html) => html.replace(/<aside class="nav-drawer"[\s\S]*?<\/aside>/, ''),
-  true);
+  true, /required surface MISSING: nav-drawer\.actions/);
 
 // 7. Missing required item (one footer action button removed).
 caseExpect('fixture FAILS: missing required item (footer action topics removed)',
   null,
   (html) => html.replace('<button type="button" class="foot-act" data-qa="topics">Chủ đề</button>', ''),
-  true);
+  true, /required item MISSING: action:topics/);
 
 // 8. The OK fixture passes, INCLUDING the documented exceptions:
 //    brand wordmark link and "Tất cả <label>" groupings (both rendered above).
@@ -254,7 +261,7 @@ caseExpect('fixture FAILS: missing child item on a drawer parent screen',
     const kids = m[2].replace(/<a class="nav-kid"[\s\S]*?<\/a>/, '');
     return html.replace(m[0], '<div class="nav-scr" id="navScr-' + m[1] + '" hidden><div class="nav-kids">' + kids + '</div></div>');
   },
-  true);
+  true, /required item MISSING: child:/);
 
 // 10. Wrong label propagated into the CANONICAL DATA FILE itself: the
 //     canonical sanity check must reject a wrong home label even in
@@ -264,7 +271,10 @@ caseExpect('fixture FAILS: missing child item on a drawer parent screen',
   const nav = readFileSync(join(fx.dataRoot, 'data', 'navigation.yml'), 'utf8');
   writeFileSync(join(fx.dataRoot, 'data', 'navigation.yml'), nav.replace('label: "Trang chủ"', 'label: "WRONG HOME LABEL"'));
   const r = spawnSync(process.execPath, [VALIDATOR, '--data-root', fx.dataRoot], { encoding: 'utf8' });
-  check('fixture FAILS: wrong home label in canonical data itself', r.status !== 0, 'exit=' + r.status + ' :: ' + (r.stderr || ''));
+  const out = (r.stderr || '') + '\n' + (r.stdout || '');
+  check('fixture FAILS: wrong home label in canonical data itself',
+    r.status !== 0 && /home label must be "Trang chủ"/.test(out),
+    'exit=' + r.status + ' :: ' + out.split('\n').filter(l => /NAV ERROR/.test(l)).slice(0, 3).join(' | '));
   rmSync(fx.dataRoot, { recursive: true, force: true });
   rmSync(fx.siteDir, { recursive: true, force: true });
 }

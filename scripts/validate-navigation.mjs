@@ -23,8 +23,11 @@
 //
 // HTML is parsed with a real tokenizer (tags, attributes, entities, balanced
 // nesting) — never substring extraction, which can silently skip part of a
-// surface. Hidden mobile menu screens (nav-drawer screens[hidden]) and
-// collapsed footer <details> sections are part of the DOM and are validated.
+// surface. extractSurface() returns the ORIGINAL source slice between the
+// matched opening tag and its balanced closing tag, so every anchor and
+// button inside a surface — including hidden mobile menu screens
+// (nav-drawer screens[hidden]) and collapsed footer <details> sections — is
+// parsed and validated.
 //
 // Documented, narrowly-scoped exceptions:
 //   - BRAND WORDMARK: the logo/site-name link to "/" (class contains logo,
@@ -53,7 +56,7 @@ const errors = [];
 const warnings = [];
 const inventory = [];
 const err = (m) => { errors.push(m); console.error('NAV ERROR: ' + m); };
-const warn = (m) => { warnings.push(m); console.error('NAV WARN: ' + m); };
+const warn = (m) => { warnings.push(m); console.error('NAV WARN: ' + m); }
 
 /* ---------------- canonical data (shared, single source) ---------------- */
 let CANON;
@@ -64,8 +67,9 @@ const act = (id) => CANON.actions.find(a => a.id === id);
 const navItem = (i) => ({ id: 'nav.main[' + i + ']', label: CANON.navMain[i].label, url: CANON.navMain[i].url });
 const parentLink = (p) => ({ id: 'parent:' + p.slug, label: p.name, url: '/danh-muc/' + p.slug + '/' });
 const parentAllLink = (p) => ({ id: 'parent-all:' + p.slug, label: 'Tất cả ' + p.name, url: '/danh-muc/' + p.slug + '/' });
-const childLink = (p, c) => ({ id: 'child:' + p.slug + '/' + c.slug, label: c.name, url: '/danh-muc/' + p
-.slug + '/' + c.slug + '/' });
+const childLink = (p, c) => ({ id: 'child:' + p.slug + '/' + c.slug, label: c.name, url: '/danh-muc/' + p.slug + '/' + c.slug + '/' });
+const actionLinks = () => CANON.actions.filter(a => a.url).map(a => ({ id: 'action:' + a.id, label: a.label, url: a.url }));
+const actionButtons = () => CANON.actions.filter(a => !a.url && a.data_qa).map(a => ({ id: 'action:' + a.id, qa: a.data_qa, label: a.label }));
 
 /* ---------------- expected items per surface (EXPLICIT contract) ---------------- */
 function expectedSurfaces() {
@@ -93,19 +97,22 @@ function expectedSurfaces() {
     },
     'footer.quick-actions': {
       locate: { tag: 'div', attr: 'class', value: 'foot-links--actions' },
-      links: CANON.actions.filter(a => a.url).map(a => ({ id: 'action:' + a.id, label: a.label, url: a.url })),
-      buttons: CANON.actions.filter(a => !a.url && a.data_qa).map(a => ({ id: 'action:' + a.id, qa: a.data_qa, label: a.label })),
+      links: actionLinks(),
+      buttons: actionButtons(),
     },
     'footer.discover': {
       locate: { tag: 'div', attr: 'class', value: 'foot-discover' },
       links: [...(CANON.menuCats.primary || []), ...(CANON.menuCats.more || [])]
         .map(s => parentBySlug.get(s)).filter(Boolean).map(parentLink),
     },
-    'footer.info': { special: 'footer-info' },
+    // footer.info = the .foot-sec <details> whose <summary> is "Thông tin";
+    // it renders the SAME main items as data/navigation.yml — every one of
+    // them is required and label-checked (identity, not just cross-surface).
+    'footer.info': { special: 'footer-info', links: CANON.navMain.map((_, i) => navItem(i)) },
     'nav-drawer.actions': {
       locate: { tag: 'div', attr: 'class', value: 'nav-actions' },
-      links: CANON.actions.filter(a => a.url).map(a => ({ id: 'action:' + a.id, label: a.label, url: a.url })),
-      buttons: CANON.actions.filter(a => !a.url && a.data_qa).map(a => ({ id: 'action:' + a.id, qa: a.data_qa, label: a.label })),
+      links: actionLinks(),
+      buttons: actionButtons(),
     },
     'nav-drawer.discover': {
       locate: { tag: 'div', attr: 'class', value: 'nav-cats' },
@@ -143,6 +150,9 @@ const EXPECTED = expectedSurfaces();
 const REQUIRED_SURFACES = Object.keys(EXPECTED);
 
 /* ---------------- HTML tokenizer (no substring extraction) ---------------- */
+// Tokenizes HTML and records the SOURCE OFFSETS of every tag event, so that
+// extractSurface() can return the original markup slice of a surface (a
+// balanced region of the source document), never a lossy reconstruction.
 function tokenize(html) {
   const ev = [];
   let i = 0, n = html.length;
@@ -150,13 +160,16 @@ function tokenize(html) {
     if (html.startsWith('<!--', i)) { const e = html.indexOf('-->', i); i = e < 0 ? n : e + 3; continue; }
     const lt = html.indexOf('<', i);
     if (lt < 0) break;
-    if (lt > i) ev.push({ type: 'text', text: html.slice(i,
- lt) });
+    if (lt > i) ev.push({ type: 'text', text: html.slice(i, lt), start: i, end: lt });
     const gt = html.indexOf('>', lt);
     if (gt < 0) break;
+    const tagStart = lt, tagEnd = gt + 1;
     let t = html.slice(lt + 1, gt);
     if (t.startsWith('!') || t.startsWith('?')) { i = gt + 1; continue; }
-    if (t.startsWith('/')) { ev.push({ type: 'close', tag: t.slice(1).trim().split(/\s+/)[0].toLowerCase() }); i = gt + 1; continue; }
+    if (t.startsWith('/')) {
+      ev.push({ type: 'close', tag: t.slice(1).trim().split(/\s+/)[0].toLowerCase(), start: tagStart, end: tagEnd });
+      i = gt + 1; continue;
+    }
     const nameM = /^([a-zA-Z][a-zA-Z0-9-]*)/.exec(t);
     if (!nameM) { i = gt + 1; continue; }
     const tag = nameM[1].toLowerCase();
@@ -168,9 +181,10 @@ function tokenize(html) {
       attrs[am[1].toLowerCase()] = raw.startsWith('"') && raw.endsWith('"') ? raw.slice(1, -1)
         : (raw.startsWith("'") && raw.endsWith("'") ? raw.slice(1, -1) : raw);
     }
-    ev.push({ type: 'open', tag, attrs, selfClose: /\/\s*$/.test(t) });
+    const selfClose = /\/\s*$/.test(t);
+    ev.push({ type: 'open', tag, attrs, selfClose, start: tagStart, end: tagEnd });
     i = gt + 1;
-    if (tag === 'script' || tag === 'style') {
+    if ((tag === 'script' || tag === 'style') && !selfClose) {
       const ci = html.toLowerCase().indexOf('</' + tag, i);
       const ng = ci < 0 ? n : html.indexOf('>', ci);
       i = ng < 0 ? n : ng + 1;
@@ -185,28 +199,30 @@ const decodeEntities = (s) => String(s)
 
 function hasClass(attrs, value) { return String(attrs.class || '').split(/\s+/).includes(value); }
 
-// Inner HTML of the element matching (tag, attr=class|id, value); nesting-aware.
+// Original source slice of the inner HTML of the element matching
+// (tag, attr=class|id, value); nesting-aware via same-tag depth counting.
+// Returns null when the surface (or its closing tag) is absent — a required
+// surface that never renders must FAIL, not silently pass empty.
 function extractSurface(html, spec) {
   const ev = tokenize(html);
-  let depth = -1;
-  const out = [];
-  for (const e of ev) {
-    if (depth < 0) {
-      if (e.type === 'open' && e.tag === spec.tag &&
-          ((spec.attr === 'class' && hasClass(e.attrs, spec.value)) ||
-           (spec.attr === 'id' && e.attrs.id === spec.value))) {
-        if (e.selfClose) return '';
-        depth = 1; continue;
-      }
-      continue;
-    }
-    if (e.type === 'open' && e.tag === spec.tag && 
-!e.selfClose) depth++;
-    else if (e.type === 'close' && e.tag === spec.tag) { depth--; if (depth === 0) return out.join(''); }
-    if (e.type === 'text') out.push(e.text);
-    else if (e.type === 'open') out.push(' ');
+  let openIdx = -1;
+  for (let k = 0; k < ev.length; k++) {
+    const e = ev[k];
+    if (e.type === 'open' && !e.selfClose && e.tag === spec.tag &&
+        ((spec.attr === 'class' && hasClass(e.attrs, spec.value)) ||
+         (spec.attr === 'id' && e.attrs.id === spec.value))) { openIdx = k; break; }
   }
-  return depth > 0 ? out.join('') : null;
+  if (openIdx < 0) return null;
+  let depth = 1;
+  for (let k = openIdx + 1; k < ev.length; k++) {
+    const e = ev[k];
+    if (e.type === 'open' && !e.selfClose && e.tag === spec.tag) depth++;
+    else if (e.type === 'close' && e.tag === spec.tag) {
+      depth--;
+      if (depth === 0) return html.slice(ev[openIdx].end, e.start);
+    }
+  }
+  return null; // unbalanced: treat as missing surface
 }
 
 // Parse a surface's inner HTML into link/button items with identity attrs.
@@ -253,7 +269,6 @@ function stripBase(href, base) {
   return decodeURIComponent(h.split('#')[0].split('?')[0]) || '/';
 }
 
-
 /* ---------------- canonical sanity ---------------- */
 {
   if (!CANON.navMain.length) err('canonical data: data/navigation.yml has no main items');
@@ -288,8 +303,7 @@ if (SITE) {
         else if (f.name.endsWith('.html')) htmlFiles.push(path.join(d, f.name));
       }
     })(SITE);
-   
- if (!htmlFiles.length) err('no rendered HTML pages found under ' + SITE);
+    if (!htmlFiles.length) err('no rendered HTML pages found under ' + SITE);
 
     const pagesWithChrome = htmlFiles.filter(p => {
       const h = fs.readFileSync(p, 'utf8');
@@ -343,7 +357,12 @@ if (SITE) {
         if (exp.label !== undefined && exp.label !== null && !sameLabel(found.label, exp.label)) {
           err('action label mismatch: ' + exp.id + ' on surface ' + surface + ' (' + rel + '): expected "' + exp.label + '", got "' + found.label + '"');
         }
-        record(surface, exp.id, found.label, null, page);
+        // Only surfaces whose contract defines a canonical VISIBLE label take
+        // part in the cross-surface label comparison: icon-only surfaces
+        // (header actions) intentionally render "" or a short abbreviation,
+        // so comparing them against full labels elsewhere would be a false
+        // positive. Identity (data-qa / attr) is still required above.
+        if (exp.label !== undefined && exp.label !== null) record(surface, exp.id, found.label, null, page);
       }
     }
 
@@ -364,8 +383,7 @@ if (SITE) {
         if (inner === null) { err('required surface MISSING: ' + surface + ' (on ' + path.relative(SITE, page) + ')'); continue; }
         const items = surfaceItems(inner);
         const links = items.filter(i => i.kind === 'link' && !isBrandWordmark(i));
-        const buttons 
-= items.filter(i => i.kind === 'button');
+        const buttons = items.filter(i => i.kind === 'button');
         if (spec.links) checkLinks(surface, links, spec.links, page, base);
         if (spec.buttons) checkButtons(surface, buttons, spec.buttons, page);
       }
@@ -412,8 +430,7 @@ if (SITE) {
 /* ---------------- report ---------------- */
 fs.mkdirSync(path.join(DATA_ROOT, 'reports'), { recursive: true });
 writeReport(DATA_ROOT, 'navigation-inventory.json', {
-  generated_at:
- new Date().toISOString(),
+  generated_at: new Date().toISOString(),
   mode: SITE ? 'canonical+rendered' : 'canonical',
   data_root: DATA_ROOT,
   items: inventory,

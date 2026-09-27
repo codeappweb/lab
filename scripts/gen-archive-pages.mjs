@@ -39,7 +39,8 @@ for (const [pslug, cards] of Object.entries(members.parents || {})) {
   const dir = path.join(ROOT, 'danh-muc', pslug);
   const totalPages = Math.max(1, Math.ceil(cards.length / PER_PAGE));
   for (let n = totalPages + 1; ; n++) {
-    const f = path.join(dir, 'trang-' + n + '.md');
+    const f = path.join(dir,
+ 'trang-' + n + '.md');
     if (!fs.existsSync(f)) break;
     fs.rmSync(f); removed++;
   }

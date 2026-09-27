@@ -165,7 +165,7 @@ function check(name, cond, detail) {
   const r = run(['status'], root);
   check('corrupt state: loud failure with recover instruction', r.status === 1 && /recover/.test(r.stderr));
   const rc = run(['recover'], root);
-  check('recover: exit 0 and archive created', rc.status === 0 && existsSync(join(root, 'data', 'engine-state.corrupt-' + readdirSync(join(root, 'data')).find(f => f.startsWith('engine-state.corrupt-'))));
+  check('recover: exit 0 and archive created', rc.status === 0 && existsSync(join(root, 'data', 'engine-state.corrupt-' + readdirSync(join(root, 'data')).find(f => f.startsWith('engine-state.corrupt-')))));
   const rs = run(['status'], root);
   check('recover: status healthy again', rs.status === 0, rs.stderr);
 }

@@ -45,6 +45,16 @@ function check(name, cond, detail) {
 
 /* ---------------- local server (strip the /lab baseurl) ---------------- */
 const PORT = 4173;
+const MIME = {
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif',
+  '.ico': 'image/x-icon', '.xml': 'application/xml; charset=utf-8',
+  '.html': 'text/html; charset=utf-8', '.txt': 'text/plain; charset=utf-8',
+};
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0].split('#')[0]);
   if (p.startsWith('/lab/')) p = p.slice(4);
@@ -53,11 +63,23 @@ const server = http.createServer((req, res) => {
   try {
     if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, 'index.html');
     if (!fs.existsSync(file)) { res.writeHead(404); res.end('not found'); return; }
-    res.writeHead(200, { 'content-type': p.endsWith('.html') || p.endsWith('/') ? 'text/html; charset=utf-8' : 'application/octet-stream' });
+    // Correct MIME types: Chromium refuses stylesheets served with a
+    // non-CSS MIME type, which would silently degrade the whole QA run.
+    const type = MIME[path.extname(file)] || 'text/html; charset=utf-8';
+    res.writeHead(200, { 'content-type': type });
     res.end(fs.readFileSync(file));
   } catch { res.writeHead(500); res.end('err'); }
 });
 await new Promise(r => server.listen(PORT, '127.0.0.1', r));
+
+/* ---------------- probe: what does the server actually send? ---------------- */
+await new Promise((resolve) => {
+  http.get(BASE + '/assets/css/main.css', (res) => {
+    let n = 0, head = '';
+    res.on('data', (d) => { if (n === 0) head = d.slice(0, 60).toString('utf8'); n += d.length; });
+    res.on('end', () => { console.log('CSS-PROBE ' + JSON.stringify({ status: res.statusCode, type: res.headers['content-type'], bytes: n, head })); resolve(null); });
+  }).on('error', (e) => { console.log('CSS-PROBE ERR ' + e.message); resolve(null); });
+});
 const BASE = 'http://127.0.0.1:' + PORT + '/lab';
 
 /* ---------------- page selection from the ACTUAL build ---------------- */

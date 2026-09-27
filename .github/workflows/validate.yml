@@ -29,7 +29,7 @@ jobs:
           done
       - name: Selftest (ok fixture passes, bad fixture fails)
         run: node scripts/selftest.mjs
-      - name: Engine selftest (offline orchestration: state, locks, retries, blocking)
+      - name: "Engine selftest (offline orchestration: state, locks, retries, blocking)"
         run: node scripts/engine-selftest.mjs --verbose
 
   validate:

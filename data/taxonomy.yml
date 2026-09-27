@@ -52,7 +52,8 @@ parents:
         slug: "so-sanh-xe"
         status: "planned"
         planned_capacity: 25
-        description: "So sánh các dòng xe máy phổ biến theo nhu cầu thực tế."
+    
+    description: "So sánh các dòng xe máy phổ biến theo nhu cầu thực tế."
       - id: "P01-08"
         name: "Sử dụng"
         slug: "su-dung-xe"
@@ -109,7 +110,8 @@ parents:
         status: "planned"
         planned_capacity: 20
         description: "Bảo dưỡng xe điện — kiểm tra pin, phanh, lưu điện và chu kỳ bảo trì."
-      - id: "P02-08"
+   
+   - id: "P02-08"
         name: "Công nghệ pin"
         slug: "cong-nghe-pin"
         status: "planned"
@@ -287,7 +289,8 @@ parents:
     name: "Phụ tùng"
     slug: "phu-tung"
     icon: "parts"
-    cluster: "C06"
+    
+cluster: "C06"
     planned_capacity: 150
     description: "Phụ tùng và phụ kiện — dầu nhớt, lốp, ắc quy, bugi, phanh, truyền động, đồ trang bị."
     children:
@@ -346,6 +349,7 @@ parents:
     cluster: "C08"
     planned_capacity: 260
     description: "Du lịch bằng xe quanh Hà Nội — điểm đến, lịch trình, di chuyển và gửi xe."
+
     children:
       - id: "P07-01"
         name: "Trung tâm Hà Nội"
@@ -405,7 +409,8 @@ parents:
     name: "Phượt xe"
     slug: "phuot-xe"
     icon: "phuot"
-    cluster: "C09"
+    cluster: "
+C09"
     planned_capacity: 170
     description: "Phượt xe máy từ Hà Nội — cung đường, lịch trình, chuẩn bị và an toàn."
     children:
@@ -464,7 +469,8 @@ parents:
         planned_capacity: 10
         description: "An toàn khi phượt — chạy đoàn, giao thông, thời tiết."
   - id: "P09"
-    name: "Pháp lý"
+    name: "Pháp lý
+"
     slug: "phap-ly"
     icon: "legal"
     cluster: "C07"
@@ -526,7 +532,8 @@ parents:
     icon: "safety"
     cluster: "C10"
     planned_capacity: 110
-    description: "An toàn khi đi đường — kỹ năng lái, thời tiết xấu, sự cố, bảo hộ và sơ cứu."
+    description: "An toàn khi 
+đi đường — kỹ năng lái, thời tiết xấu, sự cố, bảo hộ và sơ cứu."
     children:
       - id: "P10-01"
         name: "Kỹ năng lái"
@@ -586,7 +593,8 @@ parents:
     children:
       - id: "P12-01"
         name: "Giá mua xe"
-        slug: "mua-xe"
+        slug: 
+"mua-xe"
         status: "planned"
         planned_capacity: 20
         description: "Chi phí mua xe mới và cũ — cách tính tổng."
@@ -648,7 +656,8 @@ parents:
         description: "Pin lithium-ion cho xe điện — đặc tính và tuổi thọ."
       - id: "P11-02"
         name: "Pin LFP"
-        slug: "pin-lfp"
+       
+ slug: "pin-lfp"
         status: "planned"
         planned_capacity: 15
         description: "Pin LFP — an toàn, chu kỳ sạc và ứng dụng trên xe."

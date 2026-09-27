@@ -4,6 +4,9 @@
 //   tests/fixtures/ok  — must PASS every gate run against it
 //   tests/fixtures/bad — must FAIL (nonzero exit) each gate run against it
 // Synthetic fixtures are NEVER real content and are excluded from site builds.
+// Unexpected results are ALSO emitted as GitHub Actions error annotations
+// (`::error::`), so failures are readable from the public run page without
+// downloading logs.
 import { spawnSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,15 +15,22 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 const FIX = join(ROOT, 'tests/fixtures');
 
+function annotate(title, text) {
+  const lines = String(text).split('\n').filter(Boolean).slice(0, 12);
+  for (const l of lines) {
+    // annotation messages must be single-line and bracket-escape safe
+    const safe = l.replace(/\r/g, '').replace(/%/g, '%25').slice(0, 400);
+    console.log(`::error title=selftest ${title}::${safe}`);
+  }
+}
+
 function run(script, root, expect, extra = []) {
   const r = spawnSync('node', [join(ROOT, 'scripts', script), '--root', root, ...extra], { encoding: 'utf8' });
   const pass = expect === 'pass' ? r.status === 0 : r.status !== 0;
   console.log(`${pass ? 'OK ' : 'BAD'} ${script} @ ${root.split('/').pop()} -> exit ${r.status} (expected ${expect})`);
   if (!pass) {
-    // Always print full output of an unexpected result so CI annotations
-    // contain the actual failure, not just the exit code.
-    console.log('--- stdout ---\n' + (r.stdout || '(empty)'));
-    console.log('--- stderr ---\n' + (r.stderr || '(empty)'));
+    annotate(script, 'STDOUT:\n' + (r.stdout || '(empty)'));
+    annotate(script, 'STDERR:\n' + (r.stderr || '(empty)'));
   }
   return pass;
 }

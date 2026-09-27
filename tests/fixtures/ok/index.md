@@ -2,4 +2,4 @@
 title: "Trang chủ fixture"
 description: "Fixture hợp lệ dùng cho selftest — không phải nội dung thật."
 ---
-Giới thiệu fixture. Nội dung này chỉ tồn tại trong tests/fixtures và bị loại khỏi build site thật.
+Giới thiệu fixture. Nội dung này chỉ tồn tại trong tests/fixtures và bị loại khỏi build site thật. Thân trang này dài đủ để vượt ngưỡng số từ tối thiểu mà validator áp dụng cho các trang indexable, vì selftest yêu cầu fixture hợp lệ phải vượt qua toàn bộ cổng kiểm tra mà không sinh cảnh báo hay lỗi nào. Mỗi câu trong trang được viết bằng tiếng Việt thông thường, không chứa ký tự CJK, không chứa tiêu đề cấp một trong thân bài vì đây là một trang không phải bài viết. Trang liệt kê một liên kết nội bộ tới danh mục mẫu để kiểm tra trình kiểm tra liên kết hoạt động đúng trên mọi loại trang: xem [danh mục mẫu](/danh-muc/sua-chua/). Toàn bộ dữ liệu trong cây fixture là dữ liệu giả lập phục vụ kiểm thử tự động, không bao giờ được phép xuất hiện trên trang thật của site. Bộ kiểm thử dùng cây này để xác nhận các validator bắt lỗi đúng trên cây xấu và cho phép cây tốt đi qua, đảm bảo các cổng không bao giờ bị vô hiệu hóa hay nới lỏng vì tiện lợi.

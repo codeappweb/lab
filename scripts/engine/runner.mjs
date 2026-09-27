@@ -59,7 +59,7 @@ const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 
 const ROOT = rootFromArgs(process.argv);
 const SITEDOMAIN = 'https://codeappweb.github.io/lab';
 // Error codes that BLOCK a job (no retry): they are deterministic failures.
-const BLOCKING_CODES = ['E_NO_EVIDENCE', 'E_NO_DRAFT', 'E_NO_OUTLINE', 'E_PROVIDER_UNAVAILABLE', 'E_GATE_MISSING', 'E_DRAFT_INVALID', 'E_RESUME_AMBIGUOUS', 'E_DUPLICATE_POST', 'E_COMMIT_FAILED', 'E_BUILD_MISSING'];
+const BLOCKING_CODES = ['E_NO_EVIDENCE', 'E_NO_DRAFT', 'E_NO_OUTLINE', 'E_PROVIDER_UNAVAILABLE', 'E_GATE_MISSING', 'E_DRAFT_INVALID', 'E_RESUME_AMBIGUOUS', 'E_DUPLICATE_POST', 'E_COMMIT_FAILED', 'E_PERSIST_FAILED', 'E_BUILD_MISSING'];
 // Codes that halt the run but leave the job resumable (never 'failed').
 const HALT_CODES = ['E_RUN_HALTED'];
 
@@ -120,9 +120,26 @@ function approvedQueueSize(root) {
 // a pathspec — never touches unrelated staged files from another session),
 // and ONLY when at least one of them actually changed (`git status
 // --porcelain` guard), so re-running can never produce an empty state commit
-// or a state-commit -> deploy -> verify -> state-commit loop: verify persists
-// verified_live in the LOCAL tree and does NOT push (documented behavior;
-// the next publishing run or a manual push carries it).
+// or a state-commit -> deploy -> verify -> state-commit loop.
+//
+// FAIL-CLOSED status contract (returned by persistState):
+//   { status: 'noop' }      — nothing to persist: successful no-op
+//   { status: 'committed' } — a state commit was created (durability recorded)
+//   { status: 'failed' }    — persistence FAILED; the caller MUST block the
+//                             next publication operation (E_PERSIST_FAILED)
+//   { status: 'non-git' }   — root is not a git work tree: explicitly
+//                             test-only/isolated mode (CI fixtures); real
+//                             publication always runs inside a git repo, so
+//                             this status never occurs on a real publish path.
+//
+// Generated pagination ownership rule (docs/ENGINE-RUNBOOK.md): the archive
+// pages danh-muc/<parent>/trang-<N>.md are engine-OWNED generated files,
+// listed in data/generated-archives.json by scripts/gen-archive-pages.mjs;
+// their (re)generation and safe deletion are part of the publication
+// transaction. persistState stages EXACTLY the manifest-listed files plus
+// trang-N.md entries showing as modified/deleted in git status — never the
+// whole danh-muc tree, so unrelated editorial edits to category pages can
+// never ride along.
 const STATE_ARTIFACT_PATHS = [
   'data/engine-state.json',
   'data/article-manifest.jsonl',
@@ -131,25 +148,35 @@ const STATE_ARTIFACT_PATHS = [
   'data/category-members.json',
   'data/article-taxonomy.yml',
   'data/topic-queue.json',
+  'data/generated-archives.json',
   'sitemaps',
   'reports',
 ];
+const GENERATED_ARCHIVE_RE = /^danh-muc\/[\w-]+\/trang-\d+\.md$/;
 
-// Returns true when a state commit was created. Returns false when there was
-// nothing to commit, or when the root is not a git work tree (isolated
-// selftest roots without git stay fully supported).
+function manifestListedArchives(root) {
+  try {
+    const m = JSON.parse(fs.readFileSync(path.join(root, 'data', 'generated-archives.json'), 'utf8'));
+    const files = Array.isArray(m && m.files) ? m.files : [];
+    // Ownership rule is enforced, not assumed: only trang-N.md paths under
+    // danh-muc/<parent>/ that the manifest actually lists are engine-owned.
+    return files.filter(f => typeof f === 'string' && GENERATED_ARCHIVE_RE.test(f));
+  } catch { return []; }
+}
+
 function persistState(root, label) {
   try {
     execFileSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: root, stdio: 'ignore' });
   } catch {
-    return false;
+    return { status: 'non-git' };
   }
+  const archivePaths = manifestListedArchives(root);
   let raw;
   try {
-    raw = execFileSync('git', ['status', '--porcelain', '-z', '--', ...STATE_ARTIFACT_PATHS], { cwd: root, encoding: 'utf8' });
+    raw = execFileSync('git', ['status', '--porcelain', '-z', '--', ...STATE_ARTIFACT_PATHS, ...archivePaths], { cwd: root, encoding: 'utf8' });
   } catch (e) {
     log('WARNING: cannot inspect state artifact status — state NOT committed: ' + (e.message || e));
-    return false;
+    return { status: 'failed', reason: 'git status failed: ' + (e.message || e) };
   }
   // Parse -z entries. A rename ('R ') carries the old path as an extra
   // NUL-separated token that is NOT a path to commit.
@@ -159,18 +186,38 @@ function persistState(root, label) {
     entries.push(toks[i].slice(3));
     if (toks[i].startsWith('R ')) i++;
   }
-  if (!entries.length) return false;
+  // Generated archive pages that were DELETED (obsolete pages removed by
+  // gen-archive-pages.mjs) or MODIFIED must ride with the state commit even
+  // though the regenerated manifest no longer lists the deleted ones.
+  try {
+    const archRaw = execFileSync('git', ['status', '--porcelain', '-z', '--', 'danh-muc'], { cwd: root, encoding: 'utf8' });
+    for (const tok of archRaw.split('\0').filter(t => t !== '')) {
+      const p = tok.slice(3);
+      if (GENERATED_ARCHIVE_RE.test(p) && !entries.includes(p)) entries.push(p);
+    }
+  } catch { /* danh-muc may not exist; the manifest list above is authoritative */ }
+  if (!entries.length) return { status: 'noop' };
   try {
     // Intent-to-add untracked engine artifacts (harmless for tracked ones),
     // then a pathspec commit that stages and commits exactly these paths,
     // leaving any unrelated staged files still staged and untouched.
     execFileSync('git', ['add', '-N', '--', ...entries], { cwd: root, stdio: 'pipe' });
     execFileSync('git', ['commit', '-m', 'state(engine): ' + label, '--', ...entries], { cwd: root, stdio: 'pipe' });
-    return true;
+    return { status: 'committed' };
   } catch (e) {
-    log('WARNING: state commit failed — engine state remains valid in the working tree, persist manually with: git commit -m "state(engine): ' + label + '" -- data sitemaps reports (' + (e.message || e) + ')');
-    return false;
+    return { status: 'failed', reason: (e.message || e) + ' — engine state remains valid in the working tree; persist manually with: git commit -m "state(engine): ' + label + '" -- data sitemaps reports' };
   }
+}
+
+// E_PERSIST_FAILED: a REQUIRED state/artifact commit failed — publication
+// must not continue past this point (fail closed). The job blocks; the next
+// run retries the persistence from the milestones, without duplicate work.
+function requirePersisted(result, job, what) {
+  if (result.status === 'committed' || result.status === 'noop' || result.status === 'non-git') return;
+  const err = new Error('state persistence FAILED while persisting ' + what + ' (' + (result.reason || 'unknown') + ') — publication is BLOCKED until the state commit succeeds; nothing was pushed');
+  err.code = 'E_PERSIST_FAILED';
+  store.recordError(job.id, err.message);
+  throw err;
 }
 
 // Vietnamese word count — documented method: whitespace-split syllable tokens
@@ -227,6 +274,19 @@ function runBuildGates(root) {
     const g = spawnSync(process.execPath, [gen], { stdio: 'inherit', cwd: root });
     if (g.status !== 0) {
       const e = new Error('deterministic regeneration (gen-site-data) FAILED (exit ' + g.status + ') — publication blocked');
+      e.code = 'E_GATES_FAILED';
+      throw e;
+    }
+  }
+  // Generated pagination (danh-muc/<parent>/trang-N.md) is part of the
+  // publication transaction: regenerate BEFORE the build so the same content
+  // revision that is validated is the one built and deployed, and persist the
+  // pages + ownership manifest with the state commit (persistState).
+  const genArch = path.join(root, 'scripts', 'gen-archive-pages.mjs');
+  if (fs.existsSync(genArch)) {
+    const ga = spawnSync(process.execPath, [genArch], { stdio: 'inherit', cwd: root });
+    if (ga.status !== 0) {
+      const e = new Error('archive pagination regeneration (gen-archive-pages) FAILED (exit ' + ga.status + ') — publication blocked');
       e.code = 'E_GATES_FAILED';
       throw e;
     }
@@ -390,6 +450,9 @@ switch (cmd) {
             // resumable directly at the push stage — no re-draft, no
             // duplicate post, no duplicate commit.
             else if (j.state === 'blocked' && j.committed_sha && !j.pushed) jobs.push(j.id);
+            // Pending-sync recovery: any job (published included) whose
+            // engine state commit is still missing from the remote.
+            else if (j.state_sync_pending) jobs.push(j.id);
           }
           log('resume: ' + jobs.length + ' in-flight job(s) eligible from durable state');
         }
@@ -580,7 +643,13 @@ switch (cmd) {
     // state commit travels with the next publishing run or a manual push;
     // until then verified_live is durable in the local branch only.
     const persisted = persistState(ROOT, 'record verified_live for ' + slug);
-    if (persisted) log(slug + ': verified_live persisted in a local state commit (NOT pushed — no verify/deploy loop)');
+    if (persisted.status === 'committed') {
+      log(slug + ': verified_live persisted in a LOCAL state commit — this is LOCAL-ONLY durability: it is NOT on the remote until you synchronize. Run `git push` (or the next publishing run with --push carries it). Documented in docs/ENGINE-RUNBOOK.md. No verify/deploy loop: verify never pushes.');
+    } else if (persisted.status === 'failed') {
+      // Honest, explicit — verify does not fail the run for this, but the
+      // limitation is stated, never hidden, and the sync command is printed.
+      console.error('[engine] WARNING: verified_live is recorded in the working tree but the state commit FAILED (' + (persisted.reason || 'unknown') + ') — synchronize manually: git commit -m "state(engine): record verified_live for ' + slug + '" -- data && git push');
+    }
     log(slug + ': verified live — URL 200, content identity matched, deployed revision contains ' + sha + ' (' + compareStatus + ')');
     break;
   }
@@ -609,6 +678,30 @@ function processJob(job, opts) {
     store.transition(job.id, 'blocked', 'post file already exists in _posts; refusing duplicate work');
     log(job.slug + ': BLOCKED — post file already exists in _posts');
     return store.jobById(job.id);
+  }
+
+  // PENDING REMOTE STATE SYNC: a previous run recorded state_sync_pending
+  // (the content push succeeded but the engine state commit could not be
+  // pushed). Finish the synchronization BEFORE any new work — remote
+  // durability is never claimed while a state commit is missing from the
+  // remote. Bounded: attempted once per run, no sync/deploy loop.
+  if (job.state_sync_pending) {
+    try {
+      execFileSync('git', ['push'], { cwd: ROOT });
+      store.recordArtifact(job.id, 'state_sync_pending', null);
+      const clear = persistState(ROOT, 'record state sync complete for ' + job.slug);
+      if (clear.status === 'committed') {
+        try {
+          execFileSync('git', ['push'], { cwd: ROOT });
+        } catch (e2) {
+          store.recordArtifact(job.id, 'state_sync_pending', { at: new Date().toISOString(), reason: 'clearing state commit push failed: ' + String(e2.message || e2).slice(0, 300) });
+          log('WARNING: state sync partially complete — the clearing state commit is local-only; the next run (or git push) finishes it');
+        }
+      }
+      log(job.slug + ': pending state synchronization FINISHED — engine state is remote-durable again');
+    } catch (e) {
+      log('WARNING: pending state sync still failing (' + (e.message || e) + ') — engine state remains local-only; retry with: node scripts/engine/runner.mjs run --resume --push');
+    }
   }
 
   // Push-stage recovery: a job blocked by a failed push (content commit
@@ -787,7 +880,11 @@ function processJob(job, opts) {
       store.recordArtifact(job.id, 'committed_sha', sha);
       // Persist the recorded milestone (and any regenerated artifacts) as a
       // SEPARATE state commit so a fresh checkout can recover the job.
+      // FAIL CLOSED: if the required state commit cannot be created, the
+      // publication must NOT continue to the push — block with
+      // E_PERSIST_FAILED (recoverable on the next run, no duplicate work).
       stateCommitted = persistState(ROOT, 'record committed_sha for ' + job.slug);
+      requirePersisted(stateCommitted, job, 'the committed_sha milestone');
     } else {
       sha = job.committed_sha;
       // Durable-state consistency: the recorded content commit must still
@@ -799,6 +896,12 @@ function processJob(job, opts) {
         err.code = 'E_RESUME_AMBIGUOUS';
         throw err;
       }
+      // Finish any pending milestone persistence (e.g. a previous run's
+      // state commit failed with E_PERSIST_FAILED, or verified_live was
+      // recorded locally and must be committed before further work). A
+      // no-op when everything is already committed.
+      const syncRes = persistState(ROOT, 'sync durable milestones for ' + job.slug);
+      requirePersisted(syncRes, job, 'pending durable milestones');
     }
 
     // M5: push (only with --push, only once).
@@ -808,23 +911,61 @@ function processJob(job, opts) {
         execFileSync('git', ['push'], { cwd: ROOT });
         store.recordArtifact(job.id, 'pushed', { at: new Date().toISOString(), sha });
       } catch (e) {
-        const err = new Error('push failed: ' + (e.message || e) + ' — content commit ' + sha + ' exists locally; push manually, wait for the Pages build, then verify');
-        err.code = 'E_COMMIT_FAILED';
-        store.recordError(job.id, err.message);
-        throw err;
+        // Distinguish a FAILED command from an AMBIGUOUS network outcome: a
+        // lost response after an accepted push looks like a failure here.
+        // Inspect the remote refs BEFORE reporting failure or retrying —
+        // never record "not pushed" (nor re-push blindly) when the remote
+        // already has the commit.
+        let remoteHead = null;
+        try {
+          const lr = execFileSync('git', ['ls-remote', 'origin', 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
+          remoteHead = (lr.split('\t')[0] || '').trim() || null;
+        } catch { /* remote unreachable: genuinely failed */ }
+        let localHead = null;
+        try { localHead = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim(); } catch { /* ignore */ }
+        if (remoteHead && localHead && remoteHead === localHead) {
+          log(job.slug + ': push command failed BUT ls-remote shows the remote already at ' + localHead.slice(0, 8) + ' — ambiguous outcome resolved as ACCEPTED; recording pushed honestly');
+          store.recordArtifact(job.id, 'pushed', { at: new Date().toISOString(), sha, note: 'accepted push confirmed via ls-remote after a lost response' });
+        } else {
+          const err = new Error('push failed: ' + (e.message || e) + ' — content commit ' + sha + ' exists locally; push manually, wait for the Pages build, then verify');
+          err.code = 'E_COMMIT_FAILED';
+          store.recordError(job.id, err.message);
+          throw err;
+        }
       }
       // The `pushed` milestone was saved AFTER the content push, so the state
       // commit that rode with it does NOT contain `pushed` yet. Persist the
       // milestone as its own state commit and push it too — otherwise a fresh
       // clone recovers `pushed: false` and cannot trust remote durability.
-      const pushedStateCommitted = persistState(ROOT, 'record pushed for ' + job.slug);
-      if (pushedStateCommitted) {
+      const pushedState = persistState(ROOT, 'record pushed for ' + job.slug);
+      if (pushedState.status === 'committed') {
         try {
           execFileSync('git', ['push'], { cwd: ROOT });
           log(job.slug + ': engine state commit pushed (job state is remote-durable)');
         } catch (e) {
-          log('WARNING: state commit NOT pushed (' + (e.message || e) + ') — job state is committed locally only; push manually or it will not survive a fresh clone');
+          // REMOTE DURABILITY IS NOT CLAIMED. First resolve the ambiguous
+          // case (lost response after an accepted push) via ls-remote; only a
+          // genuinely missing remote state commit becomes a retryable
+          // pending-sync condition in the durable state. The next run (or
+          // `git push` manually) finishes the synchronization. No loop: the
+          // pending-sync push is attempted once per run.
+          const why = (e.message || e);
+          let remoteHead2 = null, localHead2 = null;
+          try {
+            const lr2 = execFileSync('git', ['ls-remote', 'origin', 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
+            remoteHead2 = (lr2.split('\t')[0] || '').trim() || null;
+            localHead2 = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim();
+          } catch { /* remote unreachable: genuinely failed */ }
+          if (remoteHead2 && localHead2 && remoteHead2 === localHead2) {
+            log(job.slug + ': state-commit push command failed BUT ls-remote shows the remote already at the state commit — ambiguous outcome resolved as ACCEPTED (job state is remote-durable)');
+          } else {
+            store.recordArtifact(job.id, 'state_sync_pending', { at: new Date().toISOString(), reason: 'state commit push failed: ' + String(why).slice(0, 300), content_sha: sha });
+            log('WARNING: engine state commit NOT pushed (' + why + ') — PENDING SYNC recorded. The content commit IS pushed; the job state is local-only until synchronized. Finish with: node scripts/engine/runner.mjs run --resume --push (or git push manually).');
+          }
         }
+      } else if (pushedState.status === 'failed') {
+        store.recordArtifact(job.id, 'state_sync_pending', { at: new Date().toISOString(), reason: 'state commit failed: ' + String(pushedState.reason || '').slice(0, 300), content_sha: sha });
+        log('WARNING: engine state commit FAILED to persist (' + (pushedState.reason || 'unknown') + ') — PENDING SYNC recorded; job state is local-only until synchronized. Finish with: node scripts/engine/runner.mjs run --resume --push');
       }
       log(job.slug + ': content commit ' + sha.slice(0, 8) + ' pushed — wait for the Pages build, then run: node scripts/engine/runner.mjs verify ' + job.slug + ' --sha ' + sha);
     } else if (!wantPush && !job.pushed) {

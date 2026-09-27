@@ -28,6 +28,12 @@ const slugToName = {};
 }
 
 let written = 0, removed = 0;
+// Generated-file manifest (ownership rule): every file this run leaves in
+// place is listed in data/generated-archives.json. The engine's persistState()
+// stages EXACTLY the manifest-listed files (plus trang-N.md deletions shown by
+// git status) with the state commit — never the whole danh-muc tree, so
+// unrelated editorial edits to category pages can never ride along.
+const manifestFiles = [];
 for (const [pslug, cards] of Object.entries(members.parents || {})) {
   if (!cards.length) continue;
   const dir = path.join(ROOT, 'danh-muc', pslug);
@@ -72,7 +78,19 @@ for (const [pslug, cards] of Object.entries(members.parents || {})) {
     ].join('\n');
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'trang-' + n + '.md'), fm);
+    manifestFiles.push('danh-muc/' + pslug + '/trang-' + n + '.md');
     written++;
   }
 }
-console.log('[gen-archive-pages] written=' + written + ' removed_stale=' + removed);
+manifestFiles.sort();
+fs.mkdirSync(path.join(ROOT, 'data'), { recursive: true });
+fs.writeFileSync(path.join(ROOT, 'data', 'generated-archives.json'), JSON.stringify({
+  generated_at: new Date().toISOString(),
+  generator: 'scripts/gen-archive-pages.mjs',
+  per_page: PER_PAGE,
+  ownership: 'Every file listed here is engine-OWNED generated output (danh-muc/<parent>/trang-<N>.md). persistState() stages exactly these files (plus trang-N.md deletions); every other danh-muc file is editorial and never staged by the engine.',
+  parents: Object.fromEntries(Object.entries(members.parents || {}).filter(([, cards]) => cards.length)
+    .map(([pslug, cards]) => [pslug, Math.max(1, Math.ceil(cards.length / PER_PAGE))])),
+  files: manifestFiles
+}, null, 2) + '\n');
+console.log('[gen-archive-pages] written=' + written + ' removed_stale=' + removed + ' manifest=' + manifestFiles.length);

@@ -693,6 +693,244 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
   }
 }
 
+// ===== 31–36. Fail-closed persistence, pagination transaction, pending sync =====
+{
+  const g = (root, ...args) => spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+
+  // Same offline publish environment as groups 25–30 (real local git repo,
+  // fake bundle/jekyll toolchain, stubbed gen-site-data/validate-built):
+  // nothing real is ever published.
+  const mkPublishRootLike = () => {
+    const root = makeRoot({ provider: 'mistral_vibe_local', generation_enabled: true, dry_run: false });
+    const tf = topicsFile(root, [{ slug: 'thu-nghiem-orchestration', title: 'Kiem thu orchestration engine' }]);
+    run(['run', '--topics', tf, '--dry-run'], root); // job exists (blocked: no evidence)
+    seedPublishing(root, 'thu-nghiem-orchestration', { withPlanned: true, withWritten: true });
+    gateStub(root, {});
+    writeFileSync(join(root, 'scripts', 'gen-site-data.mjs'), 'process.exit(0);\n');
+    writeFileSync(join(root, 'scripts', 'validate-built.mjs'), 'process.exit(0);\n');
+    const bin = join(root, 'fakebin');
+    mkdirSync(bin, { recursive: true });
+    writeFileSync(join(bin, 'bundle'), '#!/bin/sh\nexit 0\n');
+    writeFileSync(join(bin, 'jekyll'), '#!/bin/sh\nexit 0\n');
+    spawnSync('chmod', ['+x', join(bin, 'bundle'), join(bin, 'jekyll')]);
+    spawnSync('git', ['init', '-q', '-b', 'main'], { cwd: root });
+    spawnSync('git', ['config', 'user.email', 'selftest@example.invalid'], { cwd: root });
+    spawnSync('git', ['config', 'user.name', 'selftest'], { cwd: root });
+    spawnSync('git', ['config', 'push.default', 'current'], { cwd: root });
+    return { root, env: { PATH: bin + ':' + process.env.PATH } };
+  };
+
+  // A `git` wrapper on PATH that can simulate push failures.
+  //   failNth(n)     : the n-th push FAILS without reaching the remote.
+  //   realThenFail(n) : the n-th push performs the REAL push and then exits 1
+  //                     (lost network response after an accepted push).
+  // Every other command (and every other push) delegates to the real git.
+  const gitPushWrapper = (root, mode, failN) => {
+    const bin = join(root, 'wrapbin');
+    mkdirSync(bin, { recursive: true });
+    const cnt = join(bin, 'pushcount');
+    writeFileSync(cnt, '0');
+    writeFileSync(join(bin, 'git'), [
+      '#!/bin/sh',
+      'if [ "$1" = "push" ]; then',
+      '  n=$(cat "' + cnt + '" 2>/dev/null || echo 0)',
+      '  n=$((n+1)); echo "$n" > "' + cnt + '"',
+      mode === 'realThenFail'
+        ? '  if [ "$n" = "' + failN + '" ]; then /usr/bin/git "$@"; exit 1; fi'
+        : '  if [ "$n" = "' + failN + '" ]; then exit 1; fi',
+      'fi',
+      'exec /usr/bin/git "$@"'
+    ].join('\n'));
+    spawnSync('chmod', ['+x', join(bin, 'git')]);
+    return { bin, countFile: cnt };
+  };
+
+  const mkBare = () => {
+    const bare = mkdtempSync(join(tmpdir(), 'engine-selftest-bare-')) + '.git';
+    spawnSync('git', ['init', '-q', '--bare', '-b', 'main', bare]);
+    return bare;
+  };
+
+  // 31. FAIL CLOSED: a REQUIRED state-commit failure (after a successful
+  //     content commit) must block the publication — no push, job blocked
+  //     with E_PERSIST_FAILED; a later run retries the persistence and
+  //     completes it without duplicate commits.
+  {
+    const t = mkPublishRootLike();
+    // commit-msg hook that fails ONLY state commits (content commits pass).
+    writeFileSync(join(t.root, '.git', 'hooks', 'commit-msg'), [
+      '#!/bin/sh',
+      'if grep -q "state(engine)" "$1"; then exit 1; fi',
+      'exit 0'
+    ].join('\n'));
+    spawnSync('chmod', ['+x', join(t.root, '.git', 'hooks', 'commit-msg')]);
+    const r = runEnv(['run', '--resume'], t.root, t.env);
+    const job = state(t.root).jobs[0];
+    check('fail-closed: state-commit failure blocks the job (E_PERSIST_FAILED)', job.state === 'blocked' && /E_PERSIST_FAILED/.test((job.errors || []).map(e => e.msg).join(' ') + r.stdout + r.stderr), job.state + ' :: ' + r.stdout.slice(-200));
+    check('fail-closed: only the content commit exists (publication stopped at the failure)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '1', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim());
+    check('fail-closed: committed_sha recorded but pushed NOT recorded', !!job.committed_sha && !job.pushed, JSON.stringify(job.pushed || null));
+    // persistence retried on the next run: remove the hook, resume.
+    rmSync(join(t.root, '.git', 'hooks', 'commit-msg'), { force: true });
+    const r2 = runEnv(['run', '--resume'], t.root, t.env);
+    const subjects2 = g(t.root, 'log', '--pretty=%s').stdout.trim().split('\n');
+    check('fail-closed: resume retries the state persistence and completes it', r2.status === 0 && subjects2.length === 2 && /state\(engine\)/.test(subjects2[0]), subjects2.join(' | ') + ' :: ' + r2.stderr.slice(0, 150));
+    check('fail-closed: still no duplicate content commit after resume', g(t.root, 'log', '--oneline').stdout.trim().split('\n').filter(l => /content\(engine\)/.test(l)).length === 1);
+  }
+
+  // 32. Content push SUCCEEDS, then the STATE-commit push fails: a retryable
+  //     state_sync_pending condition is recorded; a later resume finishes the
+  //     synchronization without duplicate articles or content commits.
+  {
+    const t = mkPublishRootLike();
+    const bare = mkBare();
+    g(t.root, 'remote', 'add', 'origin', bare);
+    const wrap = gitPushWrapper(t.root, 'failNth', 2);
+    const r = runEnv(['run', '--resume', '--push'], t.root, { PATH: wrap.bin + ':' + process.env.PATH });
+    const job = state(t.root).jobs[0];
+    check('pending-sync: content push recorded as pushed (real)', !!job.pushed, r.stdout.slice(-250) + r.stderr.slice(-200));
+    check('pending-sync: state_sync_pending recorded (retryable, explicit)', !!job.state_sync_pending && /state commit push failed/.test(job.state_sync_pending.reason || ''), JSON.stringify(job.state_sync_pending || null));
+    check('pending-sync: WARNING states local-only durability honestly', /PENDING SYNC recorded/.test(r.stdout), r.stdout.slice(-250));
+    // resume with a healthy remote path: the pending sync finishes.
+    const r2 = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    const job2 = state(t.root).jobs[0];
+    check('pending-sync: resume finishes the synchronization (pending cleared)', r2.status === 0 && !job2.state_sync_pending, JSON.stringify(job2.state_sync_pending || null) + ' :: ' + r2.stderr.slice(0, 150));
+    const remoteHead = g(t.root, 'ls-remote', 'origin', 'HEAD').stdout.split('\t')[0].trim();
+    const localHead = g(t.root, 'rev-parse', 'HEAD').stdout.trim();
+    check('pending-sync: remote and local heads match after sync', remoteHead === localHead, remoteHead + ' vs ' + localHead);
+    check('pending-sync: no duplicate content commit during sync', g(t.root, 'log', '--oneline').stdout.trim().split('\n').filter(l => /content\(engine\)/.test(l)).length === 1);
+    check('pending-sync: no duplicate posts (one _posts file)', readdirSync(join(t.root, '_posts')).length === 1);
+  }
+
+  // 33. Lost network response AFTER an accepted push: the command fails but
+  //     ls-remote shows the remote already has the commit — the outcome is
+  //     resolved as accepted, never recorded as a failed push.
+  {
+    const t = mkPublishRootLike();
+    const bare = mkBare();
+    g(t.root, 'remote', 'add', 'origin', bare);
+    const wrap = gitPushWrapper(t.root, 'realThenFail', 1);
+    const r = runEnv(['run', '--resume', '--push'], t.root, { PATH: wrap.bin + ':' + process.env.PATH });
+    const job = state(t.root).jobs[0];
+    check('ambiguous-push: pushed recorded honestly via ls-remote (no false failure)', !!job.pushed && !/push failed/.test((job.errors || []).map(e => e.msg).join(' ')), JSON.stringify(job.pushed || null) + ' :: ' + r.stdout.slice(-200));
+    check('ambiguous-push: stdout explains the ls-remote resolution', /ls-remote/.test(r.stdout), r.stdout.slice(-250));
+    const remoteHead = g(t.root, 'ls-remote', 'origin', 'HEAD').stdout.split('\t')[0].trim();
+    check('ambiguous-push: remote actually contains the pushed revision', !!remoteHead, '(empty remote)');
+  }
+
+  // 34. Local-only verification state and its later synchronization: a
+  //     verified_live record persisted locally (as `verify` does) is picked
+  //     up and committed by the next run's milestone sync.
+  {
+    const t = mkPublishRootLike();
+    const bare = mkBare();
+    g(t.root, 'remote', 'add', 'origin', bare);
+    const r1 = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    check('local-verify: baseline publish+push succeeded', r1.status === 0 && state(t.root).jobs[0].pushed, r1.stderr.slice(0, 150));
+    const before = parseInt(g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim(), 10);
+    // simulate `verify` recording verified_live in the LOCAL state file only
+    // (verify persists locally and never pushes — documented behavior)
+    const sf = join(t.root, 'data', 'engine-state.json');
+    const sd = JSON.parse(readFileSync(sf, 'utf8'));
+    sd.jobs[0].verified_live = { at: new Date().toISOString(), url: 'https://example.invalid/lab/thu-nghiem-orchestration/', status: 200, deployed_commit: sd.jobs[0].committed_sha, compare: 'identical' };
+    writeFileSync(sf, JSON.stringify(sd, null, 2) + '\n');
+    const r2 = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    const after = parseInt(g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim(), 10);
+    const headSubject = g(t.root, 'log', '-1', '--pretty=%s').stdout.trim();
+    check('local-verify: next run synchronizes the local-only state (state commit created)', after === before + 1 && /state\(engine\)/.test(headSubject), before + ' -> ' + after + ' :: ' + headSubject);
+    check('local-verify: the synced commit carries verified_live to the remote', g(t.root, 'ls-remote', 'origin', 'HEAD').stdout.split('\t')[0].trim() === g(t.root, 'rev-parse', 'HEAD').stdout.trim());
+  }
+
+  // 35. Generated pagination — the ACTUAL threshold (PER_PAGE=48):
+  //     one below / exactly at / one above / shrinking back / interruption
+  //     recovery / membership / pager / indexability / manifest.
+  {
+    const archRoot = mkdtempSync(join(tmpdir(), 'engine-selftest-arch-'));
+    mkdirSync(join(archRoot, 'scripts', 'lib'), { recursive: true });
+    mkdirSync(join(archRoot, 'data'), { recursive: true });
+    writeFileSync(join(archRoot, 'scripts', 'lib', 'lab.mjs'), readFileSync(join(HERE, 'lib', 'lab.mjs')));
+    writeFileSync(join(archRoot, 'scripts', 'gen-archive-pages.mjs'), readFileSync(join(HERE, '..', 'gen-archive-pages.mjs')));
+    writeFileSync(join(archRoot, 'data', 'taxonomy.yml'), readFileSync(join(HERE, '..', '..', 'data', 'taxonomy.yml')));
+    const gen = () => spawnSync(process.execPath, [join(archRoot, 'scripts', 'gen-archive-pages.mjs')], { cwd: archRoot, encoding: 'utf8' });
+    const cards = (n) => Array.from({ length: n }, (_, i) => ({ url: '/bai-' + i + '/', title: 'Bài ' + i, date: '2026-01-05' }));
+    const setMembers = (n) => writeFileSync(join(archRoot, 'data', 'category-members.json'), JSON.stringify({ parents: { 'xe-may': cards(n) } }));
+    const pages = () => readdirSync(join(archRoot, 'danh-muc', 'xe-may')).filter(f => /^trang-\d+\.md$/.test(f)).sort();
+    const readPage = (n) => readFileSync(join(archRoot, 'danh-muc', 'xe-may', 'trang-' + n + '.md'), 'utf8');
+    const manifest = () => JSON.parse(readFileSync(join(archRoot, 'data', 'generated-archives.json'), 'utf8'));
+
+    setMembers(47); let rg = gen();
+    check('archive 47 (below threshold): generator exits 0, exactly 1 page', rg.status === 0 && pages().length === 1 && pages()[0] === 'trang-1.md', pages().join(','));
+    setMembers(48); gen();
+    check('archive 48 (exactly at threshold): still 1 page, no trang-2', pages().length === 1 && manifest().per_page === 48, pages().join(','));
+    setMembers(49); gen();
+    check('archive 49 (one above threshold): 2 pages', pages().length === 2 && pages().join(',') === 'trang-1.md,trang-2.md', pages().join(','));
+    // membership: every card appears EXACTLY once across pages, none lost
+    {
+      const all = pages().map(f => readFileSync(join(archRoot, 'danh-muc', 'xe-may', f), 'utf8')).join('\n');
+      const urls = Array.from(all.matchAll(/href="\/lab(\/bai-\d+\/)"/g)).map(m => m[1]);
+      const uniq = new Set(urls);
+      check('archive membership: 49 cards, each exactly once, none lost', urls.length === 49 && uniq.size === 49, urls.length + ' refs, ' + uniq.size + ' unique');
+      check('archive pager: page 1 links forward, page 2 links back, no stale trang-3', /trang-2\/"?>←|Trang sau/.test(readPage(1)) && /trang-1\//.test(readPage(2)) && !/trang-3/.test(readPage(1) + readPage(2)), readPage(2).slice(-200));
+      check('archive canonical/indexability: permalink + sitemap:true in front matter', /permalink: \/danh-muc\/xe-may\/trang-1\//.test(readPage(1)) && /sitemap: true/.test(readPage(1)), readPage(1).slice(0, 200));
+      check('archive manifest: lists exactly the existing generated pages', JSON.stringify(manifest().files) === JSON.stringify(['danh-muc/xe-may/trang-1.md', 'danh-muc/xe-may/trang-2.md']), JSON.stringify(manifest().files));
+    }
+    // shrinking back below the threshold: obsolete page safely deleted
+    setMembers(47); const rShrink = gen();
+    check('archive shrink 49->47: obsolete trang-2 removed safely', pages().length === 1 && /removed_stale=1/.test(rShrink.stdout), rShrink.stdout.trim() + ' :: ' + pages().join(','));
+    check('archive shrink: manifest no longer lists the removed page', JSON.stringify(manifest().files) === JSON.stringify(['danh-muc/xe-may/trang-1.md']), JSON.stringify(manifest().files));
+    // interruption recovery: a lost page is regenerated deterministically
+    {
+      const before = readPage(1);
+      rmSync(join(archRoot, 'danh-muc', 'xe-may', 'trang-1.md'));
+      gen();
+      check('archive interruption recovery: deleted page regenerated identically', existsSync(join(archRoot, 'danh-muc', 'xe-may', 'trang-1.md')) && readPage(1) === before);
+    }
+  }
+
+  // 36. Pagination is part of the PUBLICATION TRANSACTION: the runner
+  //     regenerates the archive inside the build sequence, the generated
+  //     pages + ownership manifest ride with the state commit, the content
+  //     commit stays pure, an unrelated EDITORIAL edit never rides along, and
+  //     a fresh clone of the remote has every required generated artifact.
+  {
+    const t = mkPublishRootLike();
+    // real archive generator + its lib + taxonomy + synthetic members
+    mkdirSync(join(t.root, 'scripts', 'lib'), { recursive: true });
+    writeFileSync(join(t.root, 'scripts', 'lib', 'lab.mjs'), readFileSync(join(HERE, 'lib', 'lab.mjs')));
+    writeFileSync(join(t.root, 'scripts', 'gen-archive-pages.mjs'), readFileSync(join(HERE, '..', 'gen-archive-pages.mjs')));
+    writeFileSync(join(t.root, 'data', 'taxonomy.yml'), readFileSync(join(HERE, '..', '..', 'data', 'taxonomy.yml')));
+    writeFileSync(join(t.root, 'data', 'category-members.json'), JSON.stringify({
+      parents: { 'xe-may': Array.from({ length: 50 }, (_, i) => ({ url: '/bai-' + i + '/', title: 'Bài ' + i, date: '2026-01-05' })) }
+    }));
+    // an unrelated EDITORIAL edit in danh-muc must NOT ride along
+    mkdirSync(join(t.root, 'danh-muc', 'xe-may'), { recursive: true });
+    writeFileSync(join(t.root, 'danh-muc', 'xe-may', 'index.md'), '---\nlayout: category\n---\nEDITORIAL, NOT ENGINE-OWNED\n');
+    g(t.root, 'add', 'danh-muc/xe-may/index.md');
+    const bare = mkBare();
+    g(t.root, 'remote', 'add', 'origin', bare);
+    const r = runEnv(['run', '--resume', '--push'], t.root, t.env);
+    const job = state(t.root).jobs[0];
+    check('archive-transaction: run + push succeeded', r.status === 0 && !!job.pushed, r.stderr.slice(0, 200));
+    // union of files across ALL state commits
+    const logLines = g(t.root, 'log', '--pretty=%H %s').stdout.trim().split('\n');
+    const stateShas = logLines.filter(l => /state\(engine\)/.test(l)).map(l => l.split(' ')[0]);
+    const stateFiles = [...new Set(stateShas.flatMap(sha =>
+      g(t.root, 'show', '--pretty=format:', '--name-only', sha).stdout.split('\n').map(s => s.trim()).filter(Boolean)))];
+    check('archive-transaction: generated trang-1.md rides with a state commit', stateFiles.includes('danh-muc/xe-may/trang-1.md'), stateFiles.join(','));
+    check('archive-transaction: generated trang-2.md rides with a state commit', stateFiles.includes('danh-muc/xe-may/trang-2.md'), stateFiles.join(','));
+    check('archive-transaction: ownership manifest rides with a state commit', stateFiles.includes('data/generated-archives.json'), stateFiles.join(','));
+    check('archive-transaction: unrelated EDITORIAL danh-muc file NOT committed', !stateFiles.includes('danh-muc/xe-may/index.md') && g(t.root, 'status', '--porcelain').stdout.includes('danh-muc/xe-may/index.md'), g(t.root, 'status', '--porcelain').stdout.trim().slice(0, 200));
+    const contentSha = g(t.root, 'log', '--pretty=%H', '--grep=content(engine)').stdout.trim().split('\n')[0];
+    const contentFiles = g(t.root, 'show', '--pretty=format:', '--name-only', contentSha).stdout.split('\n').map(s => s.trim()).filter(Boolean);
+    check('archive-transaction: content commit stays pure (post file only)', contentFiles.length === 1 && contentFiles[0].endsWith('.md'), contentFiles.join(','));
+    // fresh clone: every required generated artifact present
+    const clone = mkdtempSync(join(tmpdir(), 'engine-selftest-clone-'));
+    spawnSync('git', ['clone', '-q', '--branch', 'main', bare, clone]);
+    check('fresh-clone: generated archive pages present', existsSync(join(clone, 'danh-muc', 'xe-may', 'trang-1.md')) && existsSync(join(clone, 'danh-muc', 'xe-may', 'trang-2.md')));
+    check('fresh-clone: ownership manifest present', existsSync(join(clone, 'data', 'generated-archives.json')));
+    check('fresh-clone: article + engine state present', existsSync(join(clone, '_posts', '2026-01-05-thu-nghiem-orchestration.md')) && existsSync(join(clone, 'data', 'engine-state.json')));
+  }
+}
+
 console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
 if (failed) process.exit(1);
 process.exit(0);

@@ -15,6 +15,21 @@
 - Article UI (không ảnh): `assets/css/article.css` (token typography 17→19px, measure 720px, counter ol, note/tip/warning opt-in, TOC containment, 44px toolbar, table scroll, reduced-motion); `main.js` thêm `.table-wrap` + heading permalinks; sửa 2 lỗi corruption JS thật (`sheet.class\nList.add` — topic sheet; `document.crea\nteElement` — copy-link fallback); `post.html` hiển thị "Cập nhật" chỉ khi `updated_at` thật khác ngày publish; related ≤ 3 cả 2 đường. Thiết kế tài liệu hóa trong [ARTICLE-DESIGN.md](ARTICLE-DESIGN.md).
 - Visual QA: KHÔNG hoàn tất — không có browser tooling trong môi trường này; chỉ inspect source (Liquid/CSS/JS). Không claim visual QA từ source inspection.
 
+## Session 2026-09-27 (phần 2: state persistence + navigation single-source + runtime test)
+
+- **Tách content commit khỏi state commit** (`runner.mjs` `persistState()`): content commit chỉ chứa `_posts/<file>.md` (pathspec commit + purity check `git show --name-only` — commit lẫn file khác → `E_COMMIT_FAILED`); state commit riêng `state(engine): …` chứa đúng các artifact engine (`data/engine-state.json`, manifest, progress, related-posts, category-members, taxonomy, topic-queue, `sitemaps/`, `reports/`), chỉ tạo khi có thay đổi thật (không có empty-commit loop), không đụng file staged của phiên khác.
+- **Milestone bền vững qua push**: `pushed` được lưu SAU push nên được persist thành state commit riêng và push tiếp — fresh clone phục hồi được `pushed=true` (trước đây clone chỉ thấy `pushed:false`). `verified_live` vẫn chỉ persist LOCAL (documented; không tạo vòng lặp state-commit → deploy → verify).
+- **Khôi phục push-fail**: job blocked có `committed_sha` + chưa `pushed` → `--resume` vào lại `publishing` trực tiếp; `TRANSITIONS.block` cho phép `publishing`.
+- **Selftest persistence (nhóm 25–30, git thật + bare remote)**: tách commit, purity, push interrupt → resume không trùng bài/commit, fresh clone recovery (state + bài), artifacts tái sinh đi kèm state commit, non-git root, poisoned commit bị từ chối. Bare remote của test khởi tạo `-b main` (lỗi trước: bare HEAD mặc định `master` → clone không checkout gì).
+- **Runtime regression test DOM thật** (`scripts/tests/article-runtime.test.mjs`): bảng 0/1/n + wrap lại (idempotent), heading 0/1/n + không id + link lại, clipboard ok/fail/fallback trung thực (không báo "copied" khi copy fail), anchor + replaceState + scrollIntoView, bare `.prose`. Lỗi thật tìm ra: `article.js` đặt `a.href` như property → `getAttribute('href')` trả null trên consumer đọc attribute; sửa thành `setAttribute('href', …)`.
+- **Navigation single-source** (`scripts/validate-navigation.mjs`): inventory `reports/navigation-inventory.json`; so sánh nhãn hiển thị theo URL qua mọi surface (header/mega menu/drawer/topic sheet/footer); ngoại lệ "Tất cả <label>"; chạy cả source-level và rendered (`--site _site`); wired vào validate.yml + validate-deploy.mjs + content-pipeline.yml.
+- **CI**: bước runtime test giờ tee log + đăng chẩn đoán lên PR khi fail (như engine selftest) — không nới gate nào.
+
+## Verified (phần 2)
+
+- CI run `36307044166` (2026-09-27, HEAD `420e5fa`): "Script + engine selftest" XANH (~100 checks, gồm nhóm persistence 25–30), "Manifest reconcile" XANH (no-op). Job "Content + sitemap + build gates" chạy cuối — xem trạng thái mới nhất trên [PR #1](https://github.com/codeappweb/lab/pull/1).
+- Visual QA: vẫn KHÔNG hoàn tất (không browser tooling). Các claim responsive/a11y trong ARTICLE-DESIGN.md là thiết kế + kiểm tra source-level, KHÔNG phải visual verification.
+
 ## Verified
 
 - CI run `36303778295` (2026-09-27, commit `3d4d17e`-era head of `repair/engine-v2`): TOÀN BỘ XANH — "Script + engine selftest" (75 checks gồm 24 nhóm: resume milestone, concurrency đa tiến trình thật, durable state, deployedRevisionOk), "Manifest reconcile" (no-op), và "Content + sitemap + build gates" (content-quality với allowlist, duplicates, check-links, sitemap, self-heal + legal gate, manifest dry-run, engine preflight, Jekyll build THẬT với article.css/post.html mới, validate-built) đều pass. Xem run trên [PR #1](https://github.com/codeappweb/lab/pull/1).

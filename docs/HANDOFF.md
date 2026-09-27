@@ -1,6 +1,38 @@
 # HANDOFF — phiên 2026-09-27 (engine correctness + article UI, tiếp nối engine v2)
 
-## Phiên này (engine correctness repair + premium article UI)
+## Phiên 2026-09-27 (phần 2: state persistence + nav single-source + runtime test)
+
+- **Persistence sequence** (`runner.mjs`): content commit (pathspec + purity check) →
+  state commit riêng (chỉ artifact engine, chỉ khi dirty) → push cả hai →
+  record `pushed` → state commit riêng cho `pushed` → push lại (fresh clone thấy
+  `pushed=true`). `verified_live`: persist local, KHÔNG push (tránh vòng lặp).
+  Push-fail → job blocked, `--resume` quay lại `publishing` trực tiếp.
+- **Selftest nhóm 25–30**: git thật + bare remote (`-b main`), push interrupt,
+  fresh clone recovery (không trùng bài/commit), artifacts theo state commit,
+  non-git root, poisoned commit từ chối. `state.mjs`: `TRANSITIONS.block` cho
+  `publishing`; M2 draft-compare chỉ khi chưa có `committed_sha`.
+- **Runtime test** `scripts/tests/article-runtime.test.mjs` (DOM stub thật, 17
+  checks): wrap bảng idempotent, permalink idempotent, clipboard trung thực,
+  anchor/reduced-motion. Sửa thật: `article.js` dùng `setAttribute('href')`.
+- **Nav single-source** `scripts/validate-navigation.mjs`: inventory JSON +
+  so khớp nhãn/URL mọi surface (source + rendered), wired vào cả 3 workflow
+  check paths. Nguồn chân lý: `data/navigation.yml` + `menu-cats.yml` +
+  `taxonomy.yml` (xem ARTICLE-DESIGN.md).
+- **main.js runtime fixes**: `$()` trả về 1 element/null — các lệnh
+  `$('table', prose).forEach` / `$('h2[id]…').forEach` đổi sang `$()`;
+  sửa nốt 2 lỗi corruption cũ (`sheet.class\nList.add`,
+  `document.crea\nteElement('textarea')`).
+- Commits phần 2 (cũ → mới): `fa9d647` (persistence + nav + runtime test +
+  article.js + main.js + article.css scoped + post.html + workflows),
+  `f0c2896` (workflow YAML quote fix + docs ENGINE-RUNBOOK/VALIDATION/
+  ARTICLE-DESIGN), `9f9a1b7` (CI post article-runtime log khi fail),
+  `67ebf29` (article.js setAttribute href), `03858a9` (selftest bare `-b main`
+  + defensive clone diag), `420e5fa` (runner persist+push milestone `pushed`).
+  CI xanh toàn bộ tại run `36307044166` cho selftest + reconcile; gates job
+  xem PR. KHÔNG merge, generation vẫn TẮT.
+- Visual QA phần 2: KHÔNG thực hiện (không browser tooling) — không claim.
+
+## Phiên trước (engine correctness + article UI)
 
 Fix lỗi thật, tái hiện trước khi sửa, thêm regression test cho từng lỗi:
 

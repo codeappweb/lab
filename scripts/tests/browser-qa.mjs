@@ -72,6 +72,10 @@ const server = http.createServer((req, res) => {
 });
 await new Promise(r => server.listen(PORT, '127.0.0.1', r));
 
+const BASE = 'http://127.0.0.1:' + PORT + '/lab';
+
+/* ---------------- probe: what does the server actually send? ---------------- */
+
 /* ---------------- probe: what does the server actually send? ---------------- */
 await new Promise((resolve) => {
   http.get(BASE + '/assets/css/main.css', (res) => {
@@ -80,7 +84,6 @@ await new Promise((resolve) => {
     res.on('end', () => { console.log('CSS-PROBE ' + JSON.stringify({ status: res.statusCode, type: res.headers['content-type'], bytes: n, head })); resolve(null); });
   }).on('error', (e) => { console.log('CSS-PROBE ERR ' + e.message); resolve(null); });
 });
-const BASE = 'http://127.0.0.1:' + PORT + '/lab';
 
 /* ---------------- page selection from the ACTUAL build ---------------- */
 function pageExists(url) {

@@ -19,7 +19,7 @@ Chuyên mục này phục vụ người cân nhắc mua xe điện muốn hiểu
 
 **Pin lithium** ([pin-lithium]({{ '/danh-muc/cong-nghe/pin-lithium/' | relative_url }})) là nhóm nền tảng: cấu tạo cell lithium, các hóa học phổ biến, và cách đọc thông số pin (Wh, V, Ah) trên thông số xe.
 
-**Pin LFP** ([pin-lfp]({{ '/danh-muc/cong-nghe/pin-lfp/' | relative_url }})) nói về hóa học lithium iron phosphate — loại pin đang được ưa chuộng vì độ bền chu kỳ sạc và an toàn nhiệt, kèm so sánh với các hóa học
+**Pin LFP** ([pin-lithium]({{ '/danh-muc/cong-nghe/pin-lithium/' | relative_url }})) nói về hóa học lithium iron phosphate — loại pin đang được ưa chuộng vì độ bền chu kỳ sạc và an toàn nhiệt, kèm so sánh với các hóa học
  lithium khác.
 
 **BMS** ([bms]({{ '/danh-muc/con

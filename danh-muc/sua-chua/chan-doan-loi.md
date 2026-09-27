@@ -23,7 +23,7 @@ Cách chẩn đoán trong các bài viết này luôn theo trình tự ba bướ
 **Xe không nổ hoặc nổ khó.** Trước khi kết luận hư máy, kiểm tra theo thứ tự: có xăng không, bugi có tia lửa không, ắc quy có đủ điện cho bộ đề
  không. Đa số ca "không nổ" dừng ở một trong ba bước này. Chi tiết trong [nguyên nhân xe không nổ máy]({{ '/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/' | relative_url }}).
 
-**Xe đuối, mất độ kéo.** Nếu xe vẫn nổ nhưng ga lên chậm, hai hướng thường gặp là hệ thống nạp nhiên liệu bị bẩn (lọc gió, bugi) hoặc đường thoát khí bị tắc. Bài tổng hợp [các lỗi khiến xe đuối]({{ '/de-yeu-de/' | relative_url }}) phân tách theo từng cặp dấu hiệu đi kèm.
+**Xe đuối, mất độ kéo.** Nếu xe vẫn nổ nhưng ga lên chậm, hai hướng thường gặp là hệ thống nạp nhiên liệu bị bẩn (lọc gió, bugi) hoặc đường thoát khí bị tắc. Bài tổng hợp [các lỗi khiến xe đuối]({{ '/de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de/' | relative_url }}) phân tách theo từng cặp dấu hiệu đi kèm.
 
 **Tiếng hú, tiếng kêu lạ.** Tiếng kêu là triệu chứng "định vị" tốt nhất vì nó cho biết vị trí phát ra. Hướng dẫn [xác định vị trí phát tiếng]({{ '/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/' | relative_url }}) phân biệt tiếng từ truyền động, động cơ và bánh xe theo đặc tính âm thanh.
 

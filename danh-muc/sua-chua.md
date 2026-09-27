@@ -55,7 +55,7 @@ Xe khó nổ hoặc không nổ thường khiến người dùng vội kết lu�
 
 Tiếng kêu khi phanh — kêu "kít kít" khi phanh trước — thường do má phanh mòn bất cân bằng hoặc đĩa phanh bị bẩn, và việc [thay má phanh đúng thời điểm]({{ '/phanh-keu-phanh-rit-nguyen-nhan-va-thoi-diem-thay-ma-phanh/' | relative_url }}) quan trọng hơn nhiều người nghĩ vì ảnh hưởng trực tiếp đến an toàn.
 
-Xe rung khi tăng ga thường nằm ở nhông sên dĩa mòn hoặc bu-long lỏng — hướng dẫn xác định vị trí phát tiếng và rung có trong bài về [rung khi tăng ga]({{ '/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/' | relative_url }}). Động cơ nóng quá mức thì đọc [nguyên nhân và cách xử lý]({{ '/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/' | relative_url }}). Với lốp, vấn đề thủng lặp lại có cách xử lý triệt để trong bài về [lốp xe hay bị thủng]({{ '/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/' | relative_url }}). Tiếng ồn động cơ khi chạy được phân tích trong bài [xác định tiếng hú khi chạy xe]({{ '/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/' | relative_url }}). Nếu xe đang "dề" hơn thường lệ, bắt đầu với [các lỗi khiến xe đuối]({{ '/de-yeu-de/' | relative_url }}).
+Xe rung khi tăng ga thường nằm ở nhông sên dĩa mòn hoặc bu-long lỏng — hướng dẫn xác định vị trí phát tiếng và rung có trong bài về [rung khi tăng ga]({{ '/xe-may-bi-rung-khi-tang-ga-nguyen-nhan-tu-nhong-sen-dia-den-giam-xoc/' | relative_url }}). Động cơ nóng quá mức thì đọc [nguyên nhân và cách xử lý]({{ '/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/' | relative_url }}). Với lốp, vấn đề thủng lặp lại có cách xử lý triệt để trong bài về [lốp xe hay bị thủng]({{ '/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/' | relative_url }}). Tiếng ồn động cơ khi chạy được phân tích trong bài [xác định tiếng hú khi chạy xe]({{ '/tieng-hu-khi-chay-xe-may-xac-dinh-vi-tri-phat-tieng/' | relative_url }}). Nếu xe đang "dề" hơn thường lệ, bắt đầu với [các lỗi khiến xe đuối]({{ '/de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de/' | relative_url }}).
 
 ## Kiến thức cần biết
 
@@ -71,7 +71,7 @@ Ngoài kiến thức nền tảng, chuyên mục này đang tích lũy các bài
 
 - [Xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên]({{ '/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/' | relative_url }}) — liệt kê nhóm lỗi tiêu hao xăng theo thứ tự khả năng xảy ra, từ gió hóa, bugi đến cách đấu điện.
 - [Xe máy không nổ máy: nguyên nhân thường gặp và cách kiểm tra]({{ '/xe-may-khong-no-may-nguyen-nhan-thuong-gap-va-cach-kiem-tra/' | relative_url }}) — tách riêng nhánh điện và nhánh nhiên liệu khi đề không nổ.
-- [Đề yếu đề không được chẩn đoán và xử lý]({{ '/de-yeu-de-khong-duoc-chan-doan/' | relative_url }}) — kiểm tra ắc quy, công tắc và bộ đề theo từng bước.
+- [Đề yếu đề không được chẩn đoán và xử lý]({{ '/de-yeu-de-khong-duoc-chan-doan-tu-ac-quy-den-con-de/' | relative_url }}) — kiểm tra ắc quy, công tắc và bộ đề theo từng bước.
 - [Xe máy bị nóng máy: nguyên nhân và cách xử lý]({{ '/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/' | relative_url }}) — phân biệt nóng máy do nhớt, tản nhiệt và cách chạy xe cho hợp lý.
 - [Tiếng hú khi chạy xe máy: xác định vị trí phát tiếng]({{ '/tieng-hu-khi-chay-xe-ma
 y-xac-dinh-vi-tri-phat-tieng/' | relative_url }}) — cách dò tiếng hú theo tốc độ và vị trí truyền động.

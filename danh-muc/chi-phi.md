@@ -17,7 +17,7 @@ Chuyên mục này phục vụ người đang cân nhắc mua xe muốn ước t
 
 ## Các nhóm nội dung chính
 
-**Mua xe** ([mua-xe]({{ '/danh-muc/chi-phi/mua-xe/' | relative_url }})) nói về cấu trúc giá khi mua xe mới và xe cũ: giá niêm yết, phí trước bạ, phụ phí, và các điểm cần cân nhắc khi quyết định ngân sách mua.
+**Mua xe** ([mua-xe]({{ '/danh-muc/xe-may/mua-xe/' | relative_url }})) nói về cấu trúc giá khi mua xe mới và xe cũ: giá niêm yết, phí trước bạ, phụ phí, và các điểm cần cân nhắc khi quyết định ngân sách mua.
 
 **Nuôi xe** ([nuoi-xe]({{ '/danh-muc/chi-phi/nuoi-xe/' | relative_url }})) là nhóm tổng hợp chi phí hằng tháng của xe: xăng, gửi xe, bảo dưỡng, để bạn có khung ước tính cho ngân sách định kỳ.
 

@@ -531,7 +531,6 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
 }
 
 
-console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
 // ===== 25–30. State & artifact persistence (durable publication state) =====
 // Full offline publish path against a REAL local git repo and a REAL bare
 // remote: the Jekyll toolchain is faked (`bundle`/`jekyll` stubs on PATH) and
@@ -595,7 +594,7 @@ console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
   {
     const t = mkPublishRoot();
     const bare = mkdtempSync(join(tmpdir(), 'engine-selftest-bare-')) + '.git';
-    spawnSync('git', ['init', '-q', '--bare', bare]);
+    spawnSync('git', ['init', '-q', '--bare', '-b', 'main', bare]);
     g(t.root, 'remote', 'add', 'origin', bare);
     g(t.root, 'remote', 'set-url', 'origin', join(bare, 'does-not-exist')); // broken remote
     const rBad = runEnv(['run', '--resume', '--push'], t.root, t.env);
@@ -615,12 +614,19 @@ console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
   {
     const t = mkPublishRoot();
     const bare = mkdtempSync(join(tmpdir(), 'engine-selftest-bare2-')) + '.git';
-    spawnSync('git', ['init', '-q', '--bare', bare]);
+    spawnSync('git', ['init', '-q', '--bare', '-b', 'main', bare]);
     g(t.root, 'remote', 'add', 'origin', bare);
     const rPush = runEnv(['run', '--resume', '--push'], t.root, t.env);
     check('clone-prep: publishing run with push succeeded', rPush.status === 0 && state(t.root).jobs[0].pushed, rPush.stderr.slice(0, 200));
     const clone = mkdtempSync(join(tmpdir(), 'engine-selftest-clone-'));
-    spawnSync('git', ['clone', '-q', bare, clone]);
+    spawnSync('git', ['clone', '-q', '--branch', 'main', bare, clone]);
+    if (!existsSync(join(clone, 'data', 'engine-state.json'))) {
+      // Diagnose instead of crashing: show what the clone actually contains.
+      check('fresh clone: engine state recovered (committed_sha + pushed)', false,
+        'clone working tree missing data/engine-state.json — git log: ' +
+        g(clone, 'log', '--pretty=%s', '--name-only', '-n', '3').stdout.replace(/\n/g, ' | ') +
+        ' :: status: ' + g(clone, 'status', '--porcelain').stdout.slice(0, 200));
+    } else {
     const cs = JSON.parse(readFileSync(join(clone, 'data', 'engine-state.json'), 'utf8'));
     const cj = cs.jobs[0];
     check('fresh clone: engine state recovered (committed_sha + pushed)', cj.state === 'publishing' && !!cj.committed_sha && !!cj.pushed, JSON.stringify({ state: cj.state, sha: !!cj.committed_sha, pushed: !!cj.pushed }));
@@ -644,6 +650,7 @@ console.log('\nengine-selftest: ' + passed + ' passed, ' + failed + ' failed.');
     check('fresh clone: resume changes nothing (already pushed, verified pending)', rResume.status === 0 && before === after, 'commits ' + before + ' -> ' + after + ' :: ' + rResume.stderr.slice(0, 150));
     check('fresh clone: no duplicate post (exactly one _posts file)', readdirSync(join(clone, '_posts')).length === 1);
     check('fresh clone: job NOT duplicated (one job)', state(clone).jobs.length === 1);
+    }
   }
 
   // 28. generated artifacts ride with the state commit: sitemap shards /

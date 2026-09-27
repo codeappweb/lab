@@ -1,0 +1,52 @@
+name: Visual QA (browser)
+
+# Real browser verification of the REPAIR BRANCH build (not production):
+# a Jekyll build of this revision served locally, driven by Playwright's
+# real Chromium. Automated checks + screenshots (uploaded as artifacts for
+# human inspection). Passing this job is REAL browser testing; it does NOT
+# replace human visual inspection of the screenshots.
+on:
+  pull_request:
+  push:
+    branches: [repair/engine-v2]
+
+concurrency:
+  group: visual-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  browser-qa:
+    name: Playwright browser QA (Chromium; mobile/tablet/desktop; light+dark)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Build the repair branch (real Jekyll build)
+        run: |
+          node scripts/gen-site-data.mjs
+          node scripts/gen-archive-pages.mjs
+          bundle install --jobs 4
+          bundle exec jekyll build
+      - name: Install pinned Playwright + Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Run browser QA (screenshots -> screenshots/)
+        run: node scripts/tests/browser-qa.mjs
+        env:
+          SITE_DIR: _site
+      - name: Upload screenshots (for HUMAN visual inspection)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa-screenshots
+          path: screenshots/
+          if-no-files-found: warn

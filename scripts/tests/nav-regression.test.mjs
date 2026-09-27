@@ -103,6 +103,7 @@ function renderPage(canon, dataMut, mut) {
     const p = parents.find(x => x.slug === s);
     H.push('<a href="/danh-muc/' + p.slug + '/">' + esc(p.name) + '</a>');
   }
+
   H.push('</div></div></details>');
   H.push('<details class="foot-sec"><summary class="foot-sec__h">Thông tin</summary>');
   H.push('<div class="foot-links">');
@@ -182,7 +183,8 @@ function runValidator(fx) {
 // ---------- cases ----------
 function caseExpect(label, dataMut, mut, expectFail) {
   const fx = mkFixture();
-  stubUrls(fx, fx.canon);
+  stubUrls(
+fx, fx.canon);
   const html = renderPage(fx.canon, dataMut, mut);
   writeFileSync(join(fx.siteDir, 'index.html'), html);
   const r = runValidator(fx);

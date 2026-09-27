@@ -813,11 +813,12 @@ function processJob(job, opts) {
         store.recordError(job.id, err.message);
         throw err;
       }
-      // The state commit (committed_sha etc.) is only remote-durable once it
-      // is pushed too. If the content push just succeeded, push the state
-      // commit as well; if that fails, say so honestly instead of claiming
-      // remote durability.
-      if (stateCommitted) {
+      // The `pushed` milestone was saved AFTER the content push, so the state
+      // commit that rode with it does NOT contain `pushed` yet. Persist the
+      // milestone as its own state commit and push it too — otherwise a fresh
+      // clone recovers `pushed: false` and cannot trust remote durability.
+      const pushedStateCommitted = persistState(ROOT, 'record pushed for ' + job.slug);
+      if (pushedStateCommitted) {
         try {
           execFileSync('git', ['push'], { cwd: ROOT });
           log(job.slug + ': engine state commit pushed (job state is remote-durable)');

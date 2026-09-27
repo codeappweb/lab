@@ -605,7 +605,7 @@ function seedPublishing(root, slug, { withPlanned, withWritten, committedSha } =
     const rOk = runEnv(['run', '--resume', '--push'], t.root, t.env);
     const job2 = state(t.root).jobs[0];
     check('push-resume: pushed recorded, remote durability honest', !!job2.pushed && /content commit .* pushed/.test(rOk.stdout), rOk.stdout.slice(-300));
-    check('push-resume: no duplicate commits (still exactly 2)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '2');
+    check('push-resume: no duplicate content commits (content 1 + state 2, pushed-milestone state commit recorded)', g(t.root, 'rev-list', '--count', 'HEAD').stdout.trim() === '3');
     check('push-resume: no duplicate posts (one file in _posts)', readdirSync(join(t.root, '_posts')).length === 1);
   }
 

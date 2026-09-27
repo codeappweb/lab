@@ -13,8 +13,10 @@
 
 ## Verified
 
-- Script selftest + engine selftest pass trong CI trên nhánh này (xem run cuối; URL trong [HANDOFF.md](HANDOFF.md)).
-- Cổng kiểm định nội dung + duplicate đã pass ở các run trước trên nhánh (audit ed79277); phần check-links/build/sitemap được CI xác nhận lại ở run sau thay đổi này.
+- CI run `36301258171` (2026-09-27): "Script + engine selftest" pass (34/34 offline checks) và "Manifest reconcile" thành công — 8 bài đã xuất bản được đồng bộ vào `data/article-manifest.jsonl` (commit `6faa74e`), progress.json re-derived: 30 published / 67 planned, khớp 30 post thực tế.
+- Gate content-quality giờ ghi `reports/content-quality.json` và CI đăng report lên PR khi fail.
+- `AGENTS.md` đã bị loại khỏi tập nội dung site (như README.md) — không còn lỗi "page missing title".
+- Cổng check-links/build/sitemap được CI xác nhận lại ở run trên commit `771c095a` trở đi (xem run cuối trên [PR #1](https://github.com/codeappweb/lab/pull/1)).
 
 ## Blocked (external, không tự ý xử lý)
 

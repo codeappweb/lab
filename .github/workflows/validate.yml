@@ -61,12 +61,14 @@ jobs:
         run: node scripts/seo-score.mjs
       - name: Content hashes
         run: node scripts/compute-content-hashes.mjs
-      - name: Manifest consistency (dry-run gate)
-        # On PRs this is a hard gate; the reconcile-pr job below performs the
-        # real sync and commits it to the PR branch. On pushes to main the
-        # reconcile job does the same, so the dry-run is advisory there.
+      - name: Manifest consistency (dry-run, advisory here)
+        # The dry-run is advisory in this job: on a fresh PR/push the manifest
+        # is intentionally not yet synced with repository truth. The REAL
+        # enforcement is in the reconcile jobs below, which run the actual
+        # sync, re-run the gates on the synced tree and prove convergence
+        # with a final dry-run that MUST pass.
         run: node scripts/sync-manifest.mjs --dry-run
-        continue-on-error: ${{ github.event_name == 'push' }}
+        continue-on-error: true
 
   build:
     name: Jekyll build (blocking) + built-site validation
@@ -98,6 +100,8 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+      - name: Put the checkout on a real branch (checkout with ref detaches HEAD)
+        run: git checkout -B "${{ github.head_ref }}"
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -110,6 +114,8 @@ jobs:
           node scripts/detect-duplicates.mjs
           node scripts/check-links.mjs
           node scripts/validate-sitemap.mjs
+      - name: Prove convergence (dry-run must now pass)
+        run: node scripts/sync-manifest.mjs --dry-run
       - name: Commit reconciled manifest to the PR branch if changed
         run: |
           set -eu
@@ -146,6 +152,8 @@ jobs:
           node scripts/detect-duplicates.mjs
           node scripts/check-links.mjs
           node scripts/validate-sitemap.mjs
+      - name: Prove convergence (dry-run must now pass)
+        run: node scripts/sync-manifest.mjs --dry-run
       - name: Commit reconciled manifest to main if changed
         run: |
           set -eu

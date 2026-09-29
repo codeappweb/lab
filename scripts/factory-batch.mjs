@@ -701,6 +701,35 @@ function cmdRecover() {
   console.log('recover: ' + fixed + ' row(s) reconciled with repository truth');
 }
 
+// Resume unfinished work before claiming new work: if draft directories
+// already contain writer-produced drafts for planned manifest rows and
+// there is no active batch state, the OLDEST such directory becomes the
+// batch (its drafts are absorbed by prepare-next). Never orphan drafts.
+function resumableDraftBatch(manifest, posts) {
+  if (!existsSync(DRAFTS_ROOT)) return null;
+  const candidates = [];
+  for (const d of readdirSync(DRAFTS_ROOT)) {
+    if (!/^batch-\d{4}-\d{2}-\d{2}(-\d{3})?$/.test(d)) continue;
+    let isDir = false;
+    try { isDir = statSync(join(DRAFTS_ROOT, d)).isDirectory(); } catch { continue; }
+    if (!isDir) continue;
+    const drafts = readdirSync(join(DRAFTS_ROOT, d)).filter(f => f.endsWith('.md'));
+    if (!drafts.length) continue;
+    const planned = drafts.filter(f => {
+      const slug = f.replace(/\.md$/, '');
+      const rec = manifest.find(r => r.slug === slug);
+      return rec && rec.status === 'planned' && !posts.has(slug);
+    });
+    if (planned.length) candidates.push(d);
+  }
+  candidates.sort();
+  if (candidates.length) {
+    console.log('prepare-next: resuming unfinished draft batch ' + candidates[0] + ' (' + candidates.length + ' resumable dir(s) found)');
+    return candidates[0];
+  }
+  return null;
+}
+
 function cmdPrepareNext(batchSizeArg) {
   let size;
   if (batchSizeArg !== undefined) {
@@ -715,6 +744,7 @@ function cmdPrepareNext(batchSizeArg) {
   const posts = publishedSlugs();
   let state = loadState();
   let batch = activeBatchId(state);
+  if (!batch) batch = resumableDraftBatch(manifest, posts);
   if (!batch) batch = batchIdForToday();
   acquireLock(batch);
   if (!state || state.batch !== batch) state = { batch, created_at: nowIso(), rows: [] };

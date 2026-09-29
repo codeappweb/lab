@@ -83,12 +83,15 @@ for (const f of mdFiles) {
   const body = parsed ? text.slice(bodyEnd + 4) : text;
   const prose = proseOnly(body);
 
-  // junk checks apply to every markdown file, technical docs included
+  // Technical docs (README/AGENTS/CONTRIBUTING/docs/**) legitimately mention
+  // field names (source_url, primary_keyword), code identifiers and the word
+  // "undefined" when documenting the validators themselves — junk prose checks
+  // apply to SITE CONTENT only. Filename hygiene was checked above.
+  if (isTechnicalDoc(rel)) continue;
+
   if (CJK.test(prose)) errors.push(rel + ': CJK characters found in prose');
   if (UNDEF.test(prose)) errors.push(rel + ': "undefined" artifact in prose');
   if (PROSE_UNDERSCORE.test(prose)) errors.push(rel + ': underscore artifact in prose');
-
-  if (isTechnicalDoc(rel)) continue; // no front-matter / H1 / SEO requirements
 
   if (!parsed) {
     errors.push(rel + ': missing or malformed front matter');

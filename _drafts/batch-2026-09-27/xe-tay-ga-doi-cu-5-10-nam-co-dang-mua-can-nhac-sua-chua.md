@@ -30,7 +30,7 @@ Một chiếc xe ga năm đến mười năm tuổi có giá bằng nửa, thậ
 
 ## Ưu điểm thực tế của xe ga cũ
 
-Xe cũ ít tuổi trầm hơn về giá: khoản khấu hao lớn nhất của xe máy rơi vào vài năm đầu. Xe qua五年 đã chịu phần rớt giá đó, người mua sau hưởng lợi. Xe ga đời cũ cũng ít thiết bị điện tử phức tạp, thợ quen kết cấu nên sửa dễ và rẻ hơn xe đời mới. Với người cần phương tiện đi lại thuần túy, không quan tâm tiện ích thông minh, xe ga cũ phù hợp.
+Xe cũ ít tuổi trầm hơn về giá: khoản khấu hao lớn nhất của xe máy rơi vào vài năm đầu. Xe qua 5 năm đã chịu phần rớt giá đó, người mua sau hưởng lợi. Xe ga đời cũ cũng ít thiết bị điện tử phức tạp, thợ quen kết cấu nên sửa dễ và rẻ hơn xe đời mới. Với người cần phương tiện đi lại thuần túy, không quan tâm tiện ích thông minh, xe ga cũ phù hợp.
 
 ## Các cụm hao mòn phải tính trước khi mua
 
@@ -56,7 +56,8 @@ Yêu cầu xem đăng ký khớp khung, kiểm tra số khung sườn nguyên b�
 
 ## Công thức quyết định
 
-Ghi lại giá xin, cộng dự phóñ phục hồi các cụm trên, rồi so với giá xe ít tuổi hơn bốn năm cùng dòng. Nếu chênh lệch sau cộng vẫn đáng kể và người bán cho kiểm tra kỹ, xe cũ đáng mua. Nếu sau khi cộng chi phí mà ngang xe mới hơn, mua mới đỡ rủi ro. Ba nhóm người phù hợp xe ga cũ: người có thợ tin cậy quen xe đời đó, người mua xe tạm thời dùng một hai năm, và người am hiểu tự sửa được. Ai không rơi vào ba nhóm này nên cân nhắc kỹ.
+Ghi lại giá xin, cộng dự phóñ phục hồi các cụm trên, rồi so với giá xe ít tuổi hơn bốn năm cùng dòng. Nếu chênh lệch sau cộng vẫn đáng kể và người bán cho kiểm tra kỹ, xe cũ đáng mua. Nếu sau khi cộng chi phí mà ngang xe mới hơn, mua mới đỡ rủi ro. Ba nhóm người phù hợp xe ga cũ: người có thợ tin cậy quen xe đời đó, người mua xe tạm thời dùng một hai năm, và ng
+ười am hiểu tự sửa được. Ai không rơi vào ba nhóm này nên cân nhắc kỹ.
 
 ## Tóm lại
 

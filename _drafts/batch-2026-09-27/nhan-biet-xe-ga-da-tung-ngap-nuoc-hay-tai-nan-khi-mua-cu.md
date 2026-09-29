@@ -26,7 +26,7 @@ freshness_status: evergreen
 legal_sensitivity: false
 ---
 
-Hai "tiền sử" đáng sợ nhất của xe ga cũ là ngập nước và va chạm nặng. Xe ngập nước giấu bệnh ở hệ thống điện: hôm nay chạy êm, vài tháng sau chập chờn không chữa dứt. Xe từng đâm lớn có khung lệch,安全隐患 đi lại. Người bán hiếm khi khai báo thành thật, nên người mua phải tự kiểm. Danh sách dưới đây giúp bạn phát hiện phần lớn các dấu hiệu.
+Hai "tiền sử" đáng sợ nhất của xe ga cũ là ngập nước và va chạm nặng. Xe ngập nước giấu bệnh ở hệ thống điện: hôm nay chạy êm, vài tháng sau chập chờn không chữa dứt. Xe từng đâm lớn có khung lệch, nguy hiểm tiềm ẩn khi đi lại. Người bán hiếm khi khai báo thành thật, nên người mua phải tự kiểm. Danh sách dưới đây giúp bạn phát hiện phần lớn các dấu hiệu.
 
 ## Dấu hiệu xe từng ngập nước
 
@@ -54,11 +54,11 @@ Xe đâm cần sơn lại, sơn lại cần tháo ốc. Soi đầu ốc khắp x
 
 ### Lệch khung và thẳng hàng
 
-Đứng phía trước xe nhìn thẳng theo trục: cổ xe, yên, đuôi xe phải thẳng hàng. Ngồi lên xe nhìn xuống hoa văn lốp trước có bị lệch so với giữa tay lái. Chạy thử buông hai tay nhẹ trên đường phẳng: xe rích về một bên là dấu hiệu khung đã lệch hoặc前的 bị gãy giấu.
+Đứng phía trước xe nhìn thẳng theo trục: cổ xe, yên, đuôi xe phải thẳng hàng. Ngồi lên xe nhìn xuống hoa văn lốp trước có bị lệch so với giữa tay lái. Chạy thử buông hai tay nhẹ trên đường phẳng: xe rích về một bên là dấu hiệu khung đã lệch hoặc phuộc trước bị gãy giấu.
 
 ### Chuyền động và bán kính vòng quay
 
-Xe đâm trước nặng thường thay cả cụm trước: hỏi kỹ nguồn gốc của cột,覆, giảm xóc trước. ốc của các cụm này bằng dấu tháo tức là từng can thiệp. Với xe ga, thêm một điểm: hộp truyền động phía sau va chạm có thể nứt l subtle, soi kỹ mặt ngoài hộp CVT.
+Xe đâm trước nặng thường thay cả cụm trước: hỏi kỹ nguồn gốc của cột, phuộc, giảm xóc trước. ốc của các cụm này bằng dấu tháo tức là từng can thiệp. Với xe ga, thêm một điểm: hộp truyền động phía sau va chạm có thể nứt l subtle, soi kỹ mặt ngoài hộp CVT.
 
 ## Các bước kiểm tra thực địa
 
@@ -72,4 +72,5 @@ Nếu phát hiện nhiều dấu hiệu chồng nhau, tốt nhất là bỏ, vì
 
 ## Tóm lại
 
-Ngập nước để lại gỉ theo vạch mực nước, cát trong khe và điện chập chờn. Va chạm nặng để lại sơn lại, dấu tháo ốc và khung lệch. Kiểm tra bằng mắt thường dưới nắng, đèn pin và chạy thử phát hiện được phần lớn các trường hợp. Nội dung về mua và kiểm định xe cũ tổng hợp tại [xe cũ]({{ '/danh-muc/xe-may/xe-cu/' | relative_url }}).
+Ngập nước để lại gỉ theo vạch mực nước, cát trong khe và điện chập chờn. Va chạm nặng để lại sơn lại, dấu tháo ốc và khung lệch. Kiểm tra bằng mắt thường 
+dưới nắng, đèn pin và chạy thử phát hiện được phần lớn các trường hợp. Nội dung về mua và kiểm định xe cũ tổng hợp tại [xe cũ]({{ '/danh-muc/xe-may/xe-cu/' | relative_url }}).

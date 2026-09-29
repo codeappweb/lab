@@ -33,7 +33,7 @@ Giá mua xe chỉ là khoản đầu. Mỗi tháng một chiếc xe ga chạy �
 
 Xăng là khoản luỹ kế lớn nhất theo thời gian. Mức tiêu hao thực tế của xe ga đô thị tùy dung tích máy, tình trạng xe và cách lái: xe mới bảo dưỡng tốt sẽ thấp hơn xe cũ nhiều. Nhiều người thấy rõ khác biệt khi xe bắt đầu hao xăng bất thường, mà nguyên nhân thường nằm ở lọc gió, bugi, lốp non hoặc curoa mòn, đã được liệt kê trong bài [xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên]({{ '/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/' | relative_url }}).
 
-Cách giảm xăng hợp lý không phải pha添加剂 hay chạy ép tải nhẹ vô tội vạ, mà là ba việc: bảo dưỡng đúng chu kỳ, giữ áp suất lốp chuẩn, và lái đều ga tránh giậm phanh liên tục. Tiêu chí chọn xe tốn ít xăng cho cung đường đi làm được phân tích tại [xe máy nào tiết kiệm xăng nhất cho đi làm Hà Nội: tiêu chí chọn]({{ '/xe-may-nao-tiet-kiem-xang-nhat-cho-di-lam-ha-noi-tieu-chi-chon/' | relative_url }}).
+Cách giảm xăng hợp lý không phải pha phụ gia hay chạy ép tải nhẹ vô tội vạ, mà là ba việc: bảo dưỡng đúng chu kỳ, giữ áp suất lốp chuẩn, và lái đều ga tránh giậm phanh liên tục. Tiêu chí chọn xe tốn ít xăng cho cung đường đi làm được phân tích tại [xe máy nào tiết kiệm xăng nhất cho đi làm Hà Nội: tiêu chí chọn]({{ '/xe-may-nao-tiet-kiem-xang-nhat-cho-di-lam-ha-noi-tieu-chi-chon/' | relative_url }}).
 
 ## Khoản gửi xe
 
@@ -49,7 +49,8 @@ Tự theo dõi hai việc giúp tiết kiệm thực sự: ghi lại ký lô ga 
 
 Ngoài bảo dưỡng, xe còn hao lốp, ắc quy, má phanh và bóng đèn theo thời gian. Đây là các khoản khó dự báo chính xác nhưng chắc chắn xảy ra. Với xe ga đã vài năm tuổi, nên có một quỹ dự phòng sửa nhỏ mỗi tháng để khi hỏng không bị động tài chính. Các lỗi thường gặp theo triệu chứng để tự chẩn đoán trước khi đến tiệm được tổng hợp trong bài [xe hao xăng bất thường: 7 lỗi nên kiểm tra đầu tiên]({{ '/xe-hao-xang-bat-thuong-7-loi-nen-kiem-tra-dau-tien/' | relative_url }}) và nhóm bài chẩn đoán của mục [sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}).
 
-## Khoản khác: bảo hiểm và kiểm định
+## Khoản khác: bảo hiểm và kiểm
+ định
 
 Bảo hiểm trách nhiệm dân sự bắt buộc là khoản nhỏ theo năm nhưng bắt buộc. Với xe trên ba năm, chu kỳ kiểm định cũng cần tính vào lịch và ngân sách. Các khoản này cố định, không tiết kiệm được, chỉ nên nhớ hạn để tránh phạt.
 

@@ -58,6 +58,18 @@ const README_NO_FM = [
   ''
 ].join('\n');
 
+// README that names YAML fields and documents the validator's own
+// "undefined" detection — must stay accepted (no false positives).
+const README_DOCS_FIELDS = [
+  '# codeappweb/lab',
+  '',
+  'Nguồn pháp lý ghi các trường (source_title, source_url, publisher,',
+  'published_or_effective_date, fact, last_verified, applies_to).',
+  'Validator phát hiện artifact "undefined" trong tên file và nội dung,',
+  'thiếu description ở trang indexable, primary_keyword bị lỗi.',
+  ''
+].join('\n');
+
 test('valid page + README without front matter are accepted', () => {
   const dir = fixture({
     '_posts/2026-01-01-bai-viet-hop-le.md': VALID_PAGE,
@@ -91,21 +103,28 @@ test('site page without front matter is blocked', () => {
   assert.match(r.stdout, /missing or malformed front matter/);
 });
 
-test('technical doc mentioning field names and "undefined" is accepted', () => {
-  const doc = [
-    '# Schema',
-    '',
-    'Bai viet co truong source_url va primary_keyword trong front matter.',
-    'Validator phat hien artifact undefined trong noi dung site, khong trong tai lieu.',
-    ''
-  ].join('\n');
-  const dir = fixture({ 'README.md': doc, 'docs/SPEC.md': doc });
-  const r2 = run(dir);
-  assert.equal(r2.status, 0, 'expected exit 0, got:\n' + r2.stdout + r2.stderr);
-});
-
 test('README with relative_url liquid filter is not flagged', () => {
   const dir = fixture({ 'README.md': README_NO_FM });
+  const r = run(dir);
+  assert.equal(r.status, 0, 'expected exit 0, got:\n' + r.stdout + r.stderr);
+});
+
+test('README naming YAML fields and the undefined detection is not flagged', () => {
+  const dir = fixture({ 'README.md': README_DOCS_FIELDS });
+  const r = run(dir);
+  assert.equal(r.status, 0, 'expected exit 0, got:\n' + r.stdout + r.stderr);
+});
+
+test('CJK junk in README prose is still blocked', () => {
+  const dir = fixture({ 'README.md': '# title\n\nVăn rác：这里是中文文本。\n' });
+  const r = run(dir);
+  assert.equal(r.status, 1);
+  assert.match(r.stdout, /CJK characters found in prose/);
+});
+
+test('underscore artifact in docs/ file prose is exempt, CJK is not', () => {
+  // docs/ files are technical documentation: identifier-style words are fine
+  const dir = fixture({ 'docs/ARCH.md': '# Kiến trúc\n\nTrường primary_keyword dùng cho SEO.\n' });
   const r = run(dir);
   assert.equal(r.status, 0, 'expected exit 0, got:\n' + r.stdout + r.stderr);
 });

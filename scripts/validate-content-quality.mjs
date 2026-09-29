@@ -6,7 +6,9 @@
 // Audit fixes 2026-09-29 (round 2):
 //   - README.md / AGENTS.md / CONTRIBUTING.md / docs/** are technical
 //     documentation, not site pages: front matter is NOT required there and
-//     H1 headings are allowed, but junk checks still apply.
+//     H1 headings are allowed. CJK junk still applies; "undefined"/
+//     underscore prose patterns are exempted there because technical docs
+//     legitimately name code identifiers and document the validator itself.
 //   - Prose checks run on text stripped of fenced code, inline code, Liquid
 //     output/tags, HTML tags, URLs and markdown link targets, so legitimate
 //     Liquid filters such as `relative_url` are no longer flagged as
@@ -83,15 +85,20 @@ for (const f of mdFiles) {
   const body = parsed ? text.slice(bodyEnd + 4) : text;
   const prose = proseOnly(body);
 
-  // Technical docs (README/AGENTS/CONTRIBUTING/docs/**) legitimately mention
-  // field names (source_url, primary_keyword), code identifiers and the word
-  // "undefined" when documenting the validators themselves — junk prose checks
-  // apply to SITE CONTENT only. Filename hygiene was checked above.
-  if (isTechnicalDoc(rel)) continue;
-
+  // CJK junk applies to every markdown file, technical docs included.
   if (CJK.test(prose)) errors.push(rel + ': CJK characters found in prose');
-  if (UNDEF.test(prose)) errors.push(rel + ': "undefined" artifact in prose');
-  if (PROSE_UNDERSCORE.test(prose)) errors.push(rel + ': underscore artifact in prose');
+
+  // "undefined"/underscore artifacts are site-content checks. Technical
+  // documentation (README/AGENTS/CONTRIBUTING/docs) legitimately names
+  // code identifiers (source_url, primary_keyword) and documents the
+  // validator's own "undefined" detection, so those two patterns are
+  // exempted there; they still fire on every site page.
+  if (!isTechnicalDoc(rel)) {
+    if (UNDEF.test(prose)) errors.push(rel + ': "undefined" artifact in prose');
+    if (PROSE_UNDERSCORE.test(prose)) errors.push(rel + ': underscore artifact in prose');
+  }
+
+  if (isTechnicalDoc(rel)) continue; // no front-matter / H1 / SEO requirements
 
   if (!parsed) {
     errors.push(rel + ': missing or malformed front matter');

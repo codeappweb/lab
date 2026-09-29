@@ -58,7 +58,7 @@ Chủ đề liên quan dùng tags/entities/related_topics, không gán nhiều d
 
 ## Sitemap & SEO
 
-- jekyll-sitemap plugin tự sinh sitemap gồm mọi trang — KHÔNG chạy lại `scripts/build-sitemap.mjs` (bản cũ theo manifest, đã lỗi thời).
+- Sitemap tĩnh theo shard: `scripts/gen-sitemap-shards.mjs` sinh `sitemap.xml` (index), `sitemaps/articles-NNN.xml`, `sitemaps/categories.xml`, `sitemaps/static.xml` (chạy trong CI content-pipeline), `scripts/validate-sitemap.mjs` kiểm tra tập URL. KHÔNG dùng plugin jekyll-sitemap (không có trong Gemfile/_config.yml); `scripts/build-sitemap.mjs` cũ (sinh theo manifest) đã xóa.
 - Mỗi trang danh mục có H1/title/description/canonical duy nhất; trang con chưa có nội dung hiển thị trạng thái "Nội dung đang được chuẩn bị" trung thực.
 - Tìm kiếm (Ctrl K) và Trợ lý AI hiểu trường parent/child trong `assets/search.json` và `assets/data/content-index.json` (sinh tự động khi build).
 
@@ -86,7 +86,8 @@ Trước MỌI lần push nội dung mới:
 
 1. Chạy `node scripts/validate-content-quality.mjs` (validator chất lượng nội dung).
 2. Nếu validator trả về lỗi (exit 1): KHÔNG push. Sửa lỗi trước.
-3. Validator phát hiện: ký tự CJK trong nội dung tiếng Việt, artifact "undefined" trong tên file/nội dung, front matter hỏng, permalink trùng, thiếu title, thiếu description ở trang indexable, nhiều H1, artifact gạch dưới trong văn xuôi, trang danh mục indexable trống/nhỏ hơn 200 từ, template search vẫn chứa hub hoặc thiếu filter noindex. Từ kỹ thuật tiếng Anh hợp lệ (BMS, GPS, LFP, Lithium, Smartkey, CVT...) KHÔNG bị cấm.
+3. Trên PR/push lên main, workflow `.github/workflows/validate.yml` chạy đầy đủ gate: content quality, duplicate detection, check-links (đối chiếu repo truth), sitemap, self-heal, legal freshness, SEO, content hashes, sync-manifest dry-run, `bundle exec jekyll build` (blocking) và `node scripts/validate-built.mjs` sau build. Cục bộ: `node scripts/validate-deploy.mjs`.
+4. Validator phát hiện: ký tự CJK trong nội dung tiếng Việt, artifact "undefined" trong tên file/nội dung, front matter hỏng, permalink trùng, thiếu title, thiếu description ở trang indexable, nhiều H1, artifact gạch dưới trong văn xuôi, trang danh mục indexable trống/nhỏ hơn 200 từ, template search vẫn chứa hub hoặc thiếu filter noindex. Từ kỹ thuật tiếng Anh hợp lệ (BMS, GPS, LFP, Lithium, Smartkey, CVT...) KHÔNG bị cấm.
 
 ### Quy tắc đưa chuyên mục con vào trạng thái indexable
 

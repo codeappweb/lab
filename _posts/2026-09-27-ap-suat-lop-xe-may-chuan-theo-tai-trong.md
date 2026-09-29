@@ -19,7 +19,7 @@ entities:
 related_articles:
   - chon-lop-xe-may-dung-co-gai-thanh-lop-va-cach-doc-kich-thuoc
   - lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach
-  - xe-may-bi-truot-con-de-dau-hieu-nhan-biet-va-cach-xu-ly
+  - xe-may-bi-truot-con-dau-hieu-nhan-biet-va-cach-xu-ly
 created_at: 2026-09-27
 updated_at: 2026-09-27
 freshness_status: evergreen
@@ -44,7 +44,7 @@ Bánh sau thường cần áp suất cao hơn bánh trước vì chịu phần l
 
 ## Hậu quả của áp suất sai
 
-Lốp non kéo theo nhiều hệ lụy: mòn hai bên vai lốp, xé lốp khi va chạt, xe đuối và ăn xăng, thậm chí là rủi ro lật bánh khi cua gắt, xem thêm [xe máy bị trượt cồn: dấu hiệu nhận biết và cách xử lý]({{ '/xe-may-bi-truot-con-de-dau-hieu-nhan-biet-va-cach-xu-ly/' | relative_url }}). Lốp căng quá thì giảm bám đường, xóc mạnh ảnh hưởng phuộc và dễ nứt lốp khi câng ổ.
+Lốp non kéo theo nhiều hệ lụy: mòn hai bên vai lốp, xé lốp khi va chạt, xe đuối và ăn xăng, thậm chí là rủi ro lật bánh khi cua gắt, xem thêm [xe máy bị trượt cồn: dấu hiệu nhận biết và cách xử lý]({{ '/xe-may-bi-truot-con-dau-hieu-nhan-biet-va-cach-xu-ly/' | relative_url }}). Lốp căng quá thì giảm bám đường, xóc mạnh ảnh hưởng phuộc và dễ nứt lốp khi câng ổ.
 
 Áp suất cũng ảnh hưởng tới tuổi thọ lốp: khi thay lốp mới, cần chọn đúng kích thước ghi trên thành lốp, hướng dẫn tại [chọn lốp xe máy: đúng cỡ, gai thành lốp và cách đọc kích thước]({{ '/chon-lop-xe-may-dung-co-gai-thanh-lop-va-cach-doc-kich-thuoc/' | relative_url }}). Nếu lốp xẹp liên tục dù bơm đúng, có thể bị đâm cam hoặc van lỗi, xử lý theo [lốp xe máy bị thủng và hay thay và thế nào đúng cách]({{ '/lop-xe-may-bi-thung-va-hay-thay-va-the-nao-dung-cach/' | relative_url }}).
 

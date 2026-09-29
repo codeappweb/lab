@@ -91,6 +91,19 @@ test('site page without front matter is blocked', () => {
   assert.match(r.stdout, /missing or malformed front matter/);
 });
 
+test('technical doc mentioning field names and "undefined" is accepted', () => {
+  const doc = [
+    '# Schema',
+    '',
+    'Bai viet co truong source_url va primary_keyword trong front matter.',
+    'Validator phat hien artifact undefined trong noi dung site, khong trong tai lieu.',
+    ''
+  ].join('\n');
+  const dir = fixture({ 'README.md': doc, 'docs/SPEC.md': doc });
+  const r2 = run(dir);
+  assert.equal(r2.status, 0, 'expected exit 0, got:\n' + r2.stdout + r2.stderr);
+});
+
 test('README with relative_url liquid filter is not flagged', () => {
   const dir = fixture({ 'README.md': README_NO_FM });
   const r = run(dir);

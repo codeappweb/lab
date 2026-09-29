@@ -2,7 +2,16 @@ name: Content Pipeline (validate + audit)
 
 # Advisory pipeline: production deployment happens via GitHub Pages branch build.
 # This workflow validates, audits, regenerates deterministic artifacts (sitemaps,
-# dashboards, manifest sync) and commits them back if — and only if — validation is green.
+# dashboards, manifest sync) and commits them back if — and only if — validation
+# is green.
+#
+# Audit fixes 2026-09-29:
+#   - Jekyll build is a BLOCKING gate: bundle install + bundle exec jekyll
+#     build + validate-built, no `|| true`, no error swallowing. A failed
+#     build fails the workflow BEFORE any commit/push.
+#   - Commit/push uses scripts/factory-push.mjs (scope-verified, fail-closed,
+#     rebase + revalidation on the exact tree that will be pushed), shared
+#     with the content-factory workflow.
 
 on:
   schedule:
@@ -26,7 +35,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: "20"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+          bundler-cache: false
 
       - name: Validate content quality
         run: node scripts/validate-content-quality.mjs
@@ -34,7 +48,7 @@ jobs:
       - name: Detect duplicates
         run: node scripts/detect-duplicates.mjs
 
-      - name: Check internal links
+      - name: Check internal links (disk truth)
         run: node scripts/check-links.mjs
 
       - name: Regenerate sitemap shards
@@ -64,19 +78,26 @@ jobs:
       - name: Dashboard
         run: node scripts/gen-dashboard.mjs
 
-      - name: Jekyll build smoke test
+      # BLOCKING production build: no || true, no error swallowing. The
+      # build runs AFTER the artifact regeneration above so it validates the
+      # exact tree that would be pushed.
+      - name: Jekyll build (BLOCKING gate)
         run: |
-          gem install github-pages -N || true
-          bundle exec jekyll build 2>/dev/null || gem install jekyll -N && jekyll build || true
+          set -eu
+          bundle install --jobs 4 --retry 3
+          bundle exec jekyll build
 
-      - name: Commit regenerated artifacts if changed
+      - name: Validate built site (BLOCKING gate)
+        run: node scripts/validate-built.mjs
+
+      # Commit regenerated artifacts via the shared scope-verified,
+      # fail-closed pusher. If origin/main moved, factory-push rebases and
+      # RERUNS this revalidation on the rebased tree before pushing.
+      - name: Commit regenerated artifacts if changed (scope-verified, fail-closed)
         run: |
+          set -eu
           git config user.name "lab-pipeline-bot"
           git config user.email "actions@github.com"
-          git add sitemap.xml sitemaps/ data/sitemap-shards.json data/topic-queue.json data/article-manifest.jsonl data/progress.json reports/ 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "No artifact changes."
-          else
-            git commit -m "chore(pipeline): regenerate sitemaps, audits, dashboard"
-            git push
-          fi
+          node scripts/factory-push.mjs \
+            --message "chore(pipeline): regenerate sitemaps, audits, dashboard" \
+            --revalidate "node scripts/validate-content-quality.mjs && node scripts/detect-duplicates.mjs && node scripts/check-links.mjs && node scripts/validate-sitemap.mjs && bundle exec jekyll build && node scripts/validate-built.mjs"

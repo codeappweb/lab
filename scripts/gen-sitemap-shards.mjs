@@ -20,7 +20,7 @@ function parseFrontMatter(text) {
 }
 
 function fmValue(fm, key) {
-  const m = fm.match(new RegExp('^' + key + ':\\s*"?([^"\\n]*)"?', 'm')));
+  const m = fm.match(new RegExp('^' + key + ':\\s*"?([^"\\n]*)"?', 'm'));
   return m ? m[1].trim() : null;
 }
 

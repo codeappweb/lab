@@ -1,0 +1,161 @@
+name: Validate
+
+# PR/push validation pipeline (audit fix 2026-09-29).
+# Every gate is BLOCKING: no `|| true`, no error swallowing.
+# - scripts: syntax check + regression tests (node:test)
+# - gates: all content gates; manifest dry-run must be in sync
+# - build: bundle exec jekyll build --strict_front_matter + validate-built
+# - reconcile-pr / reconcile: run the REAL sync-manifest on the tree and
+#   re-run the key gates on the reconciled tree before committing, so the
+#   manifest always matches repository truth (posts on disk).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    name: Script syntax + regression tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check every script
+        run: |
+          set -eu
+          for f in scripts/*.mjs; do node --check "$f"; done
+      - name: Regression tests
+        run: node --test scripts/
+
+  gates:
+    name: Content gates (blocking)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Content quality
+        run: node scripts/validate-content-quality.mjs
+      - name: Duplicate detection
+        run: node scripts/detect-duplicates.mjs
+      - name: Internal links (disk truth)
+        run: node scripts/check-links.mjs
+      - name: Sitemap validation
+        run: node scripts/validate-sitemap.mjs
+      - name: Self-heal audit
+        run: node scripts/self-heal-audit.mjs
+      - name: Legal freshness audit
+        run: node scripts/legal-freshness-audit.mjs
+      - name: SEO scoring
+        run: node scripts/seo-score.mjs
+      - name: Content hashes
+        run: node scripts/compute-content-hashes.mjs
+      - name: Manifest consistency (dry-run gate)
+        # On PRs this is a hard gate; the reconcile-pr job below performs the
+        # real sync and commits it to the PR branch. On pushes to main the
+        # reconcile job does the same, so the dry-run is advisory there.
+        run: node scripts/sync-manifest.mjs --dry-run
+        continue-on-error: ${{ github.event_name == 'push' }}
+
+  build:
+    name: Jekyll build (blocking) + built-site validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3
+      - name: Jekyll build (strict front matter, blocking)
+        run: bundle exec jekyll build --strict_front_matter
+      - name: Validate built site (links + sitemap URLs in _site)
+        run: node scripts/validate-built.mjs
+
+  reconcile-pr:
+    name: Reconcile manifest (PR branch)
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run sync (write mode)
+        run: node scripts/sync-manifest.mjs
+      - name: Re-run key gates on the reconciled tree
+        run: |
+          set -eu
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+      - name: Commit reconciled manifest to the PR branch if changed
+        run: |
+          set -eu
+          git config user.name "lab-pipeline-bot"
+          git config user.email "actions@github.com"
+          if git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            echo "manifest already in sync"
+            exit 0
+          fi
+          git add data/article-manifest.jsonl data/progress.json
+          git commit -m "chore(reconcile): sync manifest/progress with repository truth"
+          git pull --rebase origin "${{ github.head_ref }}"
+          git push origin HEAD:"${{ github.head_ref }}"
+
+  reconcile:
+    name: Reconcile manifest (main)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run sync (write mode)
+        run: node scripts/sync-manifest.mjs
+      - name: Re-run key gates on the reconciled tree
+        run: |
+          set -eu
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+      - name: Commit reconciled manifest to main if changed
+        run: |
+          set -eu
+          git config user.name "lab-pipeline-bot"
+          git config user.email "actions@github.com"
+          if git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            echo "manifest already in sync"
+            exit 0
+          fi
+          git add data/article-manifest.jsonl data/progress.json
+          git commit -m "chore(reconcile): sync manifest/progress with repository truth"
+          git pull --rebase origin main
+          git push

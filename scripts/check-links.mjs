@@ -1,34 +1,115 @@
 #!/usr/bin/env node
-// check-links.mjs — internal link integrity for posts.
-// Repair 2026-09-29: link targets are validated against the manifest AND
-// the actual posts on disk (previously only manifest slugs were accepted,
-// so a valid link to an unmapped post was a false positive).
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+// check-links.mjs — internal link integrity gate.
+// Audit fix 2026-09-29: link targets are validated against REPOSITORY TRUTH
+// ONLY — posts on disk, category pages on disk (danh-muc/**), hub pages on
+// disk (hub/**) and static root pages. A "planned" slug in
+// data/article-manifest.jsonl is NOT evidence that a URL exists, so the
+// manifest is no longer used as a source of valid targets.
+// Checked sources: _posts/**, danh-muc/**, hub/** and root content pages
+// (technical docs README/AGENTS/CONTRIBUTING/docs are excluded).
+// Both markdown links and Liquid relative_url filters are checked.
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+
 const ROOT = new URL('..', import.meta.url).pathname;
-const recs = readFileSync(ROOT + 'data/article-manifest.jsonl', 'utf8').split('\n').filter(Boolean).map(JSON.parse);
-const slugs = new Set(recs.map(r => r.slug));
-// posts on disk are always valid targets (repository truth wins over manifest)
-if (existsSync(ROOT + '_posts')) {
-  for (const f of readdirSync(ROOT + '_posts').filter(f => f.endsWith('.md'))) {
-    slugs.add(f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, ''));
+
+function parseFm(text) {
+  if (!text.startsWith('---')) return null;
+  const end = text.indexOf('\n---', 3);
+  if (end === -1) return null;
+  const o = {};
+  for (const line of text.slice(3, end).split('\n')) {
+    const m = line.match(/^([a-z_]+):\s*\"?([^\"\n]*)\"?\s*$/);
+    if (m) o[m[1]] = m[2];
+  }
+  return o;
+}
+
+function walkMd(dir, out = []) {
+  if (!existsSync(dir)) return out;
+  for (const name of readdirSync(dir)) {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) walkMd(full, out);
+    else if (name.endsWith('.md')) out.push(full);
+  }
+  return out;
+}
+
+// Normalize an internal path: strip the /lab baseurl prefix, query and
+// fragment, collapse trailing slashes. Returns '' for the homepage.
+function norm(p) {
+  return p.replace(/^\/lab(?=\/)/, '').split('#')[0].split('?')[0].replace(/\/+$/, '');
+}
+
+// ---- Build the set of valid internal link targets from repository truth ----
+const targets = new Set();
+function addTarget(raw) {
+  const p = norm(raw);
+  if (p) targets.add(p);
+}
+
+// static root pages (permalink wins over filename)
+for (const f of readdirSync(ROOT).filter(f => f.endsWith('.md'))) {
+  const meta = parseFm(readFileSync(join(ROOT, f), 'utf8')) || {};
+  if (meta.permalink) addTarget(meta.permalink);
+  addTarget('/' + f.replace(/\.md$/, ''));
+}
+targets.add(norm('/index'));
+
+// posts: slug from filename + permalink if present
+const postFiles = walkMd(join(ROOT, '_posts'));
+for (const f of postFiles) {
+  const slug = f.replace(/^.*\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+  addTarget('/' + slug);
+  const meta = parseFm(readFileSync(f, 'utf8')) || {};
+  if (meta.permalink) addTarget(meta.permalink);
+}
+
+// category and hub pages on disk (permalink wins over path)
+const contentFiles = [];
+for (const dir of ['danh-muc', 'hub']) {
+  for (const f of walkMd(join(ROOT, dir))) {
+    contentFiles.push(f);
+    const rel = f.slice(ROOT.length).replace(/\\/g, '/');
+    const meta = parseFm(readFileSync(f, 'utf8')) || {};
+    if (meta.permalink) addTarget(meta.permalink);
+    addTarget(rel.replace(/\.md$/, ''));
   }
 }
-// category and static pages are valid targets
-const STATIC = new Set(['danh-muc', 'gioi-thieu', 'lien-he', 'faq', 'dich-vu', 'bao-mat', 'dieu-khoan']);
-const files = existsSync(ROOT + '_posts') ? readdirSync(ROOT + '_posts').filter(f => f.endsWith('.md')) : [];
+
+// ---- Collect internal links from the files we own ----
+// Hub pages are legacy noindex pages whose rendering is verified after the
+// build by validate-built.mjs against the real _site tree.
+const SKIP_PREFIX = ['/assets/', '/sitemap', '/robots.txt', '/manifest.webmanifest', '/hub/'];
 const errs = [];
-for (const f of files) {
-  const md = readFileSync(ROOT + '_posts/' + f, 'utf8');
-  for (const m of md.matchAll(/\]\((\/[^)#\s]+)\)/g)) {
-    const target = m[1].replace(/^\/lab(?=\/)/, '');
-    if (target.startsWith('/hub/')) continue;
-    const parts = target.replace(/^\//, '').replace(/\/$/, '').split('/');
-    const leaf = parts[parts.length - 1];
-    const isStatic = parts.length === 1 && STATIC.has(leaf);
-    const isCategory = parts.length === 2 && parts[0] === 'danh-muc';
-    if (!slugs.has(leaf) && !isStatic && !isCategory) errs.push(f + ': link target "' + target + '" not found in manifest or posts');
+let linkCount = 0;
+
+function checkFile(f) {
+  const rel = f.slice(ROOT.length).replace(/\\/g, '/');
+  const text = readFileSync(f, 'utf8');
+  const links = new Set();
+  for (const m of text.matchAll(/\]\((\/[^)\s]*)\)/g)) links.add(m[1]);          // markdown
+  for (const m of text.matchAll(/'(\/[^']*)'\s*\|\s*relative_url/g)) links.add(m[1]); // liquid
+  for (const m of text.matchAll(/href=\"(\/[^\"]*)\"/g)) links.add(m[1]);         // raw html
+  for (const raw of links) {
+    const p = norm(raw);
+    if (p === '' || p === '/') continue; // homepage
+    if (SKIP_PREFIX.some(s => (p + '/').startsWith(s))) continue;
+    linkCount++;
+    if (!targets.has(p)) errs.push(rel + ': link target "' + p + '" does not exist on disk (not a post, category, hub or static page)');
   }
 }
-if (errs.length) { console.error(errs.join('\n')); process.exit(1); }
-console.log('link check OK (' + files.length + ' posts checked)');
+
+for (const f of postFiles) checkFile(f);
+for (const f of contentFiles) checkFile(f);
+for (const f of readdirSync(ROOT).filter(f => f.endsWith('.md'))) {
+  if (['README.md', 'AGENTS.md', 'CONTRIBUTING.md'].includes(f)) continue;
+  checkFile(join(ROOT, f));
+}
+
+if (errs.length) {
+  console.error(errs.join('\n'));
+  console.error('check-links: ' + errs.length + ' broken internal link(s).');
+  process.exit(1);
+}
+console.log('link check OK: ' + (postFiles.length + contentFiles.length) + ' content files, ' + linkCount + ' internal links, all targets verified against repository truth');

@@ -1,8 +1,13 @@
 {
   "loop": "micro-continuous",
   "chunk_size": 1,
-  "current_step": "idle/awaiting-user-command",
-  "active_article": null,
+  "current_step": "pr-open/awaiting-ci",
+  "active_article": {
+    "id": "C01-0016",
+    "slug": "thue-xe-cho-hang-cho-do-chuyen-nha-bang-xe-may-o-ha-noi",
+    "file": "_posts/2026-09-30-thue-xe-cho-hang-cho-do-chuyen-nha-bang-xe-may-o-ha-noi.md",
+    "step": "pr-open"
+  },
   "last_published": {
     "kind": "hold-release",
     "batch": "batch-2026-09-27",
@@ -17,6 +22,6 @@
     "deploy_verified": true,
     "verified_urls": 3
   },
-  "last_pushed_commit": "5088538732cd005a5d5ca7cfdb4a5db859494f4c",
-  "updated_at": "2026-09-30T17:28:04.272Z"
+  "last_pushed_commit": null,
+  "updated_at": "2026-09-30T18:06:54.113Z"
 }

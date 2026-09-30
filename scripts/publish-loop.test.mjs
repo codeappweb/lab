@@ -1,1 +1,1 @@
-%%FILE_CONTENT%%
+%%TEST_CONTENT%%

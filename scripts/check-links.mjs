@@ -13,6 +13,13 @@ import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 
+// --only a,b  restrict CHECKING to the given files (targets are still built
+// from repository truth — a scoped check never weakens target validation).
+const onlyIdx = process.argv.indexOf('--only');
+const ONLY = onlyIdx !== -1
+  ? (process.argv[onlyIdx + 1] || '').split(',').map(s => s.trim().replace(/^\/+/, '')).filter(Boolean)
+  : null;
+
 function parseFm(text) {
   if (!text.startsWith('---')) return null;
   const end = text.indexOf('\n---', 3);
@@ -100,11 +107,21 @@ function checkFile(f) {
   }
 }
 
-for (const f of postFiles) checkFile(f);
-for (const f of contentFiles) checkFile(f);
+const inScope = f => {
+  if (!ONLY) return true;
+  const rel = f.slice(ROOT.length).replace(/\\/g, '/').replace(/^\//, '');
+  return ONLY.includes(rel);
+};
+let checkedCount = 0;
+for (const f of postFiles) if (inScope(f)) { checkFile(f); checkedCount++; }
+for (const f of contentFiles) if (inScope(f)) { checkFile(f); checkedCount++; }
 for (const f of readdirSync(ROOT).filter(f => f.endsWith('.md'))) {
   if (['README.md', 'AGENTS.md', 'CONTRIBUTING.md'].includes(f)) continue;
-  checkFile(join(ROOT, f));
+  if (inScope(join(ROOT, f))) { checkFile(join(ROOT, f)); checkedCount++; }
+}
+if (ONLY && checkedCount === 0) {
+  console.error('check-links: --only matched no file on disk: ' + ONLY.join(', '));
+  process.exit(1);
 }
 
 if (errs.length) {
@@ -112,4 +129,4 @@ if (errs.length) {
   console.error('check-links: ' + errs.length + ' broken internal link(s).');
   process.exit(1);
 }
-console.log('link check OK: ' + (postFiles.length + contentFiles.length) + ' content files, ' + linkCount + ' internal links, all targets verified against repository truth');
+console.log('link check OK' + (ONLY ? ' (scoped to ' + checkedCount + ' changed file(s))' : '') + ': ' + (postFiles.length + contentFiles.length) + ' content files, ' + linkCount + ' internal links, all targets verified against repository truth');

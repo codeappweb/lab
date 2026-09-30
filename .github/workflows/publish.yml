@@ -11,8 +11,8 @@ name: Publish (micro loop)
 #   commits ONLY allowlisted derived paths back to the PR branch.
 # main is therefore always in sync: GitHub Pages (the single deploy path,
 # building from main) only ever receives articles that passed every gate.
-# Failures never commit, never push, and upload diagnostics as an artifact
-# AND post a diagnostics comment on the PR (readable without log access).
+# Failures never commit, never push, and upload the publish-loop log as an
+# artifact; ::error:: lines surface as check annotations for diagnosis.
 
 on:
   pull_request:
@@ -20,7 +20,6 @@ on:
 
 permissions:
   contents: write
-  issues: write
 
 concurrency:
   group: publish-${{ github.event.pull_request.head.ref }}
@@ -52,7 +51,6 @@ jobs:
           if [ -n "$OTHER" ]; then
             echo "::error::out-of-scope changes in PR (only _posts/** + derived allowlist allowed):"
             echo "$OTHER"
-            printf '%s\n' "$OTHER" > /tmp/scope-fail.txt
             exit 1
           fi
           ADDED=$(grep -E '^A[[:space:]]_posts/' /tmp/changed.txt | cut -f2 | paste -sd, - || true)
@@ -67,25 +65,8 @@ jobs:
           set +e
           node scripts/publish-loop.mjs --added="${{ steps.scope.outputs.added }}" 2>&1 | tee /tmp/publish-loop.log
           code=${PIPESTATUS[0]}
-          tail -n 80 /tmp/publish-loop.log > /tmp/publish-tail.txt
+          tail -n 120 /tmp/publish-loop.log > /tmp/publish-tail.txt
           exit $code
-      - name: Báo chẩn đoán lỗi lên PR (comment, không commit)
-        if: failure()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            let parts = [];
-            try { parts.push('SCOPE REFUSED (out-of-scope paths):\n' + fs.readFileSync('/tmp/scope-fail.txt', 'utf8')); } catch {}
-            try { parts.push('publish-loop log tail:\n' + fs.readFileSync('/tmp/publish-tail.txt', 'utf8')); } catch {}
-            if (!parts.length) parts.push('(no log captured — failure happened before the publish transaction started)');
-            const body = 'publish FAILED — chẩn đoán (full log: workflow run artifact + Actions log):\n\n```\n' + parts.join('\n---\n').slice(-3500) + '\n```';
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body,
-            });
       - name: Upload diagnostics on failure (never commit them)
         if: failure()
         uses: actions/upload-artifact@v4
@@ -95,5 +76,4 @@ jobs:
             /tmp/changed.txt
             /tmp/publish-loop.log
             /tmp/publish-tail.txt
-            /tmp/scope-fail.txt
           if-no-files-found: ignore

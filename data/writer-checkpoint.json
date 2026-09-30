@@ -1,0 +1,19 @@
+{
+  "loop": "micro-continuous",
+  "chunk_size": 1,
+  "current_step": "idle",
+  "active_article": {
+    "id": null,
+    "slug": null,
+    "file": null
+  },
+  "last_published": {
+    "id": null,
+    "slug": null,
+    "commit": null,
+    "live_url": null,
+    "deploy_verified": false
+  },
+  "last_pushed_commit": null,
+  "updated_at": null
+}

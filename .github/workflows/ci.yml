@@ -1,11 +1,13 @@
 name: CI
 
 # Production workflow gọn cho codeappweb/lab:
-#   - Mistral (phiên đăng nhập) viết và xuất bản nội dung; push lên main.
+#   - Mistral (phiên đăng nhập) viết và xuất bản nội dung; writer commit bài
+#     + derived + checkpoint trong MỘT commit trước khi mở PR.
 #   - CI KHÔNG tự sinh văn bản, KHÔNG commit/push gì vào repo.
 #   - Deploy: GitHub Pages build từ nhánh main (một đường deploy duy nhất).
-#   - PR và push main chạy cùng bộ QA nhẹ + build.
-#   - Full audit sâu chỉ chạy thủ công (workflow_dispatch), báo cáo là artifacts.
+#   - Regression tests engine chỉ chạy khi scripts/** hoặc workflow đổi —
+#     áp cho cả PR và push main. Content-only PR chạy gate scoped.
+#   - Full audit sâu chỉ chạy thủ công (workflow_dispatch), artifacts.
 
 on:
   pull_request:
@@ -33,23 +35,32 @@ jobs:
         run: |
           set -eu
           ENGINE=false
+          CONTENT=""
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             git fetch origin main --quiet
-            if git diff --name-only origin/main...HEAD | grep -qE '^(scripts/|\.github/workflows/)'; then
-              ENGINE=true
-            fi
+            CHANGED=$(git diff --name-only origin/main...HEAD || true)
+            if echo "$CHANGED" | grep -qE "^(scripts/|\.github/workflows/)"; then ENGINE=true; fi
+            CONTENT=$(echo "$CHANGED" | grep -E "^(_posts/|danh-muc/|hub/).*\.md$" | paste -sd, - || true)
+            ROOTMD=$(echo "$CHANGED" | grep -E "^[a-z0-9-]+\.md$" | paste -sd, - || true)
+            if [ -n "$ROOTMD" ]; then CONTENT="${CONTENT:+$CONTENT,}$ROOTMD"; fi
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            CHANGED=$(git diff --name-only HEAD^ HEAD || true)
+            if echo "$CHANGED" | grep -qE "^(scripts/|\.github/workflows/)"; then ENGINE=true; fi
           else
             ENGINE=true
           fi
           echo "engine=$ENGINE" >> "$GITHUB_OUTPUT"
+          echo "content=$CONTENT" >> "$GITHUB_OUTPUT"
+          echo "scope: engine=$ENGINE content=[$CONTENT]"
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
       - name: Syntax check mọi script
+        if: steps.scope.outputs.engine == 'true'
         run: |
           set -eu
           for f in scripts/*.mjs; do node --check "$f"; done
-      - name: Regression tests (chỉ khi đổi engine/workflow)
+      - name: Regression tests (chỉ khi đổi engine/workflow — PR và push main)
         if: steps.scope.outputs.engine == 'true'
         run: node --test --test-reporter=spec scripts/*.test.mjs
       - name: Manifest + bài viết
@@ -58,8 +69,16 @@ jobs:
         run: node scripts/validate-content-quality.mjs
       - name: Trùng slug/topic (similarity chỉ là WARNING)
         run: node scripts/detect-duplicates.mjs
-      - name: Link nội bộ
-        run: node scripts/check-links.mjs
+      - name: Link nội bộ (full khi đổi engine; scoped khi content-only)
+        run: |
+          set -eu
+          if [ "${{ steps.scope.outputs.engine }}" = "true" ]; then
+            node scripts/check-links.mjs
+          elif [ -n "${{ steps.scope.outputs.content }}" ]; then
+            node scripts/check-links.mjs --only "${{ steps.scope.outputs.content }}"
+          else
+            echo "Không có file md mới/sửa và không đổi engine — bỏ qua check-links."
+          fi
       - name: Sitemap khớp bài viết
         run: node scripts/validate-sitemap.mjs
       - name: Manifest đồng bộ repo (dry-run, blocking)
@@ -77,8 +96,17 @@ jobs:
         with:
           ruby-version: '3.1'
           bundler-cache: false
+      - name: Cache dependencies (vendor/bundle)
+        uses: actions/cache@v4
+        with:
+          path: vendor/bundle
+          key: bundle-${{ runner.os }}-${{ hashFiles('Gemfile') }}
+          restore-keys: |
+            bundle-${{ runner.os }}-
       - name: Bundle install
-        run: bundle install --jobs 4 --retry 3
+        run: |
+          bundle config set path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: Jekyll build (strict front matter)
         run: bundle exec jekyll build --strict_front_matter
       - name: Kiểm tra _site (link + sitemap URL tồn tại)

@@ -14,6 +14,9 @@
 //   T6  gate failure is never reported as success (exit code contract)
 //   T7  the transaction only ever writes derived allowlist files
 //   T8  the porcelain parser never eats the first character of a path
+//   T9  --check (CI) is red while derived state is uncommitted, and never commits
+//   T10 --check is green once the writer committed article + derived together
+//   T11 two consecutive article rounds + resume-after-crash create no duplicates
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync, rmSync, copyFileSync } from 'node:fs';
@@ -194,4 +197,70 @@ test('T7: the transaction only writes derived allowlist files', () => {
     'sitemaps/articles-001.xml', 'sitemaps/categories.xml', 'sitemaps/static.xml'];
   for (const p of created) assert.ok(allowed.includes(p), 'unexpected new file: ' + p);
   assert.ok(after.every(p => before.includes(p) || allowed.includes(p)), 'no file removed or renamed');
+});
+
+function gitFixture() {
+  const dir = fixture();
+  const g = args => spawnSync('git', args, { cwd: dir, encoding: 'utf8' });
+  if (g(['init', '--quiet']).status !== 0) return null; // no git here — skip git-backed tests
+  g(['config', 'user.email', 'test@example.com']);
+  g(['config', 'user.name', 'test']);
+  g(['add', '-A']);
+  g(['commit', '-qm', 'fixture base']);
+  return dir;
+}
+
+function runLoopArgs(root, args) {
+  return spawnSync('node', [SCRIPT, ...args], { cwd: root, encoding: 'utf8', stdio: 'pipe', env: { ...process.env, LAB_ROOT: root } });
+}
+
+test('T9: --check fails while derived state is uncommitted — and never commits', () => {
+  const root = gitFixture();
+  if (!root) return;
+  const r = runLoopArgs(root, ['--added=_posts/2026-01-02-bai-moi.md', '--check']);
+  assert.notEqual(r.status, 0, '--check must fail while derived state is uncommitted');
+  assert.ok((r.stdout + r.stderr).includes('prepare-article'), 'failure points at the prepare command');
+  const st = spawnSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' });
+  assert.ok(st.stdout.trim().length > 0, 'the check committed nothing');
+});
+
+test('T10: --check is green once the writer committed article + derived state together', () => {
+  const root = gitFixture();
+  if (!root) return;
+  const g = args => spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+  assert.equal(runLoopArgs(root, ['--added=_posts/2026-01-02-bai-moi.md', '--dry-run']).status, 0, 'writer prepare derives');
+  g(['add', '-A']);
+  g(['commit', '-qm', 'article + derived (one writer commit)']);
+  const r = runLoopArgs(root, ['--added=_posts/2026-01-02-bai-moi.md', '--check']);
+  assert.equal(r.status, 0, '--check green on writer-committed tree\n' + r.stdout + r.stderr);
+  const st = spawnSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' });
+  assert.equal(st.stdout.trim(), '', 'tree stays clean after check');
+});
+
+test('T11: two consecutive article rounds + resume after interruption (fixture only)', () => {
+  const root = gitFixture();
+  if (!root) return;
+  const g = args => spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+  // ROUND 1: article A prepared + committed + verified
+  assert.equal(runLoopArgs(root, ['--added=_posts/2026-01-02-bai-moi.md', '--dry-run']).status, 0, 'round 1 derives');
+  g(['add', '-A']);
+  g(['commit', '-qm', 'article A + derived']);
+  assert.equal(runLoopArgs(root, ['--added=_posts/2026-01-02-bai-moi.md', '--check']).status, 0, 'round 1 verified');
+  // crash before checkpoint/PR: resume = idempotent re-check, no duplicates
+  assert.equal(runLoopArgs(root, ['--added=_posts/2026-01-02-bai-moi.md', '--check']).status, 0, 'resume after crash is a no-op');
+  // ROUND 2: article B (row T1-0003 re-slugged by the writer)
+  writeFileSync(join(root, '_posts', '2026-01-04-bai-lan-hai.md'), post('Bài thứ hai hợp lệ', '2026-01-04', 'bai-lan-hai', 'bai-moi'));
+  const rows = manifestRows(root);
+  rows.find(x => x.id === 'T1-0003').slug = 'bai-lan-hai';
+  writeManifest(root, rows);
+  assert.equal(runLoopArgs(root, ['--added=_posts/2026-01-04-bai-lan-hai.md', '--dry-run']).status, 0, 'round 2 derives');
+  g(['add', '-A']);
+  g(['commit', '-qm', 'article B + derived']);
+  assert.equal(runLoopArgs(root, ['--added=_posts/2026-01-04-bai-lan-hai.md', '--check']).status, 0, 'round 2 verified');
+  const after = manifestRows(root);
+  assert.equal(after.filter(x => x.slug === 'bai-moi').length, 1, 'no duplicate rows for round 1');
+  assert.equal(after.find(x => x.id === 'T1-0002').status, 'published');
+  assert.equal(after.find(x => x.id === 'T1-0003').status, 'published');
+  const shard = readFileSync(join(root, 'sitemaps', 'articles-001.xml'), 'utf8');
+  assert.ok(shard.includes('/bai-moi/') && shard.includes('/bai-lan-hai/'), 'sitemap has both URLs');
 });

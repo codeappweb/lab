@@ -1,20 +1,17 @@
 {
   "loop": "micro-continuous",
   "chunk_size": 1,
-  "current_step": "ci-await-batch-drafts-2026-09-27",
-  "active_article": {
-    "id": "C01-0001",
-    "slug": "thue-xe-may-tu-lai-o-ha-noi-loai-giay-to-can-chuan-bi",
-    "file": "_posts/2026-09-30-thue-xe-may-tu-lai-o-ha-noi-loai-giay-to-can-chuan-bi.md"
-  },
+  "current_step": "idle/awaiting-user-command",
+  "active_article": null,
   "last_published": {
-    "id": "C01-0001",
-    "slug": "thue-xe-may-tu-lai-o-ha-noi-loai-giay-to-can-chuan-bi",
-    "commit": "bd494861f85c6c4da4b0e33bd83922a39c10c386",
-    "live_url": "https://codeappweb.github.io/lab/thue-xe-may-tu-lai-o-ha-noi-loai-giay-to-can-chuan-bi/",
-    "deploy_verified": false
+    "kind": "batch",
+    "batch": "batch-2026-09-27",
+    "articles": 16,
+    "merge_commit": "22cf1e0a09bea20cd48e534997570cafbc75f8ba",
+    "live_base_url": "https://codeappweb.github.io/lab/",
+    "deploy_verified": true,
+    "verified_urls": 17
   },
-  "last_pushed_commit": "bd494861f85c6c4da4b0e33bd83922a39c10c386",
-  "batch_note": "16 articles from _drafts/batch-2026-09-27 published together in PR #13; derived state committed by publish transaction f2f13e2",
-  "updated_at": "2026-09-30T16:42:45.612Z"
+  "last_pushed_commit": "d7c6880f8113a035b8887ae4c36506bed9eb9c2f",
+  "updated_at": "2026-09-30T17:14:17.545Z"
 }

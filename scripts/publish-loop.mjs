@@ -3,14 +3,17 @@
 // CONTINUOUS LOOP of codeappweb/lab (default chunk_size = 1 article).
 // Runs in GitHub Actions on article PRs (branches article/**). NO AI,
 // NO API keys, NO secrets, NO cron. The external WRITER (Mistral run)
-// only adds the article file(s) under _posts/; this script:
+// commits the article file(s) under _posts/ TOGETHER with the derived
+// allowlist state in ONE push (prepared by scripts/prepare-article.mjs);
+// this script:
 //   1. refuses out-of-scope / oversized pushes
 //   2. derives repository truth: sitemap shards + manifest/progress sync
 //      (sync-manifest flips the row of every post on disk to `published`)
 //   3. runs the blocking light QA gates
-//   4. commits ONLY the allowlisted derived paths to the PR branch
-//      (never `git add -A`; empty change set = no-op success)
-//   5. pushes with rebase + revalidation retry, never force-push
+//   4. --check (CI mode): verifies the writer already committed the
+//      allowlisted derived paths — CI NEVER commits, NEVER pushes
+//   5. (legacy default mode) commits the allowlisted derived paths and
+//      pushes with rebase + revalidation retry, never force-push
 // A failing gate means: nothing is committed, nothing is pushed, the PR
 // shows red, and the article never reaches main (GitHub Pages builds
 // from main only, so a failing article never becomes a public URL).
@@ -23,6 +26,8 @@
 //   --added "a,b"   comma-separated added article files (required, may be empty)
 //   --dry-run       derive + gates only, no git commit/push
 //   --no-git        same as --dry-run (for fixtures/tests)
+//   --check         derive + gates, then REQUIRE a clean tree: the writer
+//                  committed the derived state — CI mode, never commits
 //   LAB_ROOT=path   override repository root (tests/fixtures)
 import { readFileSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
@@ -68,6 +73,10 @@ const added = argAdded
 if (added === null) die('usage: publish-loop.mjs --added "<comma-separated added post files>"');
 
 const NO_GIT = process.argv.includes('--dry-run') || process.argv.includes('--no-git');
+
+// CI check mode: the writer commits article + derived state in ONE push;
+// the workflow only verifies (contents: read, no bot commits).
+const CHECK = process.argv.includes('--check');
 
 const cfgPath = join(ROOT, 'data', 'factory-config.json');
 let hardMax = 50;
@@ -117,6 +126,17 @@ run('node', ['scripts/detect-duplicates.mjs'], 'duplicate detection gate');
 run('node', ['scripts/check-links.mjs'], 'internal link gate');
 run('node', ['scripts/validate-sitemap.mjs'], 'sitemap integrity gate');
 run('node', ['scripts/sync-manifest.mjs', '--dry-run'], 'manifest dry-run (in-sync proof)');
+
+if (CHECK) {
+  const st = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
+  if (st.status !== 0) die('git status failed in --check mode');
+  const pending = changedPaths(st.stdout);
+  if (pending.length) {
+    die('--check: derived state NOT committed by the writer: ' + pending.join(', ') + ' — run scripts/prepare-article.mjs <id>, then commit these files together with the article in ONE push (CI never commits)');
+  }
+  console.log('publish-loop --check: writer-committed tree is in sync (article + derived state verified).');
+  process.exit(0);
+}
 
 if (NO_GIT) {
   console.log('publish-loop: dry-run/no-git mode — derive + gates green, commit skipped.');

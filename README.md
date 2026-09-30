@@ -4,21 +4,21 @@ Jekyll site, GitHub Pages, baseurl `/lab`, live: <https://codeappweb.github.io/l
 
 Mô hình: Mistral (phiên đăng nhập hiện có) là người viết nội dung. GitHub Actions chỉ kiểm tra/build. GitHub Pages deploy từ nhánh main — một đường deploy duy nhất. Không dùng MISTRAL_API_KEY hay API sinh bài trả phí. Một writer Mistral hoạt động tại một thời điểm.
 
-Vòng viết mặc định: micro-loop 1 bài/lượt — WRITE 1 → DERIVE → QA NHẸ → BUILD → PUBLISH → CHECKPOINT — qua `publish.yml` trên nhánh `article/**` (chi tiết: `AGENTS.md`, `docs/MICRO-LOOP.md`). Không chờ đủ batch mới publish; bài đạt QA tối thiểu thì đăng ngay.
+Vòng vận hành mặc định: FETCH → RESUME → WRITE 1 → PREPARE → COMMIT/PR → CI → MERGE → VERIFY LIVE → CHECKPOINT → NEXT (chi tiết: `AGENTS.md`, `docs/MICRO-LOOP.md`). Writer commit bài + dữ liệu dẫn xuất + checkpoint trong MỘT commit trước khi mở PR; Actions chỉ kiểm tra, không bao giờ commit lại vào PR. Không chờ đủ batch; bài đạt QA tối thiểu thì đăng ngay.
 
 Chế độ phiên hiện tại (2026-09-30): chỉ publish các bài đã viết sẵn (batch-2026-09-27) và sửa hạ tầng. Không viết bài mới, không bật lịch sinh bài, không mở rộng matrix cho tới khi có lệnh rõ ràng "Bắt đầu viết bài".
 
-## Vòng lặp batch (mỗi phiên)
+## Vòng lặp vận hành (mỗi bài)
 
-1. Đọc `data/article-manifest.jsonl` và chọn các dòng `status: planned`. Tối đa 20 bài/batch (giới hạn trên, không bắt buộc; hết phiên thì đăng phần đã xong).
-2. Đặt các dòng đã chọn thành `drafting`. Commit trạng thái này (checkpoint).
-3. Viết draft vào `_drafts/batch-YYYY-MM-DD/<slug>.md` theo `docs/SCHEMA-ARTICLE.md`.
-4. Bài lỗi hoặc chưa chắc chắn về số liệu pháp lý/an toàn: giữ `review`, KHÔNG bịa nguồn, KHÔNG gắn verified giả. Một bài lỗi không chặn bài đạt khác.
-5. Xuất bản phần đạt: chuyển file sang `_posts/YYYY-MM-DD-<slug>.md`, đặt dòng manifest `status: published` kèm `published_url`.
-6. Chuẩn bị + QA nhẹ: `node scripts/validate-deploy.mjs` (sinh lại sitemap shards, đồng bộ manifest, chạy toàn bộ gate nhẹ). Gate nào FAIL thì sửa trước khi push.
-7. Commit + push lên main. Không force-push. Push bị từ chối: pull/rebase, chạy lại `validate-deploy.mjs`, push lại.
-8. Chờ CI trên main đạt. Pages deploy từ main — chỉ báo "site live đã cập nhật" khi CI đạt VÀ URL live thực sự trả nội dung mới. Deploy lỗi thì KHÔNG báo đã cập nhật.
-9. Báo cáo cuối: số bài đăng, số bài còn (drafting/review), URL live đã kiểm tra, WARNING biên tập còn tồn.
+1. FETCH main; RESUME từ `data/writer-checkpoint.json` + manifest (bài đang dở hoàn tất trước khi claim bài mới).
+2. WRITE 1 bài vào `_posts/YYYY-MM-DD-<slug>.md` theo `docs/SCHEMA-ARTICLE.md`. Không tự viết bài kế cho tới khi có lệnh.
+3. PREPARE — MỘT lệnh chuẩn bị: `node scripts/prepare-article.mjs <manifest-id | _posts/YYYY-MM-DD-slug.md>`: xác minh row manifest + slug/URL, sinh lại sitemap shards + manifest/progress, chạy 6 gate nhẹ, in ĐÚNG danh sách file phải commit.
+4. COMMIT/PR: commit đúng danh sách in ra (file bài + derived allowlist + `data/writer-checkpoint.json`) trong MỘT commit, push nhánh `article/<id>`, mở PR vào main. CI không commit lại vào PR.
+5. CI: publish check (`publish-loop --check` — cây phải clean sau derive) + gate nhẹ + Jekyll build của đúng HEAD PR.
+6. MERGE khi CI xanh. VERIFY Pages deploy: chỉ báo live khi URL trả nội dung mới.
+7. CHECKPOINT: cập nhật `data/writer-checkpoint.json` theo thực tế remote/live; hết phiên → `idle/awaiting-user-command`.
+8. Bài lỗi hoặc chưa chắc chắn về số liệu pháp lý/an toàn: giữ lại, ghi lý do REVIEW cụ thể, KHÔNG bịa nguồn, KHÔNG gắn verified giả.
+9. Báo cáo cuối: số bài đăng, URL live đã kiểm tra, bài giữ lại + lý do, trạng thái CI/deploy.
 
 ## Resume / checkpoint
 
@@ -39,7 +39,7 @@ Chế độ phiên hiện tại (2026-09-30): chỉ publish các bài đã viế
 5. Jekyll build thành công; URL xuất bản tồn tại trong `_site` + sitemap (`scripts/validate-built.mjs`).
 6. Không commit secrets, cache, file test, dữ liệu ngoài phạm vi.
 
-Gate: `validate-content.mjs`, `validate-content-quality.mjs`, `detect-duplicates.mjs`, `check-links.mjs`, `validate-sitemap.mjs`, `validate-built.mjs`, `sync-manifest.mjs --dry-run`. Regression tests engine (`node --test scripts/*.test.mjs`) chỉ chạy khi PR đổi `scripts/**` hoặc `.github/workflows/**`; PR content-only chỉ chạy gate nội dung + build. QA và build luôn kiểm tra cùng cây mã cuối (sau commit derived của publish transaction). Không dùng `|| true` để che lỗi validator; WARNING biên tập in rõ khác FAIL.
+Gate: `validate-content.mjs`, `validate-content-quality.mjs`, `detect-duplicates.mjs`, `check-links.mjs`, `validate-sitemap.mjs`, `validate-built.mjs`, `sync-manifest.mjs --dry-run`. PR content-only: check-links chạy `--only` trên đúng các bài mới/sửa (targets vẫn build từ toàn repo, ID/slug vẫn đối chiếu repo-wide chống trùng). Regression tests engine (`node --test scripts/*.test.mjs`) chỉ chạy khi `scripts/**` hoặc `.github/workflows/**` đổi — áp cho cả PR và push main. QA và build luôn kiểm cùng cây commit cuối của PR. Không dùng `|| true` để che lỗi validator; WARNING biên tập in rõ khác FAIL.
 
 ## WARNING — không chặn publish
 
@@ -51,12 +51,12 @@ Similarity token giữa topic, title gần giống, cannibalization, số từ/H
 - Không yêu cầu viết dài để đủ quota.
 - Menu/taxonomy/hub/danh-mục/giao diện/baseurl giữ nguyên. Số liệu pháp lý đối chiếu `data/legal-sources.yml`.
 
-## Lệnh chính để bắt đầu batch tiếp theo
+## Lệnh chính cho mỗi bài
 
 ```bash
-# 1. Chọn bài (đọc manifest, lọc status=planned)
-# 2. Viết draft vào _drafts/batch-YYYY-MM-DD/
-# 3. Xuất bản phần đạt rồi chạy:
-node scripts/validate-deploy.mjs
-# 4. Commit + push main, chờ CI đạt, kiểm tra URL live.
+# WRITE 1 bài vào _posts/YYYY-MM-DD-<slug>.md rồi chạy MỘT lệnh chuẩn bị:
+node scripts/prepare-article.mjs <manifest-id | _posts/YYYY-MM-DD-slug.md>
+# → verify row/URL + derive manifest/progress/sitemap + 6 gate + in danh sách commit.
+# Commit ĐÚNG danh sách (bài + derived + checkpoint) trong MỘT commit,
+# push article/<id>, mở PR. CI chỉ kiểm tra; merge khi xanh; verify URL live.
 ```

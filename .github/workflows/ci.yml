@@ -1,0 +1,87 @@
+name: CI
+
+# Production workflow gọn cho codeappweb/lab:
+#   - Mistral (phiên đăng nhập) viết và xuất bản nội dung; push lên main.
+#   - CI KHÔNG tự sinh văn bản, KHÔNG commit/push gì vào repo.
+#   - Deploy: GitHub Pages build từ nhánh main (một đường deploy duy nhất).
+#   - PR và push main chạy cùng bộ QA nhẹ + build.
+#   - Full audit sâu chỉ chạy thủ công (workflow_dispatch), báo cáo là artifacts.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  light-qa:
+    name: QA nhẹ (blocking)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check mọi script
+        run: |
+          set -eu
+          for f in scripts/*.mjs; do node --check "$f"; done
+      - name: Regression tests
+        run: node --test --test-reporter=spec scripts/*.test.mjs
+      - name: Manifest + bài viết
+        run: node scripts/validate-content.mjs
+      - name: Chất lượng nội dung (front matter, trùng lặp, hỏng)
+        run: node scripts/validate-content-quality.mjs
+      - name: Trùng slug/topic (similarity chỉ là WARNING)
+        run: node scripts/detect-duplicates.mjs
+      - name: Link nội bộ
+        run: node scripts/check-links.mjs
+      - name: Sitemap khớp bài viết
+        run: node scripts/validate-sitemap.mjs
+      - name: Manifest đồng bộ repo (dry-run, blocking)
+        run: node scripts/sync-manifest.mjs --dry-run
+
+  build:
+    name: Jekyll build (blocking) + kiểm tra output
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3
+      - name: Jekyll build (strict front matter)
+        run: bundle exec jekyll build --strict_front_matter
+      - name: Kiểm tra _site (link + sitemap URL tồn tại)
+        run: node scripts/validate-built.mjs
+
+  full-audit:
+    name: Full audit (chỉ thủ công, không chặn publish)
+    if: github.event_name == 'workflow_dispatch'
+    needs: [light-qa, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Legal freshness audit
+        run: node scripts/legal-freshness-audit.mjs || echo "::warning::legal-freshness-audit trả về khác 0 — xem artifact để đánh giá"
+      - name: Upload báo cáo audit (artifact, KHÔNG commit)
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-audit-report
+          path: reports/
+          if-no-files-found: ignore

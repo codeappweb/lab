@@ -9,8 +9,14 @@
 //   - token Jaccard similarity >= 0.8 within the same search_intent
 // A high-similarity pair is still a hard error, never auto-merged.
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 const ROOT = new URL('..', import.meta.url).pathname;
-const recs = readFileSync(ROOT + 'data/article-manifest.jsonl', 'utf8').split('\n').filter(Boolean).map(JSON.parse);
+// Explicit manifest path (positional arg; used by benchmark-scale.mjs so a
+// benchmark can never read the production manifest by accident — issue #7).
+// Default: repository truth.
+const argPath = process.argv.slice(2).find(a => !a.startsWith('--'));
+const manifestPath = argPath ? resolve(argPath) : ROOT + 'data/article-manifest.jsonl';
+const recs = readFileSync(manifestPath, 'utf8').split('\n').filter(Boolean).map(JSON.parse);
 const errs = [];
 const bySlug = {}, byTitle = {};
 for (const r of recs) {
@@ -40,7 +46,8 @@ for (const [, list] of byToken) {
     for (let b = a + 1; b < list.length; b++) {
       const i = Math.min(list[a], list[b]), j = Math.max(list[a], list[b]);
       const key = i + ':' + j;
-      if (seenPair.has(key)) continue;
+  
+    if (seenPair.has(key)) continue;
       seenPair.add(key);
       compared++;
       const A = tokens[i], B = tokens[j];

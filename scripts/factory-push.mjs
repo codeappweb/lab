@@ -22,6 +22,13 @@ import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const DEFAULT_PATHS = ['_posts', '_drafts', 'data', 'sitemaps', 'sitemap.xml', 'reports'];
+
+const argv = process.argv.slice(2);
+const arg = (name) => { const i = argv.indexOf(name); return i !== -1 ? argv[i + 1] : undefined; };
+
+// NOTE: argv/arg must be declared before the first arg() call below — the
+// previous order crashed with a TDZ ReferenceError on every invocation
+// (regression-tested by scripts/factory-integration.test.mjs).
 const pathsArg = arg('--paths');
 const PATHS = pathsArg ? pathsArg.split(',').map(s => s.trim()).filter(Boolean) : DEFAULT_PATHS;
 // git pathspecs must match existing files; a narrowed --paths may name files
@@ -29,8 +36,6 @@ const PATHS = pathsArg ? pathsArg.split(',').map(s => s.trim()).filter(Boolean) 
 const gitPaths = PATHS.filter(pp => { try { statSync(join(ROOT, pp)); return true; } catch { return false; } });
 const ALLOW_RE = /^(_posts\/|_drafts\/|data\/|sitemaps\/|sitemap\.xml$|reports\/)/;
 
-const argv = process.argv.slice(2);
-const arg = (name) => { const i = argv.indexOf(name); return i !== -1 ? argv[i + 1] : undefined; };
 const message = arg('--message');
 const revalidate = arg('--revalidate') || '';
 const branch = arg('--branch') || process.env.GITHUB_REF_NAME || 'main';

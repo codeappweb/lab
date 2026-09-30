@@ -166,7 +166,7 @@ if (existsSync(PROGRESS_PATH)) {
 
 const newManifest = rows.map(r => JSON.stringify(r)).join('\n') + '\n';
 const oldManifest = readFileSync(MANIFEST_PATH, 'utf8');
-const oldProgress = existsSync(PROGRESS_PATH) ? readFileSync(PROGRESS_PATH), 'utf8') : null;
+const oldProgress = existsSync(PROGRESS_PATH) ? readFileSync(PROGRESS_PATH, 'utf8') : null;
 const manifestDiff = newManifest !== oldManifest;
 const progressDiff = progressChanged !== null && progressChanged !== oldProgress;
 

@@ -15,7 +15,7 @@
 //   T7  the transaction only ever writes derived allowlist files
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync, rmSync, copyFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -45,6 +45,16 @@ function fixture() {
   const dir = mkdtempSync(join(tmpdir(), 'publish-loop-'));
   mkdirSync(join(dir, '_posts'), { recursive: true });
   mkdirSync(join(dir, 'data'), { recursive: true });
+  mkdirSync(join(dir, 'sitemaps'), { recursive: true });
+  // copy the REAL gate scripts into the fixture: publish-loop invokes its
+  // sibling scripts via scripts/<name>.mjs relative to the fixture root, and
+  // each script derives its own ROOT from import.meta.url — so the copied
+  // scripts run against the fixture tree, never against production state.
+  const SCRIPTS = dirname(SCRIPT);
+  mkdirSync(join(dir, 'scripts'), { recursive: true });
+  for (const f of readdirSync(SCRIPTS)) {
+    if (f.endsWith('.mjs')) copyFileSync(join(SCRIPTS, f), join(dir, 'scripts', f));
+  }
   writeFileSync(join(dir, 'data', 'factory-config.json'),
     JSON.stringify({ chunk_size: 1, chunk_size_max: 2, hard_max_new_posts_per_push: 50 }, null, 2) + '\n');
   writeFileSync(join(dir, 'data', 'taxonomy.yml'), '# minimal taxonomy fixture\n');

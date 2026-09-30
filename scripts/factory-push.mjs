@@ -12,13 +12,21 @@
 // Usage:
 //   node scripts/factory-push.mjs --message "..." \
 //     --revalidate "node scripts/validate-content-quality.mjs && node scripts/validate-sitemap.mjs" \
-//     [--branch main] [--allow-extra path-prefix]
+//     [--branch main] [--paths "data/factory-state.json,reports/factory"]
+// --paths overrides the staged path set with a NARROWER scope (still checked
+// against the allowlist below) — used by the factory failure path so a
+// diagnostics commit can never stage _posts/_drafts content (issue #3).
 import { spawnSync } from 'node:child_process';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const DEFAULT_PATHS = ['_posts', '_drafts', 'data', 'sitemaps', 'sitemap.xml', 'reports'];
+const pathsArg = arg('--paths');
+const PATHS = pathsArg ? pathsArg.split(',').map(s => s.trim()).filter(Boolean) : DEFAULT_PATHS;
+// git pathspecs must match existing files; a narrowed --paths may name files
+// (e.g. data/factory-lock.json) that legitimately do not exist this run.
+const gitPaths = PATHS.filter(pp => { try { statSync(join(ROOT, pp)); return true; } catch { return false; } });
 const ALLOW_RE = /^(_posts\/|_drafts\/|data\/|sitemaps\/|sitemap\.xml$|reports\/)/;
 
 const argv = process.argv.slice(2);
@@ -39,6 +47,7 @@ function staged() {
 }
 
 function scopeCheck(paths, label) {
+
   const bad = paths.filter(p => !ALLOW_RE.test(p));
   if (bad.length) {
     console.error('::error::' + label + ': refusing out-of-scope paths:');
@@ -50,12 +59,15 @@ function scopeCheck(paths, label) {
 const status = { branch, state: 'prepared', staged: [], rebased: false, revalidated: false, commit: null, pushed: false };
 
 // 1. stage only the deterministic-output paths
-git(['add', '-A', '--', ...DEFAULT_PATHS]);
+const add = git(['add', '-A', '--', ...gitPaths]);
+if (add.status !== 0) {
+  console.log('factory-push: git add exited ' + add.status + ' (tolerated only because pathspecs are re-verified below); staged scope is checked next');
+}
 status.staged = staged();
 scopeCheck(status.staged, 'staged scope');
 
 const nothingStaged = status.staged.length === 0;
-const otherChanges = git(['status', '--short', '--', ...DEFAULT_PATHS]).stdout.trim();
+const otherChanges = git(['status', '--short', '--', ...gitPaths]).stdout.trim();
 if (nothingStaged && !otherChanges) {
   status.state = 'clean';
   console.log('factory-push: nothing to commit');
@@ -93,7 +105,8 @@ if (!pushed) {
   for (let i = 0; i < 5 && !pushed; i++) {
     console.log('factory-push: push rejected — fetching and rebasing onto origin/' + branch);
     const f = git(['fetch', 'origin', branch]);
-    const rb = git(['rebase', 'origin/' + branch]);
+    const rb = git(['rebase', 'origin/' + 
+branch]);
     if (rb.status !== 0) {
       git(['rebase', '--abort']);
       status.state = 'rebase-failed';

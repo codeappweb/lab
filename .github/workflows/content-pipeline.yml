@@ -18,8 +18,11 @@ on:
     - cron: "0 2 * * *"
   workflow_dispatch:
 
+# Issue #5: shared repo-wide writer group (see content-factory-scheduled.yml) —
+# every workflow that pushes to origin/main is serialized; queued, never
+# cancelled mid-run.
 concurrency:
-  group: production-pipeline
+  group: main-writer
   cancel-in-progress: false
 
 permissions:
@@ -69,7 +72,8 @@ jobs:
       - name: Content hashes
         run: node scripts/compute-content-hashes.mjs
 
-      - name: Sync manifest and progress
+      - name: Sync manifest
+ and progress
         run: node scripts/sync-manifest.mjs
 
       - name: Topic queue view

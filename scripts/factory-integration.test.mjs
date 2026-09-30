@@ -66,12 +66,18 @@ function draftFile(slug, n, opts) {
     'title: "' + title + '"',
     'description: "' + desc + '"',
     'date: 2026-01-1' + n,
+    'category: "phu-hu"',
+    'subcategory: "con-a"',
     'parent_category: "phu-hu"',
     'child_category: "con-a"',
     'primary_keyword: "tu khoa ' + slug + '"',
     'search_intent: "informational"',
     'cluster: "T"',
-    'freshness: "evergreen"',
+    'batch: "' + (o.batch || 'batch-1970-01-01') + '"',
+    'created_at: "2026-01-01"',
+    'updated_at: "2026-01-01"',
+    'freshness_status: "evergreen"',
+    'layout: "default"',
     'legal_sensitivity: "false"',
     'entities:',
     '  - "don thu ' + slug + '"',
@@ -148,7 +154,7 @@ function manifestRows(fx) {
 function writeDraft(fx, slug, n, opts) {
   const b = state(fx).batch;
   mkdirSync(join(fx.work, '_drafts', b), { recursive: true });
-  writeFileSync(join(fx.work, '_drafts', b, slug + '.md'), draftFile(slug, n, opts));
+  writeFileSync(join(fx.work, '_drafts', b, slug + '.md'), draftFile(slug, n, { ...opts, batch: b }));
 }
 function cleanup(fx, t) { t.after(() => rmSync(fx.root, { recursive: true, force: true })); }
 
@@ -180,8 +186,10 @@ test('T2 committed promotion: rollback refuses, finalize-publish completes', (t)
   let r = runFB(fx, ['prepare-next', '--batch-size', '1'], 'runA');
   assert.equal(r.status, 0, r.stderr);
   writeDraft(fx, 'bai-1', 1);
-  assert.equal(runFB(fx, ['qa'], 'runA').status, 0);
-  assert.equal(runFB(fx, ['assert-ready'], 'runA').status, 0);
+  r = runFB(fx, ['qa'], 'runA');
+  assert.equal(r.status, 0, 'T2 qa must pass the ready draft:\n' + r.stdout + r.stderr);
+  r = runFB(fx, ['assert-ready'], 'runA');
+  assert.equal(r.status, 0, 'T2 assert-ready must accept the ready batch:\n' + r.stdout + r.stderr);
   r = runFB(fx, ['publish'], 'runA');
   assert.equal(r.status, 0, r.stderr);
   const postRel = state(fx).rows[0].post_file;
@@ -221,8 +229,11 @@ test('T3 push rejection: factory-push rebases, revalidation failure blocks the p
   git(other, ['push', 'origin', 'main']);
   // local change that must be pushed
   writeFileSync(join(fx.work, 'data', 'factory-diagnostics.json'), '{"note":"local"}\n');
-  // revalidation FAILS on the rebased tree -> the push must be blocked
-  let r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diagnostics', '--revalidate', 'false']);
+  // revalidation FAILS on the rebased tree -> the push must be blocked.
+  // --branch is pinned: factory-push defaults to $GITHUB_REF_NAME when set
+  // (in CI that is the PR branch, and the push would silently CREATE it on
+  // the fixture remote instead of being rejected against main).
+  let r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diagnostics', '--revalidate', 'false', '--branch', 'main']);
   assert.notEqual(r.status, 0, 'a failing revalidation must block the push');
   const err = (r.stdout || '') + (r.stderr || '');
   assert.ok(err.includes('post-rebase validation failed'), err);
@@ -231,7 +242,7 @@ test('T3 push rejection: factory-push rebases, revalidation failure blocks the p
   // drop the local-only commit and retry with a passing revalidation
   git(fx.work, ['reset', '--hard', 'HEAD~1']);
   writeFileSync(join(fx.work, 'data', 'factory-diagnostics.json'), '{"note":"local"}\n');
-  r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diagnostics', '--revalidate', 'true']);
+  r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diagnostics', '--revalidate', 'true', '--branch', 'main']);
   assert.equal(r.status, 0, (r.stdout || '') + (r.stderr || ''));
   remoteFiles = git(fx.bare, ['ls-tree', '-r', '--name-only', 'main']);
   assert.ok(remoteFiles.includes('data/factory-diagnostics.json'), 'the validated commit must reach origin');
@@ -274,7 +285,8 @@ test('T4 recover: interrupted committed publication completes idempotently; unco
   runFB(fxB, ['prepare-next', '--batch-size', '1'], 'runA');
   writeDraft(fxB, 'bai-1', 1);
   runFB(fxB, ['qa'], 'runA');
-  assert.equal(runFB(fxB, ['publish'], 'runA').status, 0);
+  const rp4 = runFB(fxB, ['publish'], 'runA');
+  assert.equal(rp4.status, 0, 'T4B publish must stage the ready draft:\n' + rp4.stdout + rp4.stderr);
   const postPathB = join(fxB.work, state(fxB).rows[0].post_file);
   assert.ok(existsSync(postPathB));
   r = runFB(fxB, ['recover'], 'runA');
@@ -300,7 +312,8 @@ test('T5 two workers: a fresh foreign lock blocks the second worker', (t) => {
   // worker A keeps working under its own lock
   writeDraft(fx, 'bai-1', 1);
   writeDraft(fx, 'bai-2', 2);
-  assert.equal(runFB(fx, ['qa'], 'runA').status, 0, 'the lock owner must keep working');
+  const rq5 = runFB(fx, ['qa'], 'runA');
+  assert.equal(rq5.status, 0, 'the lock owner must keep working:\n' + rq5.stdout + rq5.stderr);
 });
 
 test('T6 sync-manifest: --require-committed, ghost hard error, front-matter reconcile', (t) => {

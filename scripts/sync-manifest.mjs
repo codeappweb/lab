@@ -18,14 +18,32 @@
 //     already in sync.
 //   - Writes are skipped when content is unchanged, so a second run
 //     produces no diff (idempotent).
+//   - --require-committed (issue #6): two-phase publish awareness. A row
+//     may flip to published ONLY when its post file is verified on
+//     origin/main. The content-factory workflow uses this between `publish`
+//     (drafts staged into the working tree, NOT pushed) and finalize-publish,
+//     so a staged-but-unpushed post can never produce a fake published
+//     manifest row (and a rollback never leaves published rows behind).
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const DRY_RUN = process.argv.includes('--dry-run');
+const REQUIRE_COMMITTED = process.argv.includes('--require-committed');
 const ROOT = new URL('..', import.meta.url).pathname;
 const POSTS = join(ROOT, '_posts');
 const MANIFEST_PATH = join(ROOT, 'data', 'article-manifest.jsonl');
 const PROGRESS_PATH = join(ROOT, 'data', 'progress.json');
+
+// Is the post file part of repository truth on origin/main? Fail-closed: if
+// git itself cannot run we refuse to guess (hard error); a nonzero git status
+// simply means "not on origin/main" (staged in a working tree only).
+function committedOnRemote(file) {
+  const rel = '_posts/' + file;
+  const g = spawnSync('git', ['cat-file', '-e', 'origin/main:' + rel], { cwd: ROOT, encoding: 'utf8' });
+  if (g.error) { console.error('::error::git unavailable, cannot verify ' + rel + ' on origin/main: ' + g.error.message); process.exit(1); }
+  return g.status === 0;
+}
 
 function fm(text) {
   if (!text.startsWith('---')) return {};
@@ -40,7 +58,8 @@ function fm(text) {
 }
 
 const postFiles = existsSync(POSTS) ? readdirSync(POSTS).filter(f => f.endsWith('.md')) : [];
-const postInfo = new Map(); // slug -> { file, date, fm }
+const postInfo = new Map(); // slug -> { file
+, date, fm }
 for (const f of postFiles) {
   const slug = f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
   let meta = {};
@@ -84,15 +103,22 @@ for (const r of rows) {
 }
 
 // published rows without a post file are hard data errors
-const ghostPublished = rows.filter(r => r.status === 'published' && !postInfo.has(r.slug));
+const ghostPublished = rows.filter(r => r.status === 'pu
+blished' && !postInfo.has(r.slug));
 if (ghostPublished.length) {
   for (const r of ghostPublished) console.error('::error::manifest row ' + r.id + ' is published but no post file exists for slug "' + r.slug + '"');
   process.exit(1);
 }
 
 let flipped = 0;
+let heldStaged = 0;
 for (const r of rows) {
   if (postInfo.has(r.slug) && r.status !== 'published') {
+    if (REQUIRE_COMMITTED && !committedOnRemote(postInfo.get(r.slug).file)) {
+      // staged in a working tree but NOT on origin/main — never mark published
+      heldStaged++;
+      continue;
+    }
     r.status = 'published';
     r.published_at = r.published_at || postInfo.get(r.slug).date || new Date().toISOString().slice(0, 10);
     flipped++;
@@ -103,6 +129,7 @@ for (const r of rows) {
 let reconciled = 0;
 for (const [slug, info] of postInfo) {
   if (rows.some(r => r.slug === slug)) continue;
+  if (REQUIRE_COMMITTED && !committedOnRemote(info.file)) continue; // staged, not published yet
   const f = info.fm;
   rows.push({
     id: slug,
@@ -141,11 +168,12 @@ if (existsSync(PROGRESS_PATH)) {
 
 const newManifest = rows.map(r => JSON.stringify(r)).join('\n') + '\n';
 const oldManifest = readFileSync(MANIFEST_PATH, 'utf8');
-const oldProgress = existsSync(PROGRESS_PATH) ? readFileSync(PROGRESS_PATH, 'utf8') : null;
+const oldProgress = existsSync(PROGRESS_PATH)
+ ? readFileSync(PROGRESS_PATH, 'utf8') : null;
 const manifestDiff = newManifest !== oldManifest;
 const progressDiff = progressChanged !== null && progressChanged !== oldProgress;
 
-const summary = 'sync-manifest: ' + flipped + ' row(s) marked published, ' + reconciled + ' post(s) reconciled from front matter, ' + slugFixed + ' stale slug(s) fixed, ' + rows.length + ' total rows';
+const summary = 'sync-manifest: ' + flipped + ' row(s) marked published, ' + heldStaged + ' staged row(s) held (not verified on origin/main), ' + reconciled + ' post(s) reconciled from front matter, ' + slugFixed + ' stale slug(s) fixed, ' + rows.length + ' total rows';
 
 if (DRY_RUN) {
   if (manifestDiff || progressDiff) {

@@ -31,7 +31,7 @@ const argOf = (n, d) => { const i = argv.indexOf(n); return i !== -1 ? argv[i + 
 const N = parseInt(argOf('--n', '1000'), 10);
 const WORST = argv.includes('--worst');
 const OUT = argOf('--out', null); // explicit output file (never the repo reports/ tree)
-const SCRIPTS = new URL('..', import.meta.url).pathname;
+const SCRIPTS = new URL('.', import.meta.url).pathname; // scripts/ dir (this file is scripts/benchmark-scale.mjs)
 if (!Number.isInteger(N) || N < 1) { console.error('invalid --n'); process.exit(2); }
 const tmp = mkdtempSync(join(tmpdir(), 'lab-benchmark-'));
 

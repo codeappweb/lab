@@ -49,22 +49,40 @@ jobs:
           set -eu
           for f in scripts/*.mjs; do node --check "$f"; done
       - name: Regression + integration tests (fixtures + local git remotes)
-        # On failure the last part of the node:test output is re-emitted as
-        # ::error:: lines so the failing tests and assertion messages are
-        # visible on the commit/PR checks without opening the full log.
+        # On failure each failing test is condensed into ONE ::error::
+        # annotation (test name, error type, expected/actual, assertion
+        # message incl. child-process output) so failures are diagnosable
+        # from the checks API without log access. The runner SILENTLY caps
+        # annotations, so at most 9 complete diagnostics are emitted —
+        # never a truncated tail that hides most failures.
         run: |
           set +e
           log=$(mktemp)
-          node --test scripts/*.test.mjs 2>&1 | tee "$log"
+          node --test --test-reporter=tap scripts/*.test.mjs 2>&1 | tee "$log"
           code=${PIPESTATUS[0]}
           if [ "$code" -ne 0 ]; then
-            grep -E '^(✖|not ok|# Subtest)|AssertionError|failureType|expected|actual' "$log" | tail -120 | while IFS= read -r line; do
-              printf '::error::%s\n' "$line" | head -c 260
-              printf '\n'
-            done
+            node - "$log" <<'NODE'
+          const fs = require('fs');
+          const lines = fs.readFileSync(process.argv[2], 'utf8').split('\n');
+          let emitted = 0;
+          for (let i = 0; i < lines.length && emitted < 9; i++) {
+            const m = lines[i].match(/not ok \d+ - (.+)/);
+            if (!m) continue;
+            const det = [m[1]];
+            for (let j = i + 1; j < lines.length && j < i + 60; j++) {
+              const l = lines[j];
+              if (/not ok \d+ - |# Subtest|^\s*ok \d+ - |^1\.\.\d/.test(l)) break;
+              if (l.trim()) det.push(l.trim());
+            }
+            let msg = det.join(' | ');
+            if (msg.length > 620) msg = msg.slice(0, 620) + ' [truncated]';
+            msg = msg.replace(/%/g, '%25').replace(/[\r\n]+/g, ' %0A ');
+            console.log('::error::' + msg);
+            emitted++;
+          }
+          NODE
             exit 1
           fi
-
   gates:
     name: Content gates (blocking)
     runs-on: ubuntu-latest

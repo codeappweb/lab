@@ -132,6 +132,9 @@ function makeFixture(rowSlugs, manifestRows) {
   git(work, ['remote', 'add', 'origin', bare]);
   git(work, ['push', '-u', 'origin', 'main']);
   git(work, ['fetch', 'origin']);
+  // a fresh bare repo HEAD still points at the runner's default branch
+  // (often master), which breaks clones: point it at main explicitly
+  git(bare, ['symbolic-ref', 'HEAD', 'refs/heads/main']);
   return { root, work, bare };
 }
 

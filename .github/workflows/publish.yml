@@ -1,0 +1,71 @@
+name: Publish (micro loop)
+
+# Deterministic publish transaction for the MICRO CONTINUOUS LOOP
+# (default chunk_size = 1 article per turn). NO AI, NO API keys, NO cron.
+# The external WRITER (Mistral session) opens one PR per article
+# (branch article/**) containing ONLY the new article file(s) under _posts/.
+# This workflow derives the publish scope from the FULL commit range of the
+# PR (origin/main...HEAD, not just the last commit), refuses anything out of
+# scope, then runs scripts/publish-loop.mjs which:
+#   derives manifest/progress/sitemap truth -> runs blocking light gates ->
+#   commits ONLY allowlisted derived paths back to the PR branch.
+# main is therefore always in sync: GitHub Pages (the single deploy path,
+# building from main) only ever receives articles that passed every gate.
+# Failures never commit, never push, and upload diagnostics as an artifact.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-${{ github.event.pull_request.head.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: startsWith(github.head_ref, 'article/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Derive publish scope from the full PR commit range
+        id: scope
+        run: |
+          set -eu
+          git fetch origin main
+          git diff --name-status --no-renames origin/main...HEAD > /tmp/changed.txt
+          cat /tmp/changed.txt
+          # Every changed path must be either a new/edited article file or a
+          # derived allowlist file (committed by a previous publish run on
+          # this same branch). Anything else refuses the whole PR.
+          OTHER=$(grep -v -E '^[AMD][[:space:]](_posts/|data/article-manifest\.jsonl|data/progress\.json|data/sitemap-shards\.json|sitemap\.xml|sitemaps/|data/writer-checkpoint\.json)' /tmp/changed.txt || true)
+          if [ -n "$OTHER" ]; then
+            echo "::error::out-of-scope changes in PR (only _posts/** + derived allowlist allowed):"
+            echo "$OTHER"
+            exit 1
+          fi
+          ADDED=$(grep -E '^A[[:space:]]_posts/' /tmp/changed.txt | cut -f2 | paste -sd, - || true)
+          if [ -z "$ADDED" ]; then
+            echo "::error::no added article file under _posts/ — an article PR must add its post file in the first commit"
+            exit 1
+          fi
+          echo "added=$ADDED" >> "$GITHUB_OUTPUT"
+          echo "publish scope: added=[$ADDED]"
+      - name: Publish transaction (derive → gates → allowlist commit → push)
+        run: node scripts/publish-loop.mjs --added="${{ steps.scope.outputs.added }}"
+      - name: Upload diagnostics on failure (never commit them)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-diagnostics-${{ github.event.pull_request.number }}
+          path: |
+            /tmp/changed.txt
+          if-no-files-found: ignore

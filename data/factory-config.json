@@ -1,0 +1,7 @@
+{
+  "chunk_size": 1,
+  "chunk_size_max": 2,
+  "hard_max_new_posts_per_push": 50,
+  "goal_total_articles": 20000,
+  "note": "chunk_size la so bai mac dinh moi luot writer (MICRO CONTINUOUS LOOP). Batch chi de to chuc matrix, khong phai dieu kien phai du so luong moi duoc publish. hard_max_new_posts_per_push la hard invariant cua publish workflow."
+}

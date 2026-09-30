@@ -63,11 +63,11 @@ xe máy điện trên ngưỡng công suất cần bằng lái, đăng ký, bi�
 
 ---
 
-Xe điện phù hợp người đi quãng ngắn, ổn định hằng ngày và có chỗ sạc tiện. Nếu bạn thường đi xa liên tục, cân nhắc thêm [Xe máy]({{ '/danh-muc/xe-may/' | relative_url }}) hoặc kết hợp thuê xe cho những chuyến dài trong [Thuê xe]({{ '/danh-muc/thue-xe/
+Xe điện phù hợp người đi quãng ngắn, ổn định hằng ngày và có chỗ sạc tiện. Nếu bạn thường đi xa liên tục, cân nhắc thêm [Xe máy]({{ '/danh-muc/xe-may/' | relative_url }}) hoặc kết hợp thuê xe cho những chuyến dài trong [Thuê xe]({{ '/danh-muc/thue-xe/' | relative_url }})
 
 ## Đọc hiểu thông số xe điện
 
-Ba thông số quyết định trải nghiệm xe điện: dung lượng pin, công suất động cơ và quãng đường công bố. Trong đó quãng đường là con số dễ hiểu sai nhất: nhà sản xuất công bố theo điều kiện chuẩn (người nhẹ, tốc độ đều, đường phẳng, thời tiết dễ chịu' | relative_url }}), còn điều kiện thực tế ở phố — phanh và tăng ga liên tục, chở thêm người, trời quá nóng hoặc quá lạnh — có thể khiến quãng đường thực thấp hơn đáng kể. Cách quy đổi thực tế được giải thích trong [pin xe]({{ '/danh-muc/xe-dien/pin-xe-dien/' | relative_url }}).
+Ba thông số quyết định trải nghiệm xe điện: dung lượng pin, công suất động cơ và quãng đường công bố. Trong đó quãng đường là con số dễ hiểu sai nhất: nhà sản xuất công bố theo điều kiện chuẩn (người nhẹ, tốc độ đều, đường phẳng, thời tiết dễ chịu), còn điều kiện thực tế ở phố — phanh và tăng ga liên tục, chở thêm người, trời quá nóng hoặc quá lạnh — có thể khiến quãng đường thực thấp hơn đáng kể. Cách quy đổi thực tế được giải thích trong [pin xe]({{ '/danh-muc/xe-dien/pin-xe-dien/' | relative_url }}).
 
 Với pin, hóa học quyết định tính cách: pin lithium-ion thông thường cho gọn nhẹ, pin LFP bền chu kỳ sạc và an toàn nhiệt hơn — chi tiết hai loại pin nằm ở [công nghệ pin]({{ '/danh-muc/xe-dien/cong-nghe-pin/' | relative_url }}) và chuyên mục [Công nghệ]({{ '/danh-muc/cong-nghe/' | relative_url }}). Người mua không cần hiểu sâu kỹ thuật, nhưng nên biết xe mình dùng pin gì để đúng thói quen sạc.
 

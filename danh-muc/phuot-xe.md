@@ -23,8 +23,7 @@ Chuyên mục này phục vụ người mới đi chuyến dài đầu tiên, ng
 
 **Tây Bắc** ([tay-bac]({{ '/danh-muc/phuot-xe/tay-bac/' | relative_url }})) nói về các cung hướng tây bắc: đặc trưng đường đèo dài, thời điểm đẹp trong năm và các điểm nghỉ dọc tuyến.
 
-**Đông Bắc** ([dong-b
-ac]({{ '/danh-muc/phuot-xe/dong-bac/' | relative_url }})) bao gồm các cung hướng đông bắc: đường uốn khúc gần biển và vùng biên, khác biệt rõ rệt với tây bắc về địa hình và thời tiết.
+**Đông Bắc** ([dong-bac]({{ '/danh-muc/phuot-xe/dong-bac/' | relative_url }})) bao gồm các cung hướng đông bắc: đường uốn khúc gần biển và vùng biên, khác biệt rõ rệt với tây bắc về địa hình và thời tiết.
 
 **Cung đường** ([cung-duong]({{ '/danh-muc/phuot-xe/cung-duong/' | relative_url }})) tổng hợp cách đánh giá một cung đường: quãng đường, độ khó, điểm tiếp nhiên liệu, và cách chọn cung khớp trình độ nhóm.
 
@@ -82,4 +81,4 @@ Sau mỗi chuyến đi, một bản ghi chép ngắn về tổng km, tình trạ
 ## Khám phá nội dung
 
 Bắt đầu từ nhóm chuẩn bị phượt và một cung ngắn ngày trước khi đi xa. Các nhóm cung đường và kỹ
- năng nên đọc dần theo trình độ, thay vì dồn một lần. Khi cần hiểu sâu về xe trước khi lên đường — kiểm tra phanh, lốp, nhớt — chuyên mục [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}) có hướng dẫn chi tiết từng hạng mục, và [Phụ tùng]({{ '/danh-muc/phu-tung/' | relative_url }}) giúp chọn đúng đồ thay. Chuyến đi trong nội thành Hà Nội thì xem chuyên mục [Du lịch]({{ '/danh-muc/du-lic/' | relative_url }}).
+ năng nên đọc dần theo trình độ, thay vì dồn một lần. Khi cần hiểu sâu về xe trước khi lên đường — kiểm tra phanh, lốp, nhớt — chuyên mục [Sửa chữa]({{ '/danh-muc/sua-chua/' | relative_url }}) có hướng dẫn chi tiết từng hạng mục, và [Phụ tùng]({{ '/danh-muc/phu-tung/' | relative_url }}) giúp chọn đúng đồ thay. Chuyến đi trong nội thành Hà Nội thì xem chuyên mục [Du lịch]({{ '/danh-muc/du-lich/' | relative_url }}).

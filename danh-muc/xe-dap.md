@@ -18,8 +18,7 @@ Ba quyết định quan trọng khi mua xe đạp. Một: loại xe theo mục �
 Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dưỡng gần như toàn bộ với vài dụng cụ cơ bản. Nội dung bảo dưỡng trong danh mục vì thế viết theo hướng tự làm 
 được: [bôi trơn xích]({{ '/danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}), chỉnh phanh, vá lốp, siết ớt.
 
-## Các nhóm nội dung
- chính
+## Các nhóm nội dung chính
 
 **[Xe phố]({{ '/danh-muc/xe-dap/xe-dap-pho/' | relative_url }})** (city bike) là dòng cho đi lại: yên rộng, tư thế thẳng, có thể gắn giỏ và đèn. Nhóm bài viết về cách chọn trong tầm tiền và phụ kiện đáng mua trước tiên.
 
@@ -40,11 +39,9 @@ Xe đạp là phương tiện duy nhất người dùng có thể tự bảo dư
 ## Bắt đầu từ đâu?
 
 - **Bạn đi làm 5–10 km mỗi ngày trong phố** — bắt đầu từ Xe phố và Chọn xe; nếu cần mang xe vào nhà hoặc lên phương tiện công cộng thì xem Xe gấp.
-- **
-Bạn muốn vận động cuối tuần, đường quanh hồ hoặc đường trường** — đọc Xe đường trường và phần tư thế trong Chọn xe.
+- **Bạn muốn vận động cuối tuần, đường quanh hồ hoặc đường trường** — đọc Xe đường trường và phần tư thế trong Chọn xe.
 - **Bạn muốn đi đường mòn, vườn, dốc đất** — Xe địa hình, chú ý phần giảm xóc.
-- **Bạn định đi du lịch nhiều ngày bằng xe đạp** — Xe touring kết hợp kinh nghiệm trong [Phượt xe]({{ '/danh-muc/phuot
--xe/' | relative_url }}), vì hai loại chuyến đi dùng nhiều nguyên tắc giống nhau.
+- **Bạn định đi du lịch nhiều ngày bằng xe đạp** — Xe touring kết hợp kinh nghiệm trong [Phượt xe]({{ '/danh-muc/phuot-xe/' | relative_url }}), vì hai loại chuyến đi dùng nhiều nguyên tắc giống nhau.
 
 ## Những vấn đề thường gặp
 
@@ -69,8 +66,7 @@ Cân nhắc xe đạp điện cho quãng đường dài hơn? Xem [Xe điện]({
 
 ## Chọn khung xe và cỡ xe đúng người
 
-Hai quyết định kỹ thuật quan trọng nhất khi mua xe đạp: chất liệu khung và cỡ khung. Về chất liệu, khung thép bền và rẻ nhưng nặng; khun
-g nhôm nhẹ và không rỉ, hợp người đi lại hằng ngày; khung carbon nhẹ nhất nhưng đắt và cần cẩn trọng khi va chạm. Người đi phố trong điều kiện Việt Nam thường hợp nhất với khung nhôm: đủ nhẹ để leo cầu vượt, đủ bền cho vỉa hè xấu.
+Hai quyết định kỹ thuật quan trọng nhất khi mua xe đạp: chất liệu khung và cỡ khung. Về chất liệu, khung thép bền và rẻ nhưng nặng; khung nhôm nhẹ và không rỉ, hợp người đi lại hằng ngày; khung carbon nhẹ nhất nhưng đắt và cần cẩn trọng khi va chạm. Người đi phố trong điều kiện Việt Nam thường hợp nhất với khung nhôm: đủ nhẹ để leo cầu vượt, đủ bền cho vỉa hè xấu.
 
 Về cỡ khung, chiều cao người lái quyết định cỡ khung. Khung quá to khiến người lái phải với tay, mỏi lưng và khó xử lý khi gấp rẽ; khung quá nhỏ làm khớp gối gập quá, đau đầu gối sau vài chục km. Cách đo nhanh: đứng vượt qua khung, khoảng hở giữa khung và thân người cỡ một bàn tay; khi ngồi lên yên, mũi bàn chân chạm đất. Hướng dẫn chọn chi tiết nằm ở [chọn xe]({{ '/danh-muc/xe-dap/chon-xe/' | relative_url }}).
 
@@ -87,8 +83,7 @@ và mau mòn), và siết bu-long sau 200km đầu với xe mới.
 
 Hai tín hiệu cần xử lý sớm: xích có tiếng lách cách dù đã bôi trơn (xích giãn, cần cắt hoặc thay), và phanh kêu dù đã chỉnh (má phanh mòn hoặc vành bánh lệch). Chi tiết các hạng mục nằm ở [bảo dưỡng]({{ '/danh-muc/xe-dap/bao-duong-xe-dap/' | relative_url }}).
 
-Về độ bền tổng thể, cách giữ xe đơn giản nhất là để trong nhà có mái che: mưa và nắng gắt là hai tác nhân làm mục ổ trục và làm giòn cao su nhanh nhất. Một chiếc xe phố đư
-ợc để trong nhà dễ dàng bền gấp đôi so với xe phơi ngoài trời.
+Về độ bền tổng thể, cách giữ xe đơn giản nhất là để trong nhà có mái che: mưa và nắng gắt là hai tác nhân làm mục ổ trục và làm giòn cao su nhanh nhất. Một chiếc xe phố được để trong nhà dễ dàng bền gấp đôi so với xe phơi ngoài trời.
 
 ## Bảo trì tại nhà cho người mới
 

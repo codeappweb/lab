@@ -25,7 +25,7 @@ created_at: 2026-09-27
 updated_at: 2026-09-27
 freshness_status: time-sensitive
 legal_sensitivity: true
-verified_source: "Công ước Vienna 1968 về giao thông đường bộ (IDP kèm bằng lái quốc gia và hộ chiếu) và Cổng Dịch vụ công Quốc gia — thủ tục cấp Giấy phép lái xe quốc tế — https://vanban.chinhphu.vn/?pageid=27160&docid=211194"
+verified_source: "Công ước Vienna 1968 về giao thông đường bộ — Việt Nam tham gia, hiệu lực với Việt Nam từ 20/8/2014; người có IDP do nước thành viên Công ước cấp phải mang kèm giấy phép lái xe quốc gia tương ứng khi điều khiển xe tại Việt Nam (Thông tư 29/2015/TT-BGTVT, Điều 10–11) — https://pbgdpl.gov.vn — và Cổng Dịch vụ công Quốc gia, thủ tục cấp Giấy phép lái xe quốc tế, mã 2.001002 — https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-hanh-chinh.html?ma_thu_tuc=2.001002"
 last_verified: 2026-09-29
 next_review: 2027-03-29
 verification_status: verified

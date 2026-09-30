@@ -22,9 +22,7 @@ Chuyên mục này phục vụ người cân nhắc mua xe điện muốn hiểu
 **Pin LFP** ([pin-lfp]({{ '/danh-muc/cong-nghe/pin-lfp/' | relative_url }})) nói về hóa học lithium iron phosphate — loại pin đang được ưa chuộng vì độ bền chu kỳ sạc và an toàn nhiệt, kèm so sánh với các hóa học
  lithium khác.
 
-**BMS** ([bms]({{ '/danh-muc/con
-
-g-nghe/bms/' | relative_url }})) giải thích hệ thống quản lý pin — "người gác" của bộ pin: cân bằng cell, giới hạn sạc – xả, bảo vệ nhiệt. Đây là nhóm nên đọc nếu bạn muốn hiểu vì sao pin "chết" sớm hay tại sao không nên sạc kiệt.
+**BMS** ([bms]({{ '/danh-muc/cong-nghe/bms/' | relative_url }})) giải thích hệ thống quản lý pin — "người gác" của bộ pin: cân bằng cell, giới hạn sạc – xả, bảo vệ nhiệt. Đây là nhóm nên đọc nếu bạn muốn hiểu vì sao pin "chết" sớm hay tại sao không nên sạc kiệt.
 
 **Động cơ điện** ([dong-co-dien]({{ '/danh-muc/cong-nghe/dong-co-dien/' | relative_url }})) nói về động cơ lắp trong bánh xe và động cơ giữa khung xe, công suất, mô-men xoắn, và cách thông số này quyết định cảm giác chạy.
 
@@ -67,8 +65,7 @@ Về bảo quản trong điều kiện Việt Nam, nhiệt nóng là kẻ thù l
 
 ## Đọc hiểu thông số pin và sạc trước khi mua xe điện
 
-Ba thông số quan trọng n
-hất trên một bình pin là dung lượng, điện áp và số chu kỳ sạc danh định. Dung lượng quyết định quãng đường chạy được, điện áp ảnh hưởng đến sức kéo ở tốc độ cao, còn số chu kỳ danh định cho biết pin còn giữ bao nhiêu phần trăm dung lượng thiết kế sau nhiều năm sử dụng. Pin LFP thường lùi về số chu kỳ lớn hơn pin lithium thông thường, đổi lại trọng lượng nặng hơn chút, nên loại pin nào hợp phụ thuộc vào cách bạn dùng xe hằng ngày.
+Ba thông số quan trọng nhất trên một bình pin là dung lượng, điện áp và số chu kỳ sạc danh định. Dung lượng quyết định quãng đường chạy được, điện áp ảnh hưởng đến sức kéo ở tốc độ cao, còn số chu kỳ danh định cho biết pin còn giữ bao nhiêu phần trăm dung lượng thiết kế sau nhiều năm sử dụng. Pin LFP thường lùi về số chu kỳ lớn hơn pin lithium thông thường, đổi lại trọng lượng nặng hơn chút, nên loại pin nào hợp phụ thuộc vào cách bạn dùng xe hằng ngày.
 
 Về sạc, điểm nên kiểm tra khi mua xe là công suất sạc tối đa mà xe nhận vào và hình thức bảo vệ của bộ sạc. Sạc nhanh tiện nhưng tần suất cao làm pin già sớm hơn sạc thường, nhất là khi pin đang nóng vì vừa chạy xong. Thói quen tốt là đợi pin nguội một lúc, sạc tới khi đầy rồi rút, tránh để pin cạn kiệt lâu ngày.
 
@@ -81,8 +78,7 @@ Cách tiếp cận hợp lý với người mua là chọn các công nghệ gi�
 ## Khám phá nội dung
 
 Bắt đầu từ cụm công nghệ khớp với xe và quyết định của bạn. 
-Với hướng dẫn chọn và dùng xe máy điện theo từng dòng — thay vì theo công nghệ — xem chuyên mục [Xe điện]({{ '/danh-muc/xe-dien/' | relative_url }}). Với phụ tùng và li
-nh kiện thay thế cho xe hiện đại, xem [Phụ tùng]({{ '/danh-muc/phu-tung/' | relative_url }}). Với khía cạnh chi phí của công nghệ — tiền điện sạc, khấu hao pin — chuyên mục [Chi phí]({{ '/danh-muc/chi-phi/' | relative_url }}) có phân tích theo hạng mục.
+Với hướng dẫn chọn và dùng xe máy điện theo từng dòng — thay vì theo công nghệ — xem chuyên mục [Xe điện]({{ '/danh-muc/xe-dien/' | relative_url }}). Với phụ tùng và linh kiện thay thế cho xe hiện đại, xem [Phụ tùng]({{ '/danh-muc/phu-tung/' | relative_url }}). Với khía cạnh chi phí của công nghệ — tiền điện sạc, khấu hao pin — chuyên mục [Chi phí]({{ '/danh-muc/chi-phi/' | relative_url }}) có phân tích theo hạng mục.
 
 ## Kiểm tra công nghệ khi nhận xe mới
 

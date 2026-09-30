@@ -2,9 +2,17 @@
 // validate-content-quality.mjs — content quality gate for codeappweb/lab.
 // Run BEFORE any push: node scripts/validate-content-quality.mjs
 // Exit code 1 = validation FAILED = DO NOT PUSH.
-// Repair 2026-09-29: fixed invalid regex (unescaped '/' in km/h), restored
-// lost escape sequences, restored mid-token line corruption, and extended
-// coverage to _posts (previously excluded).
+//
+// Audit fixes 2026-09-29 (round 2):
+//   - README.md / AGENTS.md / CONTRIBUTING.md / docs/** are technical
+//     documentation, not site pages: front matter is NOT required there and
+//     H1 headings are allowed. CJK junk still applies; "undefined"/
+//     underscore prose patterns are exempted there because technical docs
+//     legitimately name code identifiers and document the validator itself.
+//   - Prose checks run on text stripped of fenced code, inline code, Liquid
+//     output/tags, HTML tags, URLs and markdown link targets, so legitimate
+//     Liquid filters such as `relative_url` are no longer flagged as
+//     underscore artifacts while real garbage (word_word in prose) is caught.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
@@ -12,9 +20,7 @@ const ROOT = process.cwd();
 const errors = [];
 const warnings = [];
 
-// Legitimate technical terms allowed inside Vietnamese prose.
 const TECH_WHITELIST = /\b(BMS|GPS|LFP|Lithium|Smartkey|CVT|LED|ABS|A1|A2|Watt|Ah|km\/h|cc)\b/;
-
 const CJK = /[一-鿿぀-ヿ가-힯]/;
 const UNDEF = /undefined/;
 const PROSE_UNDERSCORE = /(^|\s)[a-zA-ZÀ-ỹ]{2,}_[a-zA-ZÀ-ỹ]{2,}($|[\s.,;:)\]])/;
@@ -36,10 +42,30 @@ function parseFrontMatter(text) {
   const raw = text.slice(3, end).trim();
   const fm = {};
   for (const line of raw.split('\n')) {
-    const m = line.match(/^([a-z_]+):\s*"?(.*?)"?\s*$/);
+    const m = line.match(/^([a-z_]+):\s*\"?(.*?)\"?\s*$/);
     if (m && m[1] !== 'parent' && m[1] !== 'children') fm[m[1]] = m[2];
   }
   return { fm, raw };
+}
+
+// Technical documentation is exempt from page-level front matter rules.
+function isTechnicalDoc(rel) {
+  const p = rel.replace(/\\/g, '/');
+  return p === 'README.md' || p === 'AGENTS.md' || p === 'CONTRIBUTING.md' || p.startsWith('docs/');
+}
+
+// Reduce a markdown body to plain prose so quality checks do not fire on
+// code, Liquid or markup (e.g. relative_url is a Liquid filter, not junk).
+function proseOnly(body) {
+  return body
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/~~~[\s\S]*?~~~/g, ' ')
+    .replace(/`[^`\n]*`/g, ' ')
+    .replace(/\{\{[\s\S]*?\}\}/g, ' ')
+    .replace(/\{%[\s\S]*?%\}/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/https?:\/\/[^\s)>]+/g, ' ')
+    .replace(/\]\([^)\s]*\)/g, ']');
 }
 
 const all = walk(ROOT);
@@ -47,30 +73,38 @@ const mdFiles = all.filter(f => f.endsWith('.md'));
 const slugs = new Map();
 
 for (const f of mdFiles) {
-  const rel = f.slice(ROOT.length + 1);
+  const rel = f.slice(ROOT.length + 1).replace(/\\/g, '/');
   const name = basename(f);
 
-  // filename hygiene
   if (UNDEF.test(name)) errors.push(rel + ': filename contains "undefined"');
   if (/\s/.test(name)) errors.push(rel + ': filename contains whitespace');
 
   const text = readFileSync(f, 'utf8');
   const parsed = parseFrontMatter(text);
+  const bodyEnd = text.indexOf('\n---', 3);
+  const body = parsed ? text.slice(bodyEnd + 4) : text;
+  const prose = proseOnly(body);
+
+  // CJK junk applies to every markdown file, technical docs included.
+  if (CJK.test(prose)) errors.push(rel + ': CJK characters found in prose');
+
+  // "undefined"/underscore artifacts are site-content checks. Technical
+  // documentation (README/AGENTS/CONTRIBUTING/docs) legitimately names
+  // code identifiers (source_url, primary_keyword) and documents the
+  // validator's own "undefined" detection, so those two patterns are
+  // exempted there; they still fire on every site page.
+  if (!isTechnicalDoc(rel)) {
+    if (UNDEF.test(prose)) errors.push(rel + ': "undefined" artifact in prose');
+    if (PROSE_UNDERSCORE.test(prose)) errors.push(rel + ': underscore artifact in prose');
+  }
+
+  if (isTechnicalDoc(rel)) continue; // no front-matter / H1 / SEO requirements
+
   if (!parsed) {
     errors.push(rel + ': missing or malformed front matter');
     continue;
   }
   const { fm } = parsed;
-
-  // body = content after front matter
-  const bodyEnd = text.indexOf('\n---', 3);
-  const body = text.slice(bodyEnd + 4);
-
-  // CJK / mixed-language artifacts in body prose
-  if (CJK.test(body)) errors.push(rel + ': CJK characters found in body');
-  if (UNDEF.test(body)) errors.push(rel + ': "undefined" artifact in body');
-  const prose = body.replace(/\([^)]*\)|\[[^\]]*\]\([^)]*\)|https?:\/\/\S+/g, ' ');
-  if (PROSE_UNDERSCORE.test(prose)) errors.push(rel + ': underscore artifact in prose');
 
   // H1 count in body
   const h1s = (body.match(/^# [^#]/gm) || []).length;
@@ -102,8 +136,8 @@ try {
   const seen = new Map();
   let parent = null;
   for (const line of tax.split('\n')) {
-    const p = line.match(/^  - id: "(P\d+)"/); if (p) parent = p[1];
-    const c = line.match(/^        slug: "(.+)"$/); if (!c) continue;
+    const p = line.match(/^  - id: \"(P\d+)\"/); if (p) parent = p[1];
+    const c = line.match(/^        slug: \"(.+)\"$/); if (!c) continue;
     const key = parent + '/' + c[1];
     if (seen.has(key)) errors.push('taxonomy: duplicate child slug ' + key);
     seen.set(key, true);

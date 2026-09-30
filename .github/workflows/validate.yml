@@ -1,0 +1,291 @@
+name: Validate
+
+# PR/push validation pipeline (audit fix 2026-09-29, hardened 2026-09-30).
+# Every gate is BLOCKING: no `|| true`, no continue-on-error, no error
+# swallowing. A failed gate fails the workflow before anything is
+# committed or pushed.
+#   scripts    — syntax check + regression/integration tests (node:test)
+#   gates      — all content gates; the manifest dry-run is BLOCKING
+#                (issue #6: a tree whose manifest is out of sync with
+#                repository truth cannot go green)
+#   build      — jekyll build --strict_front_matter + validate-built
+#   reconcile  — runs the REAL sync-manifest, re-runs the key gates on
+#                the synced tree, then commits; after the pre-push
+#                fetch+rebase the tree is re-synced, re-gated and the
+#                dry-run must pass again BEFORE the push (issue #4: the
+#                tree that is pushed is the tree that was validated)
+#   benchmark  — manual-dispatch-only scale measurement with artifacts
+#                (issue #7); scan-only, never a 20K-readiness proof
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      articles:
+        description: 'Benchmark corpus size (manual dispatch only)'
+        required: false
+        default: '5000'
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    name: Script syntax + regression tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check every script
+        run: |
+          set -eu
+          for f in scripts/*.mjs; do node --check "$f"; done
+      - name: Regression + integration tests (fixtures + local git remotes)
+        # On failure each failing test is condensed into ONE ::error::
+        # annotation (test name, error type, expected/actual, assertion
+        # message incl. child-process output) so failures are diagnosable
+        # from the checks API without log access. The runner SILENTLY caps
+        # annotations, so at most 9 complete diagnostics are emitted —
+        # never a truncated tail that hides most failures.
+        run: |
+          set +e
+          log=$(mktemp)
+          node --test --test-reporter=tap scripts/*.test.mjs 2>&1 | tee "$log"
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            node - "$log" <<'NODE'
+          const fs = require('fs');
+          const lines = fs.readFileSync(process.argv[2], 'utf8').split('\n');
+          let emitted = 0;
+          for (let i = 0; i < lines.length && emitted < 9; i++) {
+            const m = lines[i].match(/not ok \d+ - (.+)/);
+            if (!m) continue;
+            const det = [m[1]];
+            for (let j = i + 1; j < lines.length && j < i + 60; j++) {
+              const l = lines[j];
+              if (/not ok \d+ - |# Subtest|^\s*ok \d+ - |^1\.\.\d/.test(l)) break;
+              if (l.trim()) det.push(l.trim());
+            }
+            let msg = det.join(' | ');
+            if (msg.length > 620) msg = msg.slice(0, 620) + ' [truncated]';
+            msg = msg.replace(/%/g, '%25').replace(/[\r\n]+/g, ' %0A ');
+            console.log('::error::' + msg);
+            emitted++;
+          }
+          NODE
+            exit 1
+          fi
+  gates:
+    name: Content gates (blocking)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Content quality
+        run: node scripts/validate-content-quality.mjs
+      - name: Duplicate detection
+        run: node scripts/detect-duplicates.mjs
+      - name: Internal links (disk truth)
+        run: node scripts/check-links.mjs
+      - name: Sitemap validation
+        run: node scripts/validate-sitemap.mjs
+      - name: Self-heal audit
+        run: node scripts/self-heal-audit.mjs
+      - name: Legal freshness audit
+        run: node scripts/legal-freshness-audit.mjs
+      - name: SEO scoring
+        run: node scripts/seo-score.mjs
+      - name: Content hashes
+        run: node scripts/compute-content-hashes.mjs
+      - name: Manifest consistency (dry-run, BLOCKING)
+        # Blocking since 2026-09-30 (issue #6): a tree whose manifest is
+        # out of sync with repository truth cannot pass validation. The
+        # reconcile jobs below keep green trees in sync; if this gate
+        # fails, run `node scripts/sync-manifest.mjs`, re-run the gates
+        # and push the reconciled tree. No continue-on-error: a red
+        # dry-run must never be reported as green.
+        run: node scripts/sync-manifest.mjs --dry-run
+
+  build:
+    name: Jekyll build (blocking) + built-site validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3
+      - name: Jekyll build (strict front matter, blocking)
+        run: bundle exec jekyll build --strict_front_matter
+      - name: Validate built site (links + sitemap URLs in _site)
+        run: node scripts/validate-built.mjs
+
+  reconcile-pr:
+    name: Reconcile manifest (PR branch)
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    needs: [scripts, gates, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      # One reconciler per branch, queued, never cancelled mid-run
+      # (issue #5): a reconcile transaction is never aborted by a new
+      # push, and two reconcilers can never race on the same branch.
+      group: reconcile-${{ github.head_ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Put the checkout on a real branch (checkout with ref detaches HEAD)
+        run: git checkout -B "${{ github.head_ref }}"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run sync (write mode)
+        run: node scripts/sync-manifest.mjs
+      - name: Re-run key gates on the reconciled tree
+        run: |
+          set -eu
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+      - name: Prove convergence (dry-run must now pass)
+        run: node scripts/sync-manifest.mjs --dry-run
+      - name: Commit + push reconciled manifest (validated tree only)
+        run: |
+          set -eu
+          git config user.name "lab-pipeline-bot"
+          git config user.email "actions@github.com"
+          if git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            echo "manifest already in sync"
+            exit 0
+          fi
+          git add data/article-manifest.jsonl data/progress.json
+          git commit -m "chore(reconcile): sync manifest/progress with repository truth"
+          # Issue #4: never blind-push after a rebase. Fetch + rebase,
+          # then re-sync and re-gate the FINAL tree and prove convergence
+          # again; the push happens only on a tree whose dry-run is green.
+          git fetch origin "${{ github.head_ref }}"
+          git rebase "origin/${{ github.head_ref }}"
+          node scripts/sync-manifest.mjs
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+          node scripts/sync-manifest.mjs --dry-run
+          if ! git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            git add data/article-manifest.jsonl data/progress.json
+            git commit --amend --no-edit
+          fi
+          git push origin HEAD:"${{ github.head_ref }}"
+
+  reconcile:
+    name: Reconcile manifest (main)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [scripts, gates, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      # Issue #5: the SAME repo-wide writer group used by
+      # content-factory-scheduled.yml and content-pipeline.yml — every
+      # workflow that writes to origin/main is SERIALIZED; queued,
+      # never cancelled mid-run (a publish transaction is never aborted).
+      group: main-writer
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run sync (write mode)
+        run: node scripts/sync-manifest.mjs
+      - name: Re-run key gates on the reconciled tree
+        run: |
+          set -eu
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+      - name: Prove convergence (dry-run must now pass)
+        run: node scripts/sync-manifest.mjs --dry-run
+      - name: Commit + push reconciled manifest (validated tree only)
+        run: |
+          set -eu
+          git config user.name "lab-pipeline-bot"
+          git config user.email "actions@github.com"
+          if git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            echo "manifest already in sync"
+            exit 0
+          fi
+          git add data/article-manifest.jsonl data/progress.json
+          git commit -m "chore(reconcile): sync manifest/progress with repository truth"
+          # Issue #4: same contract as the PR reconciler — re-sync and
+          # re-gate the FINAL tree after the rebase, prove convergence,
+          # then push. Serialized with the other main writers above.
+          git fetch origin main
+          git rebase origin/main
+          node scripts/sync-manifest.mjs
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+          node scripts/sync-manifest.mjs --dry-run
+          if ! git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            git add data/article-manifest.jsonl data/progress.json
+            git commit --amend --no-edit
+          fi
+          git push origin HEAD:main
+
+  benchmark:
+    name: Scale benchmark (manual dispatch only)
+    if: github.event_name == 'workflow_dispatch'
+    needs: [scripts]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Representative corpus scan
+        run: |
+          set -eu
+          N="${{ github.event.inputs.articles || '5000' }}"
+          node scripts/benchmark-scale.mjs --n "$N" --out "$RUNNER_TEMP/benchmark.json"
+      - name: Inverted-index worst case (bounded corpus)
+        # --worst makes every primary_topic share one popular token; it
+        # is intentionally expensive, so it runs on a bounded corpus.
+        run: node scripts/benchmark-scale.mjs --n 1000 --worst --out "$RUNNER_TEMP/benchmark-worst.json"
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-scale-results
+          path: |
+            ${{ runner.temp }}/benchmark.json
+            ${{ runner.temp }}/benchmark-worst.json
+      - name: Honest scope note
+        run: |
+          echo "This benchmark measures full-corpus SCANS only (duplicate detection, hashing, manifest load, QA index build)."
+          echo "It does NOT measure Jekyll build/render at this scale."
+          echo "No 20K-readiness claim can be derived from these numbers."

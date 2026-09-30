@@ -37,19 +37,26 @@ name: Content Factory Scheduled
 #     jekyll build, no error swallowing. A failed build fails the
 #     workflow BEFORE commit/push.
 #   - self-heal-audit.mjs and legal-freshness-audit.mjs are BLOCKING
-#     (same semantics as content-pipeline.yml: validation failure =
-#     no commit). Legal validation of legal-sensitive articles stays
+#     (same semantics as content-pipeline.yml: validation failure = no
+#     commit). Legal validation of legal-sensitive articles stays
 #     blocking per data/legal-sources.yml rules.
 #   - publish is gated by `assert-ready --expected-size 20` (exactly
 #     20 rows, all PASS, all drafts present, zero claimed/fail/review)
 #     AND the controller-side all-or-nothing publish gate. 19 PASS +
-#     1 FAIL => publish ZERO articles; QA/state/reports are persisted
-#     by the failure-path step below.
-#   - git push is FAIL-CLOSED: a `pushed` flag is set only after a
-#     successful push; if all bounded retries fail the workflow exits
-#     non-zero even though a local commit exists.
-#   - commit scope is verified: every staged path must match the
-#     deterministic-output allowlist or the workflow refuses to commit.
+#     1 FAIL => publish ZERO articles; the failed run makes NO repository
+#     writes and leaves a diagnostics artifact only (see failure path below).
+#   - commit/push is delegated to scripts/factory-push.mjs
+#     (audit fix 2026-09-29): staged scope verified against a
+#     deterministic-output allowlist, push is fail-closed, and after a
+#     rebase the full revalidation commands RERUN on the rebased tree
+#     before pushing again — so the pushed tree is always validated.
+#   - publish is two-phase: `publish` stages rows and moves drafts to
+#     _posts; after the push is confirmed on origin/main,
+#     `finalize-publish --commit <sha>` flips staged rows to published
+#     and persists state/history/progress. A push failure leaves the run
+#     red with ZERO repository writes from the failed checkout; the next
+#     run recovers the transaction idempotently via recover, refusing to
+#     touch anything already committed on origin/main.
 # ======================================================================
 
 on:
@@ -76,14 +83,22 @@ on:
         default: "20"
       ids:
         description: "Comma-separated row ids (requeue only)"
+
         required: false
         default: ""
 
 permissions:
   contents: write
 
+# Issue #5: ALL workflows that write to origin/main share ONE repo-wide
+# concurrency group ("main-writer", also used by content-pipeline.yml and the
+# reconcile job of validate.yml) so main writers are SERIALIZED — queued,
+# never cancelled mid-run (a publish transaction is never aborted by another
+# queued run). This is the real coordination between independent runners.
+# The data/factory-lock.json file lock is advisory bookkeeping within a
+# shared checkout, NOT a distributed lock.
 concurrency:
-  group: content-factory-production
+  group: main-writer
   cancel-in-progress: false
 
 jobs:
@@ -124,6 +139,10 @@ jobs:
       OP: ${{ needs.gate.outputs.op }}
       IDS: ${{ github.event.inputs.ids }}
       BATCH_SIZE: ${{ github.event.inputs.batch_size || '20' }}
+      # Issue #5: every run gets its OWN stable run id (identical for every
+      # step of the same run) so the factory lock can actually distinguish
+      # workers — never the shared default "manual".
+      FACTORY_RUN_ID: "factory-${{ github.run_id }}-${{ github.run_attempt }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -133,12 +152,16 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Set up Ruby (Jekyll blocking build)
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.1"
+          bundler-cache: false
+
+      - name: Bundle install
+        run: bundle install --jobs 4 --retry 3
 
       - name: Read and validate operator command (whitelist)
         run: |
@@ -213,7 +236,10 @@ jobs:
           set -eu
           node scripts/gen-sitemap-shards.mjs
           node scripts/validate-sitemap.mjs
-          node scripts/sync-manifest.mjs
+          # Issue #6: --require-committed — staged posts that are only in this
+          # working tree (publish phase 1, not pushed yet) must NOT flip
+          # manifest rows to published. Only origin/main-verified posts do.
+          node scripts/sync-manifest.mjs --require-committed
           node scripts/gen-topic-queue.mjs
           node scripts/seo-score.mjs
           node scripts/compute-content-hashes.mjs
@@ -230,6 +256,7 @@ jobs:
           node scripts/factory-batch.mjs requeue --ids "$IDS" || code=$?
           echo "requeue exit code: $code (4 = refusals recorded, not fatal)"
           if [ "$code" -ne 0 ] && [ "$code" -ne 4 ]; then exit "$code"; fi
+
           exit 0
 
       - name: Full test suite (all deploy gates, BLOCKING)
@@ -244,94 +271,77 @@ jobs:
       - name: Jekyll production build (BLOCKING gate)
         run: |
           set -eu
-          bundle install --jobs 4 --retry 2
           bundle exec jekyll build
+
+      - name: Validate built site (BLOCKING gate)
+        run: node scripts/validate-built.mjs
 
       - name: Save progress
         run: node scripts/factory-batch.mjs progress
 
-      # Commit scope verification + fail-closed push. Every staged path
-      # must be a legitimate deterministic output of this batch; pushes
-      # are bounded-retried and the workflow fails if origin/main was
-      # never reached.
+      # Commit and push deterministic outputs via the SHARED scope-
+      # verified, fail-closed pusher (scripts/factory-push.mjs):
+      #   - only allowlisted deterministic-output paths can be staged
+      #   - push is retried with fetch + rebase, and after every rebase
+      #     the full revalidation below RERUNS on the rebased tree
+      #   - the workflow fails if origin/main was never reached
       - name: Commit and push deterministic outputs (scope-verified, fail-closed)
         run: |
           set -eu
           git config user.name "content-factory-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node scripts/factory-push.mjs \
+            --message "content-factory: ${OP} (deterministic outputs of canonical tooling only; article prose written by the authenticated Vibe writer session)" \
+            --revalidate "node scripts/detect-duplicates.mjs && node scripts/validate-content-quality.mjs && node scripts/check-links.mjs && node scripts/validate-sitemap.mjs && node scripts/self-heal-audit.mjs && node scripts/legal-freshness-audit.mjs && bundle exec jekyll build && node scripts/validate-built.mjs"
 
-          echo "== git status --short =="
-          git status --short
-          echo "== git diff --name-only (unstaged changes) =="
-          git diff --name-only
-          echo "== staging allowlisted deterministic outputs =="
-          # `|| true` here only tolerates an empty pathspec (nothing to
-          # stage); it never masks a validation failure.
-          git add -A -- _posts _drafts data sitemaps sitemap.xml reports 2>/dev/null || true
-          echo "== git diff --cached --name-only (staged scope) =="
-          git diff --cached --name-only
-
-          # Refuse to commit anything outside the deterministic-output
-          # allowlist (no caches, secrets, diagnostics or unrelated files).
-          bad="$(git diff --cached --name-only | grep -vE '^(_posts/|_drafts/|data/|sitemaps/|sitemap\.xml$|reports/)' || true)"
-          if [ -n "$bad" ]; then
-            echo "::error::refusing to commit out-of-scope paths:"
-            echo "$bad"
-            exit 1
-          fi
-
-          if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard -- _posts _drafts data sitemaps sitemap.xml reports)" ]; then
-            echo "nothing to commit"
-            exit 0
-          fi
-
-          git commit -m "content-factory: ${OP} (deterministic outputs of canonical tooling only; article prose written by the authenticated Vibe writer session)"
-
-          pushed=false
-          if git push; then
-            pushed=true
-          else
-            for i in 1 2 3 4 5; do
-              git fetch origin main
-              git rebase origin/main || { git rebase --abort; exit 1; }
-              if git push; then pushed=true; break; fi
-            done
-          fi
-          if [ "$pushed" != "true" ]; then
-            echo "::error::push failed after retries — no commit reached origin/main"
-            exit 1
-          fi
-          echo "push confirmed: commit reached origin/main"
-
-      # Failure path for production/publish: persist QA findings, state
-      # and factory reports so a refused batch (e.g. 19 PASS + 1 FAIL)
-      # leaves inspectable results in the repository. The workflow
-      # still finishes RED because the blocking gate already failed.
-      - name: Persist QA/state/reports when a blocking gate refused the batch
-        if: ${{ failure() && (env.OP == 'production' || env.OP == 'publish') }}
+      # Two-phase publish completion: the articles are on origin/main.
+      # finalize-publish verifies the commit exists on origin/main, then
+      # flips staged rows to published and records factory-history.
+      # The follow-up state/history/progress commit goes through the same
+      # scope-verified, fail-closed pusher. If this step is interrupted,
+      # `factory-batch.mjs recover` completes it idempotently on the next
+      # run (staged + committed on origin/main => finalize with the
+      # discovered sha).
+      - name: finalize-publish — confirm publish on origin/main, persist state (BLOCKING)
+        if: env.OP == 'production' || env.OP == 'publish'
         run: |
           set -eu
-          git config user.name "content-factory-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # `|| true` here only tolerates an empty pathspec (no state or
-          # reports produced); it never masks a validation failure.
-          git add -A -- data/factory-state.json reports/factory 2>/dev/null || true
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "no QA state or reports to persist"
-            exit 0
-          fi
-          git commit -m "content-factory: persist QA/state after refused batch (no articles published)"
-          pushed=false
-          if git push; then
-            pushed=true
-          else
-            for i in 1 2 3 4 5; do
-              git fetch origin main
-              git rebase origin/main || { git rebase --abort; exit 1; }
-              if git push; then pushed=true; break; fi
-            done
-          fi
-          if [ "$pushed" != "true" ]; then
-            echo "::error::push of QA state failed after retries"
+          SHA="$(git rev-parse HEAD)"
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$SHA" origin/main; then
+            echo "::error::publish commit $SHA is not present on origin/main — refusing to finalize (state remains staged; recover will retry)"
             exit 1
           fi
+          node scripts/factory-batch.mjs finalize-publish --commit "$SHA"
+          node scripts/factory-batch.mjs progress
+          # The publish commit is verified on origin/main above, so the
+          # manifest rows may now flip to published (still origin/main-
+          # verified) and the follow-up commit proves convergence.
+          node scripts/sync-manifest.mjs --require-committed
+          node scripts/factory-batch.mjs progress
+          node scripts/factory-push.mjs \
+            --message "content-factory: finalize-publish ${OP} (${SHA:0:10}) — state/history/progress/manifest only, articles already on origin/main" \
+            --revalidate "node scripts/factory-batch.mjs consistency && node scripts/sync-manifest.mjs --require-committed --dry-run && node scripts/validate-sitemap.mjs"
+
+      # Failure path (issue #3): a failed production/publish run makes NO
+      # repository writes from the failed checkout — no rollback step, no
+      # diagnostics commit, no push. Every failure-path step is upload-only
+      # (Actions artifact). The run stays red and the two-phase transaction
+      # stays staged; the NEXT run recovers it idempotently (recover fetches
+      # the remote first and never touches anything already on origin/main).
+
+      # Diagnostics are ALSO uploaded as an Actions artifact (issue #3): a
+      # failed run leaves inspectable evidence even when nothing can be
+      # pushed. Only factory state/report files are included — no logs.
+      - name: Upload failure diagnostics (artifact)
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: factory-failure-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            reports/factory/
+            data/factory-state.json
+            data/factory-history.json
+            data/factory-lock.json
+          if-no-files-found: ignore
+          retention-days: 30

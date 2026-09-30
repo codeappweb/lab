@@ -1,7 +1,7 @@
 {
   "loop": "micro-continuous",
   "chunk_size": 1,
-  "current_step": "publish-retry-2",
+  "current_step": "publish-retry-3",
   "active_article": {
     "id": "C01-0001",
     "slug": "thue-xe-may-tu-lai-o-ha-noi-loai-giay-to-can-chuan-bi",
@@ -14,6 +14,6 @@
     "live_url": null,
     "deploy_verified": false
   },
-  "last_pushed_commit": "71e0e4ac7ad6da5a6595beeb319c295870120e1c",
-  "updated_at": "2026-09-30T16:17:54.627Z"
+  "last_pushed_commit": "6dac1ea8dde062deff5021f1f0ccfbd9cc72cea5",
+  "updated_at": "2026-09-30T16:29:52.667Z"
 }

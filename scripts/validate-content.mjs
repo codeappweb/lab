@@ -27,7 +27,10 @@ for (const r of recs) {
 }
 for (const f of posts) {
   const md = readFileSync(ROOT + '_posts/' + f, 'utf8');
-  for (const k of ['title:','date:','cluster:','manifest_id:']) if (!md.includes(k)) errs.push(`${f}: front matter thiếu ${k}`);
+  for (const k of ['title:','date:','cluster:']) if (!md.includes(k)) errs.push(`${f}: front matter thiếu ${k}`);
+  // manifest_id liên kết bài với manifest; sync-manifest tự reconciled theo slug
+  // khi thiếu — đây là cảnh báo biên tập, không chặn publish.
+  if (!md.includes('manifest_id:')) warns.push(`${f}: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)`);
   if ((md.match(/^# /m) || []).length) errs.push(`${f}: có H1 trong body (layout đã render H1 từ title)`);
 }
 console.log(`manifest: ${lines.length} records, posts: ${posts.length}`);

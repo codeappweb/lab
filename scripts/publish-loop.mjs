@@ -28,6 +28,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { changedPaths } from './porcelain.mjs';
 
 const ROOT = process.env.LAB_ROOT
   ? resolve(process.env.LAB_ROOT)
@@ -125,7 +126,11 @@ if (NO_GIT) {
 // ---- 3. commit only the allowlisted derived paths ----------------------------
 const status = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
 if (status.status !== 0) die('git status failed');
-const changed = status.stdout.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.slice(3).trim());
+// git status --porcelain v1: "XY <path>" (XY = 2 status chars + 1 space).
+// NOTE: do NOT trim the line first — a leading space (e.g. " M path") is
+// part of the format; trimming it eats the first character of the path
+// and made every derived file look out-of-scope (bug fixed 2026-09-30).
+const changed = changedPaths(status.stdout);
 if (changed.length === 0) {
   console.log('publish-loop: nothing to publish — derived state already in sync (idempotent re-run).');
   process.exit(0);

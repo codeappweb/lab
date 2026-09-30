@@ -13,6 +13,7 @@
 //       can never race the same article through this path)
 //   T6  gate failure is never reported as success (exit code contract)
 //   T7  the transaction only ever writes derived allowlist files
+//   T8  the porcelain parser never eats the first character of a path
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync, rmSync, copyFileSync } from 'node:fs';
@@ -170,6 +171,16 @@ test('T6: gate failure is never reported as success', () => {
   writeFileSync(join(root, 'data', 'article-manifest.jsonl'), '{not json\n');
   const r = runLoop(root, '_posts/2026-01-02-bai-moi.md');
   assert.notEqual(r.status, 0, 'corrupt manifest must fail the transaction');
+});
+
+test('T8: porcelain parser never eats the first character of a path', async () => {
+  const { changedPaths } = await import('./porcelain.mjs');
+  const out = changedPaths(' M data/progress.json\n M data/article-manifest.jsonl\nM  sitemap.xml\n?? sitemaps/articles-001.xml\n');
+  assert.deepEqual(out, ['data/progress.json', 'data/article-manifest.jsonl', 'sitemap.xml', 'sitemaps/articles-001.xml']);
+  // rename/copy lines fail closed: raw "orig -> path" never matches the allowlist
+  assert.deepEqual(changedPaths('R  old.md -> new.md\n'), ['old.md -> new.md']);
+  assert.deepEqual(changedPaths(''), []);
+  assert.deepEqual(changedPaths('\n\n'), []);
 });
 
 test('T7: the transaction only writes derived allowlist files', () => {

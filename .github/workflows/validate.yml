@@ -49,7 +49,21 @@ jobs:
           set -eu
           for f in scripts/*.mjs; do node --check "$f"; done
       - name: Regression + integration tests (fixtures + local git remotes)
-        run: node --test scripts/*.test.mjs
+        # On failure the last part of the node:test output is re-emitted as
+        # ::error:: lines so the failing tests and assertion messages are
+        # visible on the commit/PR checks without opening the full log.
+        run: |
+          set +e
+          log=$(mktemp)
+          node --test scripts/*.test.mjs 2>&1 | tee "$log"
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            grep -E '^(✖|not ok|# Subtest)|AssertionError|failureType|expected|actual' "$log" | tail -120 | while IFS= read -r line; do
+              printf '::error::%s\n' "$line" | head -c 260
+              printf '\n'
+            done
+            exit 1
+          fi
 
   gates:
     name: Content gates (blocking)

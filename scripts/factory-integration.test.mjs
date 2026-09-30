@@ -397,4 +397,96 @@ test('T7 benchmark: processes exactly the fixture corpus, never touches producti
   assert.equal(readdirSync(join(SRC, '_posts')).sort().join(','), beforePosts, 'production _posts must be untouched');
 });
 
+
+test('T8 narrow --paths refuses a pre-staged out-of-scope file; nothing pushed', (t) => {
+  const fx = makeFixture(['bai-1']);
+  cleanup(fx, t);
+  // a file someone else staged BEFORE factory-push, outside the requested scope
+  writeFileSync(join(fx.work, '_posts', 'ungated.md'), '---\nlayout: post\n---\nkhong duoc day len remote\n');
+  git(fx.work, ['add', '_posts/ungated.md']);
+  // the in-scope change the narrow --paths run would be allowed to commit
+  writeFileSync(join(fx.work, 'data', 'factory-diagnostics.json'), '{"note":"diag"}\n');
+  const r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diag', '--paths', 'data/factory-diagnostics.json', '--branch', 'main']);
+  assert.notEqual(r.status, 0, 'a pre-staged out-of-scope file must refuse the whole run');
+  const err = (r.stdout || '') + (r.stderr || '');
+  assert.ok(err.includes('refusing out-of-scope paths'), err);
+  // the caller keeps control of the index: factory-push never unstages it
+  const idx = git(fx.work, ['diff', '--cached', '--name-only']);
+  assert.ok(idx.includes('_posts/ungated.md'), 'factory-push must not unstage the caller file');
+  assert.equal(git(fx.bare, ['rev-list', '--all', '--count']).trim(), '1', 'the remote must not change');
+});
+
+test('T9 an ungated local content commit is never pushed along with diagnostics', (t) => {
+  const fx = makeFixture(['bai-1']);
+  cleanup(fx, t);
+  // ungated CONTENT committed locally (never gated, never pushed)
+  writeFileSync(join(fx.work, '_posts', 'ungated.md'), '---\nlayout: post\n---\nnoi dung chua duoc kiem\n');
+  git(fx.work, ['add', '_posts/ungated.md']);
+  git(fx.work, ['commit', '-m', 'local ungated content']);
+  const remoteBefore = git(fx.bare, ['ls-tree', '-r', '--name-only', 'main']);
+  // diagnostics-only run with a narrow scope
+  writeFileSync(join(fx.work, 'data', 'factory-diagnostics.json'), '{"note":"diag"}\n');
+  const r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diag', '--paths', 'data/factory-diagnostics.json', '--branch', 'main']);
+  assert.notEqual(r.status, 0, 'a diagnostics push must not carry an ungated content commit');
+  const err = (r.stdout || '') + (r.stderr || '');
+  assert.ok(err.includes('outside the requested scope'), err);
+  assert.equal(git(fx.bare, ['ls-tree', '-r', '--name-only', 'main']), remoteBefore, 'origin must not gain the ungated commit');
+});
+
+test('T10 failure path of the factory workflow never commits or pushes', () => {
+  const wf = readFileSync(join(SRC, '.github/workflows', 'content-factory-scheduled.yml'), 'utf8');
+  const steps = wf.split('\n      - name:').slice(1).map(s => s.split('\n      - name:')[0]);
+  assert.ok(steps.length >= 10, 'factory workflow steps must parse');
+  let artifactSeen = false;
+  for (const block of steps) {
+    if (!block.includes('failure()')) continue;
+    assert.ok(!block.includes('factory-push.mjs'),
+      'a failure() step must never call factory-push (no commit/push from a failed checkout): ' + block.slice(0, 200));
+    assert.ok(!/\bgit\s+(commit|push)\b/.test(block),
+      'a failure() step must never git commit/push: ' + block.slice(0, 200));
+    if (block.includes('upload-artifact')) {
+      artifactSeen = true;
+      assert.ok(block.includes('reports/factory'), 'the failure artifact must include reports/factory');
+    }
+  }
+  assert.ok(artifactSeen, 'the failure path must upload diagnostics as an Actions artifact');
+});
+
+test('T11 --paths edges: empty list refused; a deleted file stages only its deletion', (t) => {
+  const fx = makeFixture(['bai-1']);
+  cleanup(fx, t);
+  // a) an empty --paths list must never fall back to staging the repository
+  let r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'x', '--paths', '', '--branch', 'main']);
+  assert.notEqual(r.status, 0, 'an empty --paths list must be refused');
+  assert.ok(((r.stderr || '') + (r.stdout || '')).includes('refusing to run'), 'clear error for the empty path list');
+  assert.equal(git(fx.bare, ['rev-list', '--all', '--count']).trim(), '1', 'the remote must not change');
+  // b) a --paths entry naming ONLY a deleted file stages exactly that deletion
+  writeFileSync(join(fx.work, 'data', 'tmp-diag.json'), '{}\n');
+  git(fx.work, ['add', 'data/tmp-diag.json']);
+  git(fx.work, ['commit', '-m', 'add tmp-diag']);
+  git(fx.work, ['push', 'origin', 'main']);
+  const remoteBefore = git(fx.bare, ['ls-tree', '-r', '--name-only', 'main']).split('\n').filter(Boolean);
+  rmSync(join(fx.work, 'data', 'tmp-diag.json'));
+  r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'remove tmp-diag', '--paths', 'data/tmp-diag.json', '--branch', 'main']);
+  assert.equal(r.status, 0, (r.stdout || '') + (r.stderr || ''));
+  const remoteAfter = git(fx.bare, ['ls-tree', '-r', '--name-only', 'main']).split('\n').filter(Boolean);
+  assert.ok(!remoteAfter.includes('data/tmp-diag.json'), 'the deletion must reach the remote');
+  assert.deepEqual(remoteAfter, remoteBefore.filter(f => f !== 'data/tmp-diag.json'),
+    'nothing outside the requested path may change on the remote');
+});
+
+test('T12 a failing fetch stops the run before any push; remote untouched', (t) => {
+  const fx = makeFixture(['bai-1']);
+  cleanup(fx, t);
+  const countBefore = git(fx.bare, ['rev-list', '--all', '--count']).trim();
+  // break the remote so the mandatory pre-push fetch fails
+  git(fx.work, ['remote', 'set-url', 'origin', '/nonexistent/remote.git']);
+  writeFileSync(join(fx.work, 'data', 'factory-diagnostics.json'), '{"note":"diag"}\n');
+  const r = runNodeScript(fx, 'factory-push.mjs', ['--message', 'diag', '--branch', 'main']);
+  assert.notEqual(r.status, 0, 'a failed fetch must fail the run');
+  const err = (r.stdout || '') + (r.stderr || '');
+  assert.ok(err.includes('fetch origin/main failed'), err);
+  assert.equal(git(fx.bare, ['rev-list', '--all', '--count']).trim(), countBefore, 'the remote must not change');
+});
+
 // end of suite

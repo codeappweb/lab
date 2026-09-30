@@ -43,8 +43,8 @@ name: Content Factory Scheduled
 #   - publish is gated by `assert-ready --expected-size 20` (exactly
 #     20 rows, all PASS, all drafts present, zero claimed/fail/review)
 #     AND the controller-side all-or-nothing publish gate. 19 PASS +
-#     1 FAIL => publish ZERO articles; QA/state/reports are persisted
-#     by the failure-path step below.
+#     1 FAIL => publish ZERO articles; the failed run makes NO repository
+#     writes and leaves a diagnostics artifact only (see failure path below).
 #   - commit/push is delegated to scripts/factory-push.mjs
 #     (audit fix 2026-09-29): staged scope verified against a
 #     deterministic-output allowlist, push is fail-closed, and after a
@@ -53,9 +53,10 @@ name: Content Factory Scheduled
 #   - publish is two-phase: `publish` stages rows and moves drafts to
 #     _posts; after the push is confirmed on origin/main,
 #     `finalize-publish --commit <sha>` flips staged rows to published
-#     and persists state/history/progress. A push failure triggers
-#     `rollback`, which restores drafts and refuses to touch anything
-#     already committed on origin/main.
+#     and persists state/history/progress. A push failure leaves the run
+#     red with ZERO repository writes from the failed checkout; the next
+#     run recovers the transaction idempotently via recover, refusing to
+#     touch anything already committed on origin/main.
 # ======================================================================
 
 on:
@@ -322,51 +323,12 @@ jobs:
             --message "content-factory: finalize-publish ${OP} (${SHA:0:10}) — state/history/progress/manifest only, articles already on origin/main" \
             --revalidate "node scripts/factory-batch.mjs consistency && node scripts/sync-manifest.mjs --require-committed --dry-run && node scripts/validate-sitemap.mjs"
 
-      # Failure path (issues #3, #6): a refused batch must leave inspectable,
-      # CONSISTENT diagnostics — but must NEVER push ungated content to
-      # production:
-      #   - rollback is BLOCKING for production/publish. If it fails (e.g. a
-      #     staged post is already committed on origin/main) the step fails
-      #     and NOTHING is committed or pushed; the next run's `recover`
-      #     completes or rolls back the transaction idempotently.
-      #   - the remote is fetched FIRST so rollback decides against remote
-      #     truth, not the local working tree.
-      #   - after a successful rollback, consistency must pass before any
-      #     state is persisted; only a NARROW diagnostics allowlist (factory
-      #     state/history/lock + reports/factory) is ever committed — never
-      #     _posts/_drafts/sitemaps content.
-      #   - the diagnostics commit goes through the shared fail-closed
-      #     pusher, so after any rebase the consistency gate re-runs on the
-      #     exact tree that is pushed.
-      - name: Rollback uncommitted promotions when a blocking gate refused the batch
-        if: ${{ failure() }}
-        run: |
-          set -eu
-          git config user.name "content-factory-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ "$OP" = "production" ] || [ "$OP" = "publish" ]; then
-            # Check the remote before deciding recovery: fetch origin/main
-            # so rollback can tell "committed on origin/main" apart from
-            # "staged only in this working tree".
-            git fetch origin main
-            # BLOCKING: a failed rollback stops the production write path.
-            node scripts/factory-batch.mjs rollback
-            node scripts/factory-batch.mjs progress
-          fi
-
-      # Diagnostics-only persistence (no articles published). Inconsistent
-      # state is never pushed: the consistency gate fails the step instead.
-      - name: Persist QA/state diagnostics after refused batch (no articles published)
-        if: ${{ failure() }}
-        run: |
-          set -eu
-          git config user.name "content-factory-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          node scripts/factory-batch.mjs consistency
-          node scripts/factory-push.mjs \
-            --message "content-factory: persist QA/state after refused batch (no articles published; uncommitted promotions rolled back)" \
-            --paths "data/factory-state.json,data/factory-history.json,data/factory-lock.json,reports/factory" \
-            --revalidate "node scripts/factory-batch.mjs consistency"
+      # Failure path (issue #3): a failed production/publish run makes NO
+      # repository writes from the failed checkout — no rollback step, no
+      # diagnostics commit, no push. Every failure-path step is upload-only
+      # (Actions artifact). The run stays red and the two-phase transaction
+      # stays staged; the NEXT run recovers it idempotently (recover fetches
+      # the remote first and never touches anything already on origin/main).
 
       # Diagnostics are ALSO uploaded as an Actions artifact (issue #3): a
       # failed run leaves inspectable evidence even when nothing can be
@@ -379,6 +341,7 @@ jobs:
           path: |
             reports/factory/
             data/factory-state.json
+            data/factory-history.json
             data/factory-lock.json
           if-no-files-found: ignore
           retention-days: 30

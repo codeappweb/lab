@@ -3,39 +3,46 @@
 // Used by BOTH content workflows so commit scoping and push semantics are
 // identical everywhere.
 //   1. stages ONLY the allowlisted deterministic-output paths
-//   2. refuses to commit any staged path outside the allowlist
-//      (unrelated files can never enter the commit path)
-//   3. pushes; on rejection: fetch + rebase, then RERUNS the revalidation
+//   2. REFUSES the run when anything already staged is outside the
+//      requested scope (issue #3): a file someone else staged is never
+//      silently committed and never unstaged — the caller keeps full
+//      control of the index
+//   3. verifies EVERY commit ahead of the remote before pushing (not just
+//      the last one), so a narrow diagnostics push can never carry an
+//      ungated local content commit along
+//   4. pushes; on rejection: fetch + rebase, then RERUNS the revalidation
 //      commands on the rebased tree and re-checks scope before pushing again
-//   4. exits nonzero with an accurate state report if origin/main was never
+//   5. exits nonzero with an accurate state report if origin was never
 //      reached — it never reports success for a local-only commit
 // Usage:
 //   node scripts/factory-push.mjs --message "..." \
 //     --revalidate "node scripts/validate-content-quality.mjs && node scripts/validate-sitemap.mjs" \
 //     [--branch main] [--paths "data/factory-state.json,reports/factory"]
-// --paths overrides the staged path set with a NARROWER scope (still checked
-// against the allowlist below) — used by the factory failure path so a
-// diagnostics commit can never stage _posts/_drafts content (issue #3).
+// --paths narrows the request to EXACTLY those paths: the staged index, the
+// new commit and every commit in the push range must touch nothing else
+// (paths outside the allowlist are always refused). An empty --paths list
+// is a usage error — it must NEVER fall back to staging the repository.
 import { spawnSync } from 'node:child_process';
-import { writeFileSync, mkdirSync, statSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const DEFAULT_PATHS = ['_posts', '_drafts', 'data', 'sitemaps', 'sitemap.xml', 'reports'];
+const ALLOW_RE = /^(_posts\/|_drafts\/|data\/|sitemaps\/|sitemap\.xml$|reports\/)/;
 
 const argv = process.argv.slice(2);
-const arg = (name) => { const i = argv.indexOf(name); return i !== -1 ? argv[i + 1] : undefined; };
-
 // NOTE: argv/arg must be declared before the first arg() call below — the
 // previous order crashed with a TDZ ReferenceError on every invocation
 // (regression-tested by scripts/factory-integration.test.mjs).
-const pathsArg = arg('--paths');
-const PATHS = pathsArg ? pathsArg.split(',').map(s => s.trim()).filter(Boolean) : DEFAULT_PATHS;
-// git pathspecs must match existing files; a narrowed --paths may name files
-// (e.g. data/factory-lock.json) that legitimately do not exist this run.
-const gitPaths = PATHS.filter(pp => { try { statSync(join(ROOT, pp)); return true; } catch { return false; } });
-const ALLOW_RE = /^(_posts\/|_drafts\/|data\/|sitemaps\/|sitemap\.xml$|reports\/)/;
+const arg = (name) => { const i = argv.indexOf(name); return i !== -1 ? argv[i + 1] : undefined; };
 
+const pathsArg = arg('--paths');
+const NARROW = pathsArg !== undefined;
+const PATHS = NARROW ? pathsArg.split(',').map(s => s.trim()).filter(Boolean) : DEFAULT_PATHS;
+if (NARROW && PATHS.length === 0) {
+  console.error('::error::--paths is empty after parsing — refusing to run (an empty path list must never stage the whole repository)');
+  process.exit(2);
+}
 const message = arg('--message');
 const revalidate = arg('--revalidate') || '';
 const branch = arg('--branch') || process.env.GITHUB_REF_NAME || 'main';
@@ -43,57 +50,95 @@ if (!message) { console.error('factory-push: --message required'); process.exit(
 
 function git(args, opts = {}) {
   const r = spawnSync('git', args, { cwd: ROOT, encoding: 'utf8', ...opts });
-  if (r.error) { console.error('git unavailable: ' + r.error.message); process.exit(1); }
+  if (r.error) { console.error('::error::git unavailable: ' + r.error.message); process.exit(1); }
   return r;
 }
+const out = (args) => git(args).stdout;
+const stagedFiles = () => out(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
 
-function staged() {
-  return git(['diff', '--cached', '--name-only']).stdout.split('\n').filter(Boolean);
+// A scope entry matches itself and everything under it (directory prefix).
+function inScope(file) {
+  for (const p of PATHS) {
+    if (file === p) return true;
+    if (file.startsWith(p.endsWith('/') ? p : p + '/')) return true;
+  }
+  return false;
 }
 
-function scopeCheck(paths, label) {
-
-  const bad = paths.filter(p => !ALLOW_RE.test(p));
+// scope = the path allowlist AND the requested paths; anything else is refused
+function scopeCheck(files, label) {
+  const bad = files.filter(p => !ALLOW_RE.test(p) || !inScope(p));
   if (bad.length) {
-    console.error('::error::' + label + ': refusing out-of-scope paths:');
+    console.error('::error::' + label + ': refusing out-of-scope paths (requested scope: ' + PATHS.join(', ') + '):');
     for (const b of bad) console.error('  ' + b);
     process.exit(1);
   }
 }
 
-const status = { branch, state: 'prepared', staged: [], rebased: false, revalidated: false, commit: null, pushed: false };
+const status = { branch, state: 'prepared', scope: PATHS, staged: [], rebased: false, revalidated: false, commit: null, pushed: false };
 
-// 1. stage only the deterministic-output paths
-const add = git(['add', '-A', '--', ...gitPaths]);
-if (add.status !== 0) {
-  console.log('factory-push: git add exited ' + add.status + ' (tolerated only because pathspecs are re-verified below); staged scope is checked next');
+// 1. refuse anything already staged outside the requested scope BEFORE
+//    touching the index (issue #3: a pre-staged ungated post must never be
+//    committed by a narrow diagnostics run, and it is never unstaged here)
+const preStaged = stagedFiles();
+scopeCheck(preStaged, 'pre-staged index (staged before factory-push; unstage it explicitly or widen --paths)');
+
+// 2. stage the requested paths. git add -A -- <path> also records the
+//    deletion of a tracked file; a pathspec that matches NOTHING (the file
+//    neither exists nor is tracked) is tolerated — every other add failure
+//    stops the run rather than continuing on uncertain state.
+for (const p of PATHS) {
+  const a = git(['add', '-A', '--', p]);
+  if (a.status === 0) continue;
+  if (/did not match any|pathspec/i.test(a.stderr)) continue;
+  console.error('::error::git add failed for ' + p + ' — refusing to continue on uncertain state:\n' + a.stderr);
+  process.exit(1);
 }
-status.staged = staged();
+status.staged = stagedFiles();
 scopeCheck(status.staged, 'staged scope');
 
-const nothingStaged = status.staged.length === 0;
-const otherChanges = git(['status', '--short', '--', ...gitPaths]).stdout.trim();
-if (nothingStaged && !otherChanges) {
+// nothing to commit under the requested scope?
+const otherChanges = out(['status', '--short', '--', ...PATHS]).trim();
+if (status.staged.length === 0 && !otherChanges) {
   status.state = 'clean';
+  report(false);
   console.log('factory-push: nothing to commit');
   process.exit(0);
 }
 
-// 2. commit
+// 3. commit
 const cm = git(['commit', '-m', message]);
 if (cm.status !== 0) { console.error('::error::commit failed:\n' + cm.stderr); process.exit(1); }
-const commitSha = git(['rev-parse', 'HEAD']).stdout.trim();
+const commitSha = out(['rev-parse', 'HEAD']).trim();
 status.commit = commitSha;
 status.state = 'committed';
-const commitFiles = git(['diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD']).stdout.split('\n').filter(Boolean);
+const commitFiles = out(['diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD']).split('\n').filter(Boolean);
 scopeCheck(commitFiles, 'commit scope (' + commitSha.slice(0, 10) + ')');
 
-// 3. fail-closed push with rebase + revalidation
-function tryPush() {
-  const r = git(['push', 'origin', branch]);
-  return r.status === 0;
+// 4. fetch the remote, then verify EVERY commit that would be pushed — a
+//    diagnostics push must never carry an ungated local content commit.
+function fetchRemote() {
+  const f = git(['fetch', 'origin', branch]);
+  if (f.status !== 0) {
+    console.error('::error::fetch origin/' + branch + ' failed — refusing to continue on uncertain state:\n' + f.stderr);
+    return false;
+  }
+  return true;
+}
+function checkPushRange(label) {
+  const shas = out(['rev-list', 'origin/' + branch + '..HEAD']).split('\n').filter(Boolean);
+  for (const c of shas) {
+    const files = out(['diff-tree', '--no-commit-id', '--name-only', '-r', c]).split('\n').filter(Boolean);
+    scopeCheck(files, label + ': commit ' + c.slice(0, 10) + ' touches paths outside the requested scope');
+  }
+  return shas.length;
 }
 
+if (!fetchRemote()) { status.state = 'fetch-failed'; report(true); process.exit(1); }
+checkPushRange('push range');
+
+// 5. fail-closed push with rebase + revalidation
+function tryPush() { return git(['push', 'origin', branch]).status === 0; }
 function revalidateTree() {
   if (!revalidate) return true;
   const r = spawnSync('bash', ['-c', revalidate], { cwd: ROOT, encoding: 'utf8', stdio: 'inherit' });
@@ -109,7 +154,7 @@ let pushed = tryPush();
 if (!pushed) {
   for (let i = 0; i < 5 && !pushed; i++) {
     console.log('factory-push: push rejected — fetching and rebasing onto origin/' + branch);
-    const f = git(['fetch', 'origin', branch]);
+    if (!fetchRemote()) { status.state = 'fetch-failed'; report(true); process.exit(1); }
     const rb = git(['rebase', 'origin/' + branch]);
     if (rb.status !== 0) {
       git(['rebase', '--abort']);
@@ -119,15 +164,14 @@ if (!pushed) {
       process.exit(1);
     }
     status.rebased = true;
-    status.commit = git(['rev-parse', 'HEAD']).stdout.trim();
+    status.commit = out(['rev-parse', 'HEAD']).trim();
     if (!revalidateTree()) {
       status.state = 'revalidated-failed';
       report(true);
       console.error('::error::post-rebase validation failed — commit exists LOCALLY ONLY, origin/' + branch + ' was NOT updated');
       process.exit(1);
     }
-    const rebaseFiles = git(['diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD']).stdout.split('\n').filter(Boolean);
-    scopeCheck(rebaseFiles, 'post-rebase commit scope');
+    checkPushRange('post-rebase push range');
     pushed = tryPush();
   }
 }

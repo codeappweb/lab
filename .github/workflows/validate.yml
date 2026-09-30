@@ -1,18 +1,32 @@
 name: Validate
 
-# PR/push validation pipeline (audit fix 2026-09-29).
-# Every gate is BLOCKING: no `|| true`, no error swallowing.
-# - scripts: syntax check + regression tests (node:test)
-# - gates: all content gates; manifest dry-run must be in sync
-# - build: bundle exec jekyll build --strict_front_matter + validate-built
-# - reconcile-pr / reconcile: run the REAL sync-manifest on the tree and
-#   re-run the key gates on the reconciled tree before committing, so the
-#   manifest always matches repository truth (posts on disk).
+# PR/push validation pipeline (audit fix 2026-09-29, hardened 2026-09-30).
+# Every gate is BLOCKING: no `|| true`, no continue-on-error, no error
+# swallowing. A failed gate fails the workflow before anything is
+# committed or pushed.
+#   scripts    — syntax check + regression/integration tests (node:test)
+#   gates      — all content gates; the manifest dry-run is BLOCKING
+#                (issue #6: a tree whose manifest is out of sync with
+#                repository truth cannot go green)
+#   build      — jekyll build --strict_front_matter + validate-built
+#   reconcile  — runs the REAL sync-manifest, re-runs the key gates on
+#                the synced tree, then commits; after the pre-push
+#                fetch+rebase the tree is re-synced, re-gated and the
+#                dry-run must pass again BEFORE the push (issue #4: the
+#                tree that is pushed is the tree that was validated)
+#   benchmark  — manual-dispatch-only scale measurement with artifacts
+#                (issue #7); scan-only, never a 20K-readiness proof
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      articles:
+        description: 'Benchmark corpus size (manual dispatch only)'
+        required: false
+        default: '5000'
 
 concurrency:
   group: validate-${{ github.ref }}
@@ -34,8 +48,8 @@ jobs:
         run: |
           set -eu
           for f in scripts/*.mjs; do node --check "$f"; done
-      - name: Regression tests
-        run: node --test scripts/
+      - name: Regression + integration tests (fixtures + local git remotes)
+        run: node --test scripts/*.test.mjs
 
   gates:
     name: Content gates (blocking)
@@ -61,14 +75,14 @@ jobs:
         run: node scripts/seo-score.mjs
       - name: Content hashes
         run: node scripts/compute-content-hashes.mjs
-      - name: Manifest consistency (dry-run, advisory here)
-        # The dry-run is advisory in this job: on a fresh PR/push the manifest
-        # is intentionally not yet synced with repository truth. The REAL
-        # enforcement is in the reconcile jobs below, which run the actual
-        # sync, re-run the gates on the synced tree and prove convergence
-        # with a final dry-run that MUST pass.
+      - name: Manifest consistency (dry-run, BLOCKING)
+        # Blocking since 2026-09-30 (issue #6): a tree whose manifest is
+        # out of sync with repository truth cannot pass validation. The
+        # reconcile jobs below keep green trees in sync; if this gate
+        # fails, run `node scripts/sync-manifest.mjs`, re-run the gates
+        # and push the reconciled tree. No continue-on-error: a red
+        # dry-run must never be reported as green.
         run: node scripts/sync-manifest.mjs --dry-run
-        continue-on-error: true
 
   build:
     name: Jekyll build (blocking) + built-site validation
@@ -92,9 +106,16 @@ jobs:
   reconcile-pr:
     name: Reconcile manifest (PR branch)
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    needs: [scripts, gates, build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    concurrency:
+      # One reconciler per branch, queued, never cancelled mid-run
+      # (issue #5): a reconcile transaction is never aborted by a new
+      # push, and two reconcilers can never race on the same branch.
+      group: reconcile-${{ github.head_ref }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -116,7 +137,7 @@ jobs:
           node scripts/validate-sitemap.mjs
       - name: Prove convergence (dry-run must now pass)
         run: node scripts/sync-manifest.mjs --dry-run
-      - name: Commit reconciled manifest to the PR branch if changed
+      - name: Commit + push reconciled manifest (validated tree only)
         run: |
           set -eu
           git config user.name "lab-pipeline-bot"
@@ -127,15 +148,37 @@ jobs:
           fi
           git add data/article-manifest.jsonl data/progress.json
           git commit -m "chore(reconcile): sync manifest/progress with repository truth"
-          git pull --rebase origin "${{ github.head_ref }}"
+          # Issue #4: never blind-push after a rebase. Fetch + rebase,
+          # then re-sync and re-gate the FINAL tree and prove convergence
+          # again; the push happens only on a tree whose dry-run is green.
+          git fetch origin "${{ github.head_ref }}"
+          git rebase "origin/${{ github.head_ref }}"
+          node scripts/sync-manifest.mjs
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+          node scripts/sync-manifest.mjs --dry-run
+          if ! git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            git add data/article-manifest.jsonl data/progress.json
+            git commit --amend --no-edit
+          fi
           git push origin HEAD:"${{ github.head_ref }}"
 
   reconcile:
     name: Reconcile manifest (main)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [scripts, gates, build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    concurrency:
+      # Issue #5: the SAME repo-wide writer group used by
+      # content-factory-scheduled.yml and content-pipeline.yml — every
+      # workflow that writes to origin/main is SERIALIZED; queued,
+      # never cancelled mid-run (a publish transaction is never aborted).
+      group: main-writer
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -154,7 +197,7 @@ jobs:
           node scripts/validate-sitemap.mjs
       - name: Prove convergence (dry-run must now pass)
         run: node scripts/sync-manifest.mjs --dry-run
-      - name: Commit reconciled manifest to main if changed
+      - name: Commit + push reconciled manifest (validated tree only)
         run: |
           set -eu
           git config user.name "lab-pipeline-bot"
@@ -165,5 +208,52 @@ jobs:
           fi
           git add data/article-manifest.jsonl data/progress.json
           git commit -m "chore(reconcile): sync manifest/progress with repository truth"
-          git pull --rebase origin main
-          git push
+          # Issue #4: same contract as the PR reconciler — re-sync and
+          # re-gate the FINAL tree after the rebase, prove convergence,
+          # then push. Serialized with the other main writers above.
+          git fetch origin main
+          git rebase origin/main
+          node scripts/sync-manifest.mjs
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/check-links.mjs
+          node scripts/validate-sitemap.mjs
+          node scripts/sync-manifest.mjs --dry-run
+          if ! git diff --quiet -- data/article-manifest.jsonl data/progress.json; then
+            git add data/article-manifest.jsonl data/progress.json
+            git commit --amend --no-edit
+          fi
+          git push origin HEAD:main
+
+  benchmark:
+    name: Scale benchmark (manual dispatch only)
+    if: github.event_name == 'workflow_dispatch'
+    needs: [scripts]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Representative corpus scan
+        run: |
+          set -eu
+          N="${{ github.event.inputs.articles || '5000' }}"
+          node scripts/benchmark-scale.mjs --n "$N" --out "$RUNNER_TEMP/benchmark.json"
+      - name: Inverted-index worst case (bounded corpus)
+        # --worst makes every primary_topic share one popular token; it
+        # is intentionally expensive, so it runs on a bounded corpus.
+        run: node scripts/benchmark-scale.mjs --n 1000 --worst --out "$RUNNER_TEMP/benchmark-worst.json"
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-scale-results
+          path: |
+            ${{ runner.temp }}/benchmark.json
+            ${{ runner.temp }}/benchmark-worst.json
+      - name: Honest scope note
+        run: |
+          echo "This benchmark measures full-corpus SCANS only (duplicate detection, hashing, manifest load, QA index build)."
+          echo "It does NOT measure Jekyll build/render at this scale."
+          echo "No 20K-readiness claim can be derived from these numbers."

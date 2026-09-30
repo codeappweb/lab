@@ -23,6 +23,11 @@ FETCH main → RESUME bài đang dở → WRITE 1 bài (chunk_size mặc định
 - Dừng khi: người dùng yêu cầu; hết row planned hợp lệ; runtime/quota buộc dừng; mất mạng kéo dài sau retry; lỗi hạ tầng không xử lý an toàn được.
 - Khi dừng: ghi checkpoint (article_id, file, bước, commit đã push, trạng thái deploy) và bước cần resume.
 
+## Chế độ phiên hiện tại (2026-09-30)
+
+- Chỉ publish bài đã viết sẵn (batch-2026-09-27) và sửa hạ tầng; không bắt đầu vòng viết mới.
+- Không viết bài mới, không bật lịch sinh bài, không mở rộng matrix cho tới khi người dùng ra lệnh rõ ràng: "Bắt đầu viết bài".
+
 ## Phân vai
 
 - Writer (Mistral session): viết prose, push file bài + checkpoint, mở/merge PR, xác minh deploy.
@@ -31,6 +36,6 @@ FETCH main → RESUME bài đang dở → WRITE 1 bài (chunk_size mặc định
 
 ## Verify
 
-- Content-only (một bài): scoped QA qua gate nhẹ trong CI của đúng HEAD PR; không chạy full-site audit/soak cho từng bài.
+- Content-only (một bài): scoped QA qua gate nhẹ trong CI của đúng HEAD PR; không chạy full-site audit/soak cho từng bài. PR content-only không chạy regression tests engine — tests chỉ chạy khi PR đổi `scripts/**` hoặc `.github/workflows/**`.
 - Engine/workflow change: full gates — `node --check` mọi script, `node --test scripts/*.test.mjs`, các gate nhẹ, Jekyll build, fixture `scripts/publish-loop.test.mjs`.
 - Chỉ báo "đã đăng live" khi CI xanh VÀ URL live trả nội dung mới. Push thành công không đồng nghĩa đã live.

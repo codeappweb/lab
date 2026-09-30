@@ -105,8 +105,7 @@ if (!pushed) {
   for (let i = 0; i < 5 && !pushed; i++) {
     console.log('factory-push: push rejected — fetching and rebasing onto origin/' + branch);
     const f = git(['fetch', 'origin', branch]);
-    const rb = git(['rebase', 'origin/' + 
-branch]);
+    const rb = git(['rebase', 'origin/' + branch]);
     if (rb.status !== 0) {
       git(['rebase', '--abort']);
       status.state = 'rebase-failed';

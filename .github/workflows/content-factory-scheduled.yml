@@ -34,8 +34,7 @@ name: Content Factory Scheduled
 #
 # GATE SEMANTICS (production-safety hardening):
 #   - Jekyll build is a BLOCKING gate: bundle install + bundle exec
-#     jekyll build, no error swallowing. A failed build fails th
-e
+#     jekyll build, no error swallowing. A failed build fails the
 #     workflow BEFORE commit/push.
 #   - self-heal-audit.mjs and legal-freshness-audit.mjs are BLOCKING
 #     (same semantics as content-pipeline.yml: validation failure = no
@@ -158,8 +157,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.1"
-          bundler-cache:
- false
+          bundler-cache: false
 
       - name: Bundle install
         run: bundle install --jobs 4 --retry 3
@@ -211,8 +209,7 @@ jobs:
         run: |
           code=0
           node scripts/factory-batch.mjs qa || code=$?
-          echo "qa exit code: $code (3 = FAIL rows recorded in state; publish stays bl
-ocked)"
+          echo "qa exit code: $code (3 = FAIL rows recorded in state; publish stays blocked)"
           if [ "$code" -ne 0 ] && [ "$code" -ne 3 ]; then exit "$code"; fi
           exit 0
 
@@ -297,8 +294,7 @@ ocked)"
             --revalidate "node scripts/detect-duplicates.mjs && node scripts/validate-content-quality.mjs && node scripts/check-links.mjs && node scripts/validate-sitemap.mjs && node scripts/self-heal-audit.mjs && node scripts/legal-freshness-audit.mjs && bundle exec jekyll build && node scripts/validate-built.mjs"
 
       # Two-phase publish completion: the articles are on origin/main.
-      # finalize-publish verifies the commit exists on origin/main,
- then
+      # finalize-publish verifies the commit exists on origin/main, then
       # flips staged rows to published and records factory-history.
       # The follow-up state/history/progress commit goes through the same
       # scope-verified, fail-closed pusher. If this step is interrupted,

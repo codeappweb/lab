@@ -46,8 +46,7 @@ for (const [, list] of byToken) {
     for (let b = a + 1; b < list.length; b++) {
       const i = Math.min(list[a], list[b]), j = Math.max(list[a], list[b]);
       const key = i + ':' + j;
-  
-    if (seenPair.has(key)) continue;
+      if (seenPair.has(key)) continue;
       seenPair.add(key);
       compared++;
       const A = tokens[i], B = tokens[j];

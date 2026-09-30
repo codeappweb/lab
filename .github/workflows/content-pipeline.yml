@@ -72,8 +72,7 @@ jobs:
       - name: Content hashes
         run: node scripts/compute-content-hashes.mjs
 
-      - name: Sync manifest
- and progress
+      - name: Sync manifest and progress
         run: node scripts/sync-manifest.mjs
 
       - name: Topic queue view

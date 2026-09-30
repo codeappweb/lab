@@ -58,8 +58,7 @@ function fm(text) {
 }
 
 const postFiles = existsSync(POSTS) ? readdirSync(POSTS).filter(f => f.endsWith('.md')) : [];
-const postInfo = new Map(); // slug -> { file
-, date, fm }
+const postInfo = new Map(); // slug -> { file, date, fm }
 for (const f of postFiles) {
   const slug = f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
   let meta = {};
@@ -103,8 +102,7 @@ for (const r of rows) {
 }
 
 // published rows without a post file are hard data errors
-const ghostPublished = rows.filter(r => r.status === 'pu
-blished' && !postInfo.has(r.slug));
+const ghostPublished = rows.filter(r => r.status === 'published' && !postInfo.has(r.slug));
 if (ghostPublished.length) {
   for (const r of ghostPublished) console.error('::error::manifest row ' + r.id + ' is published but no post file exists for slug "' + r.slug + '"');
   process.exit(1);
@@ -168,8 +166,7 @@ if (existsSync(PROGRESS_PATH)) {
 
 const newManifest = rows.map(r => JSON.stringify(r)).join('\n') + '\n';
 const oldManifest = readFileSync(MANIFEST_PATH, 'utf8');
-const oldProgress = existsSync(PROGRESS_PATH)
- ? readFileSync(PROGRESS_PATH, 'utf8') : null;
+const oldProgress = existsSync(PROGRESS_PATH) ? readFileSync(PROGRESS_PATH), 'utf8') : null;
 const manifestDiff = newManifest !== oldManifest;
 const progressDiff = progressChanged !== null && progressChanged !== oldProgress;
 

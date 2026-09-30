@@ -1,8 +1,21 @@
 {
   "loop": "micro-continuous",
   "chunk_size": 1,
-  "current_step": "idle/awaiting-user-command",
-  "active_article": null,
+  "current_step": "article-pr-ci",
+  "active_article": {
+    "kind": "hold-release",
+    "ids": [
+      "C01-0005",
+      "C01-0009",
+      "C01-0014"
+    ],
+    "branch": "article/C01-0005-0009-0014",
+    "files": [
+      "_posts/2026-09-30-thue-xe-50cc-o-ha-noi-cho-nguoi-chua-co-bang-lai.md",
+      "_posts/2026-09-30-thue-xe-may-gan-cac-ga-tau-ha-noi-ga-hang-co-ga-ngoc-hoi.md",
+      "_posts/2026-09-30-thue-xe-may-o-ha-noi-cho-nguoi-nuoc-ngoai-bang-lai-va-giay-to.md"
+    ]
+  },
   "last_published": {
     "kind": "batch",
     "batch": "batch-2026-09-27",
@@ -12,6 +25,6 @@
     "deploy_verified": true,
     "verified_urls": 17
   },
-  "last_pushed_commit": "d7c6880f8113a035b8887ae4c36506bed9eb9c2f",
-  "updated_at": "2026-09-30T17:14:17.545Z"
+  "last_pushed_commit": "2c2d265bcebdfbbc2d9fa62725d9a719b1ebddc9",
+  "updated_at": "2026-09-30T17:25:29.036Z"
 }

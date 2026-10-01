@@ -33,13 +33,14 @@ Tiêu chí quan trọng nhất là loại truyền động. Trong điều kiện
 
 Tiêu chí thứ hai là dung tích và trọng lượng. Xe có động cơ nhỏ gọn, thân nhẹ cần ít năng lượng hơn mỗi lần tăng tốc từ đèn đỏ, phù hợp với tốc độ chung thấp trong nội thành. Xe cồng kềnh, nặng nề chỉ phát huy lợi thế trên đường trường mà tuyến đi làm hiếm khi có.
 
-Tiêu chí thứ ba là tình trạng thực tế của xe. Một chiếc xe đã dùng lâu nhưng được bảo dưỡng đúng cách vẫn có thể hao xăng ít hơn một chiếc xe mới nhưng hoạt động không ổn. Đây là lý do không nên nhìn bảng thông số quảng cáo mà bỏ qua cách xe đang vận hành thực tế.
+Tiêu chí thứ ba là tình trạng thực tế của xe. Một chiếc xe 
+đã dùng lâu nhưng được bảo dưỡng đúng cách vẫn có thể hao xăng ít hơn một chiếc xe mới nhưng hoạt động không ổn. Đây là lý do không nên nhìn bảng thông số quảng cáo mà bỏ qua cách xe đang vận hành thực tế.
 
 ## Yếu tố vận hành quan trọng hơn loại xe
 
-Dù chọn xe nào, thói quen vận hành mới quyết định phần lớn chi phí nhiên liệu: tăng ga đều đặn, giữ khoảng cách với xe phía trước để hạn chế phanh gấp, tranh thủ моменты xe đang trôi thay vì dừng hẳn, và tránh giờ cao điểm nếu sắp xếp được lịch làm việc linh hoạt. Lốp non hay lọc gió bẩn cũng khiến mọi chiếc xe tốn xăng hơn.
+Dù chọn xe nào, thói quen vận hành mới quyết định phần lớn chi phí nhiên liệu: tăng ga đều đặn, giữ khoảng cách với xe phía trước để hạn chế phanh gấp, tận dụng lúc xe đang trôi thay vì dừng hẳn, và tránh giờ cao điểm nếu sắp xếp được lịch làm việc linh hoạt. Lốp non hay lọc gió bẩn cũng khiến mọi chiếc xe tốn xăng hơn.
 
-Việc bảo dưỡng định kỳ đúng kỳ, từbugi, nhớt đến dây curoa với xe ga, giữ cho xe luôn ở trạng thái vận hành tốt. Đây là nhóm chi phí nhỏ nhưng ảnh hưởng trực tiếp đến mức tiêu thụ nhiên liệu hằng ngày.
+Việc bảo dưỡng định kỳ đúng kỳ, từ bugi, nhớt đến dây curoa với xe ga, giữ cho xe luôn ở trạng thái vận hành tốt. Đây là nhóm chi phí nhỏ nhưng ảnh hưởng trực tiếp đến mức tiêu thụ nhiên liệu hằng ngày.
 
 ## Chọn xe theo tổng chi phí, không chỉ xăng
 

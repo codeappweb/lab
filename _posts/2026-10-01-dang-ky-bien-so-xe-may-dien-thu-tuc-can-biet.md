@@ -18,7 +18,7 @@ entities:
   - "biển số"
 related_articles:
   - xe-dien-toc-do-toi-da-va-gioi-han-phap-ly-khi-nao-can-bang-lai
-  - mo-to-dien-cong-suat-lon-can-bang-lai-loai-nao
+  - chon-xe-may-dien-cong-suat-nao-350w-800w-hay-2000w
   - xe-may-dien-co-dang-mua-nam-2026-tong-quan-loi-ich-va-han-che
 created_at: 2026-10-01
 updated_at: 2026-10-01
@@ -34,7 +34,7 @@ Không phải xe máy điện nào cũng phải gắn biển số. Phân loại 
 
 ## Loại xe điện nào phải đăng ký biển số
 
-Theo Luật Trật tự, an toàn giao thông đường bộ 2024, có hiệu lực từ ngày 01/01/2025, phương tiện hai bánh chạy điện chia thành nhóm như xe thô sơ (xe đạp máy, xe đạp điện) và nhóm xe cơ giới gồm xe gắn máy điện và mô tô điện. Xe đạp máy, gồm cả xe đạp điện có trợ lực với nguyên tắc ngắt trợ lực ở 25 km/h, không thuộc diện cấp đăng ký, biển số. Xe gắn máy điện có vận tốc thiết kế không lớn hơn 50 km/h và xe mô tô điện trên ngưỡng đó thuộc diện phải đăng ký, cấp biển số như các xe cơ giới khác. Cách xác định nhóm xe của bạn theo tốc độ và công suất đã được giải thích chi tiết trong bài [xe điện tốc độ tối đa và giới hạn pháp lý]({{ '/xe-dien-toc-do-toi-da-va-gioi-han-phap-ly-khi-nao-can-bang-lai/' | relative_url }}). Với nhóm mô tô điện công suất lớn, đi kèm đăng ký còn là yêu cầu về giấy phép lái xe, như đã nêu trong bài [mô tô điện công suất lớn cần bằng lái loại nào]({{ '/mo-to-dien-cong-suat-lon-can-bang-lai-loai-nao/' | relative_url }}).
+Theo Luật Trật tự, an toàn giao thông đường bộ 2024, có hiệu lực từ ngày 01/01/2025, phương tiện hai bánh chạy điện chia thành nhóm như xe thô sơ (xe đạp máy, xe đạp điện) và nhóm xe cơ giới gồm xe gắn máy điện và mô tô điện. Xe đạp máy, gồm cả xe đạp điện có trợ lực với nguyên tắc ngắt trợ lực ở 25 km/h, không thuộc diện cấp đăng ký, biển số. Xe gắn máy điện có vận tốc thiết kế không lớn hơn 50 km/h và xe mô tô điện trên ngưỡng đó thuộc diện phải đăng ký, cấp biển số như các xe cơ giới khác. Cách xác định nhóm xe của bạn theo tốc độ và công suất đã được giải thích chi tiết trong bài [xe điện tốc độ tối đa và giới hạn pháp lý]({{ '/xe-dien-toc-do-toi-da-va-gioi-han-phap-ly-khi-nao-can-bang-lai/' | relative_url }}).
 
 ## Giấy tờ cần chuẩn bị
 

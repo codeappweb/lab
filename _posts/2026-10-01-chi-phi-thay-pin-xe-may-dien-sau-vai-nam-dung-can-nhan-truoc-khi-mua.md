@@ -17,9 +17,9 @@ entities:
   - "thay pin"
   - "chi phí"
 related_articles:
-  - xe-dien-cu-da-thay-pin-moi-co-dang-mua-khong
+  - sac-pin-xe-dien-ban-dem-co-an-toan-khong-hieu-dung-rui-ro
   - xe-may-dien-co-dang-mua-nam-2026-tong-quan-loi-ich-va-han-che
-  - xe-dien-de-lau-khong-sac-pin-hong-den-dau-va-cuu-the-nao
+  - xe-dien-dung-pin-roi-quy-trinh-mang-pin-len-nha-sac
 created_at: 2026-10-01
 updated_at: 2026-10-01
 freshness_status: evergreen
@@ -38,7 +38,7 @@ Tùy dòng xe, pin rời chiếm một phần đáng kể trong giá bán của 
 
 ## Dùng sao cho pin chậm chai
 
-Ba thói quen kéo dài tuổi pin nhiều nhất: sạc khi pin xuống vùng thấp nhưng chưa cạn kiệt, không để xe dưới nắng gắt lâu, và dùng đúng bộ sạc của hãng. Ngược lại, thói quen xấu ngắn tuổi pin là để xe không sạc suốt nhiều tuần, chủ đề đã phân tích kỹ trong bài [xe điện để lâu không sạc pin hỏng đến đâu]({{ '/xe-dien-de-lau-khong-sac-pin-hong-den-dau-va-cuu-the-nao/' | relative_url }}), và sạc liên tục suốt đêm cả khi pin đã đầy đều. Nếu bạn đã vào giai đoạn pin yếu, một câu hỏi thực tế là nên thay pin hay mua xe mới, và trường hợp xe cũ đã thay pin mới có đáng mua không đã được phân tích trong bài [xe điện cũ đã thay pin mới có đáng mua không]({{ '/xe-dien-cu-da-thay-pin-moi-co-dang-mua-khong/' | relative_url }}).
+Ba thói quen kéo dài tuổi pin nhiều nhất: sạc khi pin xuống vùng thấp nhưng chưa cạn kiệt, không để xe dưới nắng gắt lâu, và dùng đúng bộ sạc của hãng. Ngược lại, hai thói quen xấu ngắn tuổi pin nhanh nhất là để xe không sạc suốt nhiều tuần, và sạc liên tục suốt đêm cả khi pin đã đầy mà bộ sạc không tự ngắt tốt. Nếu bạn đã vào giai đoạn pin yếu, một câu hỏi thực tế là nên thay pin hay mua xe mới, và thói quen sạc đêm an toàn đã được nêu trong bài [sạc pin xe điện ban đêm có an toàn không]({{ '/sac-pin-xe-dien-ban-dem-co-an-toan-khong-hieu-dung-rui-ro/' | relative_url }}).
 
 ## Kết luận khi cân nhắc mua
 

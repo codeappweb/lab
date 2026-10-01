@@ -37,7 +37,8 @@ Xe đạp điện và xe máy điện nghe chỉ khác một chữ, nhưng về 
 
 Theo Luật Trật tự, an toàn giao thông đường bộ năm 2024, có hiệu lực từ 01/01/2025, xe đạp máy (kể cả xe đạp điện) là xe đạp có trợ lực từ động cơ, và nguồn động lực tự ngắt khi người lái ngừng đạp hoặc khi xe đạt tới tốc độ 25 km/h. Loại xe này thuộc nhóm xe thô sơ: không yêu cầu giấy phép lái xe, không thuộc diện cấp đăng ký và biển số.
 
-Xe máy điện đúng nghĩa pháp lý là xe gắn máy chạy điện: có vận tốc thiết kế không lớn hơn 50 km/h và công suất động cơ không lớn hơn 4 kW, và định nghĩa xe gắn máy không bao gồm xe đạp máy. Nhóm này là xe cơ giới: phải có đăng ký, gắn biển số, và người điều khiển phải từ đủ 16 tuổi, tuy chưa cần giấy phép lái xe. Xe điện mạnh hơn hai ngưỡng trên được xếp vào mô tô: người đi phải từ đủ 18 tuổi và có bằng lái hạng A1 hoặc A tùy công suất.
+Xe máy điện đúng nghĩa pháp lý 
+là xe gắn máy chạy điện: có vận tốc thiết kế không lớn hơn 50 km/h và công suất động cơ không lớn hơn 4 kW, và định nghĩa xe gắn máy không bao gồm xe đạp máy. Nhóm này là xe cơ giới: phải có đăng ký, gắn biển số, và người điều khiển phải từ đủ 16 tuổi, tuy chưa cần giấy phép lái xe. Xe điện mạnh hơn hai ngưỡng trên được xếp vào mô tô: người đi phải từ đủ 18 tuổi và có bằng lái hạng A1 hoặc A tùy công suất.
 
 Điểm thực tế đáng chú ý nhất sau khi luật mới có hiệu lực: nhiều mẫu xe gắn tem xe đạp điện nhưng không có bàn đạp, hoặc trợ lực không tự ngắt ở 25 km/h, thì không còn được tính là xe đạp máy. Chúng rơi vào nhóm xe gắn máy hoặc mô tô điện, kèm toàn bộ nghĩa vụ giấy tờ của nhóm đó.
 
@@ -49,11 +50,12 @@ Với xe máy điện, nhóm xe gắn máy, quy định mũ bảo hiểm như m�
 
 ## Khác biệt vận hành hằng ngày
 
-Tốc độ là khác biệt cảm nhận nhanh nhất. Xe đạp điện dừng trợ lực ở 25 km/h, phù hợp quãng đi ngắn trong khu dân cư, giờ cao điểm chậm anyway. Xe máy điện giữ được tốc độ ổn định quanh ngưỡng thiết kế 50 km/h, theo kịp dòng xe máy trên đường trục. Nếu bạn đi công việc xa nhà hoặc chở nặng, nhóm này đỡ mệt hơn hẳn.
+Tốc độ là khác biệt cảm nhận nhanh nhất. Xe đạp điện dừng trợ lực ở 25 km/h, phù hợp quãng đi ngắn trong khu dân cư, nhất là giờ cao điểm khi mọi xe đều di chuyển chậm. Xe máy điện giữ được tốc độ ổn định quanh ngưỡng thiết kế 50 km/h, theo kịp dòng xe máy trên đường trục. Nếu bạn đi công việc xa nhà hoặc chở nặng, nhóm này đỡ mệt hơn hẳn.
 
 Pin và tầm đi cũng khác tầng: xe đạp điện dùng pin nhỏ, sạc nhanh, nhẹ xe và dễ đẩy lên nhà; xe máy điện pin lớn hơn, tầm đi xa hơn nhưng nặng và thường cần điểm sạc cố định. Chi tiết về công suất và tầm đi thực tế của nhóm xe đạp điện được phân tích trong bài [pin xe đạp điện: công suất và tầm đi thực tế]({{ '/pin-xe-dap-dien-cong-suat-va-tam-di-thuc-te/' | relative_url }}).
 
-Trải nghiệm đạp cũng không giống nhau. Xe đạp điện giữ được tính năng đạp: hết pin vẫn về nhà được bằng chân, và quãng đi vẫn là vận động. Xe máy điện là hoàn toàn ga hoặc đề, hết pin là phải đẩy bộ. Nếu yếu tố vận động quan trọng với bạn, bài đánh giá [xe đạp điện có nên mua]({{ '/xe-dap-dien-co-nen-mua-uu-nhuoc-diem-cho-di-lai-thanh-pho/' | relative_url }}) phân tích rõ ưu nhược điểm của nhóm này.
+Trải nghiệm đạp
+ cũng không giống nhau. Xe đạp điện giữ được tính năng đạp: hết pin vẫn về nhà được bằng chân, và quãng đi vẫn là vận động. Xe máy điện là hoàn toàn ga hoặc đề, hết pin là phải đẩy bộ. Nếu yếu tố vận động quan trọng với bạn, bài đánh giá [xe đạp điện có nên mua]({{ '/xe-dap-dien-co-nen-mua-uu-nhuoc-diem-cho-di-lai-thanh-pho/' | relative_url }}) phân tích rõ ưu nhược điểm của nhóm này.
 
 ## Chọn theo nhu cầu, không theo tem nhãn
 

@@ -1,0 +1,86 @@
+name: Production (push-driven pair)
+
+# PUSH-DRIVEN PAIR PRODUCTION (port y tuong /vanchinh cho codeappweb/lab):
+#   WRITER: fetch fresh main -> scripts/next-pair.mjs (exact IDs) -> viet DUNG
+#           chunk_size (2) bai -> push _posts/... len main NGAY.
+#   FACTORY (workflow nay — deterministic, KHONG AI, KHONG cron):
+#           select EXACT IDs tu chinh push vua roi (NEW = file moi trong
+#           _posts/, REPAIR = file sua) -> claim (publish-loop tu choi slug
+#           da published, file ngoai _posts, vuot hard max) -> derive
+#           repository truth -> 6 gate nhe -> publish transactional: commit
+#           CHI derived allowlist khi moi gate xanh, push lai main (rebase +
+#           revalidate, khong force-push). Moi cap = mot SAFE CHECKPOINT.
+#   HOT PATH KHONG chay: full-site audit, regression tests toan repo, soak,
+#   legal-freshness, full crawl — tat ca nam o ci.yml (workflow_dispatch /
+#   engine-change). Push derived-only khong khop paths filter nen khong tu
+#   kich hoat lai workflow nay (khong vong lap).
+
+on:
+  push:
+    branches: [main]
+    paths: ['_posts/**']
+
+concurrency:
+  group: production-pair
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish-pair:
+    name: Claim exact IDs -> QA scoped -> publish transactional
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Select exact scope tu push vua roi
+        id: scope
+        run: |
+          set -eu
+          BEFORE='${{ github.event.before }}'
+          AFTER='${{ github.event.after }}'
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = '0000000000000000000000000000000000000000' ]; then
+            ADDED=$(git diff --name-only --diff-filter=A "$AFTER^!" -- '_posts/*.md' || true)
+            REPAIRED=$(git diff --name-only --diff-filter=M "$AFTER^!" -- '_posts/*.md' || true)
+          else
+            ADDED=$(git diff --name-only --diff-filter=A "$BEFORE" "$AFTER" -- '_posts/*.md' || true)
+            REPAIRED=$(git diff --name-only --diff-filter=M "$BEFORE" "$AFTER" -- '_posts/*.md' || true)
+          fi
+          if [ -z "$ADDED$REPAIRED" ]; then
+            echo "Khong co bai NEW/REPAIR trong push — thoat (idempotent)."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHUNK=$(node -p "JSON.parse(require('fs').readFileSync('data/factory-config.json','utf8')).chunk_size ?? 2")
+          CHUNK_MAX=$(node -p "JSON.parse(require('fs').readFileSync('data/factory-config.json','utf8')).chunk_size_max ?? 2")
+          HARD_MAX=$(node -p "JSON.parse(require('fs').readFileSync('data/factory-config.json','utf8')).hard_max_new_posts_per_push ?? 50")
+          N=$(echo "$ADDED" | grep -c . || true)
+          if [ "$N" -gt "$HARD_MAX" ]; then
+            echo "::error::push $N bai moi vuot hard_max_new_posts_per_push=$HARD_MAX — REFUSED."
+            exit 1
+          fi
+          if [ "$N" -gt "$CHUNK_MAX" ]; then
+            echo "::error::push $N bai NEW vuot chunk_size_max=$CHUNK_MAX — writer viet dung $CHUNK bai moi moi luot (REPAIR thi push rieng)."
+            exit 1
+          fi
+          if [ "$N" -ne "$CHUNK" ]; then
+            echo "::warning::push $N bai NEW (chunk_size=$CHUNK) — van xu ly vi N <= max."
+          fi
+          echo "publish scope: NEW=[$ADDED] REPAIR=[$REPAIRED]"
+          echo "added=$ADDED" >> "$GITHUB_OUTPUT"
+          echo "repaired=$REPAIRED" >> "$GITHUB_OUTPUT"
+          echo "run=true" >> "$GITHUB_OUTPUT"
+      - name: Publish transaction (commit CHI derived allowlist, khong bao gio viet prose)
+        if: steps.scope.outputs.run == 'true'
+        run: |
+          set -eu
+          git checkout -B main
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          node scripts/publish-loop.mjs --added "${{ steps.scope.outputs.added }}"
+          echo "publish-pair: transaction hoan tat — derived state da push main; Pages deploy tu main; ci.yml build la light verify."

@@ -1,7 +1,7 @@
 {
-  "loop": "micro-continuous",
-  "chunk_size": 1,
-  "current_step": "idle/all-planned-done",
+  "loop": "push-driven-pair",
+  "chunk_size": 2,
+  "current_step": "idle/awaiting-user-command",
   "active_article": null,
   "last_published": {
     "kind": "article",
@@ -12,7 +12,7 @@
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T03:50:05.599Z",
+  "updated_at": "2026-10-01T04:55:27.000Z",
   "review_queue": [
     {
       "id": "C03-0009",

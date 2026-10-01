@@ -1,55 +1,71 @@
-# MICRO-LOOP — Vòng lặp 1 bài (tài liệu vận hành)
+# PAIR PRODUCTION — Vòng lặp push-driven (tài liệu vận hành)
 
-Nguồn chuẩn của vòng lặp writer cho codeappweb/lab, mô hình MICRO CONTINUOUS LOOP học từ thuexemayhanoi/vanchinh, nhưng mặc định `chunk_size = 1` (Lab) thay vì 2. Một vòng = một bài = một PR = một checkpoint.
+Nguồn chuẩn của production cho codeappweb/lab. Port ý tưởng /vanchinh cho cấu trúc repo này: PUSH-DRIVEN, EXACT PAIR, FACTORY TỰ HOÀN TẤT, HOT PATH NHẸ. Một vòng = MỘT CẶP 2 bài = một push = một transaction = một SAFE CHECKPOINT. Thay cho mô hình cũ (writer tự prepare + PR từng bài): giờ writer chỉ viết và push; factory trong Actions tự claim/QA/publish phần còn lại, tất định.
 
 ## Cấu hình
 
 `data/factory-config.json`:
 
-- `chunk_size` (mặc định 1): số bài writer viết mỗi lượt.
-- `chunk_size_max` (2): giới hạn trên nếu cấu hình thành 2.
-- `hard_max_new_posts_per_push` (50): hard invariant của publish workflow — một push nhiều hơn bị REFUSE.
-- Batch không còn là điều kiện publish; matrix chỉ là hàng đợi deterministic theo thứ tự dòng.
+- `chunk_size` (2): số bài writer viết mỗi lượt — một cặp.
+- `chunk_size_max` (2): giới hạn trên số bài NEW mỗi push; vượt là REFUSE.
+- `hard_max_new_posts_per_push` (50): hard invariant của publish transaction.
+- Batch chỉ để tổ chức matrix, không phải điều kiện publish.
 
 ## Vòng lặp (bắt buộc)
 
 ```
 FETCH FRESH MAIN
-→ RESUME (đọc writer-checkpoint + manifest; bài đang dở hoàn tất TRƯỚC khi claim bài mới)
-→ WRITE 1 (file _posts/YYYY-MM-DD-<slug>.md theo docs/SCHEMA-ARTICLE.md)
-→ PREPARE: node scripts/prepare-article.mjs <manifest-id>
-   → verify row + slug/URL, derive shards + manifest/progress, 6 gate nhẹ,
-   → in ĐÚNG danh sách file phải commit (bài + derived + checkpoint)
-→ COMMIT/PR: MỘT commit chứa toàn bộ danh sách, push nhánh article/<manifest-id>, mở PR
-→ CI: publish.yml chỉ CHECK (publish-loop --check — cây phải clean sau derive;
-   Actions KHÔNG bao giờ commit vào PR) + ci.yml gate scoped + build của đúng HEAD
-→ MERGE (không force-push; push bị từ chối thì fetch/rebase/re-gate/retry)
-→ VERIFY: Pages deploy xong, URL live trả nội dung mới
-→ CHECKPOINT: cập nhật data/writer-checkpoint.json
-→ BÁO 1 DÒNG: ID | tiêu đề | commit | URL live | trạng thái | bài tiếp theo
-→ NEXT 1 → REPEAT
+→ NEXT-PAIR: node scripts/next-pair.mjs   (exact IDs từ manifest + review_queue)
+→ WRITE 2 bài vào _posts/YYYY-MM-DD-<slug>.md theo docs/SCHEMA-ARTICLE.md
+→ PUSH NGAY lên main (chỉ 2 file bài — KHÔNG gom nhiều bài local)
+→ FACTORY (.github/workflows/production.yml, tự kích hoạt):
+   select EXACT IDs từ chính push → claim → derive repository truth
+   → QA scoped (6 gate nhẹ) → publish transactional (commit CHỈ derived
+   allowlist khi mọi gate xanh, push lại main; rebase + revalidate, không
+   force-push) → LIGHT VERIFY
+→ FETCH FRESH MAIN → NEXT 2 → REPEAT
 ```
 
-## Bảo đảm an toàn
+Mỗi cặp push xong + factory xanh = một SAFE CHECKPOINT. Phiên bị reset/mất kết nối: fetch fresh main, chạy `next-pair`, tiếp tục — không phụ thuộc state trong workspace.
 
-- Bài lỗi (gate đỏ): publish-loop KHÔNG commit, KHÔNG push; PR đỏ; bài không tới main nên không có URL công khai. Writer ghi REVIEW và chuyển row planned kế tiếp — không chặn hàng đợi.
-- Idempotent: chạy lại publish-loop khi không có gì mới → không diff, exit 0. Restart không tạo bài trùng.
-- Writer commit MỘT LẦN: bài + derived allowlist + checkpoint cùng một commit TRƯỚC khi mở PR (prepare-article in danh sách). publish-loop --check yêu cầu git status clean sau derive — CI không bao giờ commit lại vào PR, và không cần push checkpoint riêng để kích hoạt CI.
-- Claim trùng bị từ chối: slug đã published mà file không tồn tại trên nhánh = REFUSE.
-- Scope: publish check từ chối mọi file ngoài `_posts/**` và allowlist dẫn xuất (`data/article-manifest.jsonl`, `data/progress.json`, `data/sitemap-shards.json`, `sitemap.xml`, `sitemaps/**`, `data/writer-checkpoint.json`). Danh sách rỗng không bao giờ trở thành stage toàn repo (chỉ `git add` tường minh từng path).
-- Push bị từ chối: fetch, rebase, chạy lại gate dry-run + validate-sitemap, retry đúng MỘT lần; vẫn lỗi thì dừng và lưu diagnostics artifact. Không force-push.
-- Actions không ghi gì: publish.yml chỉ CHECK cây do writer commit (contents: read, không bot commit). main chỉ nhận qua merge sau khi CI xanh. Mọi SHA trên main đều in-sync (không có cửa sổ CI đỏ).
+## Writer contract (cực giản)
 
-## Trạng thái ba tầng (không nhầm lẫn)
+1. Luôn FETCH FRESH MAIN trước khi viết.
+2. Exact next IDs: `node scripts/next-pair.mjs` — repository truth (manifest theo thứ tự dòng, trừ review_queue). KHÔNG hard-code ID bắt đầu, KHÔNG tin state cũ trong workspace.
+3. Viết đúng `chunk_size` (2) bài; tạo research/evidence theo `docs/SCHEMA-ARTICLE.md`.
+4. PUSH NGAY lên main. KHÔNG chạy derived/QA thủ công — factory tự làm (idempotent).
+5. Chờ `production.yml` (publish transaction) + `ci.yml` (light build verify) xanh.
+6. VERIFY live: GET URL trả nội dung mới mới báo đã live (ba tầng: local / pushed / deployed).
+7. FETCH FRESH MAIN → 2 bài kế → REPEAT.
+8. Bài lỗi nội dung: không push, ghi lý do vào `review_queue` của checkpoint, chuyển cặp kế — không chặn hàng đợi. Lỗi hạ tầng ảnh hưởng mọi bài: dừng để sửa.
+9. REPAIR bài đã live: sửa đúng file `_posts/` tương ứng rồi push riêng — factory derive + gate lại; KHÔNG đổi URL đã live.
 
-1. Đã lưu local (file trong workspace writer).
-2. Đã push (commit trên remote).
-3. Đã deploy (Pages render URL live — chỉ tin sau khi GET URL trả nội dung mới).
+## NEW và REPAIR tách rõ
+
+- NEW = file mới trong `_posts/` (phải khớp row manifest planned). Factory flip row → published.
+- REPAIR = file `_posts/` đã tồn tại bị sửa. Factory derive + gate lại toàn bộ; row giữ published.
+- production.yml log rõ scope `NEW=[...] REPAIR=[...]`; publish-loop từ chối mọi thứ ngoài `_posts/**` + derived allowlist.
+
+## Factory trong Actions (tất định)
+
+- Trigger: push main, paths `_posts/**`. Singleton concurrency (`production-pair`, không cancel) — hai push xếp hàng xử lý tuần tự, không tranh claim.
+- Claim: publish-loop từ chối slug đã published mà thiếu file, file ngoài `_posts/`, vượt hard max, manifest hỏng.
+- Transaction: derive (sitemap shards + manifest/progress sync) → 6 gate nhẹ → `git add` TƯỜNG MINH từng derived path → commit → push (rebase + re-gate + retry đúng MỘT lần, không force-push).
+- Idempotent: chạy lại khi không có gì mới → không diff, exit 0. Mất kết nối giữa chừng → lần chạy kế hoàn tất đúng phần còn thiếu, không trùng.
+- Actions KHÔNG AI, KHÔNG cron, KHÔNG viết prose; CHỈ commit derived allowlist sau khi mọi gate xanh.
+
+## Hot path vs deep audit
+
+Normal pair KHÔNG chạy: full-site audit, regression tests toàn repo (`node --test scripts/*.test.mjs`), soak, legal-freshness audit, full SEO crawl. Các kiểm tra nặng chuyển sang:
+
+- Engine/workflow change (`scripts/**`, `.github/workflows/**` đổi): ci.yml mới chạy syntax check + regression tests — áp cả PR và push main.
+- Full audit sâu (legal freshness, artifacts): ci.yml `workflow_dispatch` thủ công.
+- PR repair lớn: publish.yml vẫn check-only cho nhánh `article/**`.
 
 ## Checkpoint
 
-`data/writer-checkpoint.json` ghi: `active_article` (đang làm), `last_published` (id, slug, commit, live_url, deploy_verified), `current_step`, `last_pushed_commit`. Sau mỗi bài đã deploy: fetch fresh main, cập nhật checkpoint, mới viết bài kế. Manifest > checkpoint khi xung đột. Khi hết phiên/hết hàng đợi hợp lệ: `current_step: "idle/awaiting-user-command"`, `active_article: null`. KHÔNG bao giờ ghi `deploy_verified`, commit SHA hay trạng thái CI khi chưa kiểm chứng URL live.
+`data/writer-checkpoint.json` ghi `chunk_size`, `active_article`, `last_published`, `review_queue`. Sau mỗi cặp đã deploy: fetch fresh main, cập nhật checkpoint theo thực tế remote/live. Manifest > checkpoint khi xung đột. Khi hết phiên/hàng đợi: `current_step: "idle/awaiting-user-command"`, `active_article: null`. KHÔNG bao giờ ghi `deploy_verified` khi chưa GET URL live.
 
 ## Fixture
 
-`scripts/publish-loop.test.mjs` kiểm chứng: 1 bài đạt publish độc lập; bài lỗi không công khai và không chặn bài hợp lệ kế; restart không trùng; mất kết nối sau push không push/publish trùng; claim trùng/out-of-scope bị từ chối; gate lỗi không bao giờ exit 0; transaction chỉ ghi file allowlist; T9 `--check` đỏ khi derived chưa được writer commit; T10 xanh khi writer commit đủ; T11 hai lượt liên tiếp + resume. `scripts/prepare-article.test.mjs` kiểm chứng lệnh chuẩn bị: P1 id lạ / file không có row bị từ chối; P2 row hợp lệ → xanh + in commit list + idempotent; P3 row published thiếu file không được claim lại. Tests chạy qua fixture `LAB_ROOT`, không bao giờ tạo bài thử trên site, và chỉ được chạy trong CI khi engine/workflow đổi.
+`scripts/publish-loop.test.mjs` kiểm chứng (không đổi): 1 bài đạt publish độc lập; bài lỗi không công khai, không chặn bài hợp lệ kế; restart không trùng; mất kết nối sau push không push/publish trùng; claim trùng/out-of-scope bị từ chối; gate lỗi không exit 0; transaction chỉ ghi derived allowlist; `--check` đỏ khi derived chưa commit; hai lượt liên tiếp + resume. Tests chạy qua fixture `LAB_ROOT`, chỉ chạy trong CI khi engine/workflow đổi.

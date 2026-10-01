@@ -1,7 +1,7 @@
 {
-  "chunk_size": 1,
+  "chunk_size": 2,
   "chunk_size_max": 2,
   "hard_max_new_posts_per_push": 50,
   "goal_total_articles": 20000,
-  "note": "chunk_size la so bai mac dinh moi luot writer (MICRO CONTINUOUS LOOP). Batch chi de to chuc matrix, khong phai dieu kien phai du so luong moi duoc publish. hard_max_new_posts_per_push la hard invariant cua publish workflow."
+  "note": "chunk_size=2: PUSH-DRIVEN PAIR PRODUCTION (port y tuong /vanchinh). Writer viet DUNG 2 bai moi luot va push _posts/ len main NGAY; production.yml tu select exact IDs tu chinh push, claim, QA scoped, publish transactional (chi commit derived allowlist). Batch chi de to chuc matrix. hard_max_new_posts_per_push la hard invariant cua publish transaction."
 }

@@ -26,11 +26,11 @@ freshness_status: evergreen
 legal_sensitivity: false
 ---
 
-Tam Đảo là điểm trong ngày quen thuộc của người Hà Nội: đường不算 quá xa nhưng lại có quãng leo dốc dài nhất trong các cung gần, và thời tiết trên đỉnh thay đổi nhanh hơn dưới đồng bằng. Chuyến đi dễ hay khó phụ thuộc phần lớn vào cách bạn chạy đoạn dốc cuối tuyến.
+Tam Đảo là điểm trong ngày quen thuộc của người Hà Nội: đường không quá xa nhưng lại có quãng leo dốc dài nhất trong các cung gần, và thời tiết trên đỉnh thay đổi nhanh hơn dưới đồng bằng. Chuyến đi dễ hay khó phụ thuộc phần lớn vào cách bạn chạy đoạn dốc cuối tuyến.
 
 ## Đặc thù của cung đường
 
-Tuyến đi phần đầu là đường đồng bằng rộng và khá êm, sau đó rẽ vào đường lên chân núi. Đoạn leo lên thị trấn là dốc dài liên tục, có các khúc cua tóc giò quanh sương mù. Cả xe số lẫn xe ga đều lên được, nhưng xe ga hộp số nên lưu ý khi dốc nóng máy kéo dài — cách giữ độ bền hộp số khi chạy dài đã bàn trong bài về [xe 150cc cho đường trường từ Hà Nội]({{ '/xe-may-150cc-cho-duong-truong-tu-ha-noi-co-can-thiet-khong/' | relative_url }}).
+Tuyến đi phần đầu là đường đồng bằng rộng và khá êm, sau đó rẽ vào đường lên chân núi. Đoạn leo lên thị trấn là dốc dài liên tục, có các khúc cua gắt quanh sương mù. Cả xe số lẫn xe ga đều lên được, nhưng xe ga nên lưu ý khi dốc nóng máy kéo dài — cách giữ độ bền hộp số khi chạy dài đã bàn trong bài về [xe 150cc cho đường trường từ Hà Nội]({{ '/xe-may-150cc-cho-duong-truong-tu-ha-noi-co-can-thiet-khong/' | relative_url }}).
 
 ## Leo dốc và xuống dốc an toàn
 

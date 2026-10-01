@@ -40,4 +40,4 @@ Sau khi qua vùng đồng bằng thấp, đường bắt đầu leo dốc và c�
 
 Chuyến dài qua nhiều chặng núi nên rà xe kỹ hơn chuyến trong ngày: nhớt, lốp và hơi, phanh, đèn, xăng dự phòng cho đoạn ít cây xăng — các hạng mục này đã có trong bài về [bảo dưỡng xe máy định kỳ theo mốc 1.000 km]({{ '/bao-duong-xe-may-dinh-ky-checklist-theo-moc-1000-km/' | relative_url }}). Xe số lẫn xe ga đều đi được cung này nếu xe ổn; ai định mua xe chuyên chạy đường trường có thể xem lại bài về [xe 150cc cho đường trường từ Hà Nội]({{ '/xe-may-150cc-cho-duong-truong-tu-ha-noi-co-can-thiet-khong/' | relative_url }}). Đi bằng xe thuê thì đây là chuyến nhiều ngày, nên đọc kỹ điều khoản và giới hạn hành trình trong bài về [thuê xe máy dài ngày đi tỉnh]({{ '/thue-xe-may-dai-ngay-di-tinh-dieu-khoan-can-ro-truoc-khi-nhan-xe/' | relative_url }}) trước khi ký.
 
-Tóm lại, cung Mộc Châu rewards không nằm ở tốc độ mà ở cách chia chặng: đi sớm, nghỉ đúng điểm, chạy đoạn núi lúc sáng và về trước khi sương chiều dày.
+Tóm lại, sức hấp dẫn của cung Mộc Châu không nằm ở tốc độ mà nằm ở cách chia chặng: đi sớm, nghỉ đúng điểm, chạy đoạn núi lúc sáng và về trước khi sương chiều dày.

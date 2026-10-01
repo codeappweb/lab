@@ -6,22 +6,22 @@
   "last_published": {
     "kind": "pair",
     "ids": [
-      "C01-0020",
-      "C01-0021"
+      "C02-0027",
+      "C02-0028"
     ],
     "slugs": [
-      "dat-coc-thue-xe-may-bang-tien-mat-hay-chuyen-khoan",
-      "thue-xe-may-cho-nguoi-moi-chua-quen-duong-pho-ha-noi"
+      "mua-xe-ga-tra-gop-cach-doc-dieu-khoan-truoc-khi-ky",
+      "xe-ga-50cc-con-duoc-ban-khong-va-lua-chon-thay-the"
     ],
-    "write_commit": "dbd792c7ce41b2d84505cf8bf1ce985d8e7df19e",
-    "publish_commit": "e98eefd",
+    "write_commit": "3790efd8128b4b66602792c570a55ee0544cd98e",
+    "publish_commit": "cb82f56",
     "live_urls": [
-      "https://codeappweb.github.io/lab/dat-coc-thue-xe-may-bang-tien-mat-hay-chuyen-khoan/",
-      "https://codeappweb.github.io/lab/thue-xe-may-cho-nguoi-moi-chua-quen-duong-pho-ha-noi/"
+      "https://codeappweb.github.io/lab/mua-xe-ga-tra-gop-cach-doc-dieu-khoan-truoc-khi-ky/",
+      "https://codeappweb.github.io/lab/xe-ga-50cc-con-duoc-ban-khong-va-lua-chon-thay-the/"
     ],
     "deploy_verified": true
   },
-  "last_pushed_commit": "3c5a0d9e8d44d85c3d30d2d8b71819e1d0e44e33",
-  "updated_at": "2026-10-01T12:04:09.350Z",
+  "last_pushed_commit": "cb82f56",
+  "updated_at": "2026-10-01T12:17:51.934Z",
   "review_queue": []
 }

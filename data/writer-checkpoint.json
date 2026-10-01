@@ -4,14 +4,24 @@
   "current_step": "idle/awaiting-user-command",
   "active_article": null,
   "last_published": {
-    "kind": "article",
-    "id": "C04-0011",
-    "slug": "di-xe-dap-di-lam-an-toan-do-bao-ho-va-luat-giao-thong",
-    "merge_commit": "f9a252b8f5294db8bba9499f5c4f31320ccd43ea",
-    "live_url": "https://codeappweb.github.io/lab/di-xe-dap-di-lam-an-toan-do-bao-ho-va-luat-giao-thong/",
+    "kind": "pair",
+    "ids": [
+      "C01-0020",
+      "C01-0021"
+    ],
+    "slugs": [
+      "dat-coc-thue-xe-may-bang-tien-mat-hay-chuyen-khoan",
+      "thue-xe-may-cho-nguoi-moi-chua-quen-duong-pho-ha-noi"
+    ],
+    "write_commit": "dbd792c7ce41b2d84505cf8bf1ce985d8e7df19e",
+    "publish_commit": "e98eefd",
+    "live_urls": [
+      "https://codeappweb.github.io/lab/dat-coc-thue-xe-may-bang-tien-mat-hay-chuyen-khoan/",
+      "https://codeappweb.github.io/lab/thue-xe-may-cho-nguoi-moi-chua-quen-duong-pho-ha-noi/"
+    ],
     "deploy_verified": true
   },
-  "last_pushed_commit": null,
-  "updated_at": "2026-10-01T06:54:37.000Z",
+  "last_pushed_commit": "3c5a0d9e8d44d85c3d30d2d8b71819e1d0e44e33",
+  "updated_at": "2026-10-01T12:04:09.350Z",
   "review_queue": []
 }

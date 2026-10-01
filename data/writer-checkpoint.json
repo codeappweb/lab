@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0006",
-    "slug": "thue-xe-may-dien-o-ha-noi-uu-diem-va-dieu-can-luu-y",
-    "file": "_posts/2026-10-01-thue-xe-may-dien-o-ha-noi-uu-diem-va-dieu-can-luu-y.md",
+    "id": "C03-0007",
+    "slug": "xe-dien-cho-hoc-sinh-sinh-vien-tieu-chi-chon-an-toan",
+    "file": "_posts/2026-10-01-xe-dien-cho-hoc-sinh-sinh-vien-tieu-chi-chon-an-toan.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0005",
-    "slug": "xe-dien-di-lam-moi-ngay-o-ha-noi-chi-phi-dien-so-voi-xang",
-    "merge_commit": "efef9cbfcd6afc2090a173eade318d738411a527",
-    "live_url": "https://codeappweb.github.io/lab/xe-dien-di-lam-moi-ngay-o-ha-noi-chi-phi-dien-so-voi-xang/",
+    "id": "C03-0006",
+    "slug": "thue-xe-may-dien-o-ha-noi-uu-diem-va-dieu-can-luu-y",
+    "merge_commit": "ba6967d0c884ee7184f415d14e887a4839cf7866",
+    "live_url": "https://codeappweb.github.io/lab/thue-xe-may-dien-o-ha-noi-uu-diem-va-dieu-can-luu-y/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:21:09.524Z"
+  "updated_at": "2026-10-01T02:23:43.614Z"
 }

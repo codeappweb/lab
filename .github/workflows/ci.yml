@@ -80,9 +80,26 @@ jobs:
             echo "Không có file md mới/sửa và không đổi engine — bỏ qua check-links."
           fi
       - name: Sitemap khớp bài viết
-        run: node scripts/validate-sitemap.mjs
+        # Push-driven pair: writer commit CHỈ chứa bài mới trong _posts/ — derived
+        # state (manifest/sitemap) do production.yml sinh NGAY sau đó, và
+        # publish-loop.mjs chạy validate-sitemap.mjs + sync-manifest --dry-run
+        # (blocking) trên trạng thái cuối trước khi commit derived. Trên writer
+        # commit, 2 gate này là false-negative cấu trúc → skip, không phải weaken.
+        run: |
+          set -eu
+          if [ "${{ github.event_name }}" = "push" ] && git diff --name-only --diff-filter=AM HEAD^ HEAD -- '_posts/*.md' | grep -q .; then
+            echo "::notice::writer pair commit (posts chưa có derived) — gate sitemap sẽ chạy trong production.yml publish-loop trên trạng thái cuối."
+          else
+            node scripts/validate-sitemap.mjs
+          fi
       - name: Manifest đồng bộ repo (dry-run, blocking)
-        run: node scripts/sync-manifest.mjs --dry-run
+        run: |
+          set -eu
+          if [ "${{ github.event_name }}" = "push" ] && git diff --name-only --diff-filter=AM HEAD^ HEAD -- '_posts/*.md' | grep -q .; then
+            echo "::notice::writer pair commit (posts chưa có derived) — gate manifest dry-run sẽ chạy trong production.yml publish-loop trên trạng thái cuối."
+          else
+            node scripts/sync-manifest.mjs --dry-run
+          fi
 
   build:
     name: Jekyll build (blocking) + kiểm tra output

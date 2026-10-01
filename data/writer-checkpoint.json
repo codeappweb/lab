@@ -3,41 +3,33 @@
   "chunk_size": 2,
   "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "pair C08-0010..0011 published (publish commit 483a4c1cc); Pages deploy cho cặp 2 chờ xác nhận live",
+  "current_step": "pair C08-0012..C09-0001 published (publish commit 5ef6a6b0d, repair 09de26870); Pages deploy cho cặp chờ xác nhận live",
   "active_article": null,
   "last_published": {
     "kind": "writer-pairs",
     "ids": [
-      "C08-0008",
-      "C08-0009",
-      "C08-0010",
-      "C08-0011"
+      "C08-0012",
+      "C09-0001"
     ],
     "slugs": [
-      "bai-xe-khu-cau-giay-va-my-dinh-so-sanh-diem-gui-pho-bien",
-      "di-xe-vong-ho-tay-diem-dung-chan-va-cho-gui-xe",
-      "gui-xe-o-cac-khu-vui-choi-giai-tri-lon-luu-y-cuoi-tuan",
-      "di-cho-dau-moi-bang-xe-may-cho-hang-va-boc-xep"
+      "gui-xe-khi-den-chung-cu-ban-be-quy-tac-can-biet",
+      "chay-xe-ha-noi-ba-vi-trong-ngay-chuan-bi-xe-va-lo-trinh"
     ],
     "write_commits": [
-      "df2186795",
-      "cabd5f176",
-      "f8383a412"
+      "bb6f36f1e",
+      "09de26870"
     ],
     "publish_commits": [
-      "5032033e7",
-      "483a4c1cc"
+      "5ef6a6b0d"
     ],
     "live_urls": [
-      "https://codeappweb.github.io/lab/bai-xe-khu-cau-giay-va-my-dinh-so-sanh-diem-gui-pho-bien/",
-      "https://codeappweb.github.io/lab/di-xe-vong-ho-tay-diem-dung-chan-va-cho-gui-xe/",
-      "https://codeappweb.github.io/lab/gui-xe-o-cac-khu-vui-choi-giai-tri-lon-luu-y-cuoi-tuan/",
-      "https://codeappweb.github.io/lab/di-cho-dau-moi-bang-xe-may-cho-hang-va-boc-xep/"
+      "https://codeappweb.github.io/lab/gui-xe-khi-den-chung-cu-ban-be-quy-tac-can-biet/",
+      "https://codeappweb.github.io/lab/chay-xe-ha-noi-ba-vi-trong-ngay-chuan-bi-xe-va-lo-trinh/"
     ],
     "deploy_verified": false,
-    "notes": "C08-0008/0009 đã GET URL live, trả nội dung mới (đã kiểm chứng). C08-0010/0011 đã qua publish transaction (manifest flipped published, posts_on_disk 192), URL live chưa trả nội dung tại thời điểm ghi checkpoint — Pages deploy đang chờ. C08-0010 bị chặn 1 lần bởi gate CJK (ký tự sót), đã repair bằng commit f8383a412 rồi publish lại thành công."
+    "notes": "Cặp C08-0012 + C09-0001 đã qua publish transaction (manifest flipped published, posts_on_disk 194). Lần push đầu (bb6f36f1e) còn sót ký tự CJK và từ Anh xen trong prose ở cả 2 bài; đã repair ngay bằng commit 09de26870 trước khi Pages deploy. URL live chưa trả nội dung tại thời điểm ghi checkpoint (404) — Pages deploy đang chờ. Cặp trước C08-0008..0011 đã GET URL live xác nhận nội dung mới."
   },
-  "last_pushed_commit": "483a4c1cc",
-  "updated_at": "2026-10-01T18:35:22.842Z",
+  "last_pushed_commit": "09de26870",
+  "updated_at": "2026-10-01T20:29:42.696Z",
   "review_queue": []
 }

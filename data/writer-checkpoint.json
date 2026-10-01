@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C04-0007",
-    "slug": "xe-dap-mtb-dung-trong-pho-co-hop-ly-nghi-lai-truoc-khi-mua",
-    "file": "_posts/2026-10-01-xe-dap-mtb-dung-trong-pho-co-hop-ly-nghi-lai-truoc-khi-mua.md",
+    "id": "C04-0008",
+    "slug": "road-bike-di-lam-khi-nao-phu-hop-va-rui-ro-tren-duong-ha-noi",
+    "file": "_posts/2026-10-01-road-bike-di-lam-khi-nao-phu-hop-va-rui-ro-tren-duong-ha-noi.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C04-0006",
-    "slug": "pin-xe-dap-dien-cong-suat-va-tam-di-thuc-te",
-    "merge_commit": "02453086e357c4e53f990ead76dfab1e631b1cc8",
-    "live_url": "https://codeappweb.github.io/lab/pin-xe-dap-dien-cong-suat-va-tam-di-thuc-te/",
+    "id": "C04-0007",
+    "slug": "xe-dap-mtb-dung-trong-pho-co-hop-ly-nghi-lai-truoc-khi-mua",
+    "merge_commit": "64417332f5c6d5eda33ba1f3894ba7f76c435646",
+    "live_url": "https://codeappweb.github.io/lab/xe-dap-mtb-dung-trong-pho-co-hop-ly-nghi-lai-truoc-khi-mua/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T03:20:16.211Z",
+  "updated_at": "2026-10-01T03:23:52.748Z",
   "review_queue": [
     {
       "id": "C03-0009",

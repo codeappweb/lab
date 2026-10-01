@@ -30,7 +30,7 @@ Các khu vui chơi giải trí lớn ở Hà Nội có một điểm chung: ngà
 
 ## Quy luật bãi xe cuối tuần
 
-Vòng quanh các khu vui chơi lớn, bãi chính thường chỉ là một phần; cuối tuần các bãi tự phát mọc lên trên vỉa hè, khoảng trống trước cổng khu dân cư cạnh bên. Bãi chính an toàn hơn và có người trông cả ngày, nhưng xếp xe dày nên lấy xe ra giữa buổi rất chậm. Bãi tự phát gần hơn, giá theo lượt đắt hơn, đổi lại vào ra nhanh. Giống quy luật quanh các trường đại học mùa thi — đã phân tích trong bài về [đi xe đến các trường đại học lớn Hà Nội]({{ '/di-xe-den-cac-truong-dai-hoc-lon-ha-noi-gui-xe-mua-thi/' | relative_url }}) —密度 người đến tăng đột biến theo lịch, không theo giờ hành chính.
+Vòng quanh các khu vui chơi lớn, bãi chính thường chỉ là một phần; cuối tuần các bãi tự phát mọc lên trên vỉa hè, khoảng trống trước cổng khu dân cư cạnh bên. Bãi chính an toàn hơn và có người trông cả ngày, nhưng xếp xe dày nên lấy xe ra giữa buổi rất chậm. Bãi tự phát gần hơn, giá theo lượt đắt hơn, đổi lại vào ra nhanh. Giống quy luật quanh các trường đại học mùa thi — đã phân tích trong bài về [đi xe đến các trường đại học lớn Hà Nội]({{ '/di-xe-den-cac-truong-dai-hoc-lon-ha-noi-gui-xe-mua-thi/' | relative_url }}) — lượng người đến tăng đột biến theo lịch, không theo giờ hành chính.
 
 ## Chọn giờ và điểm gửi
 

@@ -3,7 +3,7 @@
   "chunk_size": 2,
   "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "pair C09-0004..C09-0005 published (publish commit 3156213451); Pages deploy cho hai cặp C09-0002..0005 chờ xác nhận live",
+  "current_step": "hai cặp C09-0002..0005 published; cặp 1 (C09-0002/0003) da GET URL live xac nhan; cặp 2 (C09-0004/0005) cho Pages deploy",
   "active_article": null,
   "last_published": {
     "kind": "writer-pairs",
@@ -26,9 +26,9 @@
       "https://codeappweb.github.io/lab/di-xe-may-ve-que-dip-tet-chuan-bi-xe-va-an-toan-duong-dai/"
     ],
     "deploy_verified": false,
-    "notes": "Cặp C09-0004 + C09-0005 đạt gate ngay push đầu (không cần repair) — publish commit 3156213451. Cặp trước C09-0002/C09-0003 đã publish (9d9d67913a) sau repair 66ae460b4. Cả hai cặp URL live chưa trả nội dung tại thời điểm ghi checkpoint (404) — Pages deploy đang chờ queue."
+    "notes": "Cặp C09-0004 + C09-0005 đạt gate ngay push đầu (publish commit 3156213451), URL live chưa trả nội dung tại thời điểm ghi checkpoint (404, Pages deploy đang chờ queue). Cặp C09-0002/C09-0003 (publish 9d9d67913a, repair 66ae460b4) đã GET URL live xác nhận nội dung mới: /lab/duong-len-moc-chau-bang-xe-may-kinh-nghiem-cung-duong/ và /lab/chay-xe-len-tam-dao-cung-duong-doc-va-an-toan/ trả bài đầy đủ, sitemap shard 196 URL. Phiên kế: fetch fresh main, next-pair (C09-0006 kế tiếp), verify live cặp 0004/0005 trước khi viết tiếp."
   },
   "last_pushed_commit": "8716a8ab1b",
-  "updated_at": "2026-10-01T22:29:20.896Z",
+  "updated_at": "2026-10-01T22:30:10.521Z",
   "review_queue": []
 }

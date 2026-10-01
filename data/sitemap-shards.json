@@ -4,12 +4,12 @@
   "shards": [
     {
       "file": "sitemaps/articles-001.xml",
-      "count": 188,
+      "count": 190,
       "lastmod": "2026-10-01"
     }
   ],
   "counts": {
-    "articles": 188,
+    "articles": 190,
     "categories": 14,
     "static": 7
   }

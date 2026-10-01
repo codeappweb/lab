@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C04-0003",
-    "slug": "chon-size-khung-xe-dap-theo-chieu-cao-bang-tham-khao",
-    "file": "_posts/2026-10-01-chon-size-khung-xe-dap-theo-chieu-cao-bang-tham-khao.md",
+    "id": "C04-0004",
+    "slug": "xe-dap-dien-co-nen-mua-uu-nhuoc-diem-cho-di-lai-thanh-pho",
+    "file": "_posts/2026-10-01-xe-dap-dien-co-nen-mua-uu-nhuoc-diem-cho-di-lai-thanh-pho.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C04-0002",
-    "slug": "xe-dap-gap-folding-bike-di-lam-ket-hop-xe-buyt-metro-kinh-nghiem",
-    "merge_commit": "34c1c38c340ddf0812cf199cc68502741e24181d",
-    "live_url": "https://codeappweb.github.io/lab/xe-dap-gap-folding-bike-di-lam-ket-hop-xe-buyt-metro-kinh-nghiem/",
+    "id": "C04-0003",
+    "slug": "chon-size-khung-xe-dap-theo-chieu-cao-bang-tham-khao",
+    "merge_commit": "b432a6b1d0b5813a942634376d5fa4d017f47086",
+    "live_url": "https://codeappweb.github.io/lab/chon-size-khung-xe-dap-theo-chieu-cao-bang-tham-khao/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T03:04:31.857Z",
+  "updated_at": "2026-10-01T03:07:14.423Z",
   "review_queue": [
     {
       "id": "C03-0009",

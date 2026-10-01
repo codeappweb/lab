@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C02-0012",
-    "slug": "xe-may-xang-nam-2026-xu-huong-va-dieu-can-biet-truoc-khi-mua",
-    "file": "_posts/2026-10-01-xe-may-xang-nam-2026-xu-huong-va-dieu-can-biet-truoc-khi-mua.md",
+    "id": "C02-0014",
+    "slug": "xe-50cc-va-xe-dap-dien-so-sanh-cho-hoc-sinh-sinh-vien",
+    "file": "_posts/2026-10-01-xe-50cc-va-xe-dap-dien-so-sanh-cho-hoc-sinh-sinh-vien.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C02-0011",
-    "slug": "xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho",
-    "merge_commit": "1be7f51530d61aab416cf07aac4953f55741f672",
-    "live_url": "https://codeappweb.github.io/lab/xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho/",
+    "id": "C02-0012",
+    "slug": "xe-may-xang-nam-2026-xu-huong-va-dieu-can-biet-truoc-khi-mua",
+    "merge_commit": "20bbe72ae3bef937fca7a335dba2c64891d78e3f",
+    "live_url": "https://codeappweb.github.io/lab/xe-may-xang-nam-2026-xu-huong-va-dieu-can-biet-truoc-khi-mua/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T01:51:11.250Z"
+  "updated_at": "2026-10-01T01:53:59.109Z"
 }

@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0002",
-    "slug": "xe-may-dien-di-mua-co-sao-khong-cach-xu-ly-an-toan",
-    "file": "_posts/2026-10-01-xe-may-dien-di-mua-co-sao-khong-cach-xu-ly-an-toan.md",
+    "id": "C03-0003",
+    "slug": "xe-may-dien-di-ngap-nuoc-khi-nao-nguy-hiem-va-cach-tranh",
+    "file": "_posts/2026-10-01-xe-may-dien-di-ngap-nuoc-khi-nao-nguy-hiem-va-cach-tranh.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0001",
-    "slug": "xe-may-dien-co-dang-mua-nam-2026-tong-quan-loi-ich-va-han-che",
-    "merge_commit": "3d980bfa7b664ee23f7fa4a1e10d6d0dea87523c",
-    "live_url": "https://codeappweb.github.io/lab/xe-may-dien-co-dang-mua-nam-2026-tong-quan-loi-ich-va-han-che/",
+    "id": "C03-0002",
+    "slug": "xe-may-dien-di-mua-co-sao-khong-cach-xu-ly-an-toan",
+    "merge_commit": "041b7e24846d7393c23cb29335252993e7f5da6f",
+    "live_url": "https://codeappweb.github.io/lab/xe-may-dien-di-mua-co-sao-khong-cach-xu-ly-an-toan/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:11:13.936Z"
+  "updated_at": "2026-10-01T02:13:36.333Z"
 }

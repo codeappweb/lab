@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0018",
-    "slug": "do-deo-len-doc-bang-xe-dien-ky-thuat-va-gioi-han",
-    "file": "_posts/2026-10-01-do-deo-len-doc-bang-xe-dien-ky-thuat-va-gioi-han.md",
+    "id": "C04-0001",
+    "slug": "chon-xe-dap-di-lam-o-ha-noi-city-bike-hay-xe-gap",
+    "file": "_posts/2026-10-01-chon-xe-dap-di-lam-o-ha-noi-city-bike-hay-xe-gap.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0017",
-    "slug": "an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha",
-    "merge_commit": "639e5fc9ba5afa421c840bae5081a3d801eafa2c",
-    "live_url": "https://codeappweb.github.io/lab/an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha/",
+    "id": "C03-0018",
+    "slug": "do-deo-len-doc-bang-xe-dien-ky-thuat-va-gioi-han",
+    "merge_commit": "f7053902f51f0bb0bd9d6c55c97e3d06394ccaf4",
+    "live_url": "https://codeappweb.github.io/lab/do-deo-len-doc-bang-xe-dien-ky-thuat-va-gioi-han/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:54:38.696Z",
+  "updated_at": "2026-10-01T02:57:47.863Z",
   "review_queue": [
     {
       "id": "C03-0009",

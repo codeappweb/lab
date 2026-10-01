@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C04-0012",
-    "slug": "bao-duong-xe-dap-dinh-ky-xich-lop-phanh",
-    "file": "_posts/2026-10-01-bao-duong-xe-dap-dinh-ky-xich-lop-phanh.md",
+    "id": "C04-0013",
+    "slug": "xich-va-lip-xe-dap-khi-nao-can-thay",
+    "file": "_posts/2026-10-01-xich-va-lip-xe-dap-khi-nao-can-thay.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C04-0010",
-    "slug": "thue-xe-dap-o-ha-noi-dia-diem-va-hinh-thuc-pho-bien",
-    "merge_commit": "f45a4c8f62875e3d6932b88fc872990cc524a123",
-    "live_url": "https://codeappweb.github.io/lab/thue-xe-dap-o-ha-noi-dia-diem-va-hinh-thuc-pho-bien/",
+    "id": "C04-0012",
+    "slug": "bao-duong-xe-dap-dinh-ky-xich-lop-phanh",
+    "merge_commit": "2815ea02bf79db4305cd09c93d3a42e8bece7fbe",
+    "live_url": "https://codeappweb.github.io/lab/bao-duong-xe-dap-dinh-ky-xich-lop-phanh/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T03:33:33.411Z",
+  "updated_at": "2026-10-01T03:36:20.036Z",
   "review_queue": [
     {
       "id": "C03-0009",

@@ -1,27 +1,27 @@
 {
   "loop": "push-driven-pair",
   "chunk_size": 2,
-  "current_step": "idle/awaiting-user-command",
+  "current_step": "C08 in progress; C07 complete",
   "active_article": null,
   "last_published": {
     "kind": "pair",
     "ids": [
-      "C02-0027",
-      "C02-0028"
+      "C07-0011",
+      "C07-0012"
     ],
     "slugs": [
-      "mua-xe-ga-tra-gop-cach-doc-dieu-khoan-truoc-khi-ky",
-      "xe-ga-50cc-con-duoc-ban-khong-va-lua-chon-thay-the"
+      "thay-doi-mau-xe-may-co-can-khai-bao-lai-khong",
+      "cap-lai-giay-dang-ky-xe-may-bi-mat-quy-trinh"
     ],
-    "write_commit": "3790efd8128b4b66602792c570a55ee0544cd98e",
-    "publish_commit": "cb82f56",
+    "write_commit": "d2db8b233125eadf1dbceeeeb399bf2a3574609d",
+    "publish_commit": "3e9a52a7",
     "live_urls": [
-      "https://codeappweb.github.io/lab/mua-xe-ga-tra-gop-cach-doc-dieu-khoan-truoc-khi-ky/",
-      "https://codeappweb.github.io/lab/xe-ga-50cc-con-duoc-ban-khong-va-lua-chon-thay-the/"
+      "https://codeappweb.github.io/lab/thay-doi-mau-xe-may-co-can-khai-bao-lai-khong/",
+      "https://codeappweb.github.io/lab/cap-lai-giay-dang-ky-xe-may-bi-mat-quy-trinh/"
     ],
     "deploy_verified": true
   },
-  "last_pushed_commit": "cb82f56",
-  "updated_at": "2026-10-01T12:17:51.934Z",
+  "last_pushed_commit": "3e9a52a7b0db2d702201204092ffcc42c848536a",
+  "updated_at": "2026-10-01T17:12:50.441Z",
   "review_queue": []
 }

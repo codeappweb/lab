@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0013",
-    "slug": "xe-may-dien-cu-co-dang-mua-kiem-tra-pin-la-buoc-quan-trong-nhat",
-    "file": "_posts/2026-10-01-xe-may-dien-cu-co-dang-mua-kiem-tra-pin-la-buoc-quan-trong-nhat.md",
+    "id": "C03-0014",
+    "slug": "xe-dien-mua-dong-va-troi-lanh-pin-tut-nhanh-hon-vi-sao",
+    "file": "_posts/2026-10-01-xe-dien-mua-dong-va-troi-lanh-pin-tut-nhanh-hon-vi-sao.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0012",
-    "slug": "bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao",
-    "merge_commit": "93b41a3914e8350f927aa360e3959bd1c4c8c5e5",
-    "live_url": "https://codeappweb.github.io/lab/bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao/",
+    "id": "C03-0013",
+    "slug": "xe-may-dien-cu-co-dang-mua-kiem-tra-pin-la-buoc-quan-trong-nhat",
+    "merge_commit": "04ccf86a3fdaa5ff37bb37c335a57694b0599dbb",
+    "live_url": "https://codeappweb.github.io/lab/xe-may-dien-cu-co-dang-mua-kiem-tra-pin-la-buoc-quan-trong-nhat/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:40:53.354Z",
+  "updated_at": "2026-10-01T02:43:36.679Z",
   "review_queue": [
     {
       "id": "C03-0009",

@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0017",
-    "slug": "an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha",
-    "file": "_posts/2026-10-01-an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha.md",
+    "id": "C03-0018",
+    "slug": "do-deo-len-doc-bang-xe-dien-ky-thuat-va-gioi-han",
+    "file": "_posts/2026-10-01-do-deo-len-doc-bang-xe-dien-ky-thuat-va-gioi-han.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0016",
-    "slug": "xe-dien-dung-cho-shipper-giao-hang-co-hieu-qua-kinh-te-khong",
-    "merge_commit": "9cc3362fe2036c856c8617dc32c7ea738ee861a8",
-    "live_url": "https://codeappweb.github.io/lab/xe-dien-dung-cho-shipper-giao-hang-co-hieu-qua-kinh-te-khong/",
+    "id": "C03-0017",
+    "slug": "an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha",
+    "merge_commit": "639e5fc9ba5afa421c840bae5081a3d801eafa2c",
+    "live_url": "https://codeappweb.github.io/lab/an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:52:03.405Z",
+  "updated_at": "2026-10-01T02:54:38.696Z",
   "review_queue": [
     {
       "id": "C03-0009",

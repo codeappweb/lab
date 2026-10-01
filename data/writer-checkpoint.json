@@ -3,33 +3,32 @@
   "chunk_size": 2,
   "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "pair C09-0002..C09-0003 published (publish commit 9d9d67913, repair 66ae460b4); Pages deploy cho cặp chờ xác nhận live",
+  "current_step": "pair C09-0004..C09-0005 published (publish commit 3156213451); Pages deploy cho hai cặp C09-0002..0005 chờ xác nhận live",
   "active_article": null,
   "last_published": {
     "kind": "writer-pairs",
     "ids": [
-      "C09-0002",
-      "C09-0003"
+      "C09-0004",
+      "C09-0005"
     ],
     "slugs": [
-      "duong-len-moc-chau-bang-xe-may-kinh-nghiem-cung-duong",
-      "chay-xe-len-tam-dao-cung-duong-doc-va-an-toan"
+      "di-xe-may-tu-ha-noi-den-ha-long-nghi-dung-o-dau",
+      "di-xe-may-ve-que-dip-tet-chuan-bi-xe-va-an-toan-duong-dai"
     ],
     "write_commits": [
-      "0abf726572",
-      "66ae460b45"
+      "8716a8ab1b"
     ],
     "publish_commits": [
-      "9d9d67913a"
+      "3156213451"
     ],
     "live_urls": [
-      "https://codeappweb.github.io/lab/duong-len-moc-chau-bang-xe-may-kinh-nghiem-cung-duong/",
-      "https://codeappweb.github.io/lab/chay-xe-len-tam-dao-cung-duong-doc-va-an-toan/"
+      "https://codeappweb.github.io/lab/di-xe-may-tu-ha-noi-den-ha-long-nghi-dung-o-dau/",
+      "https://codeappweb.github.io/lab/di-xe-may-ve-que-dip-tet-chuan-bi-xe-va-an-toan-duong-dai/"
     ],
     "deploy_verified": false,
-    "notes": "Cặp C09-0002 + C09-0003 đã qua publish transaction (manifest flipped published, sitemap +2 URL, posts_on_disk 196). Push đầu (0abf726572) còn sót từ tiếng Anh trong prose và ký tự CJK; đã repair ngay bằng commit 66ae460b4 trước khi Pages deploy. URL live chưa trả nội dung tại thời điểm ghi checkpoint (404) — Pages deploy đang chờ. Cặp trước C08-0012/C09-0001 đã GET URL live xác nhận nội dung mới."
+    "notes": "Cặp C09-0004 + C09-0005 đạt gate ngay push đầu (không cần repair) — publish commit 3156213451. Cặp trước C09-0002/C09-0003 đã publish (9d9d67913a) sau repair 66ae460b4. Cả hai cặp URL live chưa trả nội dung tại thời điểm ghi checkpoint (404) — Pages deploy đang chờ queue."
   },
-  "last_pushed_commit": "66ae460b45",
-  "updated_at": "2026-10-01T22:26:53.176Z",
+  "last_pushed_commit": "8716a8ab1b",
+  "updated_at": "2026-10-01T22:29:20.896Z",
   "review_queue": []
 }

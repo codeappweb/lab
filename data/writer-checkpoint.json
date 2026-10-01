@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C02-0011",
-    "slug": "xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho",
-    "file": "_posts/2026-10-01-xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho.md",
+    "id": "C02-0012",
+    "slug": "xe-may-xang-nam-2026-xu-huong-va-dieu-can-biet-truoc-khi-mua",
+    "file": "_posts/2026-10-01-xe-may-xang-nam-2026-xu-huong-va-dieu-can-biet-truoc-khi-mua.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C02-0010",
-    "slug": "xe-so-110cc-pho-bien-o-viet-nam-dac-diem-chung-va-ai-nen-dung",
-    "merge_commit": "09e09eed3ffd14db3159be86f00c12d2735ef191",
-    "live_url": "https://codeappweb.github.io/lab/xe-so-110cc-pho-bien-o-viet-nam-dac-diem-chung-va-ai-nen-dung/",
+    "id": "C02-0011",
+    "slug": "xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho",
+    "merge_commit": "1be7f51530d61aab416cf07aac4953f55741f672",
+    "live_url": "https://codeappweb.github.io/lab/xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T01:48:49.721Z"
+  "updated_at": "2026-10-01T01:51:11.250Z"
 }

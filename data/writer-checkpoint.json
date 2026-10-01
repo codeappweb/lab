@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C02-0005",
-    "slug": "vi-sao-xe-so-hao-xang-it-hon-xe-ga-trong-dieu-kien-thanh-pho",
-    "file": "_posts/2026-10-01-vi-sao-xe-so-hao-xang-it-hon-xe-ga-trong-dieu-kien-thanh-pho.md",
+    "id": "C02-0006",
+    "slug": "xe-may-nao-tiet-kiem-xang-nhat-cho-di-lam-ha-noi-tieu-chi-chon",
+    "file": "_posts/2026-10-01-xe-may-nao-tiet-kiem-xang-nhat-cho-di-lam-ha-noi-tieu-chi-chon.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C02-0003",
-    "slug": "xe-50cc-chay-duong-dai-duoc-khong-gioi-han-thuc-te",
-    "merge_commit": "33f97108b45a8c5a6e562ad3d0add62ec17c8e71",
-    "live_url": "https://codeappweb.github.io/lab/xe-50cc-chay-duong-dai-duoc-khong-gioi-han-thuc-te/",
+    "id": "C02-0005",
+    "slug": "vi-sao-xe-so-hao-xang-it-hon-xe-ga-trong-dieu-kien-thanh-pho",
+    "merge_commit": "84f6871b24698b8958918efed643f859ed39ce8e",
+    "live_url": "https://codeappweb.github.io/lab/vi-sao-xe-so-hao-xang-it-hon-xe-ga-trong-dieu-kien-thanh-pho/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T01:39:04.484Z"
+  "updated_at": "2026-10-01T01:41:25.017Z"
 }

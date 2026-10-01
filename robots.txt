@@ -1,1 +1,3 @@
-# probe
+User-agent: *
+Allow: /
+Sitemap: https://codeappweb.github.io/lab/sitemap.xml

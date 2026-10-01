@@ -1,27 +1,41 @@
 {
-  "loop": "push-driven-pair",
+  "loop": "push-driven-3-writers",
   "chunk_size": 2,
-  "current_step": "C08 in progress; C07 complete",
+  "writers": 3,
+  "writer_chunk_size": 2,
+  "current_step": "3-writer cycle test verified (C08-0005..0007 published); C08 in progress",
   "active_article": null,
   "last_published": {
-    "kind": "pair",
+    "kind": "writer-cycle",
     "ids": [
-      "C07-0011",
-      "C07-0012"
+      "C08-0005",
+      "C08-0006",
+      "C08-0007"
     ],
     "slugs": [
-      "thay-doi-mau-xe-may-co-can-khai-bao-lai-khong",
-      "cap-lai-giay-dang-ky-xe-may-bi-mat-quy-trinh"
+      "gui-xe-quanh-cac-benh-vien-lon-ha-noi-meo-cho-nguoi-cham-benh-nhan",
+      "di-xe-vao-gio-cao-diem-ha-noi-chon-tuyen-va-ne-diem-tac",
+      "di-xe-ra-san-bay-noi-bai-va-gui-xe-dai-ngay-luu-y"
     ],
-    "write_commit": "d2db8b233125eadf1dbceeeeb399bf2a3574609d",
-    "publish_commit": "3e9a52a7",
+    "write_commits": [
+      "bad04ab9ae",
+      "67bc508b8d",
+      "ecd409b8e7",
+      "e28a6ce677"
+    ],
+    "publish_commits": [
+      "a5d9e4d5c6",
+      "99201ce594"
+    ],
     "live_urls": [
-      "https://codeappweb.github.io/lab/thay-doi-mau-xe-may-co-can-khai-bao-lai-khong/",
-      "https://codeappweb.github.io/lab/cap-lai-giay-dang-ky-xe-may-bi-mat-quy-trinh/"
+      "https://codeappweb.github.io/lab/gui-xe-quanh-cac-benh-vien-lon-ha-noi-meo-cho-nguoi-cham-benh-nhan/",
+      "https://codeappweb.github.io/lab/di-xe-vao-gio-cao-diem-ha-noi-chon-tuyen-va-ne-diem-tac/",
+      "https://codeappweb.github.io/lab/di-xe-ra-san-bay-noi-bai-va-gui-xe-dai-ngay-luu-y/"
     ],
-    "deploy_verified": true
+    "deploy_verified": true,
+    "notes": "writer-1 publish run superseded by queued runs; article integrated via coordinator sync-manifest/sitemap regeneration (every post on disk is flipped to published). No duplicate rows."
   },
-  "last_pushed_commit": "3e9a52a7b0db2d702201204092ffcc42c848536a",
-  "updated_at": "2026-10-01T17:12:50.441Z",
+  "last_pushed_commit": "e28a6ce677db35477b7d1f46e60dc70d42a3357f",
+  "updated_at": "2026-10-01T17:37:28.296Z",
   "review_queue": []
 }

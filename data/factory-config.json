@@ -2,6 +2,8 @@
   "chunk_size": 2,
   "chunk_size_max": 2,
   "hard_max_new_posts_per_push": 50,
+  "writers": 3,
+  "writer_chunk_size": 2,
   "goal_total_articles": 20000,
-  "note": "chunk_size=2: PUSH-DRIVEN PAIR PRODUCTION (port y tuong /vanchinh). Writer viet DUNG 2 bai moi luot va push _posts/ len main NGAY; production.yml tu select exact IDs tu chinh push, claim, QA scoped, publish transactional (chi commit derived allowlist). Batch chi de to chuc matrix. hard_max_new_posts_per_push la hard invariant cua publish transaction."
+  "note": "chunk_size=2: PUSH-DRIVEN PAIR PRODUCTION. 3 PARALLEL WRITERS (writer-1/2/3): moi writer chay 'node scripts/next-pair.mjs --writer writer-K' de nhan deterministic slice (cac row planned eligible o vi tri i % writers == K-1) — slice roi rac hai hai, ATOMIC BY CONSTRUCTION, khong can state reservation chia se. Moi writer chi viet _posts/ (path duy nhat theo slug) va push writer_chunk_size bai moi tung push rieng. production.yml = COORDINATOR: mot concurrency group duy nhat (global RUN_LOCK), mot publish transaction cho tung writer push (claim exact IDs tu diff, QA scoped, derived state sinh MOT LAN), chi commit derived allowlist — writer khong bao gio cham state toan cuc. Row cua writer fail khong bi danh COMPLETE: van la planned, tu dong uoc cap lai chu ky sau; row published khong bao gio duoc cap lai. Batch chi de toan chuc matrix. hard_max_new_posts_per_push la hard invariant cua publish transaction."
 }

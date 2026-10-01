@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0011",
-    "slug": "xe-dien-can-bao-duong-nhung-gi-khac-biet-so-voi-xe-xang",
-    "file": "_posts/2026-10-01-xe-dien-can-bao-duong-nhung-gi-khac-biet-so-voi-xe-xang.md",
+    "id": "C03-0012",
+    "slug": "bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao",
+    "file": "_posts/2026-10-01-bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0010",
-    "slug": "xe-scooter-dien-va-xe-may-dien-khac-nhau-the-nao",
-    "merge_commit": "0711beb201ed814b898fc8bad746ddff6b20afb8",
-    "live_url": "https://codeappweb.github.io/lab/xe-scooter-dien-va-xe-may-dien-khac-nhau-the-nao/",
+    "id": "C03-0011",
+    "slug": "xe-dien-can-bao-duong-nhung-gi-khac-biet-so-voi-xe-xang",
+    "merge_commit": "9d834a1fd328be54a048e1c48e898b08d6cf6c90",
+    "live_url": "https://codeappweb.github.io/lab/xe-dien-can-bao-duong-nhung-gi-khac-biet-so-voi-xe-xang/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:31:29.605Z",
+  "updated_at": "2026-10-01T02:37:51.806Z",
   "review_queue": [
     {
       "id": "C03-0009",

@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C02-0001",
-    "slug": "xe-so-hay-xe-ga-cho-di-lai-trong-ha-noi-so-sanh-chi-phi-va-tien-nghi",
-    "file": "_posts/2026-10-01-xe-so-hay-xe-ga-cho-di-lai-trong-ha-noi-so-sanh-chi-phi-va-tien-nghi.md",
+    "id": "C02-0002",
+    "slug": "xe-50cc-la-gi-doi-tuong-nao-nen-dung-va-quy-dinh-bang-lai",
+    "file": "_posts/2026-10-01-xe-50cc-la-gi-doi-tuong-nao-nen-dung-va-quy-dinh-bang-lai.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C01-0016",
-    "slug": "thue-xe-cho-hang-cho-do-chuyen-nha-bang-xe-may-o-ha-noi",
-    "merge_commit": "cfb583990f68000711cb8c704ee06eadfff47f2c",
-    "live_url": "https://codeappweb.github.io/lab/thue-xe-cho-hang-cho-do-chuyen-nha-bang-xe-may-o-ha-noi/",
+    "id": "C02-0001",
+    "slug": "xe-so-hay-xe-ga-cho-di-lai-trong-ha-noi-so-sanh-chi-phi-va-tien-nghi",
+    "merge_commit": "82830611ba35c81775abceffa996a7d80cc98189",
+    "live_url": "https://codeappweb.github.io/lab/xe-so-hay-xe-ga-cho-di-lai-trong-ha-noi-so-sanh-chi-phi-va-tien-nghi/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T01:20:35.811Z"
+  "updated_at": "2026-10-01T01:25:23.262Z"
 }

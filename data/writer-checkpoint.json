@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C02-0010",
-    "slug": "xe-so-110cc-pho-bien-o-viet-nam-dac-diem-chung-va-ai-nen-dung",
-    "file": "_posts/2026-10-01-xe-so-110cc-pho-bien-o-viet-nam-dac-diem-chung-va-ai-nen-dung.md",
+    "id": "C02-0011",
+    "slug": "xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho",
+    "file": "_posts/2026-10-01-xe-ga-dung-phanh-dia-va-phanh-tang-trang-khac-biet-khi-di-trong-pho.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C02-0006",
-    "slug": "xe-may-nao-tiet-kiem-xang-nhat-cho-di-lam-ha-noi-tieu-chi-chon",
-    "merge_commit": "50cda0544f3b166c83db6dd1b4418d3dfecdd9b1",
-    "live_url": "https://codeappweb.github.io/lab/xe-may-nao-tiet-kiem-xang-nhat-cho-di-lam-ha-noi-tieu-chi-chon/",
+    "id": "C02-0010",
+    "slug": "xe-so-110cc-pho-bien-o-viet-nam-dac-diem-chung-va-ai-nen-dung",
+    "merge_commit": "09e09eed3ffd14db3159be86f00c12d2735ef191",
+    "live_url": "https://codeappweb.github.io/lab/xe-so-110cc-pho-bien-o-viet-nam-dac-diem-chung-va-ai-nen-dung/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T01:45:35.465Z"
+  "updated_at": "2026-10-01T01:48:49.721Z"
 }

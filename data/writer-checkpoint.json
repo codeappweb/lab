@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C01-0017",
-    "slug": "thue-xe-may-di-cuoi-hoi-su-kien-trong-ngay-o-ha-noi",
-    "file": "_posts/2026-10-01-thue-xe-may-di-cuoi-hoi-su-kien-trong-ngay-o-ha-noi.md",
+    "id": "C03-0001",
+    "slug": "xe-may-dien-co-dang-mua-nam-2026-tong-quan-loi-ich-va-han-che",
+    "file": "_posts/2026-10-01-xe-may-dien-co-dang-mua-nam-2026-tong-quan-loi-ich-va-han-che.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C02-0016",
-    "slug": "vi-sao-xe-may-moi-hao-xang-hon-vai-thang-dau",
-    "merge_commit": "a279b5ad0b65920cea4fd4fb59f7033c8478ac41",
-    "live_url": "https://codeappweb.github.io/lab/vi-sao-xe-may-moi-hao-xang-hon-vai-thang-dau/",
+    "id": "C01-0017",
+    "slug": "thue-xe-may-di-cuoi-hoi-su-kien-trong-ngay-o-ha-noi",
+    "merge_commit": "3f41f27ed22b0b27c752c25699cd127ac26097ed",
+    "live_url": "https://codeappweb.github.io/lab/thue-xe-may-di-cuoi-hoi-su-kien-trong-ngay-o-ha-noi/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:06:37.280Z"
+  "updated_at": "2026-10-01T02:08:52.443Z"
 }

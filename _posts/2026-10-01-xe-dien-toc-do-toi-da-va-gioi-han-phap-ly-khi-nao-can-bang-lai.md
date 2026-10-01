@@ -31,13 +31,14 @@ next_review: 2027-04-01
 verification_status: verified
 ---
 
-Không phải chiếc xe điện nào cũng đóng thuế pháp lý giống nhau. Cùng gọi là xe điện, nhưng có loại đi không cần bất kỳ giấy phép nào, có loại bắt bạn phải có bằng lái trước khi vặn tay ga. Ranh giới nằm ở tốc độ thiết kế và công suất động cơ, và đây là cách xác định xe của bạn thuộc nhóm nào.
+Không phải chiếc xe điện nào cũng chịu cùng một chế định pháp lý. Cùng gọi là xe điện, nhưng có loại đi không cần bất kỳ giấy phép nào, có loại bắt bạn phải có bằng lái trước khi vặn tay ga. Ranh giới nằm ở tốc độ thiết kế và công suất động cơ, và đây là cách xác định xe của bạn thuộc nhóm nào.
 
 ## Ba nhóm xe điện theo pháp luật hiện hành
 
 Từ ngày 01/01/2025, Luật Trật tự, an toàn giao thông đường bộ năm 2024 chia xe hai bánh chạy điện thành ba nhóm rõ ràng.
 
-Nhóm thứ nhất là xe đạp máy, bao gồm cả xe đạp điện. Đây là xe đạp có trợ lực từ động cơ, và nguồn động lực tự ngắt khi người lái ngừng đạp hoặc khi xe đạt tới tốc độ 25 km/h. Về pháp lý, đây là xe thô sơ: người điều khiển không cần giấy phép lái xe, và loại xe này không thuộc diện cấp đăng ký, biển số.
+Nhóm thứ nhất là xe đạp máy, bao gồm cả xe đạp điện. Đây là xe đạp có trợ lực từ động cơ, và nguồn động lực tự ngắt khi người lái ngừng đạp hoặc khi xe đạt tới tốc độ 25 km/h. Về pháp lý, đây là xe thô sơ: người điều khiển không cần giấy phép lái xe, và loại xe này không thuộc
+ diện cấp đăng ký, biển số.
 
 Nhóm thứ hai là xe gắn máy điện. Theo Điều 34 của luật, xe gắn máy là xe hai hoặc ba bánh chạy bằng động cơ, có vận tốc thiết kế không lớn hơn 50 km/h; nếu động cơ dẫn động là động cơ điện thì công suất không lớn hơn 4 kW, và định nghĩa này không bao gồm xe đạp máy. Người từ đủ 16 tuổi được điều khiển xe gắn máy mà không cần giấy phép lái xe, nhưng xe vẫn phải có đăng ký và biển số như mọi xe cơ giới.
 
@@ -51,7 +52,8 @@ Hệ quả thực tế của việc định nghĩa lại theo luật mới: nhi�
 
 ## Tốc độ lưu hành trên đường vẫn là con số khác
 
-Đừng nhầm tốc độ thiết kế với tốc độ được phép lưu hành. Dù xe thuộc nhóm nào, khi đã ra đường, bạn phải tuân theo biển báo tốc độ và quy định của từng đoạn đường nơi mình đi, thường thấp hơn nhiều so với tốc độ tối đa mà xe đạt được. Xe chạy nhanh hơn dòng xe xung quanh cũng không an toàn hơn: vượt liên tục giữa xe máy trong phố là tình huống va chạm phổ biến.
+Đừng nhầm tốc độ thiết kế với tốc độ được phép lưu hành. Dù xe thuộc nhóm nào, khi đã ra đường, bạn phải tuân theo biển báo tốc độ và quy định của từng đoạn đường nơi mình
+ đi, thường thấp hơn nhiều so với tốc độ tối đa mà xe đạt được. Xe chạy nhanh hơn dòng xe xung quanh cũng không an toàn hơn: vượt liên tục giữa xe máy trong phố là tình huống va chạm phổ biến.
 
 Với xe đạp máy, giới hạn 25 km/h của phần trợ lực nghĩa là bạn chỉ có thể nhanh hơn nếu tự đạp hết sức. Thực tế đây là dải tốc độ phù hợp làn đường ven, khu dân cư và giờ tan tầm đông đúc. Để hiểu trải nghiệm đi lại giữa các loại xe dành cho học sinh, sinh viên, bạn có thể đọc [so sánh xe 50cc và xe đạp điện]({{ '/xe-50cc-va-xe-dap-dien-so-sanh-cho-hoc-sinh-sinh-vien/' | relative_url }}).
 

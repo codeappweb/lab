@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0016",
-    "slug": "xe-dien-dung-cho-shipper-giao-hang-co-hieu-qua-kinh-te-khong",
-    "file": "_posts/2026-10-01-xe-dien-dung-cho-shipper-giao-hang-co-hieu-qua-kinh-te-khong.md",
+    "id": "C03-0017",
+    "slug": "an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha",
+    "file": "_posts/2026-10-01-an-toan-chay-pin-xe-dien-nguyen-nhan-va-cach-phong-ngua-tai-nha.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0015",
-    "slug": "di-xe-dien-can-mang-theo-gi-bo-sua-chua-va-do-du-phong",
-    "merge_commit": "96eebce64142f9d7051ae8dfbac190b1a8d31818",
-    "live_url": "https://codeappweb.github.io/lab/di-xe-dien-can-mang-theo-gi-bo-sua-chua-va-do-du-phong/",
+    "id": "C03-0016",
+    "slug": "xe-dien-dung-cho-shipper-giao-hang-co-hieu-qua-kinh-te-khong",
+    "merge_commit": "9cc3362fe2036c856c8617dc32c7ea738ee861a8",
+    "live_url": "https://codeappweb.github.io/lab/xe-dien-dung-cho-shipper-giao-hang-co-hieu-qua-kinh-te-khong/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:49:20.841Z",
+  "updated_at": "2026-10-01T02:52:03.405Z",
   "review_queue": [
     {
       "id": "C03-0009",

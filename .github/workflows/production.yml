@@ -72,6 +72,10 @@ jobs:
             echo "::warning::push $N bai NEW (chunk_size=$CHUNK) — van xu ly vi N <= max."
           fi
           echo "publish scope: NEW=[$ADDED] REPAIR=[$REPAIRED]"
+          # publish-loop.mjs expects --added as COMMA-separated; GITHUB_OUTPUT
+          # rejects multi-line values -> join before writing outputs.
+          ADDED=$(echo "$ADDED" | paste -sd ',' -)
+          REPAIRED=$(echo "$REPAIRED" | paste -sd ',' -)
           echo "added=$ADDED" >> "$GITHUB_OUTPUT"
           echo "repaired=$REPAIRED" >> "$GITHUB_OUTPUT"
           echo "run=true" >> "$GITHUB_OUTPUT"

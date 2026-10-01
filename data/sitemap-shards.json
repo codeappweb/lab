@@ -1,16 +1,1 @@
-{
-  "site": "https://codeappweb.github.io/lab",
-  "shard_size": 1000,
-  "shards": [
-    {
-      "file": "sitemaps/articles-001.xml",
-      "count": 60,
-      "lastmod": "2026-10-01"
-    }
-  ],
-  "counts": {
-    "articles": 60,
-    "categories": 14,
-    "static": 7
-  }
-}
+RECONPROBE

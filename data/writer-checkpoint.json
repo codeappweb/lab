@@ -1,41 +1,43 @@
 {
-  "loop": "push-driven-3-writers",
+  "loop": "push-driven-pair-production",
   "chunk_size": 2,
-  "writers": 3,
+  "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "3-writer cycle test verified (C08-0005..0007 published); C08 in progress",
+  "current_step": "pair C08-0010..0011 published (publish commit 483a4c1cc); Pages deploy cho cặp 2 chờ xác nhận live",
   "active_article": null,
   "last_published": {
-    "kind": "writer-cycle",
+    "kind": "writer-pairs",
     "ids": [
-      "C08-0005",
-      "C08-0006",
-      "C08-0007"
+      "C08-0008",
+      "C08-0009",
+      "C08-0010",
+      "C08-0011"
     ],
     "slugs": [
-      "gui-xe-quanh-cac-benh-vien-lon-ha-noi-meo-cho-nguoi-cham-benh-nhan",
-      "di-xe-vao-gio-cao-diem-ha-noi-chon-tuyen-va-ne-diem-tac",
-      "di-xe-ra-san-bay-noi-bai-va-gui-xe-dai-ngay-luu-y"
+      "bai-xe-khu-cau-giay-va-my-dinh-so-sanh-diem-gui-pho-bien",
+      "di-xe-vong-ho-tay-diem-dung-chan-va-cho-gui-xe",
+      "gui-xe-o-cac-khu-vui-choi-giai-tri-lon-luu-y-cuoi-tuan",
+      "di-cho-dau-moi-bang-xe-may-cho-hang-va-boc-xep"
     ],
     "write_commits": [
-      "bad04ab9ae",
-      "67bc508b8d",
-      "ecd409b8e7",
-      "e28a6ce677"
+      "df2186795",
+      "cabd5f176",
+      "f8383a412"
     ],
     "publish_commits": [
-      "a5d9e4d5c6",
-      "99201ce594"
+      "5032033e7",
+      "483a4c1cc"
     ],
     "live_urls": [
-      "https://codeappweb.github.io/lab/gui-xe-quanh-cac-benh-vien-lon-ha-noi-meo-cho-nguoi-cham-benh-nhan/",
-      "https://codeappweb.github.io/lab/di-xe-vao-gio-cao-diem-ha-noi-chon-tuyen-va-ne-diem-tac/",
-      "https://codeappweb.github.io/lab/di-xe-ra-san-bay-noi-bai-va-gui-xe-dai-ngay-luu-y/"
+      "https://codeappweb.github.io/lab/bai-xe-khu-cau-giay-va-my-dinh-so-sanh-diem-gui-pho-bien/",
+      "https://codeappweb.github.io/lab/di-xe-vong-ho-tay-diem-dung-chan-va-cho-gui-xe/",
+      "https://codeappweb.github.io/lab/gui-xe-o-cac-khu-vui-choi-giai-tri-lon-luu-y-cuoi-tuan/",
+      "https://codeappweb.github.io/lab/di-cho-dau-moi-bang-xe-may-cho-hang-va-boc-xep/"
     ],
-    "deploy_verified": true,
-    "notes": "writer-1 publish run superseded by queued runs; article integrated via coordinator sync-manifest/sitemap regeneration (every post on disk is flipped to published). No duplicate rows."
+    "deploy_verified": false,
+    "notes": "C08-0008/0009 đã GET URL live, trả nội dung mới (đã kiểm chứng). C08-0010/0011 đã qua publish transaction (manifest flipped published, posts_on_disk 192), URL live chưa trả nội dung tại thời điểm ghi checkpoint — Pages deploy đang chờ. C08-0010 bị chặn 1 lần bởi gate CJK (ký tự sót), đã repair bằng commit f8383a412 rồi publish lại thành công."
   },
-  "last_pushed_commit": "e28a6ce677db35477b7d1f46e60dc70d42a3357f",
-  "updated_at": "2026-10-01T17:37:28.296Z",
+  "last_pushed_commit": "483a4c1cc",
+  "updated_at": "2026-10-01T18:35:22.842Z",
   "review_queue": []
 }

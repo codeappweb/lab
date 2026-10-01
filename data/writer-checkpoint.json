@@ -3,33 +3,33 @@
   "chunk_size": 2,
   "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "pair C08-0012..C09-0001 published (publish commit 5ef6a6b0d, repair 09de26870); Pages deploy cho cặp chờ xác nhận live",
+  "current_step": "pair C09-0002..C09-0003 published (publish commit 9d9d67913, repair 66ae460b4); Pages deploy cho cặp chờ xác nhận live",
   "active_article": null,
   "last_published": {
     "kind": "writer-pairs",
     "ids": [
-      "C08-0012",
-      "C09-0001"
+      "C09-0002",
+      "C09-0003"
     ],
     "slugs": [
-      "gui-xe-khi-den-chung-cu-ban-be-quy-tac-can-biet",
-      "chay-xe-ha-noi-ba-vi-trong-ngay-chuan-bi-xe-va-lo-trinh"
+      "duong-len-moc-chau-bang-xe-may-kinh-nghiem-cung-duong",
+      "chay-xe-len-tam-dao-cung-duong-doc-va-an-toan"
     ],
     "write_commits": [
-      "bb6f36f1e",
-      "09de26870"
+      "0abf726572",
+      "66ae460b45"
     ],
     "publish_commits": [
-      "5ef6a6b0d"
+      "9d9d67913a"
     ],
     "live_urls": [
-      "https://codeappweb.github.io/lab/gui-xe-khi-den-chung-cu-ban-be-quy-tac-can-biet/",
-      "https://codeappweb.github.io/lab/chay-xe-ha-noi-ba-vi-trong-ngay-chuan-bi-xe-va-lo-trinh/"
+      "https://codeappweb.github.io/lab/duong-len-moc-chau-bang-xe-may-kinh-nghiem-cung-duong/",
+      "https://codeappweb.github.io/lab/chay-xe-len-tam-dao-cung-duong-doc-va-an-toan/"
     ],
     "deploy_verified": false,
-    "notes": "Cặp C08-0012 + C09-0001 đã qua publish transaction (manifest flipped published, posts_on_disk 194). Lần push đầu (bb6f36f1e) còn sót ký tự CJK và từ Anh xen trong prose ở cả 2 bài; đã repair ngay bằng commit 09de26870 trước khi Pages deploy. URL live chưa trả nội dung tại thời điểm ghi checkpoint (404) — Pages deploy đang chờ. Cặp trước C08-0008..0011 đã GET URL live xác nhận nội dung mới."
+    "notes": "Cặp C09-0002 + C09-0003 đã qua publish transaction (manifest flipped published, sitemap +2 URL, posts_on_disk 196). Push đầu (0abf726572) còn sót từ tiếng Anh trong prose và ký tự CJK; đã repair ngay bằng commit 66ae460b4 trước khi Pages deploy. URL live chưa trả nội dung tại thời điểm ghi checkpoint (404) — Pages deploy đang chờ. Cặp trước C08-0012/C09-0001 đã GET URL live xác nhận nội dung mới."
   },
-  "last_pushed_commit": "09de26870",
-  "updated_at": "2026-10-01T20:29:42.696Z",
+  "last_pushed_commit": "66ae460b45",
+  "updated_at": "2026-10-01T22:26:53.176Z",
   "review_queue": []
 }

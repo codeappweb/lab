@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C02-0015",
-    "slug": "xe-ga-scooter-lon-150cc-co-can-thiet-cho-duong-ha-noi-khong",
-    "file": "_posts/2026-10-01-xe-ga-scooter-lon-150cc-co-can-thiet-cho-duong-ha-noi-khong.md",
+    "id": "C02-0016",
+    "slug": "vi-sao-xe-may-moi-hao-xang-hon-vai-thang-dau",
+    "file": "_posts/2026-10-01-vi-sao-xe-may-moi-hao-xang-hon-vai-thang-dau.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C02-0014",
-    "slug": "xe-50cc-va-xe-dap-dien-so-sanh-cho-hoc-sinh-sinh-vien",
-    "merge_commit": "38463cede44772f930c3b4634d32e6516f1323c6",
-    "live_url": "https://codeappweb.github.io/lab/xe-50cc-va-xe-dap-dien-so-sanh-cho-hoc-sinh-sinh-vien/",
+    "id": "C02-0015",
+    "slug": "xe-ga-scooter-lon-150cc-co-can-thiet-cho-duong-ha-noi-khong",
+    "merge_commit": "507f366b1c5d88f4c9b4607a2a9a299c2924e288",
+    "live_url": "https://codeappweb.github.io/lab/xe-ga-scooter-lon-150cc-co-can-thiet-cho-duong-ha-noi-khong/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T01:58:25.775Z"
+  "updated_at": "2026-10-01T02:03:45.208Z"
 }

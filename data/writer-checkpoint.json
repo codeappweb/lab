@@ -3,19 +3,19 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0005",
-    "slug": "xe-dien-di-lam-moi-ngay-o-ha-noi-chi-phi-dien-so-voi-xang",
-    "file": "_posts/2026-10-01-xe-dien-di-lam-moi-ngay-o-ha-noi-chi-phi-dien-so-voi-xang.md",
+    "id": "C03-0006",
+    "slug": "thue-xe-may-dien-o-ha-noi-uu-diem-va-dieu-can-luu-y",
+    "file": "_posts/2026-10-01-thue-xe-may-dien-o-ha-noi-uu-diem-va-dieu-can-luu-y.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0004",
-    "slug": "xe-dien-co-di-duoc-duong-dai-khong-pham-vi-hoat-dong-thuc-te",
-    "merge_commit": "aaa31e300ed835aff8b48b79c81c8add2d3ced94",
-    "live_url": "https://codeappweb.github.io/lab/xe-dien-co-di-duoc-duong-dai-khong-pham-vi-hoat-dong-thuc-te/",
+    "id": "C03-0005",
+    "slug": "xe-dien-di-lam-moi-ngay-o-ha-noi-chi-phi-dien-so-voi-xang",
+    "merge_commit": "efef9cbfcd6afc2090a173eade318d738411a527",
+    "live_url": "https://codeappweb.github.io/lab/xe-dien-di-lam-moi-ngay-o-ha-noi-chi-phi-dien-so-voi-xang/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:18:46.127Z"
+  "updated_at": "2026-10-01T02:21:09.524Z"
 }

@@ -1,23 +1,18 @@
 {
   "loop": "micro-continuous",
   "chunk_size": 1,
-  "current_step": "pr-open/awaiting-ci",
-  "active_article": {
-    "id": "C04-0016",
-    "slug": "xe-dap-len-via-he-va-di-tren-pho-ky-nang-co-ban",
-    "file": "_posts/2026-10-01-xe-dap-len-via-he-va-di-tren-pho-ky-nang-co-ban.md",
-    "step": "pr-open"
-  },
+  "current_step": "idle/all-planned-done",
+  "active_article": null,
   "last_published": {
     "kind": "article",
-    "id": "C04-0015",
-    "slug": "phu-kien-xe-dap-di-lam-dang-mua-gio-chan-bun-den",
-    "merge_commit": "bd1b770ae366b136331fa32b07dc24d6e68360ed",
-    "live_url": "https://codeappweb.github.io/lab/phu-kien-xe-dap-di-lam-dang-mua-gio-chan-bun-den/",
+    "id": "C04-0016",
+    "slug": "xe-dap-len-via-he-va-di-tren-pho-ky-nang-co-ban",
+    "merge_commit": "a2edfdf239a2b4cdec0726a09071716a0a38014c",
+    "live_url": "https://codeappweb.github.io/lab/xe-dap-len-via-he-va-di-tren-pho-ky-nang-co-ban/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T03:47:10.280Z",
+  "updated_at": "2026-10-01T03:50:05.599Z",
   "review_queue": [
     {
       "id": "C03-0009",

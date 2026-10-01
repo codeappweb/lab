@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C04-0014",
-    "slug": "lop-xe-dap-chon-mong-hay-day-cho-duong-thanh-pho",
-    "file": "_posts/2026-10-01-lop-xe-dap-chon-mong-hay-day-cho-duong-thanh-pho.md",
+    "id": "C04-0015",
+    "slug": "phu-kien-xe-dap-di-lam-dang-mua-gio-chan-bun-den",
+    "file": "_posts/2026-10-01-phu-kien-xe-dap-di-lam-dang-mua-gio-chan-bun-den.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C04-0013",
-    "slug": "xich-va-lip-xe-dap-khi-nao-can-thay",
-    "merge_commit": "fff57c580b9b6d27a6b15860466acb4305e5be9b",
-    "live_url": "https://codeappweb.github.io/lab/xich-va-lip-xe-dap-khi-nao-can-thay/",
+    "id": "C04-0014",
+    "slug": "lop-xe-dap-chon-mong-hay-day-cho-duong-thanh-pho",
+    "merge_commit": "f707612d302871c74ce4d566441b9fc2f2ccf366",
+    "live_url": "https://codeappweb.github.io/lab/lop-xe-dap-chon-mong-hay-day-cho-duong-thanh-pho/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T03:39:53.071Z",
+  "updated_at": "2026-10-01T03:43:29.092Z",
   "review_queue": [
     {
       "id": "C03-0009",

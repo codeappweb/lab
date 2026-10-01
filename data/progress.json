@@ -3,11 +3,11 @@
   "phase": "smart-blog-app",
   "content_budget_total": 3000,
   "articles": {
-    "planned": 37,
+    "planned": 38,
     "researching": 0,
     "drafted": 0,
     "qa": 0,
-    "published": 60,
+    "published": 59,
     "merged": 0,
     "skipped": 0,
     "update_needed": 0,
@@ -79,7 +79,8 @@
       "created": [
         "Quick Actions + data/site-actions.yml",
         "Trợ lý AI cục bộ (assistant/*, không API key)",
-        "Content index core + 12 shard lazy\n-load",
+        "Content index core + 12 shard lazy
+\n-load",
         "Article toolbar, reading progress, prev/next",
         "Saved + Continue reading (localStorage)",
         "PWA-lite: manifest, theme-color; bỏ service worker (rủi ro stale cache)"
@@ -120,7 +121,8 @@
       "date": "2026-09-25",
       "cluster": "infra (taxonomy + navigation UX)",
       "created": [
-        "data/taxonomy.yml: thứ tự cha theo \nhành trình người dùng (Thuê xe #4, Chi phí #11, Công nghệ #12) + planned_capacity cha/con tổng ~2.000 bài",
+        "data/taxonomy.yml: thứ tự cha the
+o \nhành trình người dùng (Thuê xe #4, Chi phí #11, Công nghệ #12) + planned_capacity cha/con tổng ~2.000 bài",
         "assets/css/app4.css + assets/js/nav2.js: accordion drawer, body scroll lock, mega menu CSS",
         "12 stub chuyên mục con mới theo taxonomy rebalance"
       ],
@@ -160,7 +162,8 @@
         "assets/js/nav2.js rewrite: two-screen drawer (home -> parent children), Xem thêm toggle, active states, footer details sync desktop/mobile"
       ],
       "updated": [
-        "_includes/header.html: compact sticky bar, Danh mục mega menu, icon actions \n(search/AI/Đã lưu/theme/menu)",
+        "_includes/header.html: compact sticky bar, Danh mục mega menu, icon acti
+ons \n(search/AI/Đã lưu/theme/menu)",
         "_includes/nav-drawer.html: app menu Level 1 (6 action cards + Khám phá 6+6 category cards + Thông tin grid) và Level 2 (children từng cha)",
         "_includes/footer.html: 5 cột details (Khám phá/Hành trình/Kỹ thuật/Thông tin/Pháp lý) + brand + footer-bottom",
         "index.md: hero + 4 editorial sections (Khám phá phương tiện / Hành trình / Chăm sóc xe / Kiến thức), giữ hook heroSearch/doc-tiep/moi-nhat/kham-pha"
@@ -191,7 +194,8 @@
       "created": [
         "12 trang cha danh-muc/*.md: nội dung editorial ~1.500–1.800 từ, title/meta duy nhất, intent riêng từng danh mục, internal link cha→con + parent liên quan + 8 cornerstone bài sua-chua",
         "danh-muc/sua-chua/chan-doan-loi.md: nội dung Tier A ~1.000 từ, title \"Chẩn đoán lỗi xe máy theo triệu chứng\"",
-        "README: mục Category SEO audi\nt (2026-09-25)"
+        "README: mục Category SE
+O audi\nt (2026-09-25)"
       ],
       "updated": [
         "danh-muc/index.md: mở rộng ~700 từ, title \"Danh mục chủ đề xe và di chuyển\", hero dùng page.description",
@@ -221,7 +225,8 @@
         "Sửa bug Liquid cco/unt trong _layouts/parent-category.html (mất đếm bài card con)",
         "Sửa 2 khối child hỏng trong taxonomy.yml (su-dung-xe, nuoi-xe)",
         "Chuyển 229 link markdown gốc /danh-muc/... sang relative_url (link 404 trên live do baseurl /lab/)",
-        "README: cổng triển khai an toàn, quy tắc ind\nexable, lọc search/AI, nguồn pháp lý",
+        "README: cổng triển khai an toàn, quy
+ tắc ind\nexable, lọc search/AI, nguồn pháp lý",
         "Manifest: 8 bài C05 qa -> published (đã kiểm tra render, source front matter, nội dung sạch)"
       ],
       "updated_manifest": [],
@@ -261,7 +266,8 @@
     "Khi một con sua-chua khác đạt >= 3 bài chất lượng + nội dung standalone, nâng status trong taxonomy.yml và gỡ noindex theo quy tắc README (không chỉ theo số bài).",
     "Theo dõi NĐ 238/2026/NĐ-CP và các nghị định sau — cập nhật data/legal-sources.yml + last_verified trước khi dùng số liệu pháp lý mới."
   ],
-  "open_issues": [
+  "open_issues
+": [
     "\nĐã xác nhận: Pages build thành công (Jekyll green trong môi trường github-pages gem); deploy live tại /lab/ đã kiểm chứng (sitemap 43 URL, search index 35 entry, 22 bài hiển thị).",
     "GitHub App không có quyền Administration — site ở repo lab, base path /lab/.",
     "Không có trình duyệt trong sandbox — console errors, light/dark, tương tác chỉ kiểm tra tĩnh qua HTML/render text.",
@@ -281,5 +287,5 @@
     "publish_verification": "sitemap 43 URL (có 22 post + danh mục), assets/search.json 35 entry, homepage hiển thị 22 bài — deploy live đã xác nhận"
   },
   "manifest_rows": 97,
-  "posts_on_disk": 60
+  "posts_on_disk": 59
 }

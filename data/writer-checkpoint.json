@@ -3,21 +3,21 @@
   "chunk_size": 1,
   "current_step": "pr-open/awaiting-ci",
   "active_article": {
-    "id": "C03-0012",
-    "slug": "bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao",
-    "file": "_posts/2026-10-01-bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao.md",
+    "id": "C03-0013",
+    "slug": "xe-may-dien-cu-co-dang-mua-kiem-tra-pin-la-buoc-quan-trong-nhat",
+    "file": "_posts/2026-10-01-xe-may-dien-cu-co-dang-mua-kiem-tra-pin-la-buoc-quan-trong-nhat.md",
     "step": "pr-open"
   },
   "last_published": {
     "kind": "article",
-    "id": "C03-0011",
-    "slug": "xe-dien-can-bao-duong-nhung-gi-khac-biet-so-voi-xe-xang",
-    "merge_commit": "9d834a1fd328be54a048e1c48e898b08d6cf6c90",
-    "live_url": "https://codeappweb.github.io/lab/xe-dien-can-bao-duong-nhung-gi-khac-biet-so-voi-xe-xang/",
+    "id": "C03-0012",
+    "slug": "bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao",
+    "merge_commit": "93b41a3914e8350f927aa360e3959bd1c4c8c5e5",
+    "live_url": "https://codeappweb.github.io/lab/bao-duong-phanh-xe-dien-dia-tang-trang-va-phanh-tai-tao/",
     "deploy_verified": true
   },
   "last_pushed_commit": null,
-  "updated_at": "2026-10-01T02:37:51.806Z",
+  "updated_at": "2026-10-01T02:40:53.354Z",
   "review_queue": [
     {
       "id": "C03-0009",

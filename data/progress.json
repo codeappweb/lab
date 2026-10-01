@@ -3,7 +3,7 @@
   "phase": "smart-blog-app",
   "content_budget_total": 3000,
   "articles": {
-    "planned": 0,
+    "planned": 144,
     "researching": 0,
     "drafted": 0,
     "qa": 0,
@@ -11,7 +11,7 @@
     "merged": 0,
     "skipped": 0,
     "update_needed": 0,
-    "manifest_rows": 97
+    "manifest_rows": 241
   },
   "planned_by_cluster": {
     "C01": 17,
@@ -120,7 +120,7 @@
       "date": "2026-09-25",
       "cluster": "infra (taxonomy + navigation UX)",
       "created": [
-        "data/taxonomy.yml: thứ tự cha theo \nhành trình người dùng (Thuê xe #4, Chi phí #11, Công nghệ #12) + planned_capacity cha/con tổng ~2.000 bài",
+        "data/taxonomy.yml: thứ tự cha theo\nhành trình người dùng (Thuê xe #4, Chi phí #11, Công nghệ #12) + planned_capacity cha/con tổng ~2.000 bài",
         "assets/css/app4.css + assets/js/nav2.js: accordion drawer, body scroll lock, mega menu CSS",
         "12 stub chuyên mục con mới theo taxonomy rebalance"
       ],
@@ -191,7 +191,7 @@
       "created": [
         "12 trang cha danh-muc/*.md: nội dung editorial ~1.500–1.800 từ, title/meta duy nhất, intent riêng từng danh mục, internal link cha→con + parent liên quan + 8 cornerstone bài sua-chua",
         "danh-muc/sua-chua/chan-doan-loi.md: nội dung Tier A ~1.000 từ, title \"Chẩn đoán lỗi xe máy theo triệu chứng\"",
-        "README: mục Category SEO audi\nt (2026-09-25)"
+        "README: mục Category SEOaudi\nt (2026-09-25)"
       ],
       "updated": [
         "danh-muc/index.md: mở rộng ~700 từ, title \"Danh mục chủ đề xe và di chuyển\", hero dùng page.description",
@@ -280,6 +280,6 @@
     "remaining_in_batch": 0,
     "publish_verification": "sitemap 43 URL (có 22 post + danh mục), assets/search.json 35 entry, homepage hiển thị 22 bài — deploy live đã xác nhận"
   },
-  "manifest_rows": 97,
+  "manifest_rows": 241,
   "posts_on_disk": 97
 }

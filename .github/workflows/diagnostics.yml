@@ -1,10 +1,9 @@
-name: Diagnostics (staging repair, TEMP)
+name: Diagnostics (allocate cycle, TEMP)
 
-# TEMPORARY repair workflow — reset 3 nhanh staging ve main HEAD bang
-# force-with-lease (lease = tip hien tai), sau do verify invariant staging
-# chi khac main trong _posts va collect-staging noop. Sau nay coordinator
-# tu reset staging sau moi publish; workflow nay de xu ly truong hop main
-# di truoc staging khi push engine (trigger token, engine files).
+# TEMPORARY: chay next-pair.mjs --allocate (real allocation, deterministic
+# tu manifest tren main) va dump 6 row duoc phan cong ra
+# diagnostics/allocate-rows.json de writer session doc. Commit
+# data/factory-cycle.json theo dung message quy uac cycle(allocate).
 
 on:
   push:
@@ -19,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  repair:
+  allocate:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -27,49 +26,24 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Fetch staging branches
-        run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
-      - name: Reset staging branches ve main HEAD (force-with-lease)
-        run: |
-          set -eu
-          for K in 1 2 3; do
-            B="staging/writer-$K"
-            LEASE=$(git rev-parse "origin/$B")
-            echo "reset $B: $LEASE -> origin/main"
-            git push --force-with-lease="refs/heads/$B:$LEASE" origin origin/main:"refs/heads/$B"
-          done
-          git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
       - uses: actions/setup-node@v7
         with:
           node-version: '20'
-      - name: Verify invariant va collect-staging noop
+      - name: Allocate cycle va dump assigned rows
         run: |
-          set +e
-          R=diagnostics/report.md
-          mkdir -p diagnostics
-          {
-            echo "# Staging repair report"
-            date -u
-            echo "## staging tips sau reset"
-            for K in 1 2 3; do
-              echo "origin/staging/writer-$K = $(git rev-parse origin/staging/writer-$K)"
-            done
-            echo "## diff checks (ky vong EMPTY tat ca)"
-            for K in 1 2 3; do
-              echo "### writer-$K two-dot"
-              git diff --name-only "origin/main..origin/staging/writer-$K"
-              echo "### writer-$K three-dot"
-              git diff --name-only "origin/main...origin/staging/writer-$K"
-            done
-            echo "## collect-staging (ky vong noop EXIT=0)"
-            node scripts/collect-staging.mjs
-            echo "EXIT_COLLECT=$?"
-          } > "$R" 2>&1
-          cat "$R"
-      - name: Commit report
-        run: |
+          set -eu
+          node scripts/next-pair.mjs --allocate | tee /tmp/alloc.log
+          node -e '
+            const fs = require("fs");
+            const rows = fs.readFileSync("data/article-manifest.jsonl", "utf8").split("\n").filter(Boolean).map(l => JSON.parse(l));
+            const cyc = JSON.parse(fs.readFileSync("data/factory-cycle.json", "utf8"));
+            const ids = Object.values(cyc.assignments).flat();
+            const picked = rows.filter(r => ids.includes(String(r.id)));
+            fs.writeFileSync("diagnostics/allocate-rows.json", JSON.stringify({ cycle: cyc, rows: picked }, null, 2) + "\n");
+          '
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
-          git add diagnostics/report.md
-          git commit -m "diag(report): staging reset ve main HEAD — invariant verify"
+          CYC=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("data/factory-cycle.json","utf8")).cycle_id)')
+          git add data/factory-cycle.json diagnostics/allocate-rows.json
+          git commit -m "cycle(allocate): $CYC"
           git push origin HEAD:main

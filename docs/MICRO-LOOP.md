@@ -54,7 +54,7 @@ FETCH FRESH MAIN
 → WRITE ≤2 bài vào _posts/2026-10-02-<slug>.md theo docs/SCHEMA-ARTICLE.md
    (front matter thêm factory_writer, factory_cycle, factory_base_sha)
 → PUSH NGAY lên staging/writer-K (chỉ file bài)
-→ COORDINATOR (workflow_dispatch / push staging, singleton, xếp hàng):
+→ COORDINATOR (push _posts lên staging / workflow_dispatch, singleton, xếp hàng):
    check-stop (consecutive_failures ≥2 → dừng)
    → cycle-phase --resume (phase từ cycle file, không tạo cycle mới khi đang dở)
    → collect-staging --wait-for writer-1,writer-2,writer-3 --timeout 600
@@ -82,8 +82,10 @@ Chính sách chờ: coordinator kết thúc collect khi đủ output của tất
 
 ## Coordinator (production.yml)
 
-- Trigger: push vào `staging/writer-*` và workflow_dispatch. Concurrency `production-coordinator`, không cancel-in-progress: mọi chạy xếp hàng tuần tự, không bao giờ hai transaction tích hợp song song.
+- Trigger: push vào `staging/writer-*` CHỈ KHI có file `_posts/**` thay đổi (paths filter — push đồng bộ engine/docs lên staging KHÔNG kích hoạt chu kỳ publication), và workflow_dispatch (kèm input `maintenance`, xem Runbook maintenance).
+- Concurrency `production-coordinator`, không cancel-in-progress: mọi chạy xếp hàng tuần tự, không bao giờ hai transaction tích hợp song song.
 - Permissions: `contents: write`, `pages: write`, `id-token: write`. Timeout 45 phút.
+- KHÔNG dùng `environment:` ở job level: environment `github-pages` (tạo bởi Pages branch mode) có branch protection chỉ cho phép main — mọi run từ staging/writer-* bị từ chối ngay cả khi noop. `deploy-pages` tự quản lý deployment.
 - Guard từ chối (fail closed, không commit gì): file ngoài `_posts/*.md`; quá `writer_chunk_size` bài trên một writer; quá `integration_max_new_posts` bài một chu kỳ; trùng slug giữa các writer; trùng manifest_id; slug đã published mà nội dung khác (bài y hệt trên main được bỏ qua idempotent); bài lệch cycle (writer/cycle/base_sha không khớp, manifest_id ngoài slice) → REVIEW không tích hợp; trùng manifest_id giữa các file staged → REFUSE.
 - Transaction: derive → 6 gate nhẹ → Jekyll build blocking + validate-built → đo telemetry → `git add` TƯỜNG MINH (posts + derived allowlist + telemetry + cycle/checkpoint/coordinator-state) → MỘT commit (publication commit) → cycle-phase --publishing (chỉ ghi khi sha đã có trên origin/main) → push rebase + revalidate (không force-push main).
 - Pages deploy tường minh: deploy đúng artifact `_site` đã validate, đúng MỘT lần cho một publication. KHÔNG dựa vào Pages workflow tự kích hoạt sau push main.
@@ -91,6 +93,15 @@ Chính sách chờ: coordinator kết thúc collect khi đủ output của tất
 - Reset staging: `git push --force-with-lease` với sha đã snapshot — chỉ tác động nhánh staging, không bao giờ đè push mới của writer (lease fail = dừng, chu kỳ sau xử lý idempotent).
 - Chu kỳ rỗng (staging không có bài mới): noop, exit 0, không commit, không deploy.
 - Crash recovery: mọi phase idempotent (`scripts/cycle-phase.mjs --resume`). Crash trước commit main → chạy lại, guard áp phần còn thiếu. Crash sau commit trước deploy → chạy lại, deploy artifact của publication SHA đã có. Crash sau deploy trước finalize/reset → chạy lại, complete + reset idempotent. Không bao giờ tạo cycle mới khi cycle trước chưa hoàn tất.
+
+## Runbook maintenance (derived drift)
+
+Dispatch thủ công MỘT LẦN khi manifest/progress/sitemap bị drift so với repository truth (ví dụ: bài đã live nhưng manifest row vẫn `planned`, CI gate "Manifest đồng bộ repo" đỏ):
+
+1. Actions → Production (coordinator) → Run workflow → chọn branch `main`, tick `maintenance` = true → Run.
+2. Job `maintenance` chạy `node scripts/publish-loop.mjs --integrate --added "" --repaired ""`: sync-manifest (write, planned→published theo post trên main), gen-sitemap, 6 gate, Jekyll build blocking, telemetry, ledger reset — commit CHI derived allowlist (manifest, progress, sitemap shards, telemetry, checkpoint/coordinator-state), MỘT commit lên main.
+3. KHÔNG publish bài mới, KHÔNG deploy Pages, KHÔNG chạm cycle/staging.
+4. Sau maintenance commit: CI gate manifest dry-run sẽ xanh ở lần CI kế tiếp đổi engine. Data files không nằm trong paths trigger của ci.yml nên maintenance commit tự nó không chạy CI.
 
 ## Telemetry và scale
 
@@ -113,3 +124,7 @@ Phiên bị reset: fetch fresh main, xem `data/production-telemetry.jsonl` + man
 ## Fixture
 
 `scripts/publish-loop.test.mjs` kiểm chứng chế độ legacy (T1–T11, không đổi): giao dịch 1 bài, bài lỗi không công khai, restart không trùng, claim trùng/out-of-scope bị từ chối, gate lỗi không exit 0, transaction chỉ ghi derived allowlist, `--check` đỏ khi derived chưa commit, hai lượt liên tiếp + resume. Chế độ `--integrate` là chế độ production của coordinator trên main thật.
+
+## Yêu cầu cấu hình Pages (một lần, thủ công)
+
+Pages phải chuyển sang Source = GitHub Actions: Settings → Pages → Build and deployment → Source → GitHub Actions. Khi còn ở chế độ branch, `actions/deploy-pages` sẽ fail → failure ledger tăng; 2 lần liên tiếp = production stop. Không dispatch chu kỳ publication thật trước khi flip.

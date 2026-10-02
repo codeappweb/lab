@@ -9,9 +9,10 @@ name: Production (coordinator)
 #           Writer chi viet _posts/*.md kem factory metadata, push len nhanh
 #           rieng staging/writer-K. KHONG push main, KHONG cham state chia se.
 #   SIGNAL (staging-signal.yml, NHE): push _posts/** len staging/writer-* chi
-#           dispatch production.yml voi ref=main. Workflow_dispatch la event
-#           duy nhat GITHUB_TOKEN duoc phep tao run moi — coordinator LUON chay
-#           trong MAIN context, khong bao gio ke thua ref staging/writer-*.
+#           tao run marker. production.yml trigger `workflow_run` tren run do
+#           — theo GitHub, workflow_run LUON chay tren default branch (MAIN):
+#           coordinator khong bao gio ke thua ref staging/writer-*, khong can
+#           dispatch API/token, khong race auth.
 #   COORDINATOR (workflow nay, MAIN context, singleton queue toan cuc,
 #           crash-safe): --check-stop (2 run fail lien tiep -> DUNG production)
 #           -> resume cycle dang mo neu co (cycle-phase --resume)
@@ -46,8 +47,12 @@ name: Production (coordinator)
 #   Source = GitHub Actions.
 
 on:
-  # KHONG trigger push truc tiep: coordinator phai chay trong MAIN context.
-  # staging-signal.yml (paths: _posts/**) dispatch workflow nay ref=main.
+  # Signal: run cua staging-signal.yml hoan tat (writer push _posts) →
+  # coordinator chay tren MAIN (workflow_run luon dung default branch).
+  workflow_run:
+    workflows: ['Staging signal (writer output marker)']
+    types: [completed]
+  # Manual: run thuong + maintenance dispatch (chon branch main).
   workflow_dispatch:
     inputs:
       maintenance:
@@ -70,9 +75,9 @@ jobs:
     if: ${{ inputs.maintenance != true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
-    # MAIN CONTEXT (workflow_dispatch ref=main): environment github-pages chi
-    # cho phep main — dung cho deploy cuoi cung. Staging/writer-* khong bao
-    # gio vao job nay (signal workflow dispatch ref=main).
+    # MAIN CONTEXT (workflow_run = default branch; workflow_dispatch ref=main):
+    # environment github-pages chi cho phep main — dung cho deploy cuoi cung.
+    # Staging/writer-* khong bao gio vao job nay.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.url }}

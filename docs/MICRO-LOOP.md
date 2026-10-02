@@ -11,9 +11,10 @@ writer-1  writer-2  writer-3   (cùng đọc MỘT plan tại base_sha)
    |         |         |
 staging/writer-1..3            (writer chỉ đẩy _posts/*.md lên nhánh riêng)
    \         |         /
-    staging-signal.yml (_posts/** push → dispatch production.yml ref=main)
+    staging-signal.yml (_posts/** push → run marker hoàn tất)
          |
-    single COORDINATOR (production.yml, MAIN context, singleton queue toàn cục)
+    single COORDINATOR (production.yml — workflow_run, LUON chay tren MAIN,
+         singleton queue toàn cục)
          collect (--wait-for: chờ đủ 3 writer hoặc timeout 10 phút)
          → integrate-guard (cycle verify: factory_writer/factory_cycle/factory_base_sha,
            manifest_id đúng slice, không trùng slug/ID; lệch cycle → REVIEW)
@@ -57,8 +58,8 @@ FETCH FRESH MAIN
 → WRITE ≤2 bài vào _posts/2026-10-02-<slug>.md theo docs/SCHEMA-ARTICLE.md
    (front matter thêm factory_writer, factory_cycle, factory_base_sha)
 → PUSH NGAY lên staging/writer-K (chỉ file bài)
-→ staging-signal.yml (paths _posts/**) dispatch production.yml ref=MAIN
-→ COORDINATOR (workflow_dispatch ref=main, singleton, xếp hàng):
+→ staging-signal.yml (paths _posts/**) hoàn tất run marker
+→ COORDINATOR (production.yml — workflow_run, MAIN context, singleton, xếp hàng):
    check-stop (consecutive_failures ≥2 → dừng)
    → cycle-phase --resume (phase từ cycle file, không tạo cycle mới khi đang dở)
    → collect-staging --wait-for writer-1,writer-2,writer-3 --timeout 600
@@ -86,9 +87,9 @@ Chính sách chờ: coordinator kết thúc collect khi đủ output của tất
 
 ## Coordinator (production.yml)
 
-- MAIN CONTEXT (bắt buộc): coordinator chạy với ref = main. Writer push `_posts/**` lên `staging/writer-*` KHÔNG chạy coordinator trực tiếp trong context staging — `staging-signal.yml` (workflow nhẹ, branch filter `staging/writer-1..3` + path filter `_posts/**`) dispatch `production.yml` với `ref=main` (`gh workflow run production.yml --ref main`). `workflow_dispatch` là một trong hai event mà GITHUB_TOKEN được phép tạo run mới, nên dispatch từ signal luôn hợp lệ. Push đồng bộ engine/docs/data lên staging KHÔNG signal (paths filter) — không tạo fake publication cycle.
-- Trigger của production.yml: chỉ `workflow_dispatch` (kèm input `maintenance`, xem Runbook maintenance). Run thủ công phải chọn branch `main` khi dispatch.
-- Concurrency `production-coordinator`, không cancel-in-progress: mọi chạy xếp hàng tuần tự, không bao giờ hai transaction tích hợp song song. Signal cũng có concurrency riêng (`staging-signal`) để nhiều push liên tiếp của writer không tạo một loạt dispatch thừa.
+- MAIN CONTEXT (bắt buộc): coordinator chạy trên default branch. Writer push `_posts/**` lên `staging/writer-*` làm `staging-signal.yml` (workflow nhẹ, branch filter `staging/writer-1..3` + path filter `_posts/**`) hoàn tất một run marker; `production.yml` trigger qua `workflow_run` trên run đó — theo GitHub, `workflow_run` LUÔN chạy workflow từ default branch (main). Không dispatch API, không phụ thuộc token/auth; staging/writer-* không bao giờ là ref của coordinator. Push đồng bộ engine/docs/data lên staging không signal (paths filter) — nếu vẫn bị gọi, coordinator xử lý noop idempotent.
+- Trigger của production.yml: `workflow_run` (types: completed, từ staging-signal) và `workflow_dispatch` (kèm input `maintenance`, xem Runbook maintenance). Run thủ công phải chọn branch `main` khi dispatch.
+- Concurrency `production-coordinator`, không cancel-in-progress: mọi chạy xếp hàng tuần tự, không bao giờ hai transaction tích hợp song song.
 - Permissions: `contents: write`, `pages: write`, `id-token: write`. Timeout 45 phút.
 - `environment: github-pages` (name + `url: ${{ steps.deployment.outputs.url }}`) ở job integrate: an toàn VÌ coordinator luôn chạy main context — branch protection của environment github-pages (chỉ cho phép main) được thỏa. `staging/writer-*` KHÔNG BAO GIỜ chạy deploy-pages hay vào job này.
 - Guard từ chối (fail closed, không commit gì): file ngoài `_posts/*.md`; quá `writer_chunk_size` bài trên một writer; quá `integration_max_new_posts` bài một chu kỳ; trùng slug giữa các writer; trùng manifest_id; slug đã published mà nội dung khác (bài y hệt trên main được bỏ qua idempotent); bài lệch cycle (writer/cycle/base_sha không khớp, manifest_id ngoài slice) → REVIEW không tích hợp; trùng manifest_id giữa các file staged → REFUSE.

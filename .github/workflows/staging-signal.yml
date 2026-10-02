@@ -1,16 +1,14 @@
-name: Staging signal (dispatch coordinator on main)
+name: Staging signal (writer output marker)
 
-# SIGNAL WORKFLOW (NHE): writer push _posts/** len staging/writer-K khong chay
-# coordinator trong context staging — chi DISPATCH production.yml voi ref=main.
-# workflow_dispatch la mot trong hai event ma GITHUB_TOKEN duoc phep tao run
-# moi, nen coordinator LUON chay trong MAIN context.
+# SIGNAL WORKFLOW (NHE): writer push _posts/** len staging/writer-K chi TAO MỘT
+# run marker HOAN TAT. KHONG chay coordinator trong context staging, KHONG deploy,
+# KHONG cham main. production.yml (coordinator) trigger workflow_run tren run
+# cua workflow nay — theo dinh nghia GitHub, workflow_run LUON chay tren
+# DEFAULT BRANCH (main): main context + environment github-pages an toan,
+# khong can dispatch API, khong phu thuoc token hay auth cua gh CLI.
 # Paths filter: chi thay doi _posts/** moi signal — push dong bo engine/docs/
-# data len staging KHONG tao fake publication cycle. (Luu y: push thay doi
-# chinh file workflow nay van chay workflow lan dau — hanh vi cua GitHub khi
-# workflow file duoc sua trong push; cac push sau ap dung paths filter binh
-# thuong.)
-# Dispatch dung REST API voi token explicit (github.token, actions:write) —
-# khong phu thuoc vao trang thai auth cua gh CLI.
+# data len staging KHONG tao fake publication cycle (coordinator xu ly noop
+# idempotent neu van duoc goi).
 
 on:
   push:
@@ -18,33 +16,20 @@ on:
     paths: ['_posts/**']
 
 concurrency:
-  # Nhieu signal lien tiep coi lai thanh mot dispatch hop nhat (coordinator
-  # collect snapshot staging hien tai; dispatch boi neu cycle dang chay se xep
-  # hang trong group production-coordinator, khong cancel run dang mo).
   group: staging-signal
   cancel-in-progress: false
 
 permissions:
   contents: read
-  actions: write
 
 jobs:
   signal:
-    name: Dispatch Production (coordinator) on main
+    name: Writer pushed _posts (marker for workflow_run coordinator)
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 3
     steps:
-      - name: Dispatch production.yml (ref=main, workflow_dispatch)
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Record signal
         run: |
           set -eu
-          echo "signal: writer pushed _posts to ${{ github.ref_name }} — dispatching coordinator on main."
-          curl -sS -f -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/production.yml/dispatches" \
-            -d '{"ref":"main"}'
-      - name: Report
-        run: echo "signal: production.yml dispatched (ref=main, workflow_dispatch) — coordinator chay trong MAIN context; concurrency group production-coordinator xep hang neu co run dang mo."
+          echo "signal: _posts pushed to ${{ github.ref_name }} by ${{ github.actor }}."
+          echo "signal: coordinator (production.yml) se duoc trigger qua workflow_run trong MAIN context khi run nay hoan tat."

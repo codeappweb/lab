@@ -1,12 +1,1 @@
-Coordinator trigger token (data/.coordinator-trigger)
-
-Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
-(production.yml: push.paths = data/.coordinator-trigger). Noi dung file
-khong co y nghia — chi su thay doi cua no tren main moi trigger.
-
-Trigger update 13 (2026-10-02): reset consecutive_failures=0 sau khi sua
-root cause cua 2 run fail lien tiep (bai C06-0013 tren staging/writer-3 co
-link noi bo sai chinh ta 'lop-khong-sang-va-lop-thuong-khac-bieu...' — da
-sua thanh '...khac-biet...' va xac nhan URL live). Cycle cyc-c010030 dang
-o phase allocated, staging 3 writer van giu nguyen — coordinator resume
-va tich hop lai.
+trigger: 2026-10-02T18:51:19.875Z

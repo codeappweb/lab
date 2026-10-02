@@ -200,7 +200,8 @@ jobs:
 
       - name: Noop (khong co bai moi tren staging)
         if: steps.guard.outputs.noop == 'true'
-        run: echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."
+        run: |
+          echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."
 
       # ---- 7. failure ledger: 2 run fail lien tiep = STOP production -------
       - name: Record failure (increment ledger, cycle -> failed)

@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c120009",
   "base_sha": "bcaaddeb9ee2b855b53363877c60353de337a4c1",
   "coordinator_run_id": null,
-  "phase": "allocated",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C12-0009",
@@ -17,7 +17,14 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "chuan-hoa-pin-roi-va-tram-doi-pin-xu-huong-phia-truoc",
+      "sac-nhanh-thuong-xuyen-anh-huong-pin-the-nao-phan-tich",
+      "nhan-va-chung-nhan-pin-khi-mua-xe-dien-doc-hieu-the-nao",
+      "tai-che-pin-xe-dien-o-viet-nam-hien-trang-va-dau-ra"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -62,5 +69,6 @@
       "completed_at": "2026-10-02T16:21:20.237Z"
     }
   ],
-  "created_at": "2026-10-02T16:22:20.506Z"
+  "created_at": "2026-10-02T16:22:20.506Z",
+  "updated_at": "2026-10-02T16:33:50.344Z"
 }

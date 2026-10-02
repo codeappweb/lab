@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c120003",
-  "base_sha": "2015237668c56f41bae7cb5b780fc164586d81c0",
-  "status": "complete",
+  "cycle_id": "cyc-c120009",
+  "base_sha": "bcaaddeb9ee2b855b53363877c60353de337a4c1",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,20 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C12-0006",
-      "C12-0003",
-      "C12-0004",
-      "C12-0007",
-      "C12-0005",
-      "C12-0008"
+      "C12-0012",
+      "C12-0009",
+      "C12-0010",
+      "C12-0011"
     ],
     "slugs": [
-      "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
-      "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
-      "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
-      "chai-pin-la-gi-va-cach-do-dung-luong-thuc-cua-pin-xe-dien",
-      "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
-      "sac-dung-cach-theo-khuyen-cao-nha-san-xuat-huong-dan-chung"
+      "chuan-hoa-pin-roi-va-tram-doi-pin-xu-huong-phia-truoc",
+      "sac-nhanh-thuong-xuyen-anh-huong-pin-the-nao-phan-tich",
+      "nhan-va-chung-nhan-pin-khi-mua-xe-dien-doc-hieu-the-nao",
+      "tai-che-pin-xe-dien-o-viet-nam-hien-trang-va-dau-ra"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-02T16:21:20.238Z"
+  "updated_at": "2026-10-02T16:34:46.460Z"
 }

@@ -27,7 +27,8 @@ name: Production (coordinator)
 #              reassign slug da published; sai cycle/base_sha/slice -> REVIEW
 #              chu khong publish; bai da integrate giong het -> skip idempotent)
 #           -> apply -> derive + 6 gate nhe + Jekyll build BLOCKING
-#              (build_fail_seconds = HARD FAIL) + validate-built
+#          
+    (build_fail_seconds = HARD FAIL) + validate-built
 #           -> MÔT commit publish tren main (posts + derived allowlist +
 #              telemetry + cycle state + checkpoint + failure ledger reset)
 #           -> MÔT Pages deployment: upload _site DA validate lam artifact
@@ -62,7 +63,8 @@ on:
   push:
     branches: [main]
     paths: ['data/.coordinator-trigger']
-  # Manual: run thuong + maintenance dispatch (chon branch main).
+  # Manual: run thuong
+ + maintenance dispatch (chon branch main).
   workflow_dispatch:
     inputs:
       maintenance:
@@ -115,7 +117,8 @@ jobs:
           node scripts/sync-manifest.mjs
           node scripts/gen-sitemap-shards.mjs
           node scripts/validate-content.mjs
-          node scripts/validate-content-quality.mjs
+          node scripts/validat
+e-content-quality.mjs
           node scripts/detect-duplicates.mjs
           node scripts/validate-sitemap.mjs
           node scripts/sync-manifest.mjs --dry-run
@@ -149,7 +152,8 @@ jobs:
         run: |
           set -eu
           node scripts/cycle-phase.mjs --check-stop
-      - name: Cycle resume plan (khong tao cycle moi khi con cycle recoverable)
+      - name: Cycle resume plan (khong 
+tao cycle moi khi con cycle recoverable)
         run: |
           set -eu
           node scripts/cycle-phase.mjs --resume
@@ -202,7 +206,8 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       # ---- 3. MÔT publication transaction ----------------------------------
-      - name: Publish transaction (posts + derived + cycle state, MÔT commit)
+      - name: Publish transaction (posts + derived + cycle state, MÔT
+ commit)
         if: steps.guard.outputs.noop != 'true'
         env:
           ADDED: ${{ steps.guard.outputs.added }}
@@ -245,7 +250,8 @@ jobs:
           URL="${{ steps.deployment.outputs.url }}/${SLUG}/"
           echo "verify: $URL"
           for i in $(seq 1 12); do
-            CODE=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || echo 000)
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' "$URL
+" || echo 000)
             if [ "$CODE" = "200" ]; then echo "live OK: $URL"; exit 0; fi
             sleep 10
           done
@@ -285,7 +291,8 @@ jobs:
           git config user.email 'codeappweb@users.noreply.github.com'
           git fetch origin main --quiet || true
           git pull --ff-only origin main || true
-          node scripts/cycle-phase.mjs --fail-run --run-id "${{ github.run_id }}" || true
+          node scripts/cycle-ph
+ase.mjs --fail-run --run-id "${{ github.run_id }}" || true
           git add data/factory-cycle.json data/coordinator-state.json data/writer-checkpoint.json || true
           git commit -m "coordinator(fail): run ${{ github.run_id }} that bai — ghi failure ledger (staging GIU NGUYEN)" || true
           git push origin HEAD:main || echo "::warning::khong push duoc failure ledger (co the do conflict) — ledger se duoc cap nhat o run sau."
@@ -332,4 +339,5 @@ jobs:
           node scripts/publish-loop.mjs --integrate --added "" --repaired ""
       - name: Report
         run: |
-          echo "maintenance: derived state synced (manifest planned->published, progress, sitemap) — KHONG deploy Pages."
+          echo "maintenance: derived state synced (manifest planned->published,
+ progress, sitemap) — KHONG deploy Pages."

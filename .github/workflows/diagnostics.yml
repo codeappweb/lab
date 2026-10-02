@@ -30,13 +30,13 @@ jobs:
           bundler-cache: false
       - name: Fetch staging branches
         run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
-      - name: Repro FULL publish transaction (per-step exits)
+      - name: Repro FULL publish transaction (per-step exits, report .txt)
         run: |
           set +e
-          R=diagnostics/report.md
+          R=diagnostics/report.txt
           mkdir -p diagnostics
           {
-            echo "# Coordinator repro report (lan 6 — full publish transaction sau fail runs 37018813624 + 37018879948)"
+            echo "# Coordinator repro report"
             date -u
             echo "## sha"
             git rev-parse HEAD
@@ -59,8 +59,6 @@ jobs:
             echo "## gate 2 sync-manifest (derive)"
             node scripts/sync-manifest.mjs
             echo "EXIT_G2=$?"
-            echo "## manifest row moi (C12-0002)"
-            grep -n 'C12-0002' data/article-manifest.jsonl || echo "khong thay C12-0002 trong manifest"
             echo "## gate 3 validate-content"
             node scripts/validate-content.mjs
             echo "EXIT_G3=$?"
@@ -84,7 +82,7 @@ jobs:
             bundle install --jobs 4 --retry 3
             echo "EXIT_BUNDLE=$?"
             echo "## jekyll build (strict)"
-            bundle exec jekyll build --strict_front_matter --disable-disk-cache
+            bundle exec jekyll build --strict_front_matter
             echo "EXIT_BUILD=$?"
             echo "## validate-built"
             node scripts/validate-built.mjs
@@ -96,6 +94,6 @@ jobs:
         run: |
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
-          git add diagnostics/report.md
-          git commit -m "diag(report): lan 6 — full publish transaction repro voi per-step exit codes"
+          git add diagnostics/report.txt
+          git commit -m "diag(report): repro publish transaction (per-step exit codes)"
           git push origin HEAD:main

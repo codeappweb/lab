@@ -165,7 +165,7 @@ if (NO_GIT) {
 if (INTEGRATE) {
   const qaSeconds = (Date.now() - T0) / 1000;
   const buildT0 = Date.now();
-  run('bundle', ['exec', 'jekyll', 'build', '--strict_front_matter', '--disable-disk-cache'], 'jekyll build (blocking, integrate)');
+  run('bundle', ['exec', 'jekyll', 'build', '--strict_front_matter'], 'jekyll build (blocking, integrate)');
   const buildSeconds = (Date.now() - buildT0) / 1000;
   run('node', ['scripts/validate-built.mjs'], 'validate built _site');
   function sh(cmd) {

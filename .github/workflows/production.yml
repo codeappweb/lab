@@ -223,19 +223,32 @@ jobs:
           git push origin HEAD:main
         id: publish
 
-      # ---- 4. MÔT Pages deployment (artifact _site DA validate) ------------
-      - name: Configure Pages
-        if: steps.guard.outputs.noop != 'true'
-        uses: actions/configure-pages@v6
-      - name: Upload validated _site artifact
-        if: steps.guard.outputs.noop != 'true'
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: _site
-      - name: Deploy Pages
+      # ---- 4. MÔT Pages deployment (legacy branch mode — trigger pages build API) ----
+      # Repo Pages dang "Deploy from a branch" (co "pages build and deployment"
+      # chay tu dong tren moi push main) — deploy-pages action chi hoat dong voi
+      # Actions mode. Trigger build ngay bang POST /pages/builds (GITHUB_TOKEN).
+      - name: Deploy Pages (legacy mode — POST /pages/builds)
         if: steps.guard.outputs.noop != 'true'
         id: deployment
-        uses: actions/deploy-pages@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -eu
+          INFO=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" https://api.github.com/repos/codeappweb/lab/pages)
+          BUILD_TYPE=$(echo "$INFO" | grep -o '"build_type":"[^"]*"' | cut -d'"' -f4 || true)
+          echo "pages build_type=$BUILD_TYPE"
+          if [ "$BUILD_TYPE" = "workflow" ]; then
+            echo "::error::Pages da o Actions mode — khoi phuc configure-pages/upload-pages-artifact/deploy-pages trong workflow nay."
+            exit 1
+          fi
+          CODE=$(curl -s -o /tmp/pages-build.json -w '%{http_code}' -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" https://api.github.com/repos/codeappweb/lab/pages/builds)
+          echo "pages build trigger HTTP $CODE"
+          cat /tmp/pages-build.json || true
+          if [ "$CODE" != "201" ]; then
+            echo "::error::khong trigger duoc pages build (legacy mode) — kiem tra GITHUB_TOKEN/pages:write permission."
+            exit 1
+          fi
+          echo "url=https://codeappweb.github.io/lab" >> "$GITHUB_OUTPUT"
       - name: Verify live URL (that, khong gia dinh)
         if: steps.guard.outputs.noop != 'true'
         run: |
@@ -244,7 +257,7 @@ jobs:
           if [ -z "$SLUG" ]; then echo "khong co bai moi — skip live verify"; exit 0; fi
           URL="${{ steps.deployment.outputs.url }}/${SLUG}/"
           echo "verify: $URL"
-          for i in $(seq 1 12); do
+          for i in $(seq 1 30); do
             CODE=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || echo 000)
             if [ "$CODE" = "200" ]; then echo "live OK: $URL"; exit 0; fi
             sleep 10
@@ -285,6 +298,8 @@ jobs:
           git config user.email 'codeappweb@users.noreply.github.com'
           git fetch origin main --quiet || true
           git pull --ff-only origin main || true
+          # apply-staging da stage bai vao index (git checkout sha -- file) — transaction fail KHONG duoc commit index do
+          git reset --hard origin/main
           node scripts/cycle-phase.mjs --fail-run --run-id "${{ github.run_id }}" || true
           git add data/factory-cycle.json data/coordinator-state.json data/writer-checkpoint.json || true
           git commit -m "coordinator(fail): run ${{ github.run_id }} that bai — ghi failure ledger (staging GIU NGUYEN)" || true

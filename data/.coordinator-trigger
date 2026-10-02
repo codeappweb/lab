@@ -4,6 +4,11 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 6 (2026-10-02): NO-OP smoke sau (1) fix collect-staging
-ba-cham, (2) reset staging ve main HEAD, (3) reset ledger sau chan doan
-2 false-positive. State in sync, staging = main ancestor — expect noop.
+Trigger update 7 (2026-10-02): RETRY 1x1 smoke sau 3 verified fix:
+(1) publish-loop.mjs bo --disable-disk-cache (jekyll 3.10 invalid option),
+(2) failure-ledger step reset --hard origin/main truoc khi ghi ledger
+    (index contamination cua apply-staging — commit ee6baba1 da danh bai
+    chua xuat ban len main; bai da revert, van tren staging/writer-1),
+(3) Pages deploy chuyen sang legacy POST /pages/builds (repo o branch mode),
+diagnostics .md -> .txt (gate 4), ledger reset 0 sau root-cause fix.
+Expect: publish C12-0002 (writer-1), cycle complete, live URL 200.

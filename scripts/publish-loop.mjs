@@ -28,7 +28,8 @@
 //   --no-git        same as --dry-run (for fixtures/tests)
 //   --check         derive + gates, then REQUIRE a clean tree: the writer
 //                  committed the derived state — CI mode, never commits
-//   LAB_ROOT=path   override repository root (tests/fixtures)//   --integrate     coordinator mode: staged posts are already in the
+//   LAB_ROOT=path   override repository root (tests/fixtures)
+//   --integrate     coordinator mode: staged posts are already in the
 //                  working tree; runs blocking jekyll build + validate-built
 //                  + telemetry, then ONE commit (posts + derived + telemetry)
 //   --repaired "a,b" comma-separated repaired _posts files (integrate mode)
@@ -192,7 +193,7 @@ if (INTEGRATE) {
     const r = spawnSync('bash', ['-c', cmd], { cwd: ROOT, encoding: 'utf8' });
     return (r.stdout || '').trim();
   }
-  const rowsNow = readFileSync(manifestPath, 'utf8').split('\\n').filter(Boolean).map(l => JSON.parse(l));
+  const rowsNow = readFileSync(manifestPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
   const publishedCount = rowsNow.filter(r => r.status === 'published').length;
   const siteKB = Number(sh('du -sk _site 2>/dev/null | cut -f1')) || 0;
   const repoKB = Number(sh('du -sk --exclude=.git --exclude=_site --exclude=vendor . 2>/dev/null | cut -f1')) || 0;
@@ -232,7 +233,7 @@ if (INTEGRATE) {
     main_commits_last_hour: commitsHour,
     scale_checkpoints_crossed: crossed,
   };
-  appendFileSync(join(ROOT, 'data', 'production-telemetry.jsonl'), JSON.stringify(teleRow) + '\\n');
+  appendFileSync(join(ROOT, 'data', 'production-telemetry.jsonl'), JSON.stringify(teleRow) + '\n');
   console.log('publish-loop: telemetry — published=' + publishedCount + ', _site=' + Math.round(siteKB / 1024) + 'MB, build=' + buildSeconds.toFixed(1) + 's, qa=' + qaSeconds.toFixed(1) + 's, files=' + filesGen + ', sitemap_urls=' + sitemapUrls + ', checkpoints=' + JSON.stringify(crossed));
 }
 

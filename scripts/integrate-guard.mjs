@@ -46,7 +46,7 @@ const cap = Number.isInteger(CFG.integration_max_new_posts) && CFG.integration_m
 
 const scope = JSON.parse(readFileSync('/tmp/scope.json', 'utf8'));
 const manifestPath = join(ROOT, 'data', 'article-manifest.jsonl');
-const rows = readFileSync(manifestPath, 'utf8').split('\\n').filter(Boolean).map(l => JSON.parse(l));
+const rows = readFileSync(manifestPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
 const bySlug = new Map(rows.map(r => [r.slug, r]));
 
 const added = [];
@@ -89,11 +89,11 @@ for (const b of scope.branches) {
 if (added.length > cap) die(added.length + ' bai moi vuot integration_max_new_posts=' + cap + ' — REFUSED (tach chu ky nho hon)');
 const noop = added.length === 0 && repaired.length === 0;
 
-writeFileSync('/tmp/integrate.json', JSON.stringify({ noop, added, repaired, apply, skipped: skip }, null, 2) + '\\n');
+writeFileSync('/tmp/integrate.json', JSON.stringify({ noop, added, repaired, apply, skipped: skip }, null, 2) + '\n');
 if (process.env.GITHUB_OUTPUT) {
-  appendFileSync(process.env.GITHUB_OUTPUT, 'noop=' + (noop ? 'true' : 'false') + '\\n');
-  appendFileSync(process.env.GITHUB_OUTPUT, 'added=' + added.join(',') + '\\n');
-  appendFileSync(process.env.GITHUB_OUTPUT, 'repaired=' + repaired.join(',') + '\\n');
+  appendFileSync(process.env.GITHUB_OUTPUT, 'noop=' + (noop ? 'true' : 'false') + '\n');
+  appendFileSync(process.env.GITHUB_OUTPUT, 'added=' + added.join(',') + '\n');
+  appendFileSync(process.env.GITHUB_OUTPUT, 'repaired=' + repaired.join(',') + '\n');
 }
 console.log('integrate-guard: OK — added=' + added.length + ', repaired=' + repaired.length + ', skip(already-integrated)=' + skip.length + (noop ? ' — NOOP.' : ''));
 if (skip.length) console.log('integrate-guard: skip: ' + skip.join(', '));

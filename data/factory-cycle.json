@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070013",
   "base_sha": "dd05ac74da92717dad6f68ec448522e9034e4049",
   "coordinator_run_id": null,
-  "phase": "allocated",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C07-0013",
@@ -19,7 +19,16 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "bang-lai-a1-cho-xe-may-duoi-nam-muoi-phan-khoi-pham-vi",
+      "lai-xe-may-trong-mua-lon-noi-thanh-ky-nang-giu-an-toan",
+      "chi-phi-so-huu-xe-may-mot-nam-o-ha-noi-liet-ke-du",
+      "lich-trinh-mot-ngay-pho-co-ha-noi-bang-xe-may",
+      "phuot-ba-vi-mot-ngay-tu-ha-noi-chang-duong-chi-tiet",
+      "pin-lfp-trong-xe-dien-hai-banh-uu-diem-chinh"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -108,5 +117,6 @@
       "completed_at": "2026-10-02T18:23:36.763Z"
     }
   ],
-  "created_at": "2026-10-02T18:50:12.496Z"
+  "created_at": "2026-10-02T18:50:12.496Z",
+  "updated_at": "2026-10-02T19:01:16.285Z"
 }

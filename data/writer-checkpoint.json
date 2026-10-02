@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c010030",
-  "base_sha": "e151cda0cbe4b8613d196ebfec97e8ae092fc211",
-  "status": "complete",
+  "cycle_id": "cyc-c070013",
+  "base_sha": "dd05ac74da92717dad6f68ec448522e9034e4049",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C04-0029",
-      "C01-0030",
-      "C05-0035",
-      "C02-0029",
-      "C06-0013",
-      "C03-0031"
+      "C07-0013",
+      "C10-0013",
+      "C11-0013",
+      "C08-0013",
+      "C09-0013",
+      "C12-0013"
     ],
     "slugs": [
-      "chon-size-xe-dap-theo-chieu-cao-nguoi-di",
-      "thue-xe-may-o-cau-giay-theo-tuan-gia-va-dieu-kien",
-      "xe-may-khong-no-may-khi-troi-lanh-chan-doan-tung-buoc",
-      "xe-so-110cc-nao-tiet-kiem-xang-nhat-hien-nay",
-      "lop-khong-ruot-xe-may-uu-va-nhuoc-diem",
-      "xe-may-dien-chay-duoc-bao-xa-voi-mot-lan-sac-day"
+      "bang-lai-a1-cho-xe-may-duoi-nam-muoi-phan-khoi-pham-vi",
+      "lai-xe-may-trong-mua-lon-noi-thanh-ky-nang-giu-an-toan",
+      "chi-phi-so-huu-xe-may-mot-nam-o-ha-noi-liet-ke-du",
+      "lich-trinh-mot-ngay-pho-co-ha-noi-bang-xe-may",
+      "phuot-ba-vi-mot-ngay-tu-ha-noi-chang-duong-chi-tiet",
+      "pin-lfp-trong-xe-dien-hai-banh-uu-diem-chinh"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-02T18:23:36.763Z"
+  "updated_at": "2026-10-02T19:01:56.840Z"
 }

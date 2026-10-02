@@ -4,8 +4,9 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 11 (2026-10-02): RETRY 1x1 (lan 5). Root-cause run 37022773662:
-publish-loop guard tu choi vi .bundle/ va vendor/ (bundle artifacts, untracked)
-xuat hien trong git status porcelain — out-of-scope cho DERIVED_ALLOWLIST.
-Fix: them .bundle/ + vendor/ vao .gitignore (build artifacts, khong bao gio commit).
-Expect: publish C12-0002 (writer-1 staging con nguyen), cycle complete, live 200.
+Trigger update 12 (2026-10-02): AUTO-REFILL allocator online.
+production.yml buoc 0c (integrate + maintenance) chay scripts/queue-refill.mjs:
+0 planned rows < threshold 100 -> append planned rows tu data/queue-templates.json
+(dedup toan manifest, jaccard >= 0.6, ent+intent+cluster, budget cluster, target ~300),
+commit 'queue(refill): ...' roi tiep tuc publish transaction binh thuong.
+Ky vong: planned queue duoc bo sung len ~300, writers co viec lien tuc.

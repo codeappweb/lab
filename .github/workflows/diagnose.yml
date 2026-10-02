@@ -1,0 +1,66 @@
+name: Diagnose
+
+# 3-WRITER STAGED COORDINATOR cho codeappweb/lab (deterministic, KHONG AI,
+# KHONG cron):
+#   WRITERS (writer-1/2/3): chi viet _posts/*.md theo slice deterministic
+#           (scripts/next-pair.mjs --writer writer-K) roi push len nhanh rieng
+#           staging/writer-K. Writer KHONG push main, KHONG cham state chia se
+#           (manifest, checkpoint, sitemap, index, telemetry).
+#   COORDINATOR (workflow nay, singleton queue toan cuc):
+#           settle 30s -> snapshot 3 nhanh staging (collect-staging, read-only)
+#           -> guard (tu choi file ngoai _posts, vuot writer_chunk_size, vuot
+#              integration cap, trung slug giua writer, reassign slug da
+#              published; bo qua bai da integrate giong het — idempotent)
+#           -> apply vao working tree -> derive + 6 gate nhe + Jekyll build
+#              BLOCKING + validate-built -> MÔT commit publish tren main
+#              (posts + derived allowlist + telemetry) -> reset staging bang
+#              force-with-lease voi sha DA snapshot.
+#   Moi chu ky = MÔT commit main = MÔT Pages deploy = MÔT SAFE CHECKPOINT.
+#   KHONG force-push main. Reset staging chi tac dong nhanh rieng; lease giu
+#   sha da snapshot nen khong bao gio de len push moi cua writer.
+
+on:
+  push:
+    branches: ['diagnose/*']
+  workflow_dispatch:
+
+concurrency:
+  group: production-coordinator
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    name: Collect staging -> guard -> QA -> one main commit
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "diag-uses-ok"
+      - name: Fetch staging branches
+        run: echo "diag-step-ok"
+      - run: echo "diag-uses-ok"
+      - name: Settle (cho cac writer cung chu ky push xong)
+        if: github.event_name == 'push'
+        run: echo "diag"
+      - name: Collect staging snapshot (read-only)
+        id: collect
+        run: echo "diag-step-ok"
+      - name: Guard (validate scope truoc khi cham main)
+        id: guard
+        run: echo "diag-step-ok"
+      - run: echo "diag-uses-ok"
+      - name: Cache dependencies (vendor/bundle)
+        run: echo "diag-uses-inline-ok"
+      - name: Bundle install
+        if: steps.guard.outputs.noop != 'true'
+        run: echo "diag"
+      - name: Publish transaction (posts + derived + telemetry, MÔT commit)
+        if: steps.guard.outputs.noop != 'true'
+        run: echo "diag"
+      - name: Reset staging branches (force-with-lease = sha da snapshot)
+        if: steps.guard.outputs.noop != 'true' && success()
+        run: echo "diag-step-ok"
+      - name: Noop (khong co bai moi tren staging)
+        if: steps.guard.outputs.noop == 'true'
+        run: echo "diag-step-ok"

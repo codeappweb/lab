@@ -1,9 +1,4 @@
-name: Diagnostics (allocate cycle, TEMP)
-
-# TEMPORARY: chay next-pair.mjs --allocate (real allocation, deterministic
-# tu manifest tren main) va dump 6 row duoc phan cong ra
-# diagnostics/allocate-rows.json de writer session doc. Commit
-# data/factory-cycle.json theo dung message quy uac cycle(allocate).
+name: Diagnostics (dump C12 conventions, TEMP)
 
 on:
   push:
@@ -18,32 +13,36 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  allocate:
+  dump:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:
           ref: main
-          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version: '20'
-      - name: Allocate cycle va dump assigned rows
+      - name: Dump C12 conventions
         run: |
           set -eu
-          node scripts/next-pair.mjs --allocate | tee /tmp/alloc.log
           node -e '
             const fs = require("fs");
             const rows = fs.readFileSync("data/article-manifest.jsonl", "utf8").split("\n").filter(Boolean).map(l => JSON.parse(l));
-            const cyc = JSON.parse(fs.readFileSync("data/factory-cycle.json", "utf8"));
-            const ids = Object.values(cyc.assignments).flat();
-            const picked = rows.filter(r => ids.includes(String(r.id)));
-            fs.writeFileSync("diagnostics/allocate-rows.json", JSON.stringify({ cycle: cyc, rows: picked }, null, 2) + "\n");
+            const c12 = rows.filter(r => String(r.id).startsWith("C12"));
+            const out = { c12Rows: c12 };
+            const pub = c12.filter(r => r.status === "published");
+            if (pub.length) {
+              const slug = pub[0].slug;
+              out.sampleSlug = slug;
+              const files = fs.readdirSync("_posts").filter(f => f.includes(slug));
+              out.sampleFile = files[0] || null;
+              if (files[0]) out.sampleFrontMatter = fs.readFileSync("_posts/" + files[0], "utf8").split("---")[1];
+            }
+            fs.writeFileSync("diagnostics/c12-conventions.json", JSON.stringify(out, null, 2) + "\n");
           '
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
-          CYC=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("data/factory-cycle.json","utf8")).cycle_id)')
-          git add data/factory-cycle.json diagnostics/allocate-rows.json
-          git commit -m "cycle(allocate): $CYC"
+          git add diagnostics/c12-conventions.json
+          git commit -m "diag(dump): C12 conventions cho writer session"
           git push origin HEAD:main

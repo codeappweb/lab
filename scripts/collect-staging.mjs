@@ -14,7 +14,7 @@
 //   COMPLETE khi chua publish).
 //
 // Snapshot (voi moi writer-K co thay doi so voi origin/main, chi _posts/*.md):
-//   - diff HAI-CHAM (origin/main..sha = so sanh NOI DUNG voi main tip):
+//   - diff BA-CHAM (origin/main...sha = thay doi RIENG nhanh staging tu merge-base):
 //     file giong het main KHONG dem; added = moi tren main, repaired = sua.
 //   - Contamination guard: writer branch khac main CHI qua _posts/*.md,
 //     bat ky file nao ngoai _posts/*.md => DIE (fail closed).
@@ -80,7 +80,7 @@ function writerHasPosts(name) {
   const rev = git(['rev-parse', '--verify', 'refs/remotes/origin/' + name]);
   if (rev.status !== 0) return false;
   const sha = (rev.stdout || '').trim();
-  const changed = git(['diff', '--name-only', 'origin/main..' + sha, '--', '_posts/*.md']);
+  const changed = git(['diff', '--name-only', 'origin/main...' + sha, '--', '_posts/*.md']);
   if (changed.status !== 0) die('git diff that bai cho ' + name);
   return (changed.stdout || '').split('\n').map(s => s.trim()).filter(Boolean).length > 0;
 }
@@ -123,13 +123,16 @@ for (let k = 1; k <= writers; k++) {
         ' phut tuoi — vuot staging_age_warn_minutes=' + ageWarnMin + '; kiem tra writer tre hoac staging chua reset.');
     }
   }
-  // Contamination guard: a writer branch may differ from main ONLY in _posts/*.md.
-  const all = git(['diff', '--name-only', 'origin/main..' + sha]);
+  // Contamination guard: writer's OWN commits (tu merge-base) chi duoc cham _posts/*.md.
+  // Ba-cham quan trong: staging o sau main (vd main co commit trigger/state moi)
+  // KHONG bi coi la contamination — hai-cham truoc day lam coordinator fail khi
+  // main di truoc staging (bug run 37017663482).
+  const all = git(['diff', '--name-only', 'origin/main...' + sha]);
   if (all.status !== 0) die('git diff that bai cho ' + name);
   const stray = (all.stdout || '').split('\n').map(s => s.trim()).filter(Boolean).filter(p => !/^_posts\/[a-z0-9-]+\.md$/.test(p));
   if (stray.length) die('staging contamination tren ' + name + ': file ngoai _posts/*.md khac main (' + stray.join(', ') + ') — writer KHONG DUOC sua .github/scripts/data/sitemap; reset nhanh ve main HEAD truoc khi day bai.');
-  // Hai-cham: chi file THUC SU khac noi dung main moi tinh la thay doi.
-  const changed = git(['diff', '--name-only', 'origin/main..' + sha, '--', '_posts/*.md']);
+  // Ba-cham: chi file ma nhanh staging THUC SU tao/sua tu merge-base moi tinh.
+  const changed = git(['diff', '--name-only', 'origin/main...' + sha, '--', '_posts/*.md']);
   if (changed.status !== 0) die('git diff that bai cho ' + name);
   const added = [];
   const repaired = [];

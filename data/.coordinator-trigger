@@ -4,6 +4,6 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 5 (2026-10-02): NO-OP smoke RETRY sau fix collect-staging
-ba-cham (run 37017663482 fail vi guard hai-cham coi trigger file la
-contamination). State in sync — expect dry-run clean + noop exit 0.
+Trigger update 6 (2026-10-02): NO-OP smoke sau (1) fix collect-staging
+ba-cham, (2) reset staging ve main HEAD, (3) reset ledger sau chan doan
+2 false-positive. State in sync, staging = main ancestor — expect noop.

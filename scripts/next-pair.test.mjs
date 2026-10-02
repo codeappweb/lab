@@ -51,7 +51,7 @@ const CFG = { chunk_size: 2, chunk_size_max: 2, writers: 3, writer_chunk_size: 2
 
 function stdRows() {
   const rows = [row('C05-0000', 'published')];
-  for (let i = 1; i <= 9; i ++ rows.push(row('C05-000' + i, 'planned'));
+  for (let i = 1; i <= 9; i++) rows.push(row('C05-000' + i, 'planned'));
   return rows;
 }
 

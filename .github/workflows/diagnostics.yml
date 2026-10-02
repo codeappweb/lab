@@ -60,6 +60,11 @@ jobs:
             echo "## step apply-staging"
             node scripts/apply-staging.mjs
             echo "EXIT_APPLY=$?"
+            echo "## publish-loop integrate DRY-RUN (production args, sau apply, gates only)"
+            node scripts/publish-loop.mjs --integrate --added "_posts/2026-10-02-chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien.md" --repaired "" --dry-run
+            echo "EXIT_PL_DRY=$?"
+            echo "## git status sau publish-loop dry"
+            git status --porcelain
             echo "## git status sau apply"
             git status --porcelain
             echo "## gate 1 gen-sitemap-shards"

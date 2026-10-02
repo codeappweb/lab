@@ -18,7 +18,7 @@ entities:
   - "gửi xe"
 related_articles:
   - di-xe-quanh-ho-guom-ngay-cuoi-tuan-pho-di-bo-va-gui-xe
-  - thue-xe-may-theo-gio-o-ha-noi-co-dang-khong-so-sanh-voi-thue-theo-ngay
+  - thue-xe-may-theo-gio-o-ha-noi
   - giu-xe-ga-ben-trong-mua-mua-ha-noi-viec-nen-lam-moi-tuan
 created_at: 2026-10-01
 updated_at: 2026-10-01

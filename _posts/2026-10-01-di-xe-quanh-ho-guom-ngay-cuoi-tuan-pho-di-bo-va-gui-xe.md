@@ -18,7 +18,7 @@ entities:
   - "phố đi bộ"
 related_articles:
   - thue-xe-may-cho-nguoi-moi-chua-quen-duong-pho-ha-noi
-  - dat-xe-may-thue-online-giao-tan-noi-o-ha-noi-quy-trinh-va-rui-ro
+  - dat-xe-may-thue-online-giao-tan-noi
   - tra-xe-thue-dung-gio-meo-tranh-phu-troi-va-tranh-chap
 created_at: 2026-10-01
 updated_at: 2026-10-01

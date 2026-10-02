@@ -41,6 +41,9 @@ name: Production (coordinator)
 on:
   push:
     branches: ['staging/writer-*']
+    # Chi chay khi noi dung thay doi: writer chi duoc push _posts/*.md.
+    # Push engine/docs len staging (dong bo tai chinh) KHONG kich hoat chu ky.
+    paths: ['_posts/**']
   workflow_dispatch:
 
 concurrency:

@@ -11,7 +11,10 @@
 //          assignments} vao data/factory-cycle.json (MÔT commit rieng tren main,
 //          message "cycle(allocate): ..."). TU CHOI allocate khi con cycle
 //          chua complete/failed (recovery-safe: khong bao gio tao cycle moi
-//          de len cycle recoverable).
+//          de len cycle recoverable). TU CHOI allocate khi manifest/checkpoint
+//          drift (sync-manifest --dry-run exit 1 hoac checkpoint
+//          last_publication chua duoc manifest danh published) — phai chay
+//          maintenance dispatch (production.yml, maintenance=true) truoc.
 //     node scripts/next-pair.mjs --writer writer-K [--base-sha <sha>]
 //       -> doc plan tu data/factory-cycle.json (bat bien, commit tren main),
 //          KHONG tu derive tu HEAD moi. --base-sha (neu truyen) phai khop
@@ -105,6 +108,32 @@ if (ALLOCATE) {
   if (cycle && !['idle', 'complete', 'failed'].includes(cycle.phase)) {
     die('TU CHOI allocate: cycle ' + cycle.cycle_id + ' dang o phase ' + cycle.phase +
       ' (chua complete/failed). Hoan thanh/phuc hoi cycle nay truoc — khong bao gio tao cycle moi de len cycle recoverable.');
+  }
+  // ---- fail-closed pre-allocation guard (manifest + checkpoint drift) -----
+  // TU CHOI allocate khi (a) sync-manifest --dry-run exit 1 (manifest/progress
+  // lech repository truth), hoac (b) checkpoint last_publication chua duoc
+  // reflect published trong manifest. Khong bao gio phan cong ID tren du lieu
+  // lech — ID planned da thuc te published se bi cap phat lai = duplicate.
+  const { spawnSync } = await import('node:child_process');
+  const drift = spawnSync('node', ['scripts/sync-manifest.mjs', '--dry-run'], { cwd: ROOT, encoding: 'utf8' });
+  if (drift.status !== 0) {
+    die('TU CHOI allocate: MANIFEST DRIFT — sync-manifest --dry-run exit ' + drift.status +
+      '. Chay maintenance dispatch (production.yml, maintenance=true, ref=main) truoc khi phan cong bai moi. ' + String(drift.stderr || '').trim());
+  }
+  if (existsSync(cpPath)) {
+    let cpAlloc;
+    try { cpAlloc = JSON.parse(readFileSync(cpPath, 'utf8')); }
+    catch (e) { die('TU CHOI allocate: writer-checkpoint hong: ' + e.message); }
+    const lastIds = cpAlloc && cpAlloc.last_publication && Array.isArray(cpAlloc.last_publication.ids)
+      ? cpAlloc.last_publication.ids : [];
+    const notPublished = lastIds.filter(id => {
+      const r = rows.find(x => String(x.id) === String(id));
+      return !r || r.status !== 'published';
+    });
+    if (notPublished.length) {
+      die('TU CHOI allocate: CHECKPOINT DRIFT — last_publication ids chua duoc manifest danh published: ' +
+        notPublished.join(', ') + '. Chay maintenance dispatch (production.yml, maintenance=true, ref=main) truoc khi allocate.');
+    }
   }
   const need = writers * writerChunk;
   if (need > chunkMax * writers) die('writers x writer_chunk_size=' + need + ' vuot writers x chunk_size_max=' + (chunkMax * writers));
@@ -217,7 +246,7 @@ if (slice.length === 0) {
   process.exit(0);
 }
 if (slice.length < n) console.log('::warning::writer-' + K + ' chi con ' + slice.length + '/' + n + ' row trong slice.');
-console.log('next-pair: RESERVED (deterministic slice) — writer-' + K + '/' + N + ', ' + slice.length + ' bai:');
+console.log('next-pair: RESERVED (deterministic slice) — ' + writerName + '/' + N + ', ' + slice.length + ' bai:');
 printRows(slice);
 console.log('::warning::KHONG co cycle dang mo — assignment tu HEAD hien tai, khong duoc verify khi tich hop. Production: chay next-pair.mjs --allocate truoc; bai khong kem factory metadata se bi dan ve REVIEW.');
 console.log('next-pair: giao ranh dam bao bang cong: writer-K lay dung cac vi tri i % ' + N + ' == ' + (K - 1) + ' — hai writer bat ky KHONG chung row, khong can state chia se.');

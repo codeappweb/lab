@@ -11,7 +11,9 @@ writer-1  writer-2  writer-3   (cùng đọc MỘT plan tại base_sha)
    |         |         |
 staging/writer-1..3            (writer chỉ đẩy _posts/*.md lên nhánh riêng)
    \         |         /
-    single COORDINATOR (production.yml, singleton queue toàn cục)
+    staging-signal.yml (_posts/** push → dispatch production.yml ref=main)
+         |
+    single COORDINATOR (production.yml, MAIN context, singleton queue toàn cục)
          collect (--wait-for: chờ đủ 3 writer hoặc timeout 10 phút)
          → integrate-guard (cycle verify: factory_writer/factory_cycle/factory_base_sha,
            manifest_id đúng slice, không trùng slug/ID; lệch cycle → REVIEW)
@@ -48,13 +50,15 @@ Data file `data/factory-config.json`:
 
 ```
 FETCH FRESH MAIN
-→ (coordinator) ALLOCATE: next-pair --allocate → commit plan lên main
+→ (coordinator) ALLOCATE: next-pair --allocate (TU CHOI khi manifest/checkpoint
+  drift — fail-closed pre-allocation guard) → commit plan lên main
 → (mỗi writer) FETCH FRESH MAIN
 → NEXT-PAIR theo plan: node scripts/next-pair.mjs --writer writer-K
 → WRITE ≤2 bài vào _posts/2026-10-02-<slug>.md theo docs/SCHEMA-ARTICLE.md
    (front matter thêm factory_writer, factory_cycle, factory_base_sha)
 → PUSH NGAY lên staging/writer-K (chỉ file bài)
-→ COORDINATOR (push _posts lên staging / workflow_dispatch, singleton, xếp hàng):
+→ staging-signal.yml (paths _posts/**) dispatch production.yml ref=MAIN
+→ COORDINATOR (workflow_dispatch ref=main, singleton, xếp hàng):
    check-stop (consecutive_failures ≥2 → dừng)
    → cycle-phase --resume (phase từ cycle file, không tạo cycle mới khi đang dở)
    → collect-staging --wait-for writer-1,writer-2,writer-3 --timeout 600
@@ -82,10 +86,11 @@ Chính sách chờ: coordinator kết thúc collect khi đủ output của tất
 
 ## Coordinator (production.yml)
 
-- Trigger: push vào `staging/writer-*` CHỈ KHI có file `_posts/**` thay đổi (paths filter — push đồng bộ engine/docs lên staging KHÔNG kích hoạt chu kỳ publication), và workflow_dispatch (kèm input `maintenance`, xem Runbook maintenance).
-- Concurrency `production-coordinator`, không cancel-in-progress: mọi chạy xếp hàng tuần tự, không bao giờ hai transaction tích hợp song song.
+- MAIN CONTEXT (bắt buộc): coordinator chạy với ref = main. Writer push `_posts/**` lên `staging/writer-*` KHÔNG chạy coordinator trực tiếp trong context staging — `staging-signal.yml` (workflow nhẹ, branch filter `staging/writer-1..3` + path filter `_posts/**`) dispatch `production.yml` với `ref=main` (`gh workflow run production.yml --ref main`). `workflow_dispatch` là một trong hai event mà GITHUB_TOKEN được phép tạo run mới, nên dispatch từ signal luôn hợp lệ. Push đồng bộ engine/docs/data lên staging KHÔNG signal (paths filter) — không tạo fake publication cycle.
+- Trigger của production.yml: chỉ `workflow_dispatch` (kèm input `maintenance`, xem Runbook maintenance). Run thủ công phải chọn branch `main` khi dispatch.
+- Concurrency `production-coordinator`, không cancel-in-progress: mọi chạy xếp hàng tuần tự, không bao giờ hai transaction tích hợp song song. Signal cũng có concurrency riêng (`staging-signal`) để nhiều push liên tiếp của writer không tạo một loạt dispatch thừa.
 - Permissions: `contents: write`, `pages: write`, `id-token: write`. Timeout 45 phút.
-- KHÔNG dùng `environment:` ở job level: environment `github-pages` (tạo bởi Pages branch mode) có branch protection chỉ cho phép main — mọi run từ staging/writer-* bị từ chối ngay cả khi noop. `deploy-pages` tự quản lý deployment.
+- `environment: github-pages` (name + `url: ${{ steps.deployment.outputs.url }}`) ở job integrate: an toàn VÌ coordinator luôn chạy main context — branch protection của environment github-pages (chỉ cho phép main) được thỏa. `staging/writer-*` KHÔNG BAO GIỜ chạy deploy-pages hay vào job này.
 - Guard từ chối (fail closed, không commit gì): file ngoài `_posts/*.md`; quá `writer_chunk_size` bài trên một writer; quá `integration_max_new_posts` bài một chu kỳ; trùng slug giữa các writer; trùng manifest_id; slug đã published mà nội dung khác (bài y hệt trên main được bỏ qua idempotent); bài lệch cycle (writer/cycle/base_sha không khớp, manifest_id ngoài slice) → REVIEW không tích hợp; trùng manifest_id giữa các file staged → REFUSE.
 - Transaction: derive → 6 gate nhẹ → Jekyll build blocking + validate-built → đo telemetry → `git add` TƯỜNG MINH (posts + derived allowlist + telemetry + cycle/checkpoint/coordinator-state) → MỘT commit (publication commit) → cycle-phase --publishing (chỉ ghi khi sha đã có trên origin/main) → push rebase + revalidate (không force-push main).
 - Pages deploy tường minh: deploy đúng artifact `_site` đã validate, đúng MỘT lần cho một publication. KHÔNG dựa vào Pages workflow tự kích hoạt sau push main.
@@ -128,3 +133,11 @@ Phiên bị reset: fetch fresh main, xem `data/production-telemetry.jsonl` + man
 ## Yêu cầu cấu hình Pages (một lần, thủ công)
 
 Pages phải chuyển sang Source = GitHub Actions: Settings → Pages → Build and deployment → Source → GitHub Actions. Khi còn ở chế độ branch, `actions/deploy-pages` sẽ fail → failure ledger tăng; 2 lần liên tiếp = production stop. Không dispatch chu kỳ publication thật trước khi flip.
+
+## Phân công bị đóng băng khi dữ liệu lệch (fail-closed)
+
+`next-pair.mjs --allocate` TỪ CHỐI (exit 1) khi:
+- `sync-manifest --dry-run` exit 1 (manifest/progress drift so với repository truth), hoặc
+- checkpoint `last_publication.ids` có ID mà manifest chưa đánh `published` (checkpoint drift).
+
+Cách duy nhất mở khóa: chạy maintenance dispatch (production.yml, `maintenance=true`, ref=main). Không bao giờ dựa vào trí nhớ để chặn xuất bản trùng lặp — guard đọc dữ liệu thật.

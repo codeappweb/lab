@@ -1,0 +1,39 @@
+name: Staging signal (dispatch coordinator on main)
+
+# SIGNAL WORKFLOW (NHE): writer push _posts/** len staging/writer-K khong chay
+# coordinator trong context staging — chi DISPATCH production.yml voi ref=main.
+# workflow_dispatch la mot trong hai event ma GITHUB_TOKEN duoc phep tao run
+# moi (ngoai le cua quy tac "events tu GITHUB_TOKEN khong tao run"), nen
+# coordinator LUON chay trong MAIN context (deploy-pages + environment
+# github-pages an toan voi branch protection chi cho phep main).
+# Paths filter: chi thay doi _posts/** moi signal — push dong bo engine/docs/
+# data len staging KHONG tao fake publication cycle.
+
+on:
+  push:
+    branches: ['staging/writer-1', 'staging/writer-2', 'staging/writer-3']
+    paths: ['_posts/**']
+
+concurrency:
+  # Nhieu signal lien tiep coi lai thanh mot dispatch (signal la idempotent:
+  # coordinator collect snapshot staging hien tai; signal bi bo neu cycle da dang chay).
+  group: staging-signal
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  signal:
+    name: Dispatch Production (coordinator) on main
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Dispatch production.yml (ref=main)
+        run: |
+          set -eu
+          echo "signal: writer pushed _posts to ${{ github.ref_name }} — dispatching coordinator on main."
+          gh workflow run production.yml --ref main
+      - name: Report
+        run: echo "signal: production.yml dispatched (ref=main) — coordinator chay trong MAIN context; concurrency group production-coordinator xep hang neu co run dang mo."

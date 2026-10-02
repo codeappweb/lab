@@ -18,7 +18,7 @@
 //     rebase + revalidation retry, never force-push.
 // Rules preserved: out-of-scope pushes refused; published slugs never
 // reassigned; only derived allowlist paths may be committed; never force-push.
-import { readFileSync, existsSync, appendFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, appendFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -128,6 +128,7 @@ if (INTEGRATE) {
       die('integrate: slug "' + slug + '" is already published (row ' + row.id + ') — a published article is never reassigned (identical re-apply is skipped by integrate-guard before this point)');
     }
   }
+
 }
 
 console.log('publish-loop: scope OK — ' + added.length + ' new post(s), hard max ' + hardMax + ', mode: ' + (INTEGRATE ? 'integrate' : CHECK ? 'check' : NO_GIT ? 'dry-run' : 'legacy'));

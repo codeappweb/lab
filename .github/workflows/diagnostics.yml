@@ -1,4 +1,4 @@
-name: Diagnostics (dump C12 conventions, TEMP)
+name: Diagnostics (coordinator repro, TEMP)
 
 on:
   push:
@@ -13,36 +13,53 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  dump:
+  repro:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version: '20'
-      - name: Dump C12 conventions
+      - name: Fetch staging branches
+        run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
+      - name: Repro collect + guard (capture exits)
         run: |
-          set -eu
-          node -e '
-            const fs = require("fs");
-            const rows = fs.readFileSync("data/article-manifest.jsonl", "utf8").split("\n").filter(Boolean).map(l => JSON.parse(l));
-            const c12 = rows.filter(r => String(r.id).startsWith("C12"));
-            const out = { c12Rows: c12 };
-            const pub = c12.filter(r => r.status === "published");
-            if (pub.length) {
-              const slug = pub[0].slug;
-              out.sampleSlug = slug;
-              const files = fs.readdirSync("_posts").filter(f => f.includes(slug));
-              out.sampleFile = files[0] || null;
-              if (files[0]) out.sampleFrontMatter = fs.readFileSync("_posts/" + files[0], "utf8").split("---")[1];
-            }
-            fs.writeFileSync("diagnostics/c12-conventions.json", JSON.stringify(out, null, 2) + "\n");
-          '
+          set +e
+          R=diagnostics/report.md
+          mkdir -p diagnostics
+          {
+            echo "# Coordinator repro report (lan 5 — sau fail run 37018813624)"
+            date -u
+            echo "## sha"
+            git rev-parse HEAD
+            echo "## step sync-manifest dry-run"
+            node scripts/sync-manifest.mjs --dry-run
+            echo "EXIT_SYNC=$?"
+            echo "## step cycle-phase resume"
+            node scripts/cycle-phase.mjs --resume
+            echo "EXIT_RESUME=$?"
+            echo "## step collect-staging (khong wait)"
+            node scripts/collect-staging.mjs
+            echo "EXIT_COLLECT=$?"
+            echo "## scope.json"
+            cat /tmp/scope.json
+            echo "## step integrate-guard"
+            node scripts/integrate-guard.mjs
+            echo "EXIT_GUARD=$?"
+            echo "## git show file front matter tu staging"
+            git show origin/staging/writer-1:_posts/2026-10-02-chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien.md | head -50
+            echo "## git diff three-dot writer-1"
+            git diff --name-only origin/main...origin/staging/writer-1
+          } > "$R" 2>&1
+          cat "$R"
+      - name: Commit report
+        run: |
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
-          git add diagnostics/c12-conventions.json
-          git commit -m "diag(dump): C12 conventions cho writer session"
+          git add diagnostics/report.md
+          git commit -m "diag(report): repro collect + guard sau fail run 37018813624"
           git push origin HEAD:main

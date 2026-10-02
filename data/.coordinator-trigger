@@ -4,8 +4,9 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 8 (2026-10-02): RETRY 1x1 smoke (lan 2). Run 37021704638
-fail vi diag workflow 70bfc443 commit index contamination (post + report.md
-bi danh lai len main giua luc run chay reconcile) — da sua: diagnostics.yml
-git reset truoc add report, revert post + report.md lan 2, ledger reset 0.
-Expect: publish C12-0002 (writer-1, added path), cycle complete, live 200.
+Trigger update 9 (2026-10-02): RETRY 1x1 (lan 3). Run 37021955434 fail o
+validate-built: link trong bai lop-xe-may-bi-thung bi commit 4eb04df8 ghi
+DE HAI DONG giua URL (newline trong markdown link — check-links khong thay
+vi regex dung o whitespace, Jekyll build ra href dut). Da sua lai link
+ve dich danh-muc hop le /danh-muc/sua-chua/lop-xe/. Ledger reset 0.
+Expect: publish C12-0002 (writer-1), cycle complete, live 200.

@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c120002",
   "base_sha": "9faf802a61e994eeb7c33c610575f0110e220191",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C12-0002",
@@ -25,8 +25,32 @@
       "chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien"
     ]
   },
-  "pages": null,
-  "history": [],
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-02T15:18:48.027Z"
+  },
+  "history": [
+    {
+      "cycle_id": "cyc-c120002",
+      "base_sha": "9faf802a61e994eeb7c33c610575f0110e220191",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "02bf047a3ee7761b01480abb3c3bc9accb2c4d08",
+        "ids": [
+          "chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-02T15:18:48.027Z"
+      },
+      "completed_at": "2026-10-02T15:18:48.027Z"
+    }
+  ],
   "created_at": "2026-10-02T14:15:35.370Z",
-  "updated_at": "2026-10-02T15:17:13.166Z"
+  "updated_at": "2026-10-02T15:18:48.028Z"
 }

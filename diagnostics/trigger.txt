@@ -1,1 +1,1 @@
-repro lan 9 — publish-loop production-args dry-run
+repro lan 10 — publish-loop production-args dry-run (sau repair yaml cua run 0ab79bd)

@@ -3,32 +3,56 @@
   "chunk_size": 2,
   "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "pair C09-0006/0007 published (transaction 5eba33a373 xanh), Pages deploy chua xac nhan live; pair ke: C09-0008/C09-0009",
+  "current_step": "4 pair C09-0006..C09-0012 + C10-0001 published va GET URL live xac nhan; pair ke: C10-0002/C10-0003",
   "active_article": null,
   "last_published": {
     "kind": "writer-pairs",
     "ids": [
       "C09-0006",
-      "C09-0007"
+      "C09-0007",
+      "C09-0008",
+      "C09-0009",
+      "C09-0010",
+      "C09-0011",
+      "C09-0012",
+      "C10-0001"
     ],
     "slugs": [
       "cung-duong-ha-noi-ninh-binh-bang-xe-may-diem-dung-noi-tieng",
-      "di-xe-may-duong-dai-lan-dau-checklist-truoc-khi-xuat-phat"
+      "di-xe-may-duong-dai-lan-dau-checklist-truoc-khi-xuat-phat",
+      "chay-xe-ban-dem-tren-quoc-lo-an-toan-va-tam-nhin",
+      "di-phuot-theo-nhom-chuan-bi-do-nghe-sua-xe-co-ban",
+      "di-trang-an-bai-dinh-bang-xe-may-tu-ha-noi-gui-xe-va-di-lai",
+      "chua-huong-mua-le-hoi-di-xe-may-tu-ha-noi-co-thuan-tien-khong",
+      "chay-xe-tu-ha-noi-len-sa-pa-co-thuc-te-voi-xe-may-pho-thong",
+      "di-xe-trong-mua-nho-nhung-loi-de-gap-va-cach-tranh"
     ],
     "write_commits": [
-      "3eff6f6158"
+      "3eff6f6158",
+      "73b79db622",
+      "de5dafd373",
+      "efd4972a45"
     ],
     "publish_commits": [
-      "5eba33a373"
+      "5eba33a373",
+      "88ae35e41c",
+      "71522a00b4",
+      "cebe43f9d0"
     ],
     "live_urls": [
       "https://codeappweb.github.io/lab/cung-duong-ha-noi-ninh-binh-bang-xe-may-diem-dung-noi-tieng/",
-      "https://codeappweb.github.io/lab/di-xe-may-duong-dai-lan-dau-checklist-truoc-khi-xuat-phat/"
+      "https://codeappweb.github.io/lab/di-xe-may-duong-dai-lan-dau-checklist-truoc-khi-xuat-phat/",
+      "https://codeappweb.github.io/lab/chay-xe-ban-dem-tren-quoc-lo-an-toan-va-tam-nhin/",
+      "https://codeappweb.github.io/lab/di-phuot-theo-nhom-chuan-bi-do-nghe-sua-xe-co-ban/",
+      "https://codeappweb.github.io/lab/di-trang-an-bai-dinh-bang-xe-may-tu-ha-noi-gui-xe-va-di-lai/",
+      "https://codeappweb.github.io/lab/chua-huong-mua-le-hoi-di-xe-may-tu-ha-noi-co-thuan-tien-khong/",
+      "https://codeappweb.github.io/lab/chay-xe-tu-ha-noi-len-sa-pa-co-thuc-te-voi-xe-may-pho-thong/",
+      "https://codeappweb.github.io/lab/di-xe-trong-mua-nho-nhung-loi-de-gap-va-cach-tranh/"
     ],
-    "deploy_verified": false,
-    "notes": "Cặp C09-0006 + C09-0007 đạt gate ngay push đầu: publish commit 5eba33a373 (factory commit derived manifest/progress/sitemap). URL live chưa trả nội dung tại thời điểm ghi checkpoint (Pages deploy đang chờ queue). Cặp C09-0004/0005 của phiên trước cần verify live khi tiếp tục. Phiên kế: fetch fresh main, next-pair (C09-0008/C09-0009 theo thứ tự planned), verify live các URL chờ trước khi viết tiếp."
+    "deploy_verified": true,
+    "notes": "Phien 2026-10-02: 4 pair (8 bai) deu dat gate ngay push dau, moi pair mot publish transaction rieng (factory xanh). Ca 8 URL da GET tra noi dung moi (ke ca 2 pair C09-0004/0005 cua phien truoc da live theo cung lan deploy nay). 35 row planned con lai. Pair ke theo thu tu manifest: C10-0002, C10-0003."
   },
-  "last_pushed_commit": "5eba33a373",
-  "updated_at": "2026-10-02T00:29:00.063Z",
+  "last_pushed_commit": "cebe43f9d0",
+  "updated_at": "2026-10-02T00:31:13.666Z",
   "review_queue": []
 }

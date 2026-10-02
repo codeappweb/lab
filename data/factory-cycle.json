@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c010030",
-  "base_sha": "e151cda0cbe4b8613d196ebfec97e8ae092fc211",
+  "cycle_id": "cyc-c070013",
+  "base_sha": "dd05ac74da92717dad6f68ec448522e9034e4049",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C01-0030",
-      "C04-0029"
+      "C07-0013",
+      "C10-0013"
     ],
     "writer-2": [
-      "C02-0029",
-      "C05-0035"
+      "C08-0013",
+      "C11-0013"
     ],
     "writer-3": [
-      "C03-0031",
-      "C06-0013"
+      "C09-0013",
+      "C12-0013"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "994849beada642423380eca6f9169878dac39220",
-    "ids": [
-      "chon-size-xe-dap-theo-chieu-cao-nguoi-di",
-      "thue-xe-may-o-cau-giay-theo-tuan-gia-va-dieu-kien",
-      "xe-may-khong-no-may-khi-troi-lanh-chan-doan-tung-buoc",
-      "xe-so-110cc-nao-tiet-kiem-xang-nhat-hien-nay",
-      "lop-khong-ruot-xe-may-uu-va-nhuoc-diem",
-      "xe-may-dien-chay-duoc-bao-xa-voi-mot-lan-sac-day"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-02T18:23:36.762Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -65,7 +50,7 @@
           "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
           "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
           "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
-          "chai-pin-la-gi-va-ca ch-do-dung-luong-thuc-cua-pin-xe-dien",
+          "chai-pin-la-gi-va-ca-ch-do-dung-luong-thuc-cua-pin-xe-dien",
           "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
           "sac-dung-cach-theo-khuyen-cao-nha-san-xuat-huong-dan-chung"
         ]
@@ -123,6 +108,5 @@
       "completed_at": "2026-10-02T18:23:36.763Z"
     }
   ],
-  "created_at": "2026-10-02T18:05:06.083Z",
-  "updated_at": "2026-10-02T18:23:36.763Z"
+  "created_at": "2026-10-02T18:50:12.496Z"
 }

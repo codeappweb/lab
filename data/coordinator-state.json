@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 1,
+  "consecutive_failures": 0,
   "last_run_id": "37022773662",
-  "last_run_status": "failed",
-  "updated_at": "2026-10-02T14:52:22.121Z"
+  "last_run_status": "publishing",
+  "updated_at": "2026-10-02T15:17:11.737Z"
 }

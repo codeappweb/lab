@@ -5,33 +5,23 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c120002",
   "base_sha": "9faf802a61e994eeb7c33c610575f0110e220191",
-  "status": "failed",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
     "writer-3": {}
   },
   "last_publication": {
-    "main_sha": "9ce5c48f16b032b0a6800ecd8f2aca97e0238a7d",
+    "main_sha": null,
     "ids": [
-      "C11-0008",
-      "C11-0009",
-      "C11-0010",
-      "C11-0011",
-      "C11-0012",
-      "C12-0001"
+      "C12-0002"
     ],
     "slugs": [
-      "bao-duong-khong-dung-lich-nhung-khoan-lang-phi-de-tranh",
-      "so-sanh-tien-ve-buyt-va-tien-xang-xe-may-cho-tuyen-di-lam",
-      "son-lai-xe-va-lam-dep-khi-nao-dang-tien",
-      "gui-xe-dai-ngay-khi-di-cong-tac-lua-chon-va-chi-phi",
-      "nhung-khoan-chi-bi-bo-quen-khi-mua-xe-may-moi",
-      "pin-lithium-ion-trong-xe-dien-cau-tao-va-nguyen-ly"
+      "chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien"
     ],
     "pages_deployment_id": null,
-    "live_verified": true
+    "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-02T14:52:22.121Z"
+  "updated_at": "2026-10-02T15:17:11.737Z"
 }

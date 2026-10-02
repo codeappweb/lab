@@ -28,8 +28,11 @@
 //   --no-git        same as --dry-run (for fixtures/tests)
 //   --check         derive + gates, then REQUIRE a clean tree: the writer
 //                  committed the derived state — CI mode, never commits
-//   LAB_ROOT=path   override repository root (tests/fixtures)
-import { readFileSync, existsSync } from 'node:fs';
+//   LAB_ROOT=path   override repository root (tests/fixtures)//   --integrate     coordinator mode: staged posts are already in the
+//                  working tree; runs blocking jekyll build + validate-built
+//                  + telemetry, then ONE commit (posts + derived + telemetry)
+//   --repaired "a,b" comma-separated repaired _posts files (integrate mode)
+import { readFileSync, existsSync, appendFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -48,8 +51,11 @@ const DERIVED_ALLOWLIST = [
   'sitemaps/articles-001.xml',
   'sitemaps/categories.xml',
   'sitemaps/static.xml',
+  'data/production-telemetry.jsonl',
 ];
 const POST_RE = /^_posts\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
+
+const T0 = Date.now();
 
 function die(msg) {
   console.error('::error::' + msg);
@@ -78,11 +84,26 @@ const NO_GIT = process.argv.includes('--dry-run') || process.argv.includes('--no
 // the workflow only verifies (contents: read, no bot commits).
 const CHECK = process.argv.includes('--check');
 
+// INTEGRATE mode (coordinator on main): staged posts are already applied to
+// the working tree by apply-staging.mjs; this script adds the global
+// publication validation (blocking jekyll build + validate-built), records
+// telemetry with values measured from the run, then commits posts + derived
+// allowlist + telemetry in ONE publication commit. Never used by fixtures.
+const INTEGRATE = process.argv.includes('--integrate');
+const argRepaired = process.argv.find(a => a.startsWith('--repaired='));
+const repaired = argRepaired
+  ? argRepaired.slice('--repaired='.length).split(',').map(s => s.trim()).filter(Boolean)
+  : process.argv.includes('--repaired')
+    ? (process.argv[process.argv.indexOf('--repaired') + 1] || '').split(',').map(s => s.trim()).filter(Boolean)
+    : [];
+
 const cfgPath = join(ROOT, 'data', 'factory-config.json');
 let hardMax = 50;
+let CFG = {};
 if (existsSync(cfgPath)) {
   try {
     const cfg = JSON.parse(readFileSync(cfgPath, 'utf8'));
+    CFG = cfg;
     if (Number.isInteger(cfg.hard_max_new_posts_per_push) && cfg.hard_max_new_posts_per_push > 0) {
       hardMax = cfg.hard_max_new_posts_per_push;
     }
@@ -110,6 +131,22 @@ for (const f of added) {
   const row = bySlug.get(slug);
   if (row && row.status === 'published' && !existsSync(join(ROOT, f))) {
     die('slug "' + slug + '" is already published (row ' + row.id + ') but its file is missing — a published article is never claimed again');
+  }
+}
+for (const f of repaired) {
+  if (!POST_RE.test(f)) die('out-of-scope file in --repaired: "' + f + '" — only _posts/YYYY-MM-DD-<slug>.md files are publishable');
+}
+if (INTEGRATE) {
+  const cap = Number.isInteger(CFG.integration_max_new_posts) && CFG.integration_max_new_posts > 0 ? CFG.integration_max_new_posts : 6;
+  if (added.length > cap) {
+    die(added.length + ' new post(s) exceed integration_max_new_posts=' + cap + ' — REFUSED');
+  }
+  for (const f of added) {
+    const slug = f.replace(/^_posts\/\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+    const row = bySlug.get(slug);
+    if (row && row.status === 'published') {
+      die('integrate: slug "' + slug + '" is already published (row ' + row.id + ') — a published article is never reassigned (identical re-apply is skipped by integrate-guard before this point)');
+    }
   }
 }
 
@@ -142,6 +179,62 @@ if (NO_GIT) {
   console.log('publish-loop: dry-run/no-git mode — derive + gates green, commit skipped.');
   process.exit(0);
 }
+// ---- 2b. INTEGRATE mode: global publication validation + telemetry --------
+// Moi gia tri telemetry duoc DO TU RUN (du, find, wc, git, manifest) — khong
+// co so lieu bia. pages_deploy_duration_s = null khi khong quan sat duoc.
+if (INTEGRATE) {
+  const qaSeconds = (Date.now() - T0) / 1000;
+  const buildT0 = Date.now();
+  run('bundle', ['exec', 'jekyll', 'build', '--strict_front_matter', '--disable-disk-cache'], 'jekyll build (blocking, integrate)');
+  const buildSeconds = (Date.now() - buildT0) / 1000;
+  run('node', ['scripts/validate-built.mjs'], 'validate built _site');
+  function sh(cmd) {
+    const r = spawnSync('bash', ['-c', cmd], { cwd: ROOT, encoding: 'utf8' });
+    return (r.stdout || '').trim();
+  }
+  const rowsNow = readFileSync(manifestPath, 'utf8').split('\\n').filter(Boolean).map(l => JSON.parse(l));
+  const publishedCount = rowsNow.filter(r => r.status === 'published').length;
+  const siteKB = Number(sh('du -sk _site 2>/dev/null | cut -f1')) || 0;
+  const repoKB = Number(sh('du -sk --exclude=.git --exclude=_site --exclude=vendor . 2>/dev/null | cut -f1')) || 0;
+  const filesGen = Number(sh('find _site -type f 2>/dev/null | wc -l')) || 0;
+  const sitemapUrls = Number(sh("grep -o '<loc>' sitemap.xml sitemaps/*.xml 2>/dev/null | wc -l")) || 0;
+  const commitsHour = Number(sh("git rev-list --count --since='1 hour ago' origin/main 2>/dev/null")) || 0;
+  const TH = CFG.telemetry || {};
+  if (TH.site_size_fail_mb && siteKB > TH.site_size_fail_mb * 1024) {
+    die('_site ' + Math.round(siteKB / 1024) + 'MB vuot telemetry.site_size_fail_mb=' + TH.site_size_fail_mb + 'MB — tu choi xuat ban (fail closed, chua commit).');
+  }
+  if (TH.site_size_warn_mb && siteKB > TH.site_size_warn_mb * 1024) {
+    console.log('::warning::_site ' + Math.round(siteKB / 1024) + 'MB vuot telemetry.site_size_warn_mb=' + TH.site_size_warn_mb + 'MB — can tach sitemap shard / giam kich thuoc truoc khi scale tiep.');
+  }
+  if (TH.build_warn_seconds && buildSeconds > TH.build_warn_seconds) {
+    console.log('::warning::Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_warn_seconds=' + TH.build_warn_seconds + 's — can toi uu truoc khi tien gan Pages timeout.');
+  }
+  if (TH.deploy_frequency_warn_per_hour && commitsHour + 1 > TH.deploy_frequency_warn_per_hour) {
+    console.log('::warning::main se co ~' + (commitsHour + 1) + ' commit trong gio vua qua — vuot telemetry.deploy_frequency_warn_per_hour=' + TH.deploy_frequency_warn_per_hour + ', nen giam tan suat chu ky.');
+  }
+  const cps = Array.isArray(CFG.scale_checkpoints) ? CFG.scale_checkpoints : [];
+  const crossed = cps.filter(t => publishedCount >= t);
+  const slugOf = f => f.replace(/^_posts\/\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
+  const teleRow = {
+    ts: new Date().toISOString(),
+    cycle: 'integrated',
+    added: added.map(slugOf),
+    repaired: repaired.map(slugOf),
+    published_count: publishedCount,
+    repo_size_kb: repoKB,
+    site_size_kb: siteKB,
+    files_generated: filesGen,
+    sitemap_urls: sitemapUrls,
+    jekyll_build_seconds: Number(buildSeconds.toFixed(1)),
+    qa_seconds: Number(qaSeconds.toFixed(1)),
+    production_seconds: Number(((Date.now() - T0) / 1000).toFixed(1)),
+    pages_deploy_duration_s: null,
+    main_commits_last_hour: commitsHour,
+    scale_checkpoints_crossed: crossed,
+  };
+  appendFileSync(join(ROOT, 'data', 'production-telemetry.jsonl'), JSON.stringify(teleRow) + '\\n');
+  console.log('publish-loop: telemetry — published=' + publishedCount + ', _site=' + Math.round(siteKB / 1024) + 'MB, build=' + buildSeconds.toFixed(1) + 's, qa=' + qaSeconds.toFixed(1) + 's, files=' + filesGen + ', sitemap_urls=' + sitemapUrls + ', checkpoints=' + JSON.stringify(crossed));
+}
 
 // ---- 3. commit only the allowlisted derived paths ----------------------------
 const status = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
@@ -155,16 +248,19 @@ if (changed.length === 0) {
   console.log('publish-loop: nothing to publish — derived state already in sync (idempotent re-run).');
   process.exit(0);
 }
-const outOfScope = changed.filter(p => !DERIVED_ALLOWLIST.includes(p) && !p.startsWith('sitemaps/'));
+const outOfScope = changed.filter(p => !DERIVED_ALLOWLIST.includes(p) && !p.startsWith('sitemaps/') && !(INTEGRATE && (added.includes(p) || repaired.includes(p))));
 if (outOfScope.length) {
   die('out-of-scope working-tree changes present (only derived allowlist files may be committed): ' + outOfScope.join(', '));
 }
 console.log('publish-loop: committing derived state — ' + changed.join(', '));
-run('git', ['config', 'user.name', 'lab-publish-bot'], 'git config user.name');
+run('git', ['config', 'user.name', INTEGRATE ? 'lab-factory' : 'lab-publish-bot'], 'git config user.name');
 run('git', ['config', 'user.email', 'codeappweb@users.noreply.github.com'], 'git config user.email');
 run('git', ['add', ...changed], 'git add (explicit allowlist, never -A)');
 const ids = added.map(f => f.replace(/^_posts\/\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')).join(', ');
-run('git', ['commit', '-m', 'publish(micro-loop): ' + (ids || 'no new posts') + ' [derived state: manifest, progress, sitemap]'], 'git commit');
+const msg = INTEGRATE
+  ? 'publish(integrated): ' + (ids || 'no new posts') + ' [integrated 3-writer cycle; derived state: manifest, progress, sitemap, telemetry]'
+  : 'publish(micro-loop): ' + (ids || 'no new posts') + ' [derived state: manifest, progress, sitemap]';
+run('git', ['commit', '-m', msg], 'git commit');
 
 // ---- 4. push with rebase + revalidation retry (never force) -------------------
 function currentBranch() {

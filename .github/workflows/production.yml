@@ -8,15 +8,15 @@ name: Production (coordinator)
 #           (manifest, checkpoint, sitemap, index, telemetry).
 #   COORDINATOR (workflow nay, singleton queue toan cuc):
 #           settle 30s -> snapshot 3 nhanh staging (collect-staging, read-only)
-#           -> guard (tu choi file ngoai _posts, vuot writer_chunk_size,
-#              vuot integration cap, trung slug giua cac writer, reassign slug
-#              da published; bo qua bai da integrate giong het — idempotent)
+#           -> guard (tu choi file ngoai _posts, vuot writer_chunk_size, vuot
+#              integration cap, trung slug giua writer, reassign slug da
+#              published; bo qua bai da integrate giong het — idempotent)
 #           -> apply vao working tree -> derive + 6 gate nhe + Jekyll build
 #              BLOCKING + validate-built -> MÔT commit publish tren main
 #              (posts + derived allowlist + telemetry) -> reset staging bang
 #              force-with-lease voi sha DA snapshot.
 #   Moi chu ky = MÔT commit main = MÔT Pages deploy = MÔT SAFE CHECKPOINT.
-#   KHONG force-push main. Reset staging chi tac dong nhanh rieng, lease giu
+#   KHONG force-push main. Reset staging chi tac dong nhanh rieng; lease giu
 #   sha da snapshot nen khong bao gio de len push moi cua writer.
 
 on:
@@ -57,6 +57,23 @@ jobs:
       - name: Guard (validate scope truoc khi cham main)
         id: guard
         run: node scripts/integrate-guard.mjs
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+      - name: Cache dependencies (vendor/bundle)
+        uses: actions/cache@v6
+        with:
+          path: vendor/bundle
+          key: bundle-prod-${{ runner.os }}-${{ hashFiles('Gemfile') }}
+          restore-keys: |
+            bundle-prod-${{ runner.os }}-
+      - name: Bundle install
+        if: steps.guard.outputs.noop != 'true'
+        run: |
+          set -eu
+          bundle config set path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: Publish transaction (posts + derived + telemetry, MÔT commit)
         if: steps.guard.outputs.noop != 'true'
         env:

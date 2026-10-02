@@ -285,6 +285,8 @@ jobs:
           git config user.email 'codeappweb@users.noreply.github.com'
           git fetch origin main --quiet || true
           git pull --ff-only origin main || true
+          # apply-staging da stage bai vao index (git checkout sha -- file) — transaction fail KHONG duoc commit index do
+          git reset --hard origin/main
           node scripts/cycle-phase.mjs --fail-run --run-id "${{ github.run_id }}" || true
           git add data/factory-cycle.json data/coordinator-state.json data/writer-checkpoint.json || true
           git commit -m "coordinator(fail): run ${{ github.run_id }} that bai — ghi failure ledger (staging GIU NGUYEN)" || true

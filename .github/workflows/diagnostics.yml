@@ -60,10 +60,16 @@ jobs:
             echo "## step apply-staging"
             node scripts/apply-staging.mjs
             echo "EXIT_APPLY=$?"
+            echo "## publish-loop integrate DRY-RUN (production args, sau apply, gates only)"
+            node scripts/publish-loop.mjs --integrate --added "_posts/2026-10-02-chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien.md" --repaired "" --dry-run
+            echo "EXIT_PL_DRY=$?"
+            echo "## git status sau publish-loop dry"
+            git status --porcelain
             echo "## git status sau apply"
             git status --porcelain
             echo "## gate 1 gen-sitemap-shards"
-            node scripts/gen-sitemap-shards.mjs
+          
+  node scripts/gen-sitemap-shards.mjs
             echo "EXIT_G1=$?"
             echo "## gate 2 sync-manifest (derive)"
             node scripts/sync-manifest.mjs
@@ -107,6 +113,7 @@ jobs:
           # apply-staging da stage bai vao index (git checkout sha -- file) — unstage TAT CA
           # truoc khi add report, neu khong commit se danh bai chua xuat ban len main (bug 70bfc443).
           git reset --quiet
-          git add diagnostics/report.txt
+          git add diagnosti
+cs/report.txt
           git commit -m "diag(report): repro publish transaction (per-step exit codes)"
           git push origin HEAD:main

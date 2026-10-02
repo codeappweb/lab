@@ -1,13 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": null,
-  "base_sha": null,
+  "cycle_id": "cyc-c120002",
+  "base_sha": "9faf802a61e994eeb7c33c610575f0110e220191",
   "coordinator_run_id": null,
-  "phase": "idle",
-  "assignments": {},
+  "phase": "allocated",
+  "assignments": {
+    "writer-1": [
+      "C12-0002",
+      "C12-0005"
+    ],
+    "writer-2": [
+      "C12-0003",
+      "C12-0006"
+    ],
+    "writer-3": [
+      "C12-0004",
+      "C12-0007"
+    ]
+  },
   "staging_snapshot": {},
   "publication": null,
   "pages": null,
   "history": [],
-  "updated_at": "2026-10-02T14:11:04.284Z"
+  "created_at": "2026-10-02T14:15:35.370Z"
 }

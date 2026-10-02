@@ -1,0 +1,150 @@
+{
+  "cycle": {
+    "schema_version": 1,
+    "cycle_id": "cyc-c120002",
+    "base_sha": "9faf802a61e994eeb7c33c610575f0110e220191",
+    "coordinator_run_id": null,
+    "phase": "allocated",
+    "assignments": {
+      "writer-1": [
+        "C12-0002",
+        "C12-0005"
+      ],
+      "writer-2": [
+        "C12-0003",
+        "C12-0006"
+      ],
+      "writer-3": [
+        "C12-0004",
+        "C12-0007"
+      ]
+    },
+    "staging_snapshot": {},
+    "publication": null,
+    "pages": null,
+    "history": [],
+    "created_at": "2026-10-02T14:15:35.370Z"
+  },
+  "rows": [
+    {
+      "id": "C12-0002",
+      "cluster": "C12",
+      "status": "planned",
+      "primary_topic": "Chu kỳ sạc xả là gì: hiểu tuổi thọ pin xe điện",
+      "search_intent": "informational",
+      "title": "",
+      "slug": "chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien",
+      "parent_hub": "/hub/c12/",
+      "entities": [
+        "chu kỳ sạc",
+        "tuổi thọ pin"
+      ],
+      "freshness": "low",
+      "needs_official_source": false,
+      "similarity_group": "C12-core",
+      "source_plan": [],
+      "internal_links": [],
+      "published_url": null
+    },
+    {
+      "id": "C12-0003",
+      "cluster": "C12",
+      "status": "planned",
+      "primary_topic": "Pin LFP và pin NMC: khác biệt quan trọng",
+      "search_intent": "comparison",
+      "title": "",
+      "slug": "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
+      "parent_hub": "/hub/c12/",
+      "entities": [
+        "LFP",
+        "NMC"
+      ],
+      "freshness": "low",
+      "needs_official_source": false,
+      "similarity_group": "C12-core",
+      "source_plan": [],
+      "internal_links": [],
+      "published_url": null
+    },
+    {
+      "id": "C12-0004",
+      "cluster": "C12",
+      "status": "planned",
+      "primary_topic": "BMS trong pin xe điện: vai trò và dấu hiệu hỏng",
+      "search_intent": "informational",
+      "title": "",
+      "slug": "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
+      "parent_hub": "/hub/c12/",
+      "entities": [
+        "BMS",
+        "quản lý pin"
+      ],
+      "freshness": "low",
+      "needs_official_source": false,
+      "similarity_group": "C12-core",
+      "source_plan": [],
+      "internal_links": [],
+      "published_url": null
+    },
+    {
+      "id": "C12-0005",
+      "cluster": "C12",
+      "status": "planned",
+      "primary_topic": "Pin bị phồng: nguyên nhân và cách xử lý an toàn",
+      "search_intent": "informational",
+      "title": "",
+      "slug": "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
+      "parent_hub": "/hub/c12/",
+      "entities": [
+        "pin phồng",
+        "an toàn"
+      ],
+      "freshness": "low",
+      "needs_official_source": false,
+      "similarity_group": "C12-core",
+      "source_plan": [],
+      "internal_links": [],
+      "published_url": null
+    },
+    {
+      "id": "C12-0006",
+      "cluster": "C12",
+      "status": "planned",
+      "primary_topic": "Bảo quản pin mùa đông ở Hà Nội: giữ pin ở đâu khi không dùng",
+      "search_intent": "how-to",
+      "title": "",
+      "slug": "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
+      "parent_hub": "/hub/c12/",
+      "entities": [
+        "bảo quản pin",
+        "mùa đông"
+      ],
+      "freshness": "low",
+      "needs_official_source": false,
+      "similarity_group": "C12-core",
+      "source_plan": [],
+      "internal_links": [],
+      "published_url": null
+    },
+    {
+      "id": "C12-0007",
+      "cluster": "C12",
+      "status": "planned",
+      "primary_topic": "Chai pin là gì và cách đo dung lượng thực của pin xe điện",
+      "search_intent": "informational",
+      "title": "",
+      "slug": "chai-pin-la-gi-va-cach-do-dung-luong-thuc-cua-pin-xe-dien",
+      "parent_hub": "/hub/c12/",
+      "entities": [
+        "chai pin",
+        "dung lượng"
+      ],
+      "freshness": "low",
+      "needs_official_source": false,
+      "similarity_group": "C12-core",
+      "source_plan": [],
+      "internal_links": [],
+      "published_url": null
+    }
+  ]
+}

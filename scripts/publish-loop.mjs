@@ -1,38 +1,23 @@
 #!/usr/bin/env node
-// publish-loop.mjs — deterministic publish transaction for the MICRO
-// CONTINUOUS LOOP of codeappweb/lab (default chunk_size = 1 article).
-// Runs in GitHub Actions on article PRs (branches article/**). NO AI,
-// NO API keys, NO secrets, NO cron. The external WRITER (Mistral run)
-// commits the article file(s) under _posts/ TOGETHER with the derived
-// allowlist state in ONE push (prepared by scripts/prepare-article.mjs);
-// this script:
-//   1. refuses out-of-scope / oversized pushes
-//   2. derives repository truth: sitemap shards + manifest/progress sync
-//      (sync-manifest flips the row of every post on disk to `published`)
-//   3. runs the blocking light QA gates
-//   4. --check (CI mode): verifies the writer already committed the
-//      allowlisted derived paths — CI NEVER commits, NEVER pushes
-//   5. (legacy default mode) commits the allowlisted derived paths and
-//      pushes with rebase + revalidation retry, never force-push
-// A failing gate means: nothing is committed, nothing is pushed, the PR
-// shows red, and the article never reaches main (GitHub Pages builds
-// from main only, so a failing article never becomes a public URL).
-// Idempotent: a re-run after a successful run produces no diff and exits 0.
-//
-// Usage:
-//   node scripts/publish-loop.mjs --added _posts/2026-09-30-slug.md
-//   node scripts/publish-loop.mjs --added ""            # re-run / no new posts
-// Flags:
-//   --added "a,b"   comma-separated added article files (required, may be empty)
-//   --dry-run       derive + gates only, no git commit/push
-//   --no-git        same as --dry-run (for fixtures/tests)
-//   --check         derive + gates, then REQUIRE a clean tree: the writer
-//                  committed the derived state — CI mode, never commits
-//   LAB_ROOT=path   override repository root (tests/fixtures)
-//   --integrate     coordinator mode: staged posts are already in the
-//                  working tree; runs blocking jekyll build + validate-built
-//                  + telemetry, then ONE commit (posts + derived + telemetry)
-//   --repaired "a,b" comma-separated repaired _posts files (integrate mode)
+// publish-loop.mjs — deterministic publish transaction for the 3-WRITER
+// STAGED COORDINATOR of codeappweb/lab (data/factory-config.json).
+// Runs in GitHub Actions (production.yml). NO AI, NO API keys, NO secrets,
+// NO cron. Modes:
+//   --integrate (coordinator): staged posts are already in the working tree
+//     (apply-staging.mjs); this script runs the global publication validation
+//     (blocking jekyll build + validate-built) with HARD thresholds
+//     (telemetry.build_fail_seconds), records telemetry measured from the
+//     run, merges REVIEW entries (integrate-guard /tmp/review.json) into the
+//     derived checkpoint, advances cycle state, then commits posts + derived
+//     allowlist + telemetry + cycle/checkpoint state in ONE publication
+//     commit. Idempotent: re-run after crash produces no diff and exits 0.
+//   --check (CI mode): derive + gates, then REQUIRE a clean tree — never
+//     commits (legacy article PR path).
+//   --dry-run / --no-git: derive + gates only (fixtures/tests).
+//   legacy default: commits derived allowlist and pushes with
+//     rebase + revalidation retry, never force-push.
+// Rules preserved: out-of-scope pushes refused; published slugs never
+// reassigned; only derived allowlist paths may be committed; never force-push.
 import { readFileSync, existsSync, appendFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -53,6 +38,9 @@ const DERIVED_ALLOWLIST = [
   'sitemaps/categories.xml',
   'sitemaps/static.xml',
   'data/production-telemetry.jsonl',
+  'data/factory-cycle.json',
+  'data/writer-checkpoint.json',
+  'data/coordinator-state.json',
 ];
 const POST_RE = /^_posts\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
 
@@ -80,16 +68,7 @@ const added = argAdded
 if (added === null) die('usage: publish-loop.mjs --added "<comma-separated added post files>"');
 
 const NO_GIT = process.argv.includes('--dry-run') || process.argv.includes('--no-git');
-
-// CI check mode: the writer commits article + derived state in ONE push;
-// the workflow only verifies (contents: read, no bot commits).
 const CHECK = process.argv.includes('--check');
-
-// INTEGRATE mode (coordinator on main): staged posts are already applied to
-// the working tree by apply-staging.mjs; this script adds the global
-// publication validation (blocking jekyll build + validate-built), records
-// telemetry with values measured from the run, then commits posts + derived
-// allowlist + telemetry in ONE publication commit. Never used by fixtures.
 const INTEGRATE = process.argv.includes('--integrate');
 const argRepaired = process.argv.find(a => a.startsWith('--repaired='));
 const repaired = argRepaired
@@ -151,7 +130,7 @@ if (INTEGRATE) {
   }
 }
 
-console.log('publish-loop: scope OK — ' + added.length + ' new post(s), hard max ' + hardMax + ', chunk_size default 1 (config: data/factory-config.json)');
+console.log('publish-loop: scope OK — ' + added.length + ' new post(s), hard max ' + hardMax + ', mode: ' + (INTEGRATE ? 'integrate' : CHECK ? 'check' : NO_GIT ? 'dry-run' : 'legacy'));
 
 // ---- 1. derive repository truth ----------------------------------------------
 run('node', ['scripts/gen-sitemap-shards.mjs'], 'regenerate sitemap shards');
@@ -180,9 +159,8 @@ if (NO_GIT) {
   console.log('publish-loop: dry-run/no-git mode — derive + gates green, commit skipped.');
   process.exit(0);
 }
-// ---- 2b. INTEGRATE mode: global publication validation + telemetry --------
-// Moi gia tri telemetry duoc DO TU RUN (du, find, wc, git, manifest) — khong
-// co so lieu bia. pages_deploy_duration_s = null khi khong quan sat duoc.
+
+// ---- 2b. INTEGRATE mode: global publication validation + telemetry -----------
 if (INTEGRATE) {
   const qaSeconds = (Date.now() - T0) / 1000;
   const buildT0 = Date.now();
@@ -207,8 +185,11 @@ if (INTEGRATE) {
   if (TH.site_size_warn_mb && siteKB > TH.site_size_warn_mb * 1024) {
     console.log('::warning::_site ' + Math.round(siteKB / 1024) + 'MB vuot telemetry.site_size_warn_mb=' + TH.site_size_warn_mb + 'MB — can tach sitemap shard / giam kich thuoc truoc khi scale tiep.');
   }
+  if (TH.build_fail_seconds && buildSeconds > TH.build_fail_seconds) {
+    die('Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_fail_seconds=' + TH.build_fail_seconds + 's — HARD FAIL, tu choi xuat ban (chua commit).');
+  }
   if (TH.build_warn_seconds && buildSeconds > TH.build_warn_seconds) {
-    console.log('::warning::Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_warn_seconds=' + TH.build_warn_seconds + 's — can toi uu truoc khi tien gan Pages timeout.');
+    console.log('::warning::Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_warn_seconds=' + TH.build_warn_seconds + 's — can toi uu truoc khi tien gan hard fail.');
   }
   if (TH.deploy_frequency_warn_per_hour && commitsHour + 1 > TH.deploy_frequency_warn_per_hour) {
     console.log('::warning::main se co ~' + (commitsHour + 1) + ' commit trong gio vua qua — vuot telemetry.deploy_frequency_warn_per_hour=' + TH.deploy_frequency_warn_per_hour + ', nen giam tan suat chu ky.');
@@ -235,6 +216,54 @@ if (INTEGRATE) {
   };
   appendFileSync(join(ROOT, 'data', 'production-telemetry.jsonl'), JSON.stringify(teleRow) + '\n');
   console.log('publish-loop: telemetry — published=' + publishedCount + ', _site=' + Math.round(siteKB / 1024) + 'MB, build=' + buildSeconds.toFixed(1) + 's, qa=' + qaSeconds.toFixed(1) + 's, files=' + filesGen + ', sitemap_urls=' + sitemapUrls + ', checkpoints=' + JSON.stringify(crossed));
+
+  // ---- 2c. derive cycle + checkpoint + failure ledger truoc commit -----------
+  // Tất cả state này DUOC DERIVE tu repo that: ids tu --added (da qua guard),
+  // review tu /tmp/review.json (integrate-guard), main_sha chua ghi (chi
+  // cycle-phase.mjs --publishing duoc ghi sau khi commit that su ton tai).
+  const cyclePath = join(ROOT, 'data', 'factory-cycle.json');
+  if (existsSync(cyclePath)) {
+    try {
+      const cyc = JSON.parse(readFileSync(cyclePath, 'utf8'));
+      if (!['complete', 'failed', 'idle'].includes(cyc.phase)) cyc.phase = 'building';
+      cyc.publication = { ...(cyc.publication || {}), ids: added.map(slugOf) };
+      writeFileSync(cyclePath, JSON.stringify(cyc, null, 2) + '\n');
+    } catch (e) { die('data/factory-cycle.json hong: ' + e.message); }
+  }
+  const cpPath = join(ROOT, 'data', 'writer-checkpoint.json');
+  if (existsSync(cpPath)) {
+    try {
+      const cp = JSON.parse(readFileSync(cpPath, 'utf8'));
+      cp.status = 'publishing';
+      cp.updated_at = new Date().toISOString();
+      if (added.length) {
+        cp.last_publication = {
+          main_sha: null, // chi cycle-phase --publishing duoc dien sau khi push thanh cong
+          ids: added.map(f => {
+            const slug = slugOf(f);
+            const row = rowsNow.find(r => r.slug === slug);
+            return row ? row.id : slug;
+          }),
+          slugs: added.map(slugOf),
+          pages_deployment_id: null,
+          live_verified: false,
+        };
+      }
+      if (existsSync('/tmp/review.json')) {
+        const rev = JSON.parse(readFileSync('/tmp/review.json', 'utf8'));
+        cp.review_queue = [...(cp.review_queue || []), ...rev];
+      }
+      writeFileSync(cpPath, JSON.stringify(cp, null, 2) + '\n');
+    } catch (e) { die('data/writer-checkpoint.json hong: ' + e.message); }
+  }
+  const coordPath = join(ROOT, 'data', 'coordinator-state.json');
+  const coord = existsSync(coordPath)
+    ? JSON.parse(readFileSync(coordPath, 'utf8'))
+    : { schema_version: 1, consecutive_failures: 0 };
+  coord.consecutive_failures = 0; // transaction den day = run thanh cong; ledger reset trong publication commit
+  coord.last_run_status = 'publishing';
+  coord.updated_at = new Date().toISOString();
+  writeFileSync(coordPath, JSON.stringify(coord, null, 2) + '\n');
 }
 
 // ---- 3. commit only the allowlisted derived paths ----------------------------
@@ -242,8 +271,7 @@ const status = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding
 if (status.status !== 0) die('git status failed');
 // git status --porcelain v1: "XY <path>" (XY = 2 status chars + 1 space).
 // NOTE: do NOT trim the line first — a leading space (e.g. " M path") is
-// part of the format; trimming it eats the first character of the path
-// and made every derived file look out-of-scope (bug fixed 2026-09-30).
+// part of the format; trimming it eats the first character of the path.
 const changed = changedPaths(status.stdout);
 if (changed.length === 0) {
   console.log('publish-loop: nothing to publish — derived state already in sync (idempotent re-run).');
@@ -259,7 +287,7 @@ run('git', ['config', 'user.email', 'codeappweb@users.noreply.github.com'], 'git
 run('git', ['add', ...changed], 'git add (explicit allowlist, never -A)');
 const ids = added.map(f => f.replace(/^_posts\/\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')).join(', ');
 const msg = INTEGRATE
-  ? 'publish(integrated): ' + (ids || 'no new posts') + ' [integrated 3-writer cycle; derived state: manifest, progress, sitemap, telemetry]'
+  ? 'publish(integrated): ' + (ids || 'no new posts') + ' [integrated 3-writer cycle; derived state: manifest, progress, sitemap, telemetry, cycle, checkpoint]'
   : 'publish(micro-loop): ' + (ids || 'no new posts') + ' [derived state: manifest, progress, sitemap]';
 run('git', ['commit', '-m', msg], 'git commit');
 
@@ -275,7 +303,8 @@ function pushOnce() {
   return r.status === 0;
 }
 if (pushOnce()) {
-  console.log('publish-loop: derived state pushed to PR branch.');
+  const head = spawnSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
+  console.log('publish-loop: publication commit pushed — main_sha=' + ((head.stdout || '').trim()));
   process.exit(0);
 }
 console.log('publish-loop: push rejected — fetching, rebasing, re-running gates before retry (no force-push).');

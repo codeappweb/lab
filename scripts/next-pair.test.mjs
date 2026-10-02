@@ -99,9 +99,10 @@ test('W4: row published va review_queue khong bao gio duoc cap', () => {
   const root = fixture(CFG, stdRows(), [{ id: 'C05-0009' }]);
   try {
     for (const w of ['writer-1', 'writer-2', 'writer-3']) {
-      const s = run(root, ['--writer', w, '--count', '8']);
+      const s = run(root, ['--writer', w, '--count', '2']);
       assert.equal(s.status, 0);
       const got = ids(s.out);
+      assert.equal(got.length, 2);
       assert.ok(!got.includes('C05-0000'), 'row published phai bi loai');
       assert.ok(!got.includes('C05-0009'), 'row review_queue phai bi loai');
     }

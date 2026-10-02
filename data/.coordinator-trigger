@@ -4,5 +4,5 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 2 (contents API, 2026-10-02): kich hoat self-heal reconcile
-cho manifest/progress drift 224 -> 230.
+Trigger update 3 (2026-10-02): sau khi fix 2 loi YAML colon-space
+(plain scalar khong duoc chua ": ") — root cause cua zero-job runs.

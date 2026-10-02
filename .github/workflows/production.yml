@@ -14,8 +14,9 @@ name: Production (coordinator)
 #           coordinator khong bao gio ke thua ref staging/writer-*, khong can
 #           dispatch API/token, khong race auth.
 #   COORDINATOR (workflow nay, MAIN context, singleton queue toan cuc,
-#           crash-safe): --check-stop (2 run fail lien tiep -> DUNG production)
-#           -> resume cycle dang mo neu co (cycle-phase --resume)
+#           crash-safe): RECONCILE (self-heal manifest/progress/sitemap truoc
+#           moi allocation/noop) -> --check-stop (2 run fail lien tiep -> DUNG
+#           production) -> resume cycle dang mo neu co (cycle-phase --resume)
 #           -> cho DU output cac writer theo cycle plan (collect-staging
 #              --wait-for, timeout writer_wait_timeout_minutes; timeout ->
 #              tiep tuc voi writer da kip push, phan con lai RETRY chu ky sau)
@@ -45,6 +46,8 @@ name: Production (coordinator)
 #   staging/writer-* KHONG BAO GIO chay deploy-pages.
 #   YEU CAU (mot lan, thu cong): Settings -> Pages -> Build and deployment ->
 #   Source = GitHub Actions.
+#   YAML QUY DINH: gia tri scalar KHONG quoted KHONG duoc chua ": " — lam
+#   workflow invalid (moi trigger thanh run 0-job fail).
 
 on:
   # Signal: run cua staging-signal.yml hoan tat (writer push _posts) →
@@ -101,7 +104,7 @@ jobs:
 
       # ---- 0. safety stop + crash recovery ---------------------------------
       # ---- 0b. reconcile derived state (self-heal, TRUOC moi allocation/noop) ----
-      - name: Reconcile derived state (self-heal: manifest/progress/sitemap)
+      - name: Reconcile derived state (self-heal manifest progress sitemap)
         run: |
           set -eu
           if node scripts/sync-manifest.mjs --dry-run; then
@@ -288,12 +291,8 @@ jobs:
           git push origin HEAD:main || echo "::warning::khong push duoc failure ledger (co the do conflict) — ledger se duoc cap nhat o run sau."
 
   # ---- maintenance dispatch: sync derived state (repair manifest drift) ----
-  # Chay MỘT lan (thu cong) khi manifest/progress/sitemap bị drift so voi repo
-  # truth (vi du: bai da publish nhung manifest row van `planned`). Chay dung
-  # publish-loop --integrate voi added/repaired rong: sync-manifest (write),
-  # gen-sitemap, 6 gate, Jekyll build blocking, telemetry, ledger reset —
-  # commit CHI derived allowlist, KHONG bai moi, KHONG deploy Pages, KHONG
-  # cham cycle/staging.
+  # Cong cu thu cong DU PHONG — KHONG con bat buoc: coordinator self-heal
+  # (buoc 0b) tu dong reconcile derived state o moi run.
   maintenance:
     name: Maintenance (sync derived state; no publish, no deploy)
     if: ${{ inputs.maintenance == true }}
@@ -325,11 +324,12 @@ jobs:
           set -eu
           bundle config set path vendor/bundle
           bundle install --jobs 4 --retry 3
-      - name: Maintenance transaction (derived allowlist only, MỘT commit, KHONG deploy)
+      - name: Maintenance transaction (derived allowlist only, MÔT commit, KHÔNG deploy)
         run: |
           set -eu
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
           node scripts/publish-loop.mjs --integrate --added "" --repaired ""
       - name: Report
-        run: echo "maintenance: derived state synced (manifest planned->published, progress, sitemap) — KHONG deploy Pages."
+        run: |
+          echo "maintenance: derived state synced (manifest planned->published, progress, sitemap) — KHONG deploy Pages."

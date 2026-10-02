@@ -2,22 +2,41 @@ name: Production (coordinator)
 
 # 3-WRITER STAGED COORDINATOR cho codeappweb/lab (deterministic, KHONG AI,
 # KHONG cron):
-#   WRITERS (writer-1/2/3): chi viet _posts/*.md theo slice deterministic
-#           (scripts/next-pair.mjs --writer writer-K) roi push len nhanh rieng
-#           staging/writer-K. Writer KHONG push main, KHONG cham state chia se
-#           (manifest, checkpoint, sitemap, index, telemetry).
-#   COORDINATOR (workflow nay, singleton queue toan cuc):
-#           settle 30s -> snapshot 3 nhanh staging (collect-staging, read-only)
-#           -> guard (tu choi file ngoai _posts, vuot writer_chunk_size, vuot
-#              integration cap, trung slug giua writer, reassign slug da
-#              published; bo qua bai da integrate giong het — idempotent)
-#           -> apply vao working tree -> derive + 6 gate nhe + Jekyll build
-#              BLOCKING + validate-built -> MÔT commit publish tren main
-#              (posts + derived allowlist + telemetry) -> reset staging bang
-#              force-with-lease voi sha DA snapshot.
-#   Moi chu ky = MÔT commit main = MÔT Pages deploy = MÔT SAFE CHECKPOINT.
+#   WRITERS (writer-1/2/3): chay `next-pair.mjs --allocate` (MOT lan dau chu
+#           ky, tao data/factory-cycle.json: cycle_id + base_sha + assignment
+#           plan bat bien, MÔT commit tren main) roi `next-pair.mjs --writer
+#           writer-K` — doc dung plan cua cycle, KHONG tu derive tu HEAD moi.
+#           Writer chi viet _posts/*.md kem factory metadata, push len nhanh
+#           rieng staging/writer-K. KHONG push main, KHONG cham state chia se.
+#   COORDINATOR (workflow nay, singleton queue toan cuc, crash-safe):
+#           --check-stop (2 run fail lien tiep -> DUNG production)
+#           -> resume cycle dang mo neu co (cycle-phase --resume)
+#           -> cho DU output cac writer theo cycle plan (collect-staging
+#              --wait-for, timeout writer_wait_timeout_minutes; timeout ->
+#              tiep tuc voi writer da kip push, phan con lai RETRY chu ky sau)
+#           -> snapshot 3 nhanh staging (collect-staging, read-only,
+#              contamination guard, staging-age telemetry)
+#           -> integrate-guard (tu choi file ngoai _posts, vuot writer_chunk_
+#              size, vuot integration cap, trung slug, trung manifest_id,
+#              reassign slug da published; sai cycle/base_sha/slice -> REVIEW
+#              chu khong publish; bai da integrate giong het -> skip idempotent)
+#           -> apply -> derive + 6 gate nhe + Jekyll build BLOCKING
+#              (build_fail_seconds = HARD FAIL) + validate-built
+#           -> MÔT commit publish tren main (posts + derived allowlist +
+#              telemetry + cycle state + checkpoint + failure ledger reset)
+#           -> MÔT Pages deployment: upload _site DA validate lam artifact
+#              duy nhat roi deploy-pages (actions/configure-pages +
+#              upload-pages-artifact + deploy-pages; KHONG rebuild, KHONG
+#              dua vao Pages trigger tu dong tu push main)
+#           -> verify URL live that
+#           -> finalize cycle (phase complete + deployment id + live_verified,
+#              MÔT commit bookkeeping nho)
+#           -> reset staging bang force-with-lease voi sha DA snapshot.
+#   Moi chu ky = MÔT commit xuat ban = MÔT Pages deployment = MÔT checkpoint.
 #   KHONG force-push main. Reset staging chi tac dong nhanh rieng; lease giu
 #   sha da snapshot nen khong bao gio de len push moi cua writer.
+#   YEU CAU (mot lan, thu cong): Settings -> Pages -> Build and deployment ->
+#   Source = GitHub Actions.
 
 on:
   push:
@@ -30,11 +49,17 @@ concurrency:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   integrate:
-    name: Collect staging -> guard -> QA -> one main commit
+    name: Collect -> guard -> QA -> one commit -> one Pages deploy
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -45,18 +70,46 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '20'
-      - name: Settle (cho cac writer cung chu ky push xong)
-        if: github.event_name == 'push'
+
+      # ---- 0. safety stop + crash recovery ---------------------------------
+      - name: Production stop check (2 coordinator failures = STOP)
         run: |
           set -eu
-          echo "settle: cho 30s truoc khi snapshot staging (cac writer push gan nhu dong thoi)."
-          sleep 30
-      - name: Collect staging snapshot (read-only)
+          node scripts/cycle-phase.mjs --check-stop
+      - name: Cycle resume plan (khong tao cycle moi khi con cycle recoverable)
+        run: |
+          set -eu
+          node scripts/cycle-phase.mjs --resume
+
+      # ---- 1. cho du output cac writer cua cycle, roi snapshot --------------
+      - name: Collect staging snapshot (wait for cycle writers, read-only)
         id: collect
-        run: node scripts/collect-staging.mjs
-      - name: Guard (validate scope truoc khi cham main)
+        run: |
+          set -eu
+          EXPECT=$(node -e '
+            const fs = require("fs");
+            let expected = "";
+            try {
+              const cyc = JSON.parse(fs.readFileSync("data/factory-cycle.json", "utf8"));
+              if (!["idle","complete","failed"].includes(cyc.phase)) {
+                expected = Object.entries(cyc.assignments || {})
+                  .filter(([,ids]) => Array.isArray(ids) && ids.length > 0)
+                  .map(([w]) => w).join(",");
+              }
+            } catch (e) {}
+            console.log(expected);
+          ')
+          if [ -n "$EXPECT" ]; then
+            node scripts/collect-staging.mjs --wait-for "$EXPECT"
+          else
+            node scripts/collect-staging.mjs
+          fi
+
+      # ---- 2. guard ---------------------------------------------------------
+      - name: Guard (validate scope + cycle origin truoc khi cham main)
         id: guard
         run: node scripts/integrate-guard.mjs
+
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
@@ -74,7 +127,9 @@ jobs:
           set -eu
           bundle config set path vendor/bundle
           bundle install --jobs 4 --retry 3
-      - name: Publish transaction (posts + derived + telemetry, MÔT commit)
+
+      # ---- 3. MÔT publication transaction ----------------------------------
+      - name: Publish transaction (posts + derived + cycle state, MÔT commit)
         if: steps.guard.outputs.noop != 'true'
         env:
           ADDED: ${{ steps.guard.outputs.added }}
@@ -84,11 +139,79 @@ jobs:
           git checkout -B main
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
+          node scripts/cycle-phase.mjs integrating
           node scripts/apply-staging.mjs
           node scripts/publish-loop.mjs --integrate --added "$ADDED" --repaired "$REPAIRED"
+          MAIN_SHA=$(git rev-parse HEAD)
+          echo "main_sha=$MAIN_SHA" >> "$GITHUB_OUTPUT"
+          node scripts/cycle-phase.mjs --publishing --publication-sha "$MAIN_SHA"
+          git add data/factory-cycle.json data/writer-checkpoint.json data/coordinator-state.json
+          git commit -m "cycle(publishing): coordinator da push $MAIN_SHA — deploy Pages" || true
+          git push origin HEAD:main
+        id: publish
+
+      # ---- 4. MÔT Pages deployment (artifact _site DA validate) ------------
+      - name: Configure Pages
+        if: steps.guard.outputs.noop != 'true'
+        uses: actions/configure-pages@v5
+      - name: Upload validated _site artifact
+        if: steps.guard.outputs.noop != 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy Pages
+        if: steps.guard.outputs.noop != 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify live URL (that, khong gia dinh)
+        if: steps.guard.outputs.noop != 'true'
+        run: |
+          set -eu
+          SLUG=$(echo "${{ steps.guard.outputs.added }}" | cut -d, -f1 | sed 's|^_posts/[0-9-]*||; s|\.md$||')
+          if [ -z "$SLUG" ]; then echo "khong co bai moi — skip live verify"; exit 0; fi
+          URL="${{ steps.deployment.outputs.page_url }}${SLUG}/"
+          echo "verify: $URL"
+          for i in $(seq 1 12); do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || echo 000)
+            if [ "$CODE" = "200" ]; then echo "live OK: $URL"; exit 0; fi
+            sleep 10
+          done
+          echo "::error::URL chua live sau deploy: $URL (HTTP $CODE)"
+          exit 1
+
+      # ---- 5. finalize cycle (bookkeeping, khong phai publication) ---------
+      - name: Finalize cycle (complete + deployment id + live_verified)
+        if: steps.guard.outputs.noop != 'true'
+        run: |
+          set -eu
+          git checkout main
+          git pull --ff-only origin main
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          node scripts/cycle-phase.mjs --complete --publication-sha "${{ steps.publish.outputs.main_sha }}" --deployment-id "${{ steps.deployment.outputs.deployment_id }}" --live-verified --run-id "${{ github.run_id }}"
+          git add data/factory-cycle.json data/writer-checkpoint.json data/coordinator-state.json
+          git commit -m "cycle(complete): ${{ steps.publish.outputs.main_sha }} — Pages deployment OK, live verified" || true
+          git push origin HEAD:main
+
+      # ---- 6. reset staging (force-with-lease = sha da snapshot) -----------
       - name: Reset staging branches (force-with-lease = sha da snapshot)
         if: steps.guard.outputs.noop != 'true' && success()
         run: sh /tmp/reset-staging.sh
+
       - name: Noop (khong co bai moi tren staging)
         if: steps.guard.outputs.noop == 'true'
-        run: 'echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."'
+        run: echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."
+
+      # ---- 7. failure ledger: 2 run fail lien tiep = STOP production -------
+      - name: Record failure (increment ledger, cycle -> failed)
+        if: failure()
+        run: |
+          set -eu
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          git fetch origin main --quiet || true
+          git pull --ff-only origin main || true
+          node scripts/cycle-phase.mjs --fail-run --run-id "${{ github.run_id }}" || true
+          git add data/factory-cycle.json data/coordinator-state.json data/writer-checkpoint.json || true
+          git commit -m "coordinator(fail): run ${{ github.run_id }} that bai — ghi failure ledger (staging GIU NGUYEN)" || true
+          git push origin HEAD:main || echo "::warning::khong push duoc failure ledger (co the do conflict) — ledger se duoc cap nhat o run sau."

@@ -52,7 +52,7 @@ const T_C02 = [
 ];
 
 test('R1: queue >= threshold -> khong mutation, manifest byte-identical', () => {
-  // 5 planned rows
+    // 5 planned rows
   const rows5 = [];
   for (let i = 1; i <= 5; i++) rows5.push(row('C01-000' + i, 'planned', 'Chu de thue xe so ' + i + ' tai Ha Noi quan ' + i, 'chu-de-thue-' + i, 'C01', ['chu de ' + i, 'quan so ' + i]));
   const root = fixture({ C01: T_C01, C02: T_C02 }, rows5.join('\n') + '\n');
@@ -149,7 +149,7 @@ test('R6: vuot budget cluster -> phan bo theo budget', () => {
   const rep = report(root);
   assert.equal(rep.appended, 2);
   assert.equal(rep.result, 'partial');
-  assert.ok(Number.isInteger(rep.rejected_budget));
+  assert.equal(rep.rejected_budget, 4);
 });
 
 test('R7: manifest malformed -> exit 1, file khong doi', () => {

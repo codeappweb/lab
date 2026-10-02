@@ -34,9 +34,10 @@ Sốc nhiệt và say nắng đến từ mất nước cộng chiếu nắng tr�
 
 ## Bảo quản xe dưới nắng gắt
 
-Lốp là bộ phận chịu nhất: nhiệt độ làm hơi trong lốp dãn, nếu bơm căng quá trước ngày nóng thì áp suất sẽ vượt ngưỡng khi chạy lâu, tăng nguy cơ nổ lốp. Kiểm tra áp suất theo đúng khuyến cáo đã nêu trong bài về [áp suất lốp xe máy chuẩn theo tải trọng]({{ '/ap-suat-lop-xe-may-chuan-theo-tai-trong/' | relative_url }}), và nếu xe phải đỗ ngoài nắng lâu thì nên che yên, vì bọc nóng dễ gây bỏng khi ngồi lên lại.
+Lốp là bộ phận chịu nhất: nhiệt độ làm hơi trong lốp dãn, nếu bơm căng quá trước ngày nóng 
+thì áp suất sẽ vượt ngưỡng khi chạy lâu, tăng nguy cơ nổ lốp. Kiểm tra áp suất theo đúng khuyến cáo đã nêu trong bài về [áp suất lốp xe máy chuẩn theo tải trọng]({{ '/ap-suat-lop-xe-may-chuan-theo-tai-trong/' | relative_url }}), và nếu xe phải đỗ ngoài nắng lâu thì nên che yên, vì bọc nóng dễ gây bỏng khi ngồi lên lại.
 
-Máy nóng nhanh hơn mùa thường, nhất là khi đi chậm trong phố hoặc leo dốc dài. Nếu xe có dấu hiệu yếu máy hoặc hẫng ga giữa trời nóng, đừng cố chạy tiếp mà dừng nghỉ cho máy nguội, vì các nguyên nhân và cách xử lý đã được phân tích trong bài về [xe máy bị nóng máy]({{ '/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/' | relative_url }}). Nhớt cũ nearing kỳ thay cũng xuống cấp nhanh hơn dưới nhiệt cao, nên thay đúng hoặc sớm hơn lịch trong mùa nóng.
+Máy nóng nhanh hơn mùa thường, nhất là khi đi chậm trong phố hoặc leo dốc dài. Nếu xe có dấu hiệu yếu máy hoặc hẫng ga giữa trời nóng, đừng cố chạy tiếp mà dừng nghỉ cho máy nguội, vì các nguyên nhân và cách xử lý đã được phân tích trong bài về [xe máy bị nóng máy]({{ '/xe-may-bi-nong-may-nguyen-nhan-va-cach-xu-ly/' | relative_url }}). Nhớt cũ sắp tới kỳ thay cũng xuống cấp nhanh hơn dưới nhiệt cao, nên thay đúng hoặc sớm hơn lịch trong mùa nóng.
 
 ## Chọn giờ đi và chỗ nghỉ
 

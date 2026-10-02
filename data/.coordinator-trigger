@@ -4,8 +4,8 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 10 (2026-10-02): RETRY 1x1 (lan 4, sau khi bai lop-xe-may-bi-thung
-da duoc sua dung: utf8 double-encode phuc hoi + link dut 2 dong sua ve
-danh-muc/sua-chua/lop-xe). Repro lan 7: toan bo gate EXIT=0, jekyll EXIT=0,
-chi con 1 loi validate-built (link dut) — da fix. Ledger reset 0.
-Expect: publish C12-0002 (writer-1), cycle complete, live 200.
+Trigger update 11 (2026-10-02): RETRY 1x1 (lan 5). Root-cause run 37022773662:
+publish-loop guard tu choi vi .bundle/ va vendor/ (bundle artifacts, untracked)
+xuat hien trong git status porcelain — out-of-scope cho DERIVED_ALLOWLIST.
+Fix: them .bundle/ + vendor/ vao .gitignore (build artifacts, khong bao gio commit).
+Expect: publish C12-0002 (writer-1 staging con nguyen), cycle complete, live 200.

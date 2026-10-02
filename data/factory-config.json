@@ -28,5 +28,9 @@
   },
   "safety": {
     "consecutive_failure_stop": 2
+  },
+  "queue_refill": {
+    "low_threshold": 100,
+    "target": 300
   }
 }

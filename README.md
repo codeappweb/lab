@@ -55,6 +55,14 @@ Gate: `validate-content.mjs`, `validate-content-quality.mjs`, `detect-duplicates
 
 Similarity token giữa topic, title gần giống, cannibalization, số từ/H2/FAQ/internal links, SEO score, orphan/cluster. Các cảnh báo này chỉ để audit sau.
 
+## Tự động bổ sung queue (auto-refill allocator)
+
+`scripts/queue-refill.mjs` chạy trong coordinator (production.yml, bước 0c — sau reconcile, trước check-stop; và trong maintenance job), nơi đã là singleton queue toàn cục nên luôn chỉ MỘT process refill tại một thời điểm (không race). Khi số planned rows trong `data/article-manifest.jsonl` giảm dưới `queue_refill.low_threshold` (mặc định 100, cấu hình tại `data/factory-config.json`), allocator append planned rows từ ngân hàng đề mục đã duyệt `data/queue-templates.json` (tuân Master Matrix/cluster-map, đúng taxonomy, budget từng cluster) cho đến khoảng `queue_refill.target` (mặc định 300).
+
+Mỗi ứng viên được dedup chống TOÀN BỘ manifest trước khi nhận: trùng id/slug, trùng topic (chuẩn hóa + Jaccard >= 0.6), trùng cặp entities + intent + cluster (chống cannibalization), vượt budget cluster. Phép append là transactional: verify mọi dòng parse được, prefix lịch sử byte-identical, không trùng id/slug, status hợp lệ — lỗi bất kỳ thì KHÔNG ghi manifest (fail-closed). Writer KHÔNG bao giờ tự sinh manifest row — chỉ allocator tạo planned rows.
+
+Log mỗi lần chạy: `reports/queue-refill-latest.json` (chi tiết kèm danh sách row mới) và `data/queue-refill-log.jsonl` (một dòng tóm tắt mỗi run: before/threshold/target/candidates/rejected/appended/after/result). Cơ chế cấp phát thủ công cũ (`diagnostics/allocate-rows.json`) vẫn dùng được như công cụ quản trị tùy chọn, không còn bắt buộc.
+
 ## Nội quy
 
 - Không bịa giá, thông số kỹ thuật, luật, trải nghiệm, nguồn dẫn. Bài có khẳng định pháp lý/an toàn chưa kiểm chứng giữ `review` hoặc bỏ khẳng định.

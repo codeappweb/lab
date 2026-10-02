@@ -1,7 +1,7 @@
 # Coordinator repro report
-Fri Oct  2 14:53:27 UTC 2026
+Fri Oct  2 15:08:32 UTC 2026
 ## sha
-e8ae1ccd82e58d742cfd52b7f43ce5b9694b2615
+e13db2529b9bf8f1ec32ebbedc9e8a3311934ed6
 ## step sync-manifest dry-run
 sync-manifest: 0 row(s) marked published, 0 staged row(s) held (not verified on origin/main), 0 post(s) reconciled from front matter, 0 stale slug(s) fixed, 241 total rows
 sync-manifest dry-run: manifest and progress already in sync.
@@ -10,9 +10,9 @@ EXIT_SYNC=0
 cycle-phase: failure ledger OK — consecutive_failures=1/2
 EXIT_CHECKSTOP=0
 ## step collect-staging (khong wait)
-::warning::staging/writer-1 tip (16cd06b8) da 36 phut tuoi — vuot staging_age_warn_minutes=30; kiem tra writer tre hoac staging chua reset.
-::warning::staging/writer-2 tip (09c31428) da 40 phut tuoi — vuot staging_age_warn_minutes=30; kiem tra writer tre hoac staging chua reset.
-::warning::staging/writer-3 tip (09c31428) da 40 phut tuoi — vuot staging_age_warn_minutes=30; kiem tra writer tre hoac staging chua reset.
+::warning::staging/writer-1 tip (16cd06b8) da 51 phut tuoi — vuot staging_age_warn_minutes=30; kiem tra writer tre hoac staging chua reset.
+::warning::staging/writer-2 tip (09c31428) da 55 phut tuoi — vuot staging_age_warn_minutes=30; kiem tra writer tre hoac staging chua reset.
+::warning::staging/writer-3 tip (09c31428) da 55 phut tuoi — vuot staging_age_warn_minutes=30; kiem tra writer tre hoac staging chua reset.
 collect-staging: staging/writer-1 +1 moi, ~0 sua, @16cd06b8
 EXIT_COLLECT=0
 ## scope.json
@@ -37,18 +37,84 @@ EXIT_PHASE=0
 ## step apply-staging
 apply-staging: 1 bai da dua vao working tree tu staging.
 EXIT_APPLY=0
-## git status sau apply
+## publish-loop integrate DRY-RUN (production args, sau apply, gates only)
+publish-loop: scope OK — 1 new post(s), hard max 50, mode: integrate
+sitemap: 231 articles in 1 shard(s), 14 categories, 7 static pages
+sync-manifest: 1 row(s) marked published, 0 staged row(s) held (not verified on origin/main), 0 post(s) reconciled from front matter, 0 stale slug(s) fixed, 241 total rows
+sync-manifest: manifest updated, progress updated
+manifest: 241 records, posts: 231
+WARN:
+2026-09-27-ap-suat-lop-xe-may-chuan-theo-tai-trong.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-boi-tron-xich-xe-may-dung-cach.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-cham-soc-ac-quy-xe-may-dung-cach.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-doi-nhot-xe-may-dung-ky.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-kiem-tra-nuoc-lam-mat-xe-tay-ga.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-thay-dau-phanh-xe-may-dung-ky.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-tieng-lach-cach-cua-phuoc-va-op-xe-may.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-27-ve-sinh-loc-gio-va-bugi-xe-may.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-chi-phi-lan-banh-cua-mot-chiec-xe-ga-o-ha-noi-xang-gui-xe-bao-duong.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-chon-xe-ga-dung-tich-nao-110cc-125cc-hay-150cc.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-dat-xe-may-thue-online-giao-tan-noi-o-ha-noi-quy-trinh-va-rui-ro.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-kiem-tra-xe-may-truoc-khi-nhan-thue-checklist-10-diem.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-nhan-biet-xe-ga-da-tung-ngap-nuoc-hay-tai-nan-khi-mua-cu.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-50cc-o-ha-noi-cho-nguoi-chua-co-bang-lai.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-ga-va-thue-xe-so-o-ha-noi-nen-chon-loai-nao.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-gan-cac-ga-tau-ha-noi-ga-hang-co-ga-ngoc-hoi.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-gan-san-bay-noi-bai-va-quay-lai-noi-thanh.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-gia-re-o-ha-noi-dau-hieu-cua-dich-vu-kem-chat-luong.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-khu-cau-giay-my-dinh-cho-nguoi-di-lam.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-o-ha-noi-cho-nguoi-nuoc-ngoai-bang-lai-va-giay-to.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-quanh-khu-ho-tay-xuan-la-buoi-luu-y-giao-xe-va-nhan-xe.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-theo-gio-o-ha-noi-co-dang-khong-so-sanh-voi-thue-theo-ngay.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-thue-xe-may-theo-tuan-va-theo-thang-khi-nao-thi-re-hon.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-tien-coc-va-giay-to-khi-thue-xe-may-nhung-dieu-can-biet-truoc-khi-ky.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-tra-xe-thue-tre-gio-hoac-hong-xe-cach-xu-ly-va-tranh-chap-thuong-gap.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-xe-ga-cvt-hoat-dong-nhu-the-nao-nguyen-ly-va-cach-dung-ben.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-09-30-xe-tay-ga-doi-cu-5-10-nam-co-dang-mua-can-nhac-sua-chua.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-dat-coc-thue-xe-may-bang-tien-mat-hay-chuyen-khoan.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-nhan-va-tra-xe-thue-ngoai-gio-thu-tuc-va-diem-can-chup-anh.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-thue-hai-xe-may-cung-luc-cho-nhom-ban-dam-phan-va-kiem-tra.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-thue-xe-may-cho-nguoi-moi-chua-quen-duong-pho-ha-noi.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-thue-xe-may-cuoi-tuan-di-vong-ngoai-thanh-ha-noi.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-thue-xe-may-dai-ngay-di-tinh-dieu-khoan-can-ro-truoc-khi-nhan-xe.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-thue-xe-may-tu-lai-va-goi-xe-cong-nghe-so-sanh-chi-phi-va-tien-nghi.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+2026-10-01-thue-xe-tay-ga-150cc-o-ha-noi-khi-nao-that-su-can.md: thiếu manifest_id (sync-manifest sẽ reconcile theo slug)
+OK
+== Content quality validation ==
+OK: no blocking issues found (365 markdown files checked).
+checked 241 active records (11100 candidate pairs), 0 duplicate, 0 similarity warning(s)
+link check OK: 354 content files, 925 internal links, all targets verified against repository truth
+sitemap OK: index lists 3 shard(s), urlsets contain 252 unique URLs, article set matches 231 eligible post(s) exactly.
+sync-manifest: 0 row(s) marked published, 0 staged row(s) held (not verified on origin/main), 0 post(s) reconciled from front matter, 0 stale slug(s) fixed, 241 total rows
+sync-manifest dry-run: manifest and progress already in sync.
+publish-loop: dry-run/no-git mode — derive + gates green, commit skipped.
+EXIT_PL_DRY=0
+## git status sau publish-loop dry
 A  _posts/2026-10-02-chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien.md
+ M data/article-manifest.jsonl
  M data/coordinator-state.json
  M data/factory-cycle.json
+ M data/progress.json
+ M data/sitemap-shards.json
  M data/writer-checkpoint.json
  M diagnostics/report.txt
+ M sitemaps/articles-001.xml
+## git status sau apply
+A  _posts/2026-10-02-chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien.md
+ M data/article-manifest.jsonl
+ M data/coordinator-state.json
+ M data/factory-cycle.json
+ M data/progress.json
+ M data/sitemap-shards.json
+ M data/writer-checkpoint.json
+ M diagnostics/report.txt
+ M sitemaps/articles-001.xml
 ## gate 1 gen-sitemap-shards
 sitemap: 231 articles in 1 shard(s), 14 categories, 7 static pages
 EXIT_G1=0
 ## gate 2 sync-manifest (derive)
-sync-manifest: 1 row(s) marked published, 0 staged row(s) held (not verified on origin/main), 0 post(s) reconciled from front matter, 0 stale slug(s) fixed, 241 total rows
-sync-manifest: manifest updated, progress updated
+sync-manifest: 0 row(s) marked published, 0 staged row(s) held (not verified on origin/main), 0 post(s) reconciled from front matter, 0 stale slug(s) fixed, 241 total rows
+sync-manifest: manifest unchanged, progress unchanged
 EXIT_G2=0
 ## gate 3 validate-content
 manifest: 241 records, posts: 231
@@ -110,51 +176,51 @@ EXIT_G8=0
 ## jekyll build (strict)
 ## bundle install
 Fetching gem metadata from https://rubygems.org/...........
-Resolving dependencies...
-Fetching concurrent-ruby 1.3.8
-Fetching base64 0.3.0
+Resolving dependencies.......
 Fetching benchmark 0.5.0
+Fetching base64 0.3.0
 Fetching bigdecimal 4.1.3
+Fetching concurrent-ruby 1.3.8
 Installing base64 0.3.0
 Installing benchmark 0.5.0
 Fetching connection_pool 2.5.5
-Fetching drb 2.2.3
 Installing bigdecimal 4.1.3 with native extensions
-Installing concurrent-ruby 1.3.8
+Fetching drb 2.2.3
 Installing connection_pool 2.5.5
-Fetching logger 1.7.0
+Installing concurrent-ruby 1.3.8
 Installing drb 2.2.3
+Fetching logger 1.7.0
 Fetching minitest 5.27.0
-Fetching securerandom 0.4.1
 Installing logger 1.7.0
-Fetching public_suffix 5.1.1
+Fetching securerandom 0.4.1
+Installing minitest 5.27.0
 Installing securerandom 0.4.1
+Fetching public_suffix 5.1.1
 Using bundler 2.3.27
 Fetching coffee-script-source 1.12.2
-Installing minitest 5.27.0
-Fetching json 3.0.2
 Installing public_suffix 5.1.1
-Fetching colorator 1.1.0
 Installing coffee-script-source 1.12.2
+Fetching json 3.0.2
+Fetching colorator 1.1.0
 Fetching commonmarker 0.23.12
 Installing colorator 1.1.0
 Installing json 3.0.2 with native extensions
 Fetching csv 3.3.6
+Installing commonmarker 0.23.12 with native extensions
 Installing csv 3.3.6
 Fetching simpleidn 0.2.3
-Installing commonmarker 0.23.12 with native extensions
 Installing simpleidn 0.2.3
 Fetching eventmachine 1.2.7
 Installing eventmachine 1.2.7 with native extensions
 Fetching http_parser.rb 0.8.1
 Installing http_parser.rb 0.8.1 with native extensions
 Fetching ffi 1.17.4 (x86_64-linux-gnu)
-Fetching uri 1.1.1
 Installing ffi 1.17.4 (x86_64-linux-gnu)
-Installing uri 1.1.1
+Fetching uri 1.1.1
 Fetching forwardable-extended 2.6.0
-Fetching gemoji 4.1.0
+Installing uri 1.1.1
 Installing forwardable-extended 2.6.0
+Fetching gemoji 4.1.0
 Fetching rb-fsevent 0.11.2
 Installing gemoji 4.1.0
 Fetching rexml 3.4.4
@@ -163,147 +229,147 @@ Fetching liquid 4.0.4
 Installing rexml 3.4.4
 Fetching mercenary 0.3.6
 Installing liquid 4.0.4
-Fetching rouge 3.30.0
 Installing mercenary 0.3.6
+Fetching rouge 3.30.0
 Fetching safe_yaml 1.0.5
 Installing safe_yaml 1.0.5
 Installing rouge 3.30.0
 Fetching webrick 1.9.2
 Installing webrick 1.9.2
 Fetching racc 1.8.1
+Installing racc 1.8.1 with native extensions
 Fetching jekyll-paginate 1.1.0
 Installing jekyll-paginate 1.1.0
 Fetching rubyzip 2.4.1
-Installing racc 1.8.1 with native extensions
-Fetching jekyll-swiss 1.0.0
 Installing rubyzip 2.4.1
-Fetching unicode-display_width 1.8.0
+Fetching jekyll-swiss 1.0.0
 Installing jekyll-swiss 1.0.0
-Fetching i18n 1.15.2
+Fetching unicode-display_width 1.8.0
 Installing unicode-display_width 1.8.0
-Fetching tzinfo 2.0.6
-Installing i18n 1.15.2
 Fetching addressable 2.9.0
+Installing addressable 2.9.0
+Fetching i18n 1.15.2
+Installing i18n 1.15.2
+Fetching tzinfo 2.0.6
 Installing tzinfo 2.0.6
 Fetching dnsruby 1.74.0
-Installing addressable 2.9.0
 Fetching jekyll-commonmark 1.4.0
-Installing dnsruby 1.74.0
-Fetching execjs 2.10.2
 Installing jekyll-commonmark 1.4.0
-Fetching net-http 0.9.1
-Fetching ethon 0.18.0
+Fetching execjs 2.10.2
+Installing dnsruby 1.74.0
 Installing execjs 2.10.2
-Fetching rb-inotify 0.11.1
+Fetching ethon 0.18.0
 Installing ethon 0.18.0
-Installing net-http 0.9.1
+Fetching rb-inotify 0.11.1
 Fetching pathutil 0.16.2
-Fetching kramdown 2.4.0
 Installing rb-inotify 0.11.1
-Fetching terminal-table 1.8.0
+Fetching net-http 0.9.1
+Fetching kramdown 2.4.0
 Installing pathutil 0.16.2
-Fetching activesupport 7.2.4
+Fetching terminal-table 1.8.0
 Installing terminal-table 1.8.0
+Installing net-http 0.9.1
 Installing kramdown 2.4.0
+Fetching activesupport 7.2.4
+Fetching coffee-script 2.4.1
+Installing coffee-script 2.4.1
 Fetching nokogiri 1.18.10 (x86_64-linux-gnu)
 Installing activesupport 7.2.4
-Fetching coffee-script 2.4.1
-Fetching faraday-net_http 3.4.4
-Installing coffee-script 2.4.1
 Fetching typhoeus 1.6.0
-Installing faraday-net_http 3.4.4
-Fetching sass-listen 4.0.0
 Installing typhoeus 1.6.0
-Fetching listen 3.10.1
-Installing sass-listen 4.0.0
-Fetching kramdown-parser-gfm 1.1.0
-Installing listen 3.10.1
+Fetching sass-listen 4.0.0
 Installing nokogiri 1.18.10 (x86_64-linux-gnu)
+Installing sass-listen 4.0.0
+Fetching listen 3.10.1
+Fetching faraday-net_http 3.4.4
+Installing listen 3.10.1
+Installing faraday-net_http 3.4.4
 Fetching jekyll-coffeescript 1.2.2
-Installing kramdown-parser-gfm 1.1.0
 Installing jekyll-coffeescript 1.2.2
-Fetching faraday 2.14.4
 Fetching sass 3.7.4
+Fetching kramdown-parser-gfm 1.1.0
+Installing kramdown-parser-gfm 1.1.0
+Installing sass 3.7.4
+Fetching faraday 2.14.4
 Installing faraday 2.14.4
 Fetching jekyll-watch 2.2.1
-Installing sass 3.7.4
 Fetching sawyer 0.9.3
 Installing jekyll-watch 2.2.1
-Fetching html-pipeline 2.14.3
-Fetching jekyll-sass-converter 1.5.2
 Installing sawyer 0.9.3
+Fetching jekyll-sass-converter 1.5.2
 Fetching octokit 4.25.1
-Installing html-pipeline 2.14.3
 Installing jekyll-sass-converter 1.5.2
 Installing octokit 4.25.1
 Fetching github-pages-health-check 1.18.2
 Fetching jekyll-gist 1.5.0
 Installing github-pages-health-check 1.18.2
 Installing jekyll-gist 1.5.0
+Fetching html-pipeline 2.14.3
+Installing html-pipeline 2.14.3
 Fetching em-websocket 0.5.3
 Installing em-websocket 0.5.3
 Fetching jekyll 3.10.0
 Installing jekyll 3.10.0
-Fetching jekyll-commonmark-ghpages 0.5.1
 Fetching jekyll-avatar 0.8.0
-Fetching jekyll-default-layout 0.1.5
+Fetching jekyll-commonmark-ghpages 0.5.1
 Fetching jekyll-feed 0.17.0
-Installing jekyll-commonmark-ghpages 0.5.1
+Fetching jekyll-default-layout 0.1.5
 Installing jekyll-default-layout 0.1.5
+Installing jekyll-commonmark-ghpages 0.5.1
+Installing jekyll-feed 0.17.0
 Installing jekyll-avatar 0.8.0
 Fetching jekyll-github-metadata 2.16.1
 Fetching jekyll-include-cache 0.2.1
-Installing jekyll-feed 0.17.0
 Fetching jekyll-mentions 1.6.0
 Fetching jekyll-optional-front-matter 0.3.2
 Installing jekyll-include-cache 0.2.1
-Installing jekyll-mentions 1.6.0
 Installing jekyll-github-metadata 2.16.1
+Installing jekyll-mentions 1.6.0
 Fetching jekyll-readme-index 0.3.0
 Fetching jekyll-redirect-from 0.16.0
 Installing jekyll-optional-front-matter 0.3.2
-Fetching jekyll-relative-links 0.6.1
 Fetching jekyll-remote-theme 0.4.3
+Fetching jekyll-relative-links 0.6.1
 Installing jekyll-readme-index 0.3.0
-Fetching jekyll-seo-tag 2.8.0
 Installing jekyll-redirect-from 0.16.0
-Fetching jekyll-sitemap 1.4.0
 Installing jekyll-remote-theme 0.4.3
 Installing jekyll-relative-links 0.6.1
+Fetching jekyll-seo-tag 2.8.0
+Fetching jekyll-sitemap 1.4.0
 Fetching jekyll-titles-from-headings 0.5.3
-Fetching jemoji 0.13.0
 Installing jekyll-seo-tag 2.8.0
-Fetching jekyll-theme-architect 0.2.0
-Installing jekyll-sitemap 1.4.0
 Installing jekyll-titles-from-headings 0.5.3
-Fetching jekyll-theme-cayman 0.2.0
+Fetching jemoji 0.13.0
+Installing jekyll-sitemap 1.4.0
 Installing jemoji 0.13.0
+Fetching jekyll-theme-architect 0.2.0
+Fetching jekyll-theme-cayman 0.2.0
 Fetching jekyll-theme-dinky 0.2.0
-Fetching jekyll-theme-hacker 0.2.0
-Installing jekyll-theme-architect 0.2.0
-Fetching jekyll-theme-leap-day 0.2.0
-Installing jekyll-theme-cayman 0.2.0
-Fetching jekyll-theme-merlot 0.2.0
 Installing jekyll-theme-dinky 0.2.0
-Fetching jekyll-theme-midnight 0.2.0
+Installing jekyll-theme-cayman 0.2.0
+Fetching jekyll-theme-hacker 0.2.0
+Fetching jekyll-theme-leap-day 0.2.0
+Fetching jekyll-theme-merlot 0.2.0
+Installing jekyll-theme-architect 0.2.0
 Installing jekyll-theme-hacker 0.2.0
+Fetching jekyll-theme-midnight 0.2.0
 Fetching jekyll-theme-minimal 0.2.0
 Installing jekyll-theme-merlot 0.2.0
-Fetching jekyll-theme-modernist 0.2.0
 Installing jekyll-theme-leap-day 0.2.0
+Installing jekyll-theme-minimal 0.2.0
+Fetching jekyll-theme-modernist 0.2.0
 Fetching jekyll-theme-primer 0.6.0
 Installing jekyll-theme-modernist 0.2.0
 Fetching jekyll-theme-slate 0.2.0
-Installing jekyll-theme-minimal 0.2.0
-Fetching jekyll-theme-tactile 0.2.0
 Installing jekyll-theme-primer 0.6.0
+Fetching jekyll-theme-tactile 0.2.0
 Installing jekyll-theme-slate 0.2.0
-Fetching jekyll-theme-time-machine 0.2.0
 Installing jekyll-theme-tactile 0.2.0
-Fetching minima 2.5.1
-Installing jekyll-theme-midnight 0.2.0
+Fetching jekyll-theme-time-machine 0.2.0
 Installing jekyll-theme-time-machine 0.2.0
+Fetching minima 2.5.1
 Installing minima 2.5.1
+Installing jekyll-theme-midnight 0.2.0
 Fetching github-pages 232
 Installing github-pages 232
 Bundle complete! 1 Gemfile dependency, 98 gems now installed.
@@ -380,7 +446,7 @@ To use retry middleware with Faraday v2.0+, install `faraday-retry` gem
  Incremental build: disabled. Enable with --incremental
       Generating... 
        Jekyll Feed: Generating feed for posts
-                    done in 27.639 seconds.
+                    done in 47.7 seconds.
  Auto-regeneration: disabled. Use --watch to enable.
 EXIT_BUILD=0
 ## validate-built

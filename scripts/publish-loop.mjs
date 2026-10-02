@@ -88,7 +88,8 @@ if (existsSync(cfgPath)) {
       hardMax = cfg.hard_max_new_posts_per_push;
     }
   } catch (e) {
-    die('data/factory-config.json is not valid JSON: ' + e.message);
+    
+die('data/factory-config.json is not valid JSON: ' + e.message);
   }
 }
 
@@ -190,7 +191,8 @@ if (INTEGRATE) {
     die('Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_fail_seconds=' + TH.build_fail_seconds + 's — HARD FAIL, tu choi xuat ban (chua commit).');
   }
   if (TH.build_warn_seconds && buildSeconds > TH.build_warn_seconds) {
-    console.log('::warning::Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_warn_seconds=' + TH.build_warn_seconds + 's — can toi uu truoc khi tien gan hard fail.');
+    console.log('::warning::Jekyll build ' + buildSeconds.toFixed(1) + 's vuot telemetry.build_warn_seconds=' + TH.build_warn_seconds + 's — can toi uu truoc khi tien gan hard fail.
+');
   }
   if (TH.deploy_frequency_warn_per_hour && commitsHour + 1 > TH.deploy_frequency_warn_per_hour) {
     console.log('::warning::main se co ~' + (commitsHour + 1) + ' commit trong gio vua qua — vuot telemetry.deploy_frequency_warn_per_hour=' + TH.deploy_frequency_warn_per_hour + ', nen giam tan suat chu ky.');
@@ -225,7 +227,8 @@ if (INTEGRATE) {
   const cyclePath = join(ROOT, 'data', 'factory-cycle.json');
   if (existsSync(cyclePath)) {
     try {
-      const cyc = JSON.parse(readFileSync(cyclePath, 'utf8'));
+      const cyc = JSON.parse(readFileSync(cyclePath, 
+'utf8'));
       if (!['complete', 'failed', 'idle'].includes(cyc.phase)) cyc.phase = 'building';
       cyc.publication = { ...(cyc.publication || {}), ids: added.map(slugOf) };
       writeFileSync(cyclePath, JSON.stringify(cyc, null, 2) + '\n');
@@ -268,7 +271,8 @@ if (INTEGRATE) {
 }
 
 // ---- 3. commit only the allowlisted derived paths ----------------------------
-const status = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
+const status = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' 
+});
 if (status.status !== 0) die('git status failed');
 // git status --porcelain v1: "XY <path>" (XY = 2 status chars + 1 space).
 // NOTE: do NOT trim the line first — a leading space (e.g. " M path") is

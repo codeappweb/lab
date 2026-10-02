@@ -45,6 +45,11 @@ on:
     # Push engine/docs len staging (dong bo tai chinh) KHONG kich hoat chu ky.
     paths: ['_posts/**']
   workflow_dispatch:
+    inputs:
+      maintenance:
+        description: 'Maintenance: dong bo derived state (manifest + progress + sitemap), KHONG publish bai moi, KHONG deploy Pages'
+        type: boolean
+        default: false
 
 concurrency:
   group: production-coordinator
@@ -58,6 +63,7 @@ permissions:
 jobs:
   integrate:
     name: Collect -> guard -> QA -> one commit -> one Pages deploy
+    if: ${{ inputs.maintenance != true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     # KHONG dung `environment:` o job level: github-pages environment (tao boi
@@ -173,7 +179,7 @@ jobs:
           set -eu
           SLUG=$(echo "${{ steps.guard.outputs.added }}" | cut -d, -f1 | sed 's|^_posts/[0-9-]*||; s|\.md$||')
           if [ -z "$SLUG" ]; then echo "khong co bai moi — skip live verify"; exit 0; fi
-          URL="${{ steps.deployment.outputs.url }}/${SLUG}/"
+          URL="${{ steps.deployment.outputs.url }}/$SLUG/"
           echo "verify: $URL"
           for i in $(seq 1 12); do
             CODE=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || echo 000)
@@ -220,3 +226,50 @@ jobs:
           git add data/factory-cycle.json data/coordinator-state.json data/writer-checkpoint.json || true
           git commit -m "coordinator(fail): run ${{ github.run_id }} that bai — ghi failure ledger (staging GIU NGUYEN)" || true
           git push origin HEAD:main || echo "::warning::khong push duoc failure ledger (co the do conflict) — ledger se duoc cap nhat o run sau."
+
+  # ---- maintenance dispatch: sync derived state (repair manifest drift) ----
+  # Chay MỘT lan (thu cong) khi manifest/progress/sitemap bị drift so voi repo
+  # truth (vi du: bai da publish nhung manifest row van `planned`). Chay dung
+  # publish-loop --integrate voi added/repaired rong: sync-manifest (write),
+  # gen-sitemap, 6 gate, Jekyll build blocking, telemetry, ledger reset —
+  # commit CHI derived allowlist, KHONG bai moi, KHONG deploy Pages, KHONG
+  # cham cycle/staging.
+  maintenance:
+    name: Maintenance (sync derived state; no publish, no deploy)
+    if: ${{ inputs.maintenance == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+      - name: Cache dependencies (vendor/bundle)
+        uses: actions/cache@v6
+        with:
+          path: vendor/bundle
+          key: bundle-prod-${{ runner.os }}-${{ hashFiles('Gemfile') }}
+          restore-keys: |
+            bundle-prod-${{ runner.os }}-
+      - name: Bundle install
+        run: |
+          set -eu
+          bundle config set path vendor/bundle
+          bundle install --jobs 4 --retry 3
+      - name: Maintenance transaction (derived allowlist only, MỘT commit, KHONG deploy)
+        run: |
+          set -eu
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          node scripts/publish-loop.mjs --integrate --added "" --repaired ""
+      - name: Report
+        run: echo "maintenance: derived state synced (manifest planned->published, progress, sitemap) — KHONG deploy Pages."

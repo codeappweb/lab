@@ -5,7 +5,7 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c010030",
   "base_sha": "e151cda0cbe4b8613d196ebfec97e8ae092fc211",
-  "status": "failed",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,20 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C12-0012",
-      "C12-0009",
-      "C12-0010",
-      "C12-0011"
+      "C04-0029",
+      "C01-0030",
+      "C05-0035",
+      "C02-0029",
+      "C06-0013",
+      "C03-0031"
     ],
     "slugs": [
-      "chuan-hoa-pin-roi-va-tram-doi-pin-xu-huong-phia-truoc",
-      "sac-nhanh-thuong-xuyen-anh-huong-pin-the-nao-phan-tich",
-      "nhan-va-chung-nhan-pin-khi-mua-xe-dien-doc-hieu-the-nao",
-      "tai-che-pin-xe-dien-o-viet-nam-hien-trang-va-dau-ra"
+      "chon-size-xe-dap-theo-chieu-cao-nguoi-di",
+      "thue-xe-may-o-cau-giay-theo-tuan-gia-va-dieu-kien",
+      "xe-may-khong-no-may-khi-troi-lanh-chan-doan-tung-buoc",
+      "xe-so-110cc-nao-tiet-kiem-xang-nhat-hien-nay",
+      "lop-khong-ruot-xe-may-uu-va-nhuoc-diem",
+      "xe-may-dien-chay-duoc-bao-xa-voi-mot-lan-sac-day"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-02T18:19:19.929Z"
+  "updated_at": "2026-10-02T18:21:28.282Z"
 }

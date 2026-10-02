@@ -3,11 +3,14 @@ name: Staging signal (dispatch coordinator on main)
 # SIGNAL WORKFLOW (NHE): writer push _posts/** len staging/writer-K khong chay
 # coordinator trong context staging — chi DISPATCH production.yml voi ref=main.
 # workflow_dispatch la mot trong hai event ma GITHUB_TOKEN duoc phep tao run
-# moi (ngoai le cua quy tac "events tu GITHUB_TOKEN khong tao run"), nen
-# coordinator LUON chay trong MAIN context (deploy-pages + environment
-# github-pages an toan voi branch protection chi cho phep main).
+# moi, nen coordinator LUON chay trong MAIN context.
 # Paths filter: chi thay doi _posts/** moi signal — push dong bo engine/docs/
-# data len staging KHONG tao fake publication cycle.
+# data len staging KHONG tao fake publication cycle. (Luu y: push thay doi
+# chinh file workflow nay van chay workflow lan dau — hanh vi cua GitHub khi
+# workflow file duoc sua trong push; cac push sau ap dung paths filter binh
+# thuong.)
+# Dispatch dung REST API voi token explicit (github.token, actions:write) —
+# khong phu thuoc vao trang thai auth cua gh CLI.
 
 on:
   push:
@@ -15,8 +18,9 @@ on:
     paths: ['_posts/**']
 
 concurrency:
-  # Nhieu signal lien tiep coi lai thanh mot dispatch (signal la idempotent:
-  # coordinator collect snapshot staging hien tai; signal bi bo neu cycle da dang chay).
+  # Nhieu signal lien tiep coi lai thanh mot dispatch hop nhat (coordinator
+  # collect snapshot staging hien tai; dispatch boi neu cycle dang chay se xep
+  # hang trong group production-coordinator, khong cancel run dang mo).
   group: staging-signal
   cancel-in-progress: false
 
@@ -30,10 +34,17 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - name: Dispatch production.yml (ref=main)
+      - name: Dispatch production.yml (ref=main, workflow_dispatch)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -eu
           echo "signal: writer pushed _posts to ${{ github.ref_name }} — dispatching coordinator on main."
-          gh workflow run production.yml --ref main
+          curl -sS -f -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/production.yml/dispatches" \
+            -d '{"ref":"main"}'
       - name: Report
-        run: echo "signal: production.yml dispatched (ref=main) — coordinator chay trong MAIN context; concurrency group production-coordinator xep hang neu co run dang mo."
+        run: echo "signal: production.yml dispatched (ref=main, workflow_dispatch) — coordinator chay trong MAIN context; concurrency group production-coordinator xep hang neu co run dang mo."

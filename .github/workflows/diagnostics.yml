@@ -60,6 +60,12 @@ jobs:
             echo "## step apply-staging"
             node scripts/apply-staging.mjs
             echo "EXIT_APPLY=$?"
+            echo "## publish-loop integrate DRY-RUN (production args, sau apply, gates only)"
+            node scripts/publish-loop.mjs 
+--integrate --added "_posts/2026-10-02-chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien.md" --repaired "" --dry-run
+            echo "EXIT_PL_DRY=$?"
+            echo "## git status sau publish-loop dry"
+            git status --porcelain
             echo "## git status sau apply"
             git status --porcelain
             echo "## gate 1 gen-sitemap-shards"
@@ -101,7 +107,8 @@ jobs:
           } > "$R" 2>&1
           cat "$R"
       - name: Commit report (chỉ report.txt — KHÔNG bao gio commit index cua apply-staging)
-        run: |
+        
+run: |
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
           # apply-staging da stage bai vao index (git checkout sha -- file) — unstage TAT CA

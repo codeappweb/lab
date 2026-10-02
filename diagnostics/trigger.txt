@@ -1,1 +1,1 @@
-repro lan 8 — 2026-10-02T14:55Z — run 37022773662 fail o Publish transaction
+repro lan 9 — publish-loop production-args dry-run

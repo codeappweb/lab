@@ -52,6 +52,13 @@ on:
   workflow_run:
     workflows: ['Staging signal (writer output marker)']
     types: [completed]
+    branches: ['staging/writer-1', 'staging/writer-2', 'staging/writer-3']
+  # Token push trigger: push thay doi data/.coordinator-trigger len main
+  # de chay coordinator NGAY (self-heal derived state + integrate staging) —
+  # khong can dispatch API, khong noi dung dac biet trong file.
+  push:
+    branches: [main]
+    paths: ['data/.coordinator-trigger']
   # Manual: run thuong + maintenance dispatch (chon branch main).
   workflow_dispatch:
     inputs:
@@ -72,7 +79,7 @@ permissions:
 jobs:
   integrate:
     name: Collect -> guard -> QA -> one commit -> one Pages deploy
-    if: ${{ inputs.maintenance != true }}
+    if: ${{ inputs.maintenance != true && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     # MAIN CONTEXT (workflow_run = default branch; workflow_dispatch ref=main):
@@ -93,6 +100,48 @@ jobs:
           node-version: '20'
 
       # ---- 0. safety stop + crash recovery ---------------------------------
+      # ---- 0b. reconcile derived state (self-heal, TRUOC moi allocation/noop) ----
+      - name: Reconcile derived state (self-heal: manifest/progress/sitemap)
+        run: |
+          set -eu
+          if node scripts/sync-manifest.mjs --dry-run; then
+            echo "reconcile: derived state in sync."
+            exit 0
+          fi
+          echo "::warning::MANIFEST/PROGRESS DRIFT phat hien — tu dong dong bo derived state (allowlist only, fail-closed)."
+          node scripts/sync-manifest.mjs
+          node scripts/gen-sitemap-shards.mjs
+          node scripts/validate-content.mjs
+          node scripts/validate-content-quality.mjs
+          node scripts/detect-duplicates.mjs
+          node scripts/validate-sitemap.mjs
+          node scripts/sync-manifest.mjs --dry-run
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          git add data/article-manifest.jsonl data/progress.json sitemap.xml sitemaps data/sitemap-shards.json
+          if git diff --cached --quiet; then
+            echo "reconcile: derived state sync sau derive (khong con diff)."
+            exit 0
+          fi
+          git commit -m "coordinator(reconcile): dong bo derived state voi repository truth (self-heal)"
+          git push origin HEAD:main
+          echo "reconcile: main da duoc sua derived state — dong bo derived tren staging (FF, khong force)."
+          git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
+          for K in 1 2 3; do
+            B="staging/writer-$K"
+            if git rev-parse --verify -q "refs/remotes/origin/$B" >/dev/null 2>&1; then
+              git checkout -q -B "$B" "origin/$B"
+              git checkout -q origin/main -- data/article-manifest.jsonl data/progress.json sitemap.xml sitemaps data/sitemap-shards.json
+              git add data/article-manifest.jsonl data/progress.json sitemap.xml sitemaps data/sitemap-shards.json
+              if ! git diff --cached --quiet; then
+                git commit -q -m "coordinator(reconcile): sync derived state tren $B (staging chi khac main trong _posts)"
+                git push origin "HEAD:refs/heads/$B" || echo "::warning::khong sync duoc $B (writer dang push?) — chu ky sau xu ly."
+              fi
+              git checkout -q -B main origin/main
+            fi
+          done
+          echo "reconcile: derived state synced (main + staging)."
+
       - name: Production stop check (2 coordinator failures = STOP)
         run: |
           set -eu

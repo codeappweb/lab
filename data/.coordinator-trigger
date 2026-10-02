@@ -1,0 +1,10 @@
+Coordinator trigger token (data/.coordinator-trigger)
+
+Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
+(production.yml: push.paths = data/.coordinator-trigger). Coordinator chay
+tren MAIN context: tu-heal derived state (manifest/progress/sitemap) TRUOC
+moi allocation/noop, roi integrate staging neu co bai moi. Noi dung file
+khong co y nghia — chi su thay doi cua no tren main moi trigger.
+
+Trigger lan nay: kich hoat workflow_run success guard + branch filter +
+self-heal reconcile step (session 2026-10-02).

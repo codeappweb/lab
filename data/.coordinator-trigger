@@ -4,6 +4,6 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 4 (2026-10-02): NO-OP smoke test — derived state da reconcile
-(published 230 / planned 11 / manifest 241), coordinator phai chay self-heal
-dry-run clean roi NO-OP exit 0, khong phai publish bat ky thu gi.
+Trigger update 5 (2026-10-02): NO-OP smoke RETRY sau fix collect-staging
+ba-cham (run 37017663482 fail vi guard hai-cham coi trigger file la
+contamination). State in sync — expect dry-run clean + noop exit 0.

@@ -30,7 +30,7 @@ jobs:
           bundler-cache: false
       - name: Fetch staging branches
         run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
-      - name: Repro FULL publish transaction (per-step exits, report .txt)
+      - name: Repro publish transaction (per-step exits, report .txt)
         run: |
           set +e
           R=diagnostics/report.txt
@@ -40,14 +40,23 @@ jobs:
             date -u
             echo "## sha"
             git rev-parse HEAD
+            echo "## step sync-manifest dry-run"
+            node scripts/sync-manifest.mjs --dry-run
+            echo "EXIT_SYNC=$?"
+            echo "## step cycle-phase check-stop"
+            node scripts/cycle-phase.mjs --check-stop
+            echo "EXIT_CHECKSTOP=$?"
             echo "## step collect-staging (khong wait)"
             node scripts/collect-staging.mjs
             echo "EXIT_COLLECT=$?"
+            echo "## scope.json"
+            cat /tmp/scope.json
             echo "## step integrate-guard"
             node scripts/integrate-guard.mjs
             echo "EXIT_GUARD=$?"
-            echo "## scope.json"
-            cat /tmp/scope.json
+            echo "## step cycle-phase integrating (retry failed cycle)"
+            node scripts/cycle-phase.mjs integrating
+            echo "EXIT_PHASE=$?"
             echo "## step apply-staging"
             node scripts/apply-staging.mjs
             echo "EXIT_APPLY=$?"
@@ -77,11 +86,12 @@ jobs:
             echo "## gate 8 sync-manifest dry-run (in-sync proof)"
             node scripts/sync-manifest.mjs --dry-run
             echo "EXIT_G8=$?"
+            echo "## jekyll build (strict)"
             echo "## bundle install"
             bundle config set path vendor/bundle
             bundle install --jobs 4 --retry 3
             echo "EXIT_BUNDLE=$?"
-            echo "## jekyll build (strict)"
+            echo "## jekyll build (strict, lan 2 sau bundle)"
             bundle exec jekyll build --strict_front_matter
             echo "EXIT_BUILD=$?"
             echo "## validate-built"
@@ -90,10 +100,13 @@ jobs:
             echo "## ket thuc repro"
           } > "$R" 2>&1
           cat "$R"
-      - name: Commit report
+      - name: Commit report (chỉ report.txt — KHÔNG bao gio commit index cua apply-staging)
         run: |
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
+          # apply-staging da stage bai vao index (git checkout sha -- file) — unstage TAT CA
+          # truoc khi add report, neu khong commit se danh bai chua xuat ban len main (bug 70bfc443).
+          git reset --quiet
           git add diagnostics/report.txt
           git commit -m "diag(report): repro publish transaction (per-step exit codes)"
           git push origin HEAD:main

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "cycle_id": null,
+  "base_sha": null,
+  "coordinator_run_id": null,
+  "phase": "idle",
+  "assignments": {},
+  "staging_snapshot": {},
+  "publication": null,
+  "pages": null,
+  "history": []
+}

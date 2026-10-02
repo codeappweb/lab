@@ -5,8 +5,9 @@
   "writers": 3,
   "writer_chunk_size": 2,
   "goal_total_articles": 20000,
-  "note": "STAGED 3-WRITER COORDINATOR: writer-1/2/3 moi writer lay deterministic slice (next-pair.mjs --writer writer-K, row eligible tai i % writers == K-1, khong rong nhau) va chi push _posts/*.md len nhanh rieng staging/writer-K. production.yml = COORDINATOR singleton (group production-coordinator, khong cancel): collect-staging snapshot 3 nhanh -> integrate-guard tu choi out-of-scope/vuot writer_chunk_size/vuot integration_max_new_posts/trung slug/reassign slug published (bai da integrate giong het thi skip — idempotent) -> apply -> derive + 6 gate + Jekyll build blocking -> MÔT commit main (posts + derived allowlist + telemetry) -> reset staging force-with-lease. Moi chu ky: toi da 3 writer x writer_chunk_size bai, MÔT commit main, MÔT Pages deploy. Telemetry ghi thuc do vao data/production-telemetry.jsonl voi threshold warning (site_size, build_warn_seconds, deploy_frequency); scale_checkpoints do build time/size khi published count vuot moi moc. hard_max_new_posts_per_push van la hard invariant cua publish transaction.",
+  "note": "STAGED 3-WRITER COORDINATOR (cycle-based): next-pair.mjs --allocate tao data/factory-cycle.json (cycle_id + base_sha + assignment plan bat bien) tu manifest TAI CHINH XAC origin/main; ca 3 writer cung chu ky doc dung plan do (next-pair.mjs --writer writer-K) — khong writer nao tu derive tu HEAD moi. Writer chi push _posts/*.md len staging/writer-K, kem factory_writer/factory_cycle/factory_base_sha trong front matter. production.yml = COORDINATOR singleton: cho du output cac writer (collect-staging --wait-for, timeout writer_wait_timeout_minutes) -> collect-staging snapshot -> integrate-guard (tu choi out-of-scope/vuot writer_chunk_size/vuot integration_max_new_posts/trung slug/trung manifest_id; sai cycle/base_sha/slice -> REVIEW chu khong publish) -> apply -> derive + 6 gate + Jekyll build blocking (build_fail_seconds = hard fail) -> MÔT commit main (posts + derived allowlist + telemetry + cycle state + checkpoint) -> deploy-pages (artifact _site da validate) -> verify live -> reset staging force-with-lease -> finalize cycle. hard_max_new_posts_per_push van la hard invariant cua publish transaction. Crash recovery: cycle state trong data/factory-cycle.json; coordinator resume dung cycle chua hoan thanh, khong bao gio tao cycle moi khi con cycle recoverable. consecutive_failure_stop: dung production khi 2 run coordinator lien tiep fail (data/coordinator-state.json).",
   "integration_max_new_posts": 6,
+  "writer_wait_timeout_minutes": 10,
   "scale_checkpoints": [
     100,
     500,
@@ -20,7 +21,12 @@
   "telemetry": {
     "site_size_warn_mb": 700,
     "site_size_fail_mb": 900,
-    "build_warn_seconds": 2400,
-    "deploy_frequency_warn_per_hour": 12
+    "build_warn_seconds": 360,
+    "build_fail_seconds": 540,
+    "staging_age_warn_minutes": 30,
+    "deploy_frequency_warn_per_hour": 8
+  },
+  "safety": {
+    "consecutive_failure_stop": 2
   }
 }

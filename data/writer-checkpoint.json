@@ -1,34 +1,37 @@
 {
-  "loop": "push-driven-pair-production",
-  "chunk_size": 2,
-  "writers": 1,
+  "schema_version": 2,
+  "loop": "staged-3-writer-coordinator",
+  "writers": 3,
   "writer_chunk_size": 2,
-  "current_step": "idle/awaiting-user-command",
-  "active_article": null,
-  "last_published": {
-    "kind": "writer-pairs",
+  "cycle_id": null,
+  "base_sha": null,
+  "status": "idle",
+  "staging": {
+    "writer-1": {},
+    "writer-2": {},
+    "writer-3": {}
+  },
+  "last_publication": {
+    "main_sha": "9ce5c48f16b032b0a6800ecd8f2aca97e0238a7d",
     "ids": [
-      "C10-0002",
-      "C10-0003"
+      "C11-0008",
+      "C11-0009",
+      "C11-0010",
+      "C11-0011",
+      "C11-0012",
+      "C12-0001"
     ],
     "slugs": [
-      "di-xe-gap-sam-set-khi-nao-can-dung-va-an-nap",
-      "di-xe-sau-mua-duong-tron-phanh-som-va-giu-khoang-cach"
+      "bao-duong-khong-dung-lich-nhung-khoan-lang-phi-de-tranh",
+      "so-sanh-tien-ve-buyt-va-tien-xang-xe-may-cho-tuyen-di-lam",
+      "son-lai-xe-va-lam-dep-khi-nao-dang-tien",
+      "gui-xe-dai-ngay-khi-di-cong-tac-lua-chon-va-chi-phi",
+      "nhung-khoan-chi-bi-bo-quen-khi-mua-xe-may-moi",
+      "pin-lithium-ion-trong-xe-dien-cau-tao-va-nguyen-ly"
     ],
-    "write_commits": [
-      "4dd4bfaa27"
-    ],
-    "publish_commits": [
-      "9a2fe17bd4"
-    ],
-    "live_urls": [
-      "https://codeappweb.github.io/lab/di-xe-gap-sam-set-khi-nao-can-dung-va-an-nap/",
-      "https://codeappweb.github.io/lab/di-xe-sau-mua-duong-tron-phanh-som-va-giu-khoang-cach/"
-    ],
-    "deploy_verified": true,
-    "notes": "Pair C10-0002 + C10-0003 dat gate ngay push dau (publish 9a2fe17bd4), ca 2 URL da GET tra noi dung moi. Tong phien 2026-10-02: 5 pair = 10 bai (C09-0006..0012, C10-0001..0003) published + verified live. Con 33 row planned; pair ke theo thu tu: C10-0004, C10-0005. 2 loi CJK/foreign trong draft da loai truoc push."
+    "pages_deployment_id": null,
+    "live_verified": true
   },
-  "last_pushed_commit": "9a2fe17bd4",
-  "updated_at": "2026-10-02T01:03:02.227Z",
-  "review_queue": []
+  "review_queue": [],
+  "updated_at": "2026-10-02T09:30:00.000Z"
 }

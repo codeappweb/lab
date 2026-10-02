@@ -3,32 +3,32 @@
   "chunk_size": 2,
   "writers": 1,
   "writer_chunk_size": 2,
-  "current_step": "hai cặp C09-0002..0005 published; cặp 1 (C09-0002/0003) da GET URL live xac nhan; cặp 2 (C09-0004/0005) cho Pages deploy",
+  "current_step": "pair C09-0006/0007 published (transaction 5eba33a373 xanh), Pages deploy chua xac nhan live; pair ke: C09-0008/C09-0009",
   "active_article": null,
   "last_published": {
     "kind": "writer-pairs",
     "ids": [
-      "C09-0004",
-      "C09-0005"
+      "C09-0006",
+      "C09-0007"
     ],
     "slugs": [
-      "di-xe-may-tu-ha-noi-den-ha-long-nghi-dung-o-dau",
-      "di-xe-may-ve-que-dip-tet-chuan-bi-xe-va-an-toan-duong-dai"
+      "cung-duong-ha-noi-ninh-binh-bang-xe-may-diem-dung-noi-tieng",
+      "di-xe-may-duong-dai-lan-dau-checklist-truoc-khi-xuat-phat"
     ],
     "write_commits": [
-      "8716a8ab1b"
+      "3eff6f6158"
     ],
     "publish_commits": [
-      "3156213451"
+      "5eba33a373"
     ],
     "live_urls": [
-      "https://codeappweb.github.io/lab/di-xe-may-tu-ha-noi-den-ha-long-nghi-dung-o-dau/",
-      "https://codeappweb.github.io/lab/di-xe-may-ve-que-dip-tet-chuan-bi-xe-va-an-toan-duong-dai/"
+      "https://codeappweb.github.io/lab/cung-duong-ha-noi-ninh-binh-bang-xe-may-diem-dung-noi-tieng/",
+      "https://codeappweb.github.io/lab/di-xe-may-duong-dai-lan-dau-checklist-truoc-khi-xuat-phat/"
     ],
     "deploy_verified": false,
-    "notes": "Cặp C09-0004 + C09-0005 đạt gate ngay push đầu (publish commit 3156213451), URL live chưa trả nội dung tại thời điểm ghi checkpoint (404, Pages deploy đang chờ queue). Cặp C09-0002/C09-0003 (publish 9d9d67913a, repair 66ae460b4) đã GET URL live xác nhận nội dung mới: /lab/duong-len-moc-chau-bang-xe-may-kinh-nghiem-cung-duong/ và /lab/chay-xe-len-tam-dao-cung-duong-doc-va-an-toan/ trả bài đầy đủ, sitemap shard 196 URL. Phiên kế: fetch fresh main, next-pair (C09-0006 kế tiếp), verify live cặp 0004/0005 trước khi viết tiếp."
+    "notes": "Cặp C09-0006 + C09-0007 đạt gate ngay push đầu: publish commit 5eba33a373 (factory commit derived manifest/progress/sitemap). URL live chưa trả nội dung tại thời điểm ghi checkpoint (Pages deploy đang chờ queue). Cặp C09-0004/0005 của phiên trước cần verify live khi tiếp tục. Phiên kế: fetch fresh main, next-pair (C09-0008/C09-0009 theo thứ tự planned), verify live các URL chờ trước khi viết tiếp."
   },
-  "last_pushed_commit": "8716a8ab1b",
-  "updated_at": "2026-10-01T22:30:10.521Z",
+  "last_pushed_commit": "5eba33a373",
+  "updated_at": "2026-10-02T00:29:00.063Z",
   "review_queue": []
 }

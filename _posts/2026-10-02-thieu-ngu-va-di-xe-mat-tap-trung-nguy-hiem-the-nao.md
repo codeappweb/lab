@@ -18,7 +18,7 @@ entities:
   - "mất tập trung"
 related_articles:
   - chay-xe-ban-dem-tren-quoc-lo-an-toan-va-tam-nhin
-  - uong-thuoc-cam-roi-di-xe-nhung-rui-ro-it-ai-de-y
+  - di-xe-ngay-nang-nong-phong-soc-nhiet-va-bao-quan-xe
   - di-xe-vao-gio-cao-diem-ha-noi-chon-tuyen-va-ne-diem-tac
 created_at: 2026-10-02
 updated_at: 2026-10-02
@@ -34,8 +34,9 @@ Thiếu ngủ làm ba thứ cùng lúc: phản xạ chậm đi, tầm chú ý th
 
 ## Dấu hiệu đã quá mệt
 
-Ngáp liên tục không thể kiềm, mắt cay và nhòe, không nhớ vừa chạy qua đoạn đường nào, nhầm đèn tín hiệu, và cảm giác đầu nặng lắc lư. Gặp một trong các dấu hiệu đó thì việc duy nhất đúng là dừng: vào quán nước, rửa mặt, và nếu được thì chợp mắt mười lăm phút. Mọi mẹo tạm thời như mở gió thẳng vào mặt hay nghe nhạc to chỉ đổi lấy vài phút tỉnh táo, không thay được giấc ngủ. Nguyên tắc dừng đúng lúc này giống hệt phần buồn ngủ chạy đêm đã nêu trong bài về [chạy xe ban đêm trên quốc lộ]({{ '/chay-xe-ban-dem-tren-quoc-lo-an-toan-va-tam-nhin/' | relative_url }}), chỉ khác là thiếu ngủ ban ngày vẫn nguy hiểm không kém.
+Ngáp liên tục không thể kiềm, mắt cay và nhòe, không nhớ vừa chạy qua đoạn đường nào, nhầm đèn tín hiệu, và cảm giác đầu nặng lắc
+ lư. Gặp một trong các dấu hiệu đó thì việc duy nhất đúng là dừng: vào quán nước, rửa mặt, và nếu được thì chợp mắt mười lăm phút. Mọi mẹo tạm thời như mở gió thẳng vào mặt hay nghe nhạc to chỉ đổi lấy vài phút tỉnh táo, không thay được giấc ngủ. Nguyên tắc dừng đúng lúc này giống hệt phần buồn ngủ chạy đêm đã nêu trong bài về [chạy xe ban đêm trên quốc lộ]({{ '/chay-xe-ban-dem-tren-quoc-lo-an-toan-va-tam-nhin/' | relative_url }}), chỉ khác là thiếu ngủ ban ngày vẫn nguy hiểm không kém.
 
 ## Nguyên tắc khi đã biết mình thiếu ngủ
 
-Nếu biết trước tối nay phải dậy sớm hoặc đã thức khuya, hãy xem xét phương án khác đi: đi cùng người khác, chuyển lịch giờ cao điểm sang giờ vắng, hoặc dùng phương tiện công cộng cho hôm đó. Cộng thêm các yếu tố làm giảm tỉnh táo khác như đang uống thuốc cảm, tương tác rủi ro đã nêu trong bài về [uống thuốc cảm rồi đi xe]({{ '/uong-thuoc-cam-roi-di-xe-nhung-rui-ro-it-ai-de-y/' | relative_url }}), thì càng phải hạ mức cố đi xuống. Tóm lại, không có mẹo nào thay được ngủ đủ: khi đã thiếu ngủ, quyết định an toàn nhất là đổi phương án di chuyển, còn nếu đã trên đường thì dừng nghỉ ngay khi xuất hiện dấu hiệu mệt.
+Nếu biết trước tối nay phải dậy sớm hoặc đã thức khuya, hãy xem xét phương án khác đi: đi cùng người khác, chuyển lịch giờ cao điểm sang giờ vắng, hoặc dùng phương tiện công cộng cho hôm đó. Thời tiết cũng góp phần lấy đi tỉnh táo: chạy lâu giữa trưa nóng như tình huống trong bài về [đi xe ngày nắng nóng và phòng sốc nhiệt]({{ '/di-xe-ngay-nang-nong-phong-soc-nhiet-va-bao-quan-xe/' | relative_url }}) khiến cơ thể mau mệt hơn, cộng dồn vào nợ ngủ thì càng phải hạ mức cố đi xuống. Tóm lại, không có mẹo nào thay được ngủ đủ: khi đã thiếu ngủ, quyết định an toàn nhất là đổi phương án di chuyển, còn nếu đã trên đường thì dừng nghỉ ngay khi xuất hiện dấu hiệu mệt.

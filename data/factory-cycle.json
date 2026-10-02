@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070013",
   "base_sha": "dd05ac74da92717dad6f68ec448522e9034e4049",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C07-0013",
@@ -30,7 +30,12 @@
       "pin-lfp-trong-xe-dien-hai-banh-uu-diem-chinh"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-02T19:03:33.203Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -116,8 +121,31 @@
         "verified_at": "2026-10-02T18:23:36.762Z"
       },
       "completed_at": "2026-10-02T18:23:36.763Z"
+    },
+    {
+      "cycle_id": "cyc-c070013",
+      "base_sha": "dd05ac74da92717dad6f68ec448522e9034e4049",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "3c80b5857fd093c72d028a8b49b3508a994ebd4a",
+        "ids": [
+          "bang-lai-a1-cho-xe-may-duoi-nam-muoi-phan-khoi-pham-vi",
+          "lai-xe-may-trong-mua-lon-noi-thanh-ky-nang-giu-an-toan",
+          "chi-phi-so-huu-xe-may-mot-nam-o-ha-noi-liet-ke-du",
+          "lich-trinh-mot-ngay-pho-co-ha-noi-bang-xe-may",
+          "phuot-ba-vi-mot-ngay-tu-ha-noi-chang-duong-chi-tiet",
+          "pin-lfp-trong-xe-dien-hai-banh-uu-diem-chinh"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-02T19:03:33.203Z"
+      },
+      "completed_at": "2026-10-02T19:03:33.204Z"
     }
   ],
   "created_at": "2026-10-02T18:50:12.496Z",
-  "updated_at": "2026-10-02T19:01:58.803Z"
+  "updated_at": "2026-10-02T19:03:33.204Z"
 }

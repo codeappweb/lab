@@ -1,0 +1,78 @@
+name: Diagnostics (coordinator repro, TEMP)
+
+# TEMPORARY diagnostic workflow — reproduces early coordinator steps, captures
+# exit codes and output, commits report to diagnostics/report.md. XOA SAU khi
+# root cause run 37017663482 / 37018050866 duoc xac dinh.
+
+on:
+  push:
+    branches: [main]
+    paths: ['diagnostics/**']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: diagnostics
+  cancel-in-progress: false
+
+jobs:
+  repro:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+      - name: Fetch staging branches
+        run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
+      - name: Repro coordinator steps (capture all exits)
+        run: |
+          set +e
+          R=diagnostics/report.md
+          mkdir -p diagnostics
+          {
+            echo "# Coordinator repro report"
+            date -u
+            echo "## sha"
+            git rev-parse HEAD
+            git rev-parse origin/main
+            for K in 1 2 3; do
+              echo "origin/staging/writer-$K = $(git rev-parse origin/staging/writer-$K)"
+            done
+            echo "## step sync-manifest dry-run"
+            node scripts/sync-manifest.mjs --dry-run
+            echo "EXIT_SYNC=$?"
+            echo "## step cycle-phase check-stop"
+            node scripts/cycle-phase.mjs --check-stop
+            echo "EXIT_STOP=$?"
+            echo "## step cycle-phase resume"
+            node scripts/cycle-phase.mjs --resume
+            echo "EXIT_RESUME=$?"
+            echo "## step collect-staging"
+            node scripts/collect-staging.mjs
+            echo "EXIT_COLLECT=$?"
+            echo "## step integrate-guard"
+            node scripts/integrate-guard.mjs
+            echo "EXIT_GUARD=$?"
+            echo "## diff checks"
+            for K in 1 2 3; do
+              echo "### writer-$K three-dot vs main"
+              git diff --name-only origin/main...origin/staging/writer-$K
+              echo "### writer-$K two-dot vs main"
+              git diff --name-only origin/main..origin/staging/writer-$K
+            done
+            echo "## git status"
+            git status --porcelain
+          } > "$R" 2>&1
+      - name: Commit report
+        run: |
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          git add diagnostics/report.md
+          git commit -m "diag(report): coordinator repro — exit codes cua cac step som"
+          git push origin HEAD:main

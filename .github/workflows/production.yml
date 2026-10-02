@@ -60,9 +60,10 @@ jobs:
     name: Collect -> guard -> QA -> one commit -> one Pages deploy
     runs-on: ubuntu-24.04
     timeout-minutes: 45
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # KHONG dung `environment:` o job level: github-pages environment (tao boi
+    # Pages branch mode) co branch protection chi cho phep main — moi run tu
+    # staging/writer-* bi tu choi ngay ca khi noop. deploy-pages tu quan ly
+    # deployment; khong can environment block.
     steps:
       - uses: actions/checkout@v6
         with:
@@ -172,7 +173,7 @@ jobs:
           set -eu
           SLUG=$(echo "${{ steps.guard.outputs.added }}" | cut -d, -f1 | sed 's|^_posts/[0-9-]*||; s|\.md$||')
           if [ -z "$SLUG" ]; then echo "khong co bai moi — skip live verify"; exit 0; fi
-          URL="${{ steps.deployment.outputs.page_url }}${SLUG}/"
+          URL="${{ steps.deployment.outputs.url }}/${SLUG}/"
           echo "verify: $URL"
           for i in $(seq 1 12); do
             CODE=$(curl -s -o /dev/null -w '%{http_code}' "$URL" || echo 000)
@@ -191,7 +192,7 @@ jobs:
           git pull --ff-only origin main
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
-          node scripts/cycle-phase.mjs --complete --publication-sha "${{ steps.publish.outputs.main_sha }}" --deployment-id "${{ steps.deployment.outputs.deployment_id }}" --live-verified --run-id "${{ github.run_id }}"
+          node scripts/cycle-phase.mjs --complete --publication-sha "${{ steps.publish.outputs.main_sha }}" --deployment-id "${{ steps.deployment.outputs.id }}" --live-verified --run-id "${{ github.run_id }}"
           git add data/factory-cycle.json data/writer-checkpoint.json data/coordinator-state.json
           git commit -m "cycle(complete): ${{ steps.publish.outputs.main_sha }} — Pages deployment OK, live verified" || true
           git push origin HEAD:main

@@ -81,6 +81,7 @@ jobs:
           REPAIRED: ${{ steps.guard.outputs.repaired }}
         run: |
           set -eu
+          git checkout -B main
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
           node scripts/apply-staging.mjs

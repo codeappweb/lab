@@ -91,5 +91,4 @@ jobs:
         run: sh /tmp/reset-staging.sh
       - name: Noop (khong co bai moi tren staging)
         if: steps.guard.outputs.noop == 'true'
-        run: |
-          echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."
+        run: 'echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."'

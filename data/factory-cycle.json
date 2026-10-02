@@ -1,41 +1,24 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c120003",
-  "base_sha": "2015237668c56f41bae7cb5b780fc164586d81c0",
+  "cycle_id": "cyc-c120009",
+  "base_sha": "bcaaddeb9ee2b855b53363877c60353de337a4c1",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C12-0003",
-      "C12-0006"
+      "C12-0009",
+      "C12-0012"
     ],
     "writer-2": [
-      "C12-0004",
-      "C12-0007"
+      "C12-0010"
     ],
     "writer-3": [
-      "C12-0005",
-      "C12-0008"
+      "C12-0011"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "2976359ceefb3a152f0b9c52bf0542ea8fd94c67",
-    "ids": [
-      "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
-      "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
-      "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
-      "chai-pin-la-gi-va-cach-do-dung-luong-thuc-cua-pin-xe-dien",
-      "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
-      "sac-dung-cach-theo-khuyen-cao-nha-san-xuat-huong-dan-chung"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-02T16:21:20.237Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -65,7 +48,7 @@
           "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
           "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
           "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
-          "chai-pin-la-gi-va-cach-do-dung-luong-thuc-cua-pin-xe-dien",
+          "chai-pin-la-gi-va-ca ch-do-dung-luong-thuc-cua-pin-xe-dien",
           "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
           "sac-dung-cach-theo-khuyen-cao-nha-san-xuat-huong-dan-chung"
         ]
@@ -79,6 +62,5 @@
       "completed_at": "2026-10-02T16:21:20.237Z"
     }
   ],
-  "created_at": "2026-10-02T16:02:42.239Z",
-  "updated_at": "2026-10-02T16:21:20.237Z"
+  "created_at": "2026-10-02T16:22:20.506Z"
 }

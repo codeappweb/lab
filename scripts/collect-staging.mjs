@@ -2,7 +2,16 @@
 // collect-staging.mjs — snapshot cac nhanh staging/writer-K (READ-ONLY).
 // Chay trong coordinator (production.yml) SAU khi da git fetch origin.
 // Voi moi writer-K: doc sha cua refs/remotes/origin/staging/writer-K va
-// liet ke file bai moi (A) / sua (M) so voi origin/main, chi _posts/*.md.
+// liet ke file bai moi (added) / sua (repaired) so voi origin/main, chi _posts/*.md.
+// Dung diff HAI-CHAM (origin/main..sha = so sanh NOI DUNG voi main tip):
+//   - file giong het main (con lai tu lich su fork merge-base cu) KHONG dem —
+//     bug cu: diff BA-CHAM (origin/main...sha) dem bai da tich hop la
+//     'added' khi staging fork tu main cu, lam guard tu choi
+//     "day N bai, vuot writer_chunk_size".
+//   - added    = file KHONG ton tai tren main (bai moi).
+//   - repaired = file CO tren main nhung noi dung khac (sua bai da publish).
+// Thong nhat voi apply-staging.mjs (cung hai-cham): collect va apply phai
+// thay dung mot tap file.
 // Ghi:
 //   /tmp/scope.json       — { branches: [{name, sha, added:[], repaired:[]}] }
 //   /tmp/reset-staging.sh — script reset staging ve main HEAD sau khi publish,
@@ -48,11 +57,15 @@ for (let k = 1; k <= writers; k++) {
   if (all.status !== 0) die('git diff that bai cho ' + name);
   const stray = (all.stdout || '').split('\n').map(s => s.trim()).filter(Boolean).filter(p => !/^_posts\/[a-z0-9-]+\.md$/.test(p));
   if (stray.length) die('staging contamination tren ' + name + ': file ngoai _posts/*.md khac main (' + stray.join(', ') + ') — writer KHONG DUOC sua .github/scripts/data/sitemap; reset nhanh ve main HEAD truoc khi day bai.');
-  const a = git(['diff', '--name-only', '--diff-filter=A', 'origin/main...' + sha, '--', '_posts/*.md']);
-  const m = git(['diff', '--name-only', '--diff-filter=M', 'origin/main...' + sha, '--', '_posts/*.md']);
-  if (a.status !== 0 || m.status !== 0) die('git diff that bai cho ' + name);
-  const added = (a.stdout || '').split('\n').map(s => s.trim()).filter(Boolean);
-  const repaired = (m.stdout || '').split('\n').map(s => s.trim()).filter(Boolean);
+  // Hai-cham: chi file THUC SU khac noi dung main moi tinh la thay doi.
+  const changed = git(['diff', '--name-only', 'origin/main..' + sha, '--', '_posts/*.md']);
+  if (changed.status !== 0) die('git diff that bai cho ' + name);
+  const added = [];
+  const repaired = [];
+  for (const f of (changed.stdout || '').split('\n').map(s => s.trim()).filter(Boolean)) {
+    const onMain = spawnSync('git', ['cat-file', '-e', 'origin/main:' + f], { cwd: ROOT }).status === 0;
+    if (onMain) repaired.push(f); else added.push(f);
+  }
   if (added.length || repaired.length) branches.push({ name, sha, added, repaired });
 }
 

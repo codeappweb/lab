@@ -30,11 +30,12 @@ legal_sensitivity: false
 
 ## Ước độ sâu trước khi xuống nước
 
-Đo bằng mắt: nếu nước ngập quá nửa bánh trước hoặc che mất miệng ống xả khi xe nghiêng, đó là ngưỡng vượt tầm an toàn của hầu hết xe máy. Quan sát xe khác: xe máy đi trước mà nước văng cao quá yên, hoặc có xe đã chết máy giữa đoạn, thì đoạn đó không nên thử. Miệng cống bị bUNG trộm mất nắp là nguy hiểm ẩn dưới nước, không nhìn thấy được, nên tránh hẳn các dòng nước chảy ngang mạnh và xoáy. Chưa kể các hố va li hoặc gờ đá chìm dưới mặt nước đục: nước đục luôn giấu mặt đường thực tế.
+Đo bằng mắt: nếu nước ngập quá nửa bánh trước hoặc che mất miệng ống xả khi xe nghiêng, đó là ngưỡng vượt tầm an toàn của hầu hết xe máy. Quan sát xe khác: xe máy đi trước mà nước văng cao quá yên, hoặc có xe đã chết máy giữa đoạn, thì đoạn đó không nên thử. Miệng cống bị mất nắp do trộm là nguy hiểm ẩn dưới nước, không nhìn thấy được, nên tránh hẳn các dòng nước chảy ngang mạnh và xoáy. Chưa kể các hố va li hoặc gờ đá chìm dưới mặt nước đục: nước đục luôn giấu mặt đường thực tế.
 
 ## Khi nào quay đầu
 
-Quay đầu ngay khi: nước chảy ngang qua đường với tốc độ nhìn thấy được, đoạn ngập dài không nhìn thấy bờ kia, xe phía trước đã chết máy, hoặc đoạn ngập nằm ở chân dốc hạ xuống khiến nước sâu bất thình lình. Quay đầu không phải thất bại: một vòng đường thêm mười lăm phút luôn rẻ hơn một lần ngập máy giữa đường. Khi vòng qua tuyến khác, các lưu ý về mặt đường trơn quanh miệng cống và chỗ trũng đã nêu trong bài về [đi xe sau mưa đường trơn]({{ '/di-xe-sau-mua-duong-tron-phanh-som-va-giu-khoang-cach/' | relative_url }}) vẫn áp dụng vì các chỗ này thường ngập cục bộ trước khi cả đường ngập.
+Quay đầu ngay khi: nước chảy ngang qua đường với tốc độ nhìn thấy được, đoạn ngập dài không nhìn thấy bờ kia, xe phía trước đã chết máy, hoặc đoạn ngập nằm ở chân dốc hạ xuống khiến nước sâu bất thình lình. Quay đầu không phải thất bại: một vòng đường thêm mười lăm phút luôn rẻ hơn một lần ngập máy giữa đường. Khi vòng qua tuyến khác, c
+ác lưu ý về mặt đường trơn quanh miệng cống và chỗ trũng đã nêu trong bài về [đi xe sau mưa đường trơn]({{ '/di-xe-sau-mua-duong-tron-phanh-som-va-giu-khoang-cach/' | relative_url }}) vẫn áp dụng vì các chỗ này thường ngập cục bộ trước khi cả đường ngập.
 
 ## Đi qua đoạn ngập nông đúng cách
 

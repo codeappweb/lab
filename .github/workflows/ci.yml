@@ -1,18 +1,30 @@
 name: CI
 
-# Production workflow gọn cho codeappweb/lab:
-#   - Mistral (phiên đăng nhập) viết và xuất bản nội dung; writer commit bài
-#     + derived + checkpoint trong MỘT commit trước khi mở PR.
-#   - CI KHÔNG tự sinh văn bản, KHÔNG commit/push gì vào repo.
-#   - Deploy: GitHub Pages build từ nhánh main (một đường deploy duy nhất).
-#   - Regression tests engine chỉ chạy khi scripts/** hoặc workflow đổi —
-#     áp cho cả PR và push main. Content-only PR chạy gate scoped.
-#   - Full audit sâu chỉ chạy thủ công (workflow_dispatch), artifacts.
+# Hot path MÔNG cho codeappweb/lab:
+#   - Chu ky production (publish(integrated) tren main) KHÔNG chay CI:
+#     coordinator (production.yml) da chay 6 gate + Jekyll build blocking
+#     truoc khi commit — khong duplicate build, khong Pages ci twice.
+#   - CI chi chay khi: PR (bat ky) hoac push main doi engine/workflow
+#     (scripts/**, .github/workflows/**, Gemfile, config, taxonomy, docs,
+#     layouts/includes/assets) hoac workflow_dispatch (full audit thu cong).
+#   - Regression tests chi chay khi engine doi; full audit chi khi dispatch.
 
 on:
   pull_request:
   push:
     branches: [main]
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/**'
+      - 'Gemfile'
+      - '_config.yml'
+      - 'package.json'
+      - 'data/factory-config.json'
+      - 'data/taxonomy.yml'
+      - 'docs/**'
+      - '_layouts/**'
+      - '_includes/**'
+      - 'assets/**'
   workflow_dispatch:
 
 concurrency:
@@ -24,10 +36,10 @@ permissions:
 
 jobs:
   light-qa:
-    name: QA nhẹ (blocking)
-    runs-on: ubuntu-latest
+    name: QA nhẹ (blocking, engine-change)
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Phạm vi thay đổi (engine hay content-only)
@@ -43,16 +55,13 @@ jobs:
             CONTENT=$(echo "$CHANGED" | grep -E "^(_posts/|danh-muc/|hub/).*\.md$" | paste -sd, - || true)
             ROOTMD=$(echo "$CHANGED" | grep -E "^[a-z0-9-]+\.md$" | paste -sd, - || true)
             if [ -n "$ROOTMD" ]; then CONTENT="${CONTENT:+$CONTENT,}$ROOTMD"; fi
-          elif [ "${{ github.event_name }}" = "push" ]; then
-            CHANGED=$(git diff --name-only HEAD^ HEAD || true)
-            if echo "$CHANGED" | grep -qE "^(scripts/|\.github/workflows/)"; then ENGINE=true; fi
           else
             ENGINE=true
           fi
           echo "engine=$ENGINE" >> "$GITHUB_OUTPUT"
           echo "content=$CONTENT" >> "$GITHUB_OUTPUT"
           echo "scope: engine=$ENGINE content=[$CONTENT]"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
       - name: Syntax check mọi script
@@ -60,12 +69,12 @@ jobs:
         run: |
           set -eu
           for f in scripts/*.mjs; do node --check "$f"; done
-      - name: Regression tests (chỉ khi đổi engine/workflow — PR và push main)
+      - name: Regression tests (chỉ khi đổi engine/workflow)
         if: steps.scope.outputs.engine == 'true'
         run: node --test --test-reporter=spec scripts/*.test.mjs
       - name: Manifest + bài viết
         run: node scripts/validate-content.mjs
-      - name: Chất lượng nội dung (front matter, trùng lặp, hỏng)
+      - name: Chất lượng nội dung
         run: node scripts/validate-content-quality.mjs
       - name: Trùng slug/topic (similarity chỉ là WARNING)
         run: node scripts/detect-duplicates.mjs
@@ -80,33 +89,17 @@ jobs:
             echo "Không có file md mới/sửa và không đổi engine — bỏ qua check-links."
           fi
       - name: Sitemap khớp bài viết
-        # Push-driven pair: writer commit CHỈ chứa bài mới trong _posts/ — derived
-        # state (manifest/sitemap) do production.yml sinh NGAY sau đó, và
-        # publish-loop.mjs chạy validate-sitemap.mjs + sync-manifest --dry-run
-        # (blocking) trên trạng thái cuối trước khi commit derived. Trên writer
-        # commit, 2 gate này là false-negative cấu trúc → skip, không phải weaken.
-        run: |
-          set -eu
-          if [ "${{ github.event_name }}" = "push" ] && git diff --name-only --diff-filter=AM HEAD^ HEAD -- '_posts/*.md' | grep -q .; then
-            echo "::notice::writer pair commit (posts chưa có derived) — gate sitemap sẽ chạy trong production.yml publish-loop trên trạng thái cuối."
-          else
-            node scripts/validate-sitemap.mjs
-          fi
+        run: node scripts/validate-sitemap.mjs
       - name: Manifest đồng bộ repo (dry-run, blocking)
-        run: |
-          set -eu
-          if [ "${{ github.event_name }}" = "push" ] && git diff --name-only --diff-filter=AM HEAD^ HEAD -- '_posts/*.md' | grep -q .; then
-            echo "::notice::writer pair commit (posts chưa có derived) — gate manifest dry-run sẽ chạy trong production.yml publish-loop trên trạng thái cuối."
-          else
-            node scripts/sync-manifest.mjs --dry-run
-          fi
+        run: node scripts/sync-manifest.mjs --dry-run
 
   build:
     name: Jekyll build (blocking) + kiểm tra output
-    runs-on: ubuntu-latest
+    needs: light-qa
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
       - uses: ruby/setup-ruby@v1
@@ -114,7 +107,7 @@ jobs:
           ruby-version: '3.1'
           bundler-cache: false
       - name: Cache dependencies (vendor/bundle)
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: vendor/bundle
           key: bundle-${{ runner.os }}-${{ hashFiles('Gemfile') }}
@@ -133,16 +126,16 @@ jobs:
     name: Full audit (chỉ thủ công, không chặn publish)
     if: github.event_name == 'workflow_dispatch'
     needs: [light-qa, build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
       - name: Legal freshness audit
         run: node scripts/legal-freshness-audit.mjs || echo "::warning::legal-freshness-audit trả về khác 0 — xem artifact để đánh giá"
       - name: Upload báo cáo audit (artifact, KHÔNG commit)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: full-audit-report
           path: reports/

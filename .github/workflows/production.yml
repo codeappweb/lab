@@ -1,90 +1,76 @@
-name: Production (push-driven pair)
+name: Production (coordinator)
 
-# PUSH-DRIVEN PAIR PRODUCTION (port y tuong /vanchinh cho codeappweb/lab):
-#   WRITER: fetch fresh main -> scripts/next-pair.mjs (exact IDs) -> viet DUNG
-#           chunk_size (2) bai -> push _posts/... len main NGAY.
-#   FACTORY (workflow nay — deterministic, KHONG AI, KHONG cron):
-#           select EXACT IDs tu chinh push vua roi (NEW = file moi trong
-#           _posts/, REPAIR = file sua) -> claim (publish-loop tu choi slug
-#           da published, file ngoai _posts, vuot hard max) -> derive
-#           repository truth -> 6 gate nhe -> publish transactional: commit
-#           CHI derived allowlist khi moi gate xanh, push lai main (rebase +
-#           revalidate, khong force-push). Moi cap = mot SAFE CHECKPOINT.
-#   HOT PATH KHONG chay: full-site audit, regression tests toan repo, soak,
-#   legal-freshness, full crawl — tat ca nam o ci.yml (workflow_dispatch /
-#   engine-change). Push derived-only khong khop paths filter nen khong tu
-#   kich hoat lai workflow nay (khong vong lap).
+# 3-WRITER STAGED COORDINATOR cho codeappweb/lab (deterministic, KHONG AI,
+# KHONG cron):
+#   WRITERS (writer-1/2/3): chi viet _posts/*.md theo slice deterministic
+#           (scripts/next-pair.mjs --writer writer-K) roi push len nhanh rieng
+#           staging/writer-K. Writer KHONG push main, KHONG cham state chia se
+#           (manifest, checkpoint, sitemap, index, telemetry).
+#   COORDINATOR (workflow nay, singleton queue toan cuc):
+#           settle 30s -> snapshot 3 nhanh staging (collect-staging, read-only)
+#           -> guard (tu choi file ngoai _posts, vuot writer_chunk_size,
+#              vuot integration cap, trung slug giua cac writer, reassign slug
+#              da published; bo qua bai da integrate giong het — idempotent)
+#           -> apply vao working tree -> derive + 6 gate nhe + Jekyll build
+#              BLOCKING + validate-built -> MÔT commit publish tren main
+#              (posts + derived allowlist + telemetry) -> reset staging bang
+#              force-with-lease voi sha DA snapshot.
+#   Moi chu ky = MÔT commit main = MÔT Pages deploy = MÔT SAFE CHECKPOINT.
+#   KHONG force-push main. Reset staging chi tac dong nhanh rieng, lease giu
+#   sha da snapshot nen khong bao gio de len push moi cua writer.
 
 on:
   push:
-    branches: [main]
-    paths: ['_posts/**']
+    branches: ['staging/writer-*']
+  workflow_dispatch:
 
 concurrency:
-  group: production-pair
+  group: production-coordinator
   cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  publish-pair:
-    name: Claim exact IDs -> QA scoped -> publish transactional
-    runs-on: ubuntu-latest
+  integrate:
+    name: Collect staging -> guard -> QA -> one main commit
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
+          ref: main
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - name: Fetch staging branches
+        run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
-      - name: Select exact scope tu push vua roi
-        id: scope
+      - name: Settle (cho cac writer cung chu ky push xong)
+        if: github.event_name == 'push'
         run: |
           set -eu
-          BEFORE='${{ github.event.before }}'
-          AFTER='${{ github.event.after }}'
-          if [ -z "$BEFORE" ] || [ "$BEFORE" = '0000000000000000000000000000000000000000' ]; then
-            ADDED=$(git diff --name-only --diff-filter=A "$AFTER^!" -- '_posts/*.md' || true)
-            REPAIRED=$(git diff --name-only --diff-filter=M "$AFTER^!" -- '_posts/*.md' || true)
-          else
-            ADDED=$(git diff --name-only --diff-filter=A "$BEFORE" "$AFTER" -- '_posts/*.md' || true)
-            REPAIRED=$(git diff --name-only --diff-filter=M "$BEFORE" "$AFTER" -- '_posts/*.md' || true)
-          fi
-          if [ -z "$ADDED$REPAIRED" ]; then
-            echo "Khong co bai NEW/REPAIR trong push — thoat (idempotent)."
-            echo "run=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          CHUNK=$(node -p "JSON.parse(require('fs').readFileSync('data/factory-config.json','utf8')).chunk_size ?? 2")
-          CHUNK_MAX=$(node -p "JSON.parse(require('fs').readFileSync('data/factory-config.json','utf8')).chunk_size_max ?? 2")
-          HARD_MAX=$(node -p "JSON.parse(require('fs').readFileSync('data/factory-config.json','utf8')).hard_max_new_posts_per_push ?? 50")
-          N=$(echo "$ADDED" | grep -c . || true)
-          if [ "$N" -gt "$HARD_MAX" ]; then
-            echo "::error::push $N bai moi vuot hard_max_new_posts_per_push=$HARD_MAX — REFUSED."
-            exit 1
-          fi
-          if [ "$N" -gt "$CHUNK_MAX" ]; then
-            echo "::error::push $N bai NEW vuot chunk_size_max=$CHUNK_MAX — writer viet dung $CHUNK bai moi moi luot (REPAIR thi push rieng)."
-            exit 1
-          fi
-          if [ "$N" -ne "$CHUNK" ]; then
-            echo "::warning::push $N bai NEW (chunk_size=$CHUNK) — van xu ly vi N <= max."
-          fi
-          echo "publish scope: NEW=[$ADDED] REPAIR=[$REPAIRED]"
-          # publish-loop.mjs expects --added as COMMA-separated; GITHUB_OUTPUT
-          # rejects multi-line values -> join before writing outputs.
-          ADDED=$(echo "$ADDED" | paste -sd ',' -)
-          REPAIRED=$(echo "$REPAIRED" | paste -sd ',' -)
-          echo "added=$ADDED" >> "$GITHUB_OUTPUT"
-          echo "repaired=$REPAIRED" >> "$GITHUB_OUTPUT"
-          echo "run=true" >> "$GITHUB_OUTPUT"
-      - name: Publish transaction (commit CHI derived allowlist, khong bao gio viet prose)
-        if: steps.scope.outputs.run == 'true'
+          echo "settle: cho 30s truoc khi snapshot staging (cac writer push gan nhu dong thoi)."
+          sleep 30
+      - name: Collect staging snapshot (read-only)
+        id: collect
+        run: node scripts/collect-staging.mjs
+      - name: Guard (validate scope truoc khi cham main)
+        id: guard
+        run: node scripts/integrate-guard.mjs
+      - name: Publish transaction (posts + derived + telemetry, MÔT commit)
+        if: steps.guard.outputs.noop != 'true'
+        env:
+          ADDED: ${{ steps.guard.outputs.added }}
+          REPAIRED: ${{ steps.guard.outputs.repaired }}
         run: |
           set -eu
-          git checkout -B main
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
-          node scripts/publish-loop.mjs --added "${{ steps.scope.outputs.added }}"
-          echo "publish-pair: transaction hoan tat — derived state da push main; Pages deploy tu main; ci.yml build la light verify."
+          node scripts/apply-staging.mjs
+          node scripts/publish-loop.mjs --integrate --added "$ADDED" --repaired "$REPAIRED"
+      - name: Reset staging branches (force-with-lease = sha da snapshot)
+        if: steps.guard.outputs.noop != 'true' && success()
+        run: sh /tmp/reset-staging.sh
+      - name: Noop (khong co bai moi tren staging)
+        if: steps.guard.outputs.noop == 'true'
+        run: echo "coordinator: staging rong — khong commit, khong deploy, exit 0 (idempotent)."

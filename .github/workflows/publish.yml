@@ -24,13 +24,13 @@ concurrency:
 jobs:
   publish-check:
     if: startsWith(github.head_ref, 'article/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
       - name: Derive publish scope from the full PR commit range
@@ -62,7 +62,7 @@ jobs:
           exit $code
       - name: Upload diagnostics on failure (never commit them)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: publish-diagnostics-${{ github.event.pull_request.number }}
           path: |

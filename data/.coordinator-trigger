@@ -4,9 +4,8 @@ Push mot thay doi bat ky cua file nay len main de chay coordinator NGAY
 (production.yml: push.paths = data/.coordinator-trigger). Noi dung file
 khong co y nghia — chi su thay doi cua no tren main moi trigger.
 
-Trigger update 9 (2026-10-02): RETRY 1x1 (lan 3). Run 37021955434 fail o
-validate-built: link trong bai lop-xe-may-bi-thung bi commit 4eb04df8 ghi
-DE HAI DONG giua URL (newline trong markdown link — check-links khong thay
-vi regex dung o whitespace, Jekyll build ra href dut). Da sua lai link
-ve dich danh-muc hop le /danh-muc/sua-chua/lop-xe/. Ledger reset 0.
+Trigger update 10 (2026-10-02): RETRY 1x1 (lan 4, sau khi bai lop-xe-may-bi-thung
+da duoc sua dung: utf8 double-encode phuc hoi + link dut 2 dong sua ve
+danh-muc/sua-chua/lop-xe). Repro lan 7: toan bo gate EXIT=0, jekyll EXIT=0,
+chi con 1 loi validate-built (link dut) — da fix. Ledger reset 0.
 Expect: publish C12-0002 (writer-1), cycle complete, live 200.

@@ -5,7 +5,7 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c120003",
   "base_sha": "2015237668c56f41bae7cb5b780fc164586d81c0",
-  "status": "failed",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,14 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C12-0002"
+      "C12-0006",
+      "C12-0003",
+      "C12-0004",
+      "C12-0007",
+      "C12-0005",
+      "C12-0008"
     ],
     "slugs": [
-      "chu-ky-sac-xa-la-gi-hieu-tuoi-tho-pin-xe-dien"
+      "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
+      "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
+      "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
+      "chai-pin-la-gi-va-cach-do-dung-luong-thuc-cua-pin-xe-dien",
+      "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
+      "sac-dung-cach-theo-khuyen-cao-nha-san-xuat-huong-dan-chung"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-02T16:17:19.378Z"
+  "updated_at": "2026-10-02T16:19:23.837Z"
 }

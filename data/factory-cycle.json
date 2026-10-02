@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c120003",
   "base_sha": "2015237668c56f41bae7cb5b780fc164586d81c0",
   "coordinator_run_id": null,
-  "phase": "failed",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C12-0003",
@@ -19,7 +19,16 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "bao-quan-pin-mua-dong-o-ha-noi-giu-pin-o-dau-khi-khong-dung",
+      "pin-lfp-va-pin-nmc-khac-biet-quan-trong",
+      "bms-trong-pin-xe-dien-vai-tro-va-dau-hieu-hong",
+      "chai-pin-la-gi-va-cach-do-dung-luong-thuc-cua-pin-xe-dien",
+      "pin-bi-phong-nguyen-nhan-va-cach-xu-ly-an-toan",
+      "sac-dung-cach-theo-khuyen-cao-nha-san-xuat-huong-dan-chung"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -42,5 +51,5 @@
     }
   ],
   "created_at": "2026-10-02T16:02:42.239Z",
-  "updated_at": "2026-10-02T16:17:19.378Z"
+  "updated_at": "2026-10-02T16:18:28.581Z"
 }

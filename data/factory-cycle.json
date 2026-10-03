@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070016",
   "base_sha": "3de1958ab0d87d921219fa738f2b8108562083df",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C07-0016",
@@ -30,7 +30,12 @@
       "sac-xe-may-dien-tai-nha-ban-dem-an-toan-the-nao"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-03T02:11:13.303Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -254,8 +259,31 @@
         "verified_at": "2026-10-03T01:55:58.148Z"
       },
       "completed_at": "2026-10-03T01:55:58.148Z"
+    },
+    {
+      "cycle_id": "cyc-c070016",
+      "base_sha": "3de1958ab0d87d921219fa738f2b8108562083df",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "d4d0572dcf3d7785060b7ae0c00e00e161e09b00",
+        "ids": [
+          "di-xe-giua-trua-he-nong-cach-ngua-say-nang",
+          "muc-phat-khong-doi-mu-bao-hiem-khi-dieu-khien-xe-may",
+          "chua-tran-quoc-buoi-chieu-duong-di-va-gui-xe",
+          "so-sanh-mua-xe-tra-gop-va-tra-thang",
+          "duong-len-mai-chau-doan-kho-va-luu-y-do-xang",
+          "sac-xe-may-dien-tai-nha-ban-dem-an-toan-the-nao"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-03T02:11:13.303Z"
+      },
+      "completed_at": "2026-10-03T02:11:13.303Z"
     }
   ],
   "created_at": "2026-10-03T01:57:31.420Z",
-  "updated_at": "2026-10-03T02:09:58.219Z"
+  "updated_at": "2026-10-03T02:11:13.303Z"
 }

@@ -5,7 +5,7 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c010031",
   "base_sha": "d2069fb63349e4e5bf949e6286688279e4b086a7",
-  "status": "publishing",
+  "status": "complete",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -33,5 +33,5 @@
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T00:55:22.871Z"
+  "updated_at": "2026-10-03T00:56:57.872Z"
 }

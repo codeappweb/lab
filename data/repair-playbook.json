@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "note": "Repair agent (INFRA ONLY). Signature la regex (case-insensitive) khop voi log error lines cua run that bai, thu tu tren xuong. class=safe: auto-fix toi da max_auto_repair_per_signature lan cung signature, roi escalate. class=manual: KHONG bao gio tu fix. Mac dinh (default_class): coi nhu unclear -> escalate, KHONG doan. action = lenh shell fix nho nhat (rong = khong can fix manh, chi retry chu ky sau).",
+  "max_auto_repair_per_signature": 2,
+  "default_class": "manual",
+  "signatures": [
+    {
+      "id": "production-paused",
+      "match": "Production DANG PAUSED",
+      "class": "manual",
+      "action": "",
+      "description": "Run fail vi production dang pause boi repair agent — khong phai loi moi, khong hanh dong."
+    },
+    {
+      "id": "pages-build-transient",
+      "match": "pages build trigger HTTP (5[0-9][0-9]|404)|khong trigger duoc pages build",
+      "class": "safe",
+      "action": "",
+      "description": "Pages build API transient — khong sua gi; chu ky sau tu retry deploy."
+    },
+    {
+      "id": "api-rate-limit",
+      "match": "API rate limit|rate limit exceeded|x-ratelimit-remaining",
+      "class": "safe",
+      "action": "",
+      "description": "GitHub API rate limit — checkpoint, khong poll; chu ky sau retry."
+    },
+    {
+      "id": "content-index-corrupt",
+      "match": "content-index|SQLITE|sqlite",
+      "class": "safe",
+      "action": "node scripts/content-index.mjs --update",
+      "description": "Chi so noi dung (derived SQLite) hong/stale — safe-rebuild tu manifest, KHONG cham bai."
+    },
+    {
+      "id": "bundle-install-transient",
+      "match": "bundle install|Bundler::|Gem::RemoteFetcher|Gem::Error",
+      "class": "safe",
+      "action": "",
+      "description": "RubyGems transient — chu ky sau retry bundle install."
+    }
+  ]
+}

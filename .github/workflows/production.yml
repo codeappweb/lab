@@ -50,6 +50,13 @@ name: Production (coordinator)
 #   Source = GitHub Actions.
 #   YAML QUY DINH: gia tri scalar KHONG quoted KHONG duoc chua ": " — lam
 #   workflow invalid (moi trigger thanh run 0-job fail).
+#   REPAIR AGENT (repair-agent.yml, agent thu 4 — INFRA ONLY): trigger CHI tu
+#   failure event that (workflow_run completed failure cua Production/CI).
+#   Quy trinh: pause production (maintenance lock data/production-state.json,
+#   buoc 0a duoi day) -> inspect dung log job fail -> classify theo
+#   data/repair-playbook.json: safe + chua qua 2 lan cung signature = fix nho
+#   nhat + regression green -> commit -> resume; unclear/major/repeated = KHONG
+#   doan, GIU pause, report blocker. Writer tu fix content-only phia staging.
 
 on:
   # Signal: run cua staging-signal.yml hoan tat (writer push _posts) →
@@ -103,6 +110,11 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
+
+      # ---- 0a. pause gate: repair agent maintenance lock (production DUNG ----
+      # ---- khi repair agent dang giu lock; KHONG chay cycle moi) ------------
+      - name: Production pause check (repair agent maintenance lock)
+        run: node scripts/production-paused.mjs
       - name: Content index cache (SQLite derived — restore, KHÔNG commit)
         uses: actions/cache@v6
         with:
@@ -230,6 +242,13 @@ jobs:
             node scripts/collect-staging.mjs
           fi
 
+      # ---- 1b. pre-push validation (BLOCK truoc khi tam vao main) ----------
+      # Syntax garbage, nhiem CJK, front matter hong, metadata factory sai —
+      # dung o day: staging GIU NGUYEN, writer tu fix content roi push lai.
+      - name: Preflight content validation (syntax + ngon ngu + metadata)
+        id: preflight
+        run: node scripts/validate-writer-post.mjs --from-scope
+
       # ---- 2. guard ---------------------------------------------------------
       - name: Guard (validate scope + cycle origin truoc khi cham main)
         id: guard
@@ -274,6 +293,17 @@ jobs:
           git commit -m "cycle(publishing): coordinator da push $MAIN_SHA — deploy Pages" || true
           git push origin HEAD:main
         id: publish
+
+      # ---- 3b. VERIFY publish commit thuc su tren origin/main TRUOC deploy ----
+      # Neu publish commit chua len origin/main hoac file snapshot khong
+      # byte-identical: DIE — deploy + reset staging DEU BI BLOCK (staging giu
+      # nguyen, khong mat bai — fix root-cause cyc-c050042).
+      - name: Verify published files on origin/main (block deploy + reset)
+        if: steps.guard.outputs.noop != 'true'
+        run: |
+          set -eu
+          git fetch origin main --quiet
+          node scripts/publish-verify.mjs --publication-sha "${{ steps.publish.outputs.main_sha }}"
 
       # ---- 4. MÔT Pages deployment (legacy branch mode — trigger pages build API) ----
       # Repo Pages dang "Deploy from a branch" (co "pages build and deployment"
@@ -332,9 +362,12 @@ jobs:
           git push origin HEAD:main
 
       # ---- 6. reset staging (force-with-lease = sha da snapshot) -----------
-      - name: Reset staging branches (force-with-lease = sha da snapshot)
+      - name: Reset staging branches (safe: verify moi file byte-identical tren origin/main truoc khi reset)
         if: steps.guard.outputs.noop != 'true' && success()
-        run: sh /tmp/reset-staging.sh
+        run: |
+          set -eu
+          git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
+          node scripts/reset-staging-safe.mjs
 
       # ---- 8. chu ky tiep: ngay sau publish + finalize, coordinator tao -------
       # ---- assignment slice moi (writer chi viec doc slice va viet bai) --------
@@ -365,9 +398,13 @@ jobs:
 
       # ---- 7. failure ledger: 2 run fail lien tiep = STOP production -------
       - name: Record failure (increment ledger, cycle -> failed)
-        if: failure()
+        if: failure() || cancelled()
         run: |
           set -eu
+          if node scripts/production-paused.mjs --is-paused; then
+            echo "record-failure: production DANG PAUSED boi repair agent — khong ghi failure ledger (khong phai loi cycle)."
+            exit 0
+          fi
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
           git fetch origin main --quiet || true

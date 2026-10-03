@@ -1,0 +1,79 @@
+name: Repair agent (infrastructure only)
+
+# REPAIR AGENT — agent thu 4, INFRASTRUCTURE ONLY:
+#   - Trigger CHI tu failure event that: workflow_run cua "Production
+#     (coordinator)" hoac "CI" ket thuc FAILURE, hoac dispatch thu cong.
+#     KHONG cron, KHONG schedule, KHONG poll.
+#   - Pause production TRUOC khi thay doi bat ky gi (maintenance lock
+#     data/production-state.json; production.yml check o buoc 0a).
+#   - Inspect DUNG log cac job fail cua run + state lien quan (khong doan).
+#   - Classify theo data/repair-playbook.json:
+#       safe (va chua tu-fix qua 2 lan cung signature) -> fix nho nhat ->
+#       regression tests PHAI green -> commit main -> release lock ->
+#       resume production tu dong.
+#       unclear / major / repeated / manual -> KHONG doan: GIU pause, ghi
+#       reports/repair-latest.json (blocker + log excerpt), run FAIL (bao
+#       hieu cho nguoi quan tri).
+#   - KHONG viet bai, KHONG de bai, KHONG doi content strategy, KHONG sua
+#     architecture lien quan. Writer tu fix content-only phia staging-signal
+#     RED roi push lai.
+
+on:
+  workflow_run:
+    workflows: ['Production (coordinator)', 'CI']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Run id that bai can inspect (rong = run Production fail gan nhat)'
+        type: string
+        default: ''
+
+concurrency:
+  group: repair-agent
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  repair:
+    name: Pause -> inspect -> classify -> smallest fix or escalate
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Pause production (acquire maintenance lock)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/repair-agent.mjs --pause --run-id "${{ inputs.run_id || github.event.workflow_run.id }}"
+      - name: Inspect + classify failure (dung log job fail)
+        id: inspect
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/repair-agent.mjs --inspect --run-id "${{ inputs.run_id || github.event.workflow_run.id }}"
+      - name: Apply smallest fix (chi khi playbook class = safe)
+        if: steps.inspect.outputs.plan == 'safe'
+        run: node scripts/repair-agent.mjs --repair
+      - name: Regression tests (phai green truoc khi resume)
+        if: steps.inspect.outputs.plan == 'safe'
+        run: |
+          set -eu
+          for f in scripts/*.mjs; do node --check "$f"; done
+          node --test scripts/*.test.mjs
+      - name: Commit fix + release lock + resume production
+        if: steps.inspect.outputs.plan == 'safe'
+        run: node scripts/repair-agent.mjs --resume
+      - name: Escalate (unclear/major/repeated — GIU pause, report blocker)
+        if: steps.inspect.outputs.plan == 'escalate'
+        run: |
+          node scripts/repair-agent.mjs --escalate
+          exit 1

@@ -1,14 +1,15 @@
 name: Staging signal (writer output marker)
 
-# SIGNAL WORKFLOW (NHE): writer push _posts/** len staging/writer-K chi TAO MỘT
-# run marker HOAN TAT. KHONG chay coordinator trong context staging, KHONG deploy,
-# KHONG cham main. production.yml (coordinator) trigger workflow_run tren run
-# cua workflow nay — theo dinh nghia GitHub, workflow_run LUON chay tren
-# DEFAULT BRANCH (main): main context + environment github-pages an toan,
-# khong can dispatch API, khong phu thuoc token hay auth cua gh CLI.
-# Paths filter: chi thay doi _posts/** moi signal — push dong bo engine/docs/
-# data len staging KHONG tao fake publication cycle (coordinator xu ly noop
-# idempotent neu van duoc goi).
+# SIGNAL + VALIDATION (NHE): writer push _posts/** len staging/writer-K:
+#   1. VALIDATE noi dung writer (front matter, metadata factory, nhiem CJK,
+#      code fence, link noi boi). Fail RED ngay tren run staging — WRITER TU
+#      FIX content-only (metadata, ky tu loai, format bai) roi push lai.
+#      Run signal chi HOAN TAT (success) khi noi dung hop le.
+#   2. Run marker success -> production.yml trigger workflow_run trong MAIN
+#      context. Run signal FAIL khong trigger coordinator — khong co fake
+#      publication cycle, khong co publishing-tren-bai-hong.
+# production.yml (coordinator) trigger workflow_run tren run cua workflow nay
+# — theo dinh nghia GitHub, workflow_run LUON chay tren DEFAULT BRANCH.
 
 on:
   push:
@@ -24,12 +25,23 @@ permissions:
 
 jobs:
   signal:
-    name: Writer pushed _posts (marker for workflow_run coordinator)
+    name: Validate writer content + record signal (marker for coordinator)
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Fetch main (baseline so sanh)
+        run: git fetch origin main --quiet
+      - name: Validate writer content (fail RED — writer tu fix roi push lai)
+        run: node scripts/validate-writer-post.mjs --ref "${{ github.sha }}" --base origin/main
       - name: Record signal
         run: |
           set -eu
-          echo "signal: _posts pushed to ${{ github.ref_name }} by ${{ github.actor }}."
-          echo "signal: coordinator (production.yml) se duoc trigger qua workflow_run trong MAIN context khi run nay hoan tat."
+          echo "signal: _posts hop le duoc push len ${{ github.ref_name }} boi ${{ github.actor }}."
+          echo "signal: coordinator (production.yml) se trigger qua workflow_run trong MAIN context khi run nay success."

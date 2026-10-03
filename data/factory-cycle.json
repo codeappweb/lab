@@ -1,39 +1,38 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c080018",
-  "base_sha": "1564f6c2e7c3fb992d3415331f2b449939cd80ae",
+  "cycle_id": "cyc-c120017",
+  "base_sha": "30315d3dab0800ff699ef3a68d8fd78059c37a66",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C08-0018",
-      "C11-0018"
+      "C12-0017",
+      "C02-0035",
+      "C05-0041",
+      "C08-0019",
+      "C11-0019",
+      "C02-0036"
     ],
     "writer-2": [
-      "C09-0018",
-      "C12-0018"
+      "C10-0018",
+      "C03-0037",
+      "C06-0019",
+      "C09-0019",
+      "C12-0019",
+      "C03-0038"
     ],
     "writer-3": [
-      "C10-0018",
-      "C01-0036"
+      "C01-0036",
+      "C04-0035",
+      "C07-0019",
+      "C10-0019",
+      "C01-0037",
+      "C04-0036"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "72794c9968d01ff7acdbf65ac58f479f01a812db",
-    "ids": [
-      "lai-suat-tra-gop-xe-may-anh-huong-tong-chi-phi",
-      "vong-ho-tay-bang-xe-dien-nhung-diem-dung-dep",
-      "tram-sac-xe-hai-banh-o-ha-noi-hien-trang-su-dung",
-      "vong-ha-giang-bon-ngay-tu-ha-noi-chia-ngay-cu-the"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T03:38:59.679Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -372,6 +371,5 @@
       "completed_at": "2026-10-03T03:38:59.679Z"
     }
   ],
-  "created_at": "2026-10-03T03:24:04.336Z",
-  "updated_at": "2026-10-03T03:38:59.679Z"
+  "created_at": "2026-10-03T09:09:14.771Z"
 }

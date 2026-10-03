@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "cycle_id": "cyc-c120017",
+  "base_sha": "30315d3dab0800ff699ef3a68d8fd78059c37a66",
+  "rows_total": 18,
+  "writers": {
+    "writer-1": [
+      {
+        "id": "C12-0017",
+        "cluster": "C12",
+        "status": "planned",
+        "primary_topic": "Sạc nhanh pin lithium: Ảnh hưởng tuổi thọ ra sao",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "sac-nhanh-pin-lithium-anh-huong-tuoi-tho-ra-sao",
+        "parent_hub": "/hub/c12/",
+        "entities": [
+          "sạc nhanh",
+          "tuổi thọ pin"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C12-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C02-0035",
+        "cluster": "C02",
+        "status": "planned",
+        "primary_topic": "Xe tay ga tiết kiệm xăng: Thói quen lái ảnh hưởng thế nào",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "xe-tay-ga-tiet-kiem-xang-thoi-quen-lai-anh-huong-the-nao",
+        "parent_hub": "/hub/c02/",
+        "entities": [
+          "thói quen lái",
+          "tiết kiệm xăng"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C02-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C05-0041",
+        "cluster": "C05",
+        "status": "planned",
+        "primary_topic": "Dây curoa xe ga: Tuổi thọ và mốc thay đúng hạn",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "day-curoa-xe-ga-tuoi-tho-va-moc-thay-dung-han",
+        "parent_hub": "/hub/c05/",
+        "entities": [
+          "dây curoa",
+          "mốc thay"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C05-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C08-0019",
+        "cluster": "C08",
+        "status": "planned",
+        "primary_topic": "Chạy thử route ẩm thực bánh mì phố cổ Hà Nội",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "chay-thu-route-am-thuc-banh-mi-pho-co-ha-noi",
+        "parent_hub": "/hub/c08/",
+        "entities": [
+          "route ẩm thực",
+          "bánh mì"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C08-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C11-0019",
+        "cluster": "C11",
+        "status": "planned",
+        "primary_topic": "Xe ga cũ ba năm giá tốt: Cách thương lượng khi mua",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "xe-ga-cu-ba-nam-gia-tot-cach-thuong-luong-khi-mua",
+        "parent_hub": "/hub/c11/",
+        "entities": [
+          "xe ga cũ",
+          "thương lượng"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C11-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C02-0036",
+        "cluster": "C02",
+        "status": "planned",
+        "primary_topic": "Độ tiêu hao nhiên liệu xe 50cc thực tế là bao nhiêu",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "do-tieu-hao-nhien-lieu-xe-50cc-thuc-te-la-bao-nhieu",
+        "parent_hub": "/hub/c02/",
+        "entities": [
+          "xe 50cc",
+          "tiêu hao nhiên liệu"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C02-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      }
+    ],
+    "writer-2": [
+      {
+        "id": "C10-0018",
+        "cluster": "C10",
+        "status": "planned",
+        "primary_topic": "Khoảng cách an toàn với xe tải lớn: Quy tắc cần nhớ",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "khoang-cach-an-toan-voi-xe-tai-lon-quy-tac-can-nho",
+        "parent_hub": "/hub/c10/",
+        "entities": [
+          "xe tải",
+          "khoảng cách"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C10-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C03-0037",
+        "cluster": "C03",
+        "status": "planned",
+        "primary_topic": "Xe điện giảm xóc khi qua gờ giảm tốc: Nguyên nhân",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "xe-dien-giam-xoc-khi-qua-go-giam-toc-nguyen-nhan",
+        "parent_hub": "/hub/c03/",
+        "entities": [
+          "giảm xóc",
+          "xe điện"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C03-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C06-0019",
+        "cluster": "C06",
+        "status": "planned",
+        "primary_topic": "Nên dùng nhớt chính hãng hay nhớt phổ thông",
+        "search_intent": "comparison",
+        "title": "",
+        "slug": "nen-dung-nhot-chinh-hang-hay-nhot-pho-thong",
+        "parent_hub": "/hub/c06/",
+        "entities": [
+          "nhớt chính hãng",
+          "nhớt phổ thông"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C06-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C09-0019",
+        "cluster": "C09",
+        "status": "planned",
+        "primary_topic": "Cao Bằng thác Bản Giốc: Chuẩn bị xe máy đường dài",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "cao-bang-thac-ban-gioc-chuan-bi-xe-may-duong-dai",
+        "parent_hub": "/hub/c09/",
+        "entities": [
+          "Bản Giốc",
+          "đường dài"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C09-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C12-0019",
+        "cluster": "C12",
+        "status": "planned",
+        "primary_topic": "Chu kỳ sạc đầy và tuổi thọ pin: Cách đếm đúng",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "chu-ky-sac-day-va-tuoi-tho-pin-cach-dem-dung",
+        "parent_hub": "/hub/c12/",
+        "entities": [
+          "chu kỳ sạc",
+          "tuổi thọ"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C12-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C03-0038",
+        "cluster": "C03",
+        "status": "planned",
+        "primary_topic": "Bảo dưỡng xe máy điện định kỳ gồm những gì",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "bao-duong-xe-may-dien-dinh-ky-gom-nhung-gi",
+        "parent_hub": "/hub/c03/",
+        "entities": [
+          "bảo dưỡng định kỳ",
+          "xe máy điện"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C03-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      }
+    ],
+    "writer-3": [
+      {
+        "id": "C01-0036",
+        "cluster": "C01",
+        "status": "planned",
+        "primary_topic": "Đặt xe máy ở Hà Nội trước bao lâu là hợp lý",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "dat-xe-may-o-ha-noi-truoc-bao-lau-la-hop-ly",
+        "parent_hub": "/hub/c01/",
+        "entities": [
+          "đặt xe",
+          "Hà Nội"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C01-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C04-0035",
+        "cluster": "C04",
+        "status": "planned",
+        "primary_topic": "Xe đạp điện có cần bằng lái không: Phân loại xe",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "xe-dap-dien-co-can-bang-lai-khong-phan-loai-xe",
+        "parent_hub": "/hub/c04/",
+        "entities": [
+          "bằng lái",
+          "xe đạp điện"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C04-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C07-0019",
+        "cluster": "C07",
+        "status": "planned",
+        "primary_topic": "Thuế trước bạ khi mua xe máy mới: Cách tính",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "thue-truoc-ba-khi-mua-xe-may-moi-cach-tinh",
+        "parent_hub": "/hub/c07/",
+        "entities": [
+          "thuế trước bạ",
+          "mua xe mới"
+        ],
+        "freshness": "low",
+        "needs_official_source": true,
+        "similarity_group": "C07-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C10-0019",
+        "cluster": "C10",
+        "status": "planned",
+        "primary_topic": "Lốp xe xì giữa đường: Dừng xe an toàn từng bước",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "lop-xe-xi-giua-duong-dung-xe-an-toan-tung-buoc",
+        "parent_hub": "/hub/c10/",
+        "entities": [
+          "lốp xì",
+          "dừng xe"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C10-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C01-0037",
+        "cluster": "C01",
+        "status": "planned",
+        "primary_topic": "Thuê xe ga ở Hà Nội một tháng: Chi phí thực tế",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "thue-xe-ga-o-ha-noi-mot-thang-chi-phi-thuc-te",
+        "parent_hub": "/hub/c01/",
+        "entities": [
+          "thuê xe ga",
+          "chi phí thuê"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C01-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C04-0036",
+        "cluster": "C04",
+        "status": "planned",
+        "primary_topic": "Bảo dưỡng xe đạp định kỳ hàng tháng",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "bao-duong-xe-dap-dinh-ky-hang-thang",
+        "parent_hub": "/hub/c04/",
+        "entities": [
+          "bảo dưỡng xe đạp",
+          "hàng tháng"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C04-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      }
+    ]
+  },
+  "created_at": "2026-10-03T09:09:14.771Z"
+}

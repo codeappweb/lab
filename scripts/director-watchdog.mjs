@@ -34,8 +34,7 @@ function writeAgent(patch) {
   const st = readAgent();
   for (const k of Object.keys(patch)) st[k] = Object.assign({}, st[k] || {}, patch[k]);
   mkdirSync(join(ROOT, 'data'), { recursive: true });
-  writeFileSync(AGENT_PATH, JSON.stringify(st, null, 2) + '
-');
+  writeFileSync(AGENT_PATH, JSON.stringify(st, null, 2) + '\n');
   return st;
 }
 function gitCommitPush(msg) {
@@ -135,8 +134,7 @@ async function cmdCheck() {
   // Reset timer + trigger DUNG MÔT production entrypoint — he thong tu fan out 3 writer.
   writeAgent({ director: { last_valid_progress_at: new Date(nowMs).toISOString(), last_trigger_at: new Date(nowMs).toISOString(), last_trigger_note: '2h khong tien tri hop le' } });
   mkdirSync(dirname(TRIGGER_PATH), { recursive: true });
-  writeFileSync(TRIGGER_PATH, new Date(nowMs).toISOString() + '
-');
+  writeFileSync(TRIGGER_PATH, new Date(nowMs).toISOString() + '\n');
   gitCommitPush('director(wake): 2h khong tien tri hop le — trigger MOT production entrypoint (data/.coordinator-trigger)');
   console.log('director: production entrypoint triggered — quay lai idle, timer reset.');
 }

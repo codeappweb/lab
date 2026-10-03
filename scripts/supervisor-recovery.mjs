@@ -36,16 +36,14 @@ function readAgent() {
 function writeState(patch) {
   const st = Object.assign({}, readState(), patch);
   mkdirSync(join(ROOT, 'data'), { recursive: true });
-  writeFileSync(STATE_PATH, JSON.stringify(st, null, 2) + '
-');
+  writeFileSync(STATE_PATH, JSON.stringify(st, null, 2) + '\n');
   return st;
 }
 function writeAgent(patch) {
   const st = readAgent();
   for (const k of Object.keys(patch)) st[k] = Object.assign({}, st[k] || {}, patch[k]);
   mkdirSync(join(ROOT, 'data'), { recursive: true });
-  writeFileSync(AGENT_PATH, JSON.stringify(st, null, 2) + '
-');
+  writeFileSync(AGENT_PATH, JSON.stringify(st, null, 2) + '\n');
   return st;
 }
 function gitCommitPush(msg) {
@@ -110,8 +108,7 @@ async function fetchFailureLogs(headers, runId) {
   const jobs = await ghJson('https://api.github.com/repos/codeappweb/lab/actions/runs/' + runId + '/jobs?per_page=100', headers);
   const texts = [];
   for (const j of (jobs.jobs || [])) if (j.conclusion === 'failure' && j.logs_url) texts.push(await ghText(j.logs_url, headers));
-  return texts.join('
-');
+  return texts.join('\n');
 }
 function dataIntegrity() {
   const files = ['data/production-state.json', 'data/agent-state.json', 'data/factory-cycle.json', 'data/writer-assignments.json'];
@@ -120,8 +117,7 @@ function dataIntegrity() {
     catch (e) { return { ok: false, detail: f + ' khong parse duoc: ' + e.message }; }
   }
   try {
-    readFileSync(join(ROOT, 'data', 'article-manifest.jsonl'), 'utf8').split('
-').filter((l) => l.trim()).forEach((l) => JSON.parse(l));
+    readFileSync(join(ROOT, 'data', 'article-manifest.jsonl'), 'utf8').split('\n').filter((l) => l.trim()).forEach((l) => JSON.parse(l));
   } catch (e) { return { ok: false, detail: 'article-manifest.jsonl co dong hong: ' + e.message }; }
   return { ok: true, detail: 'state/queue/assignments/checkpoint parse OK' };
 }
@@ -149,8 +145,7 @@ function resumeProduction(incidentId, note) {
   writeState({ paused: false, paused_by: null, resumed_at: new Date().toISOString(), resumed_by: 'supervisor-recovery', escalated: false, blocker: null });
   writeAgent({ supervisor: { status: 'resumed', last_incident_id: incidentId, last_action: note }, repair: { status: 'idle', outcome: 'SUCCESS' } });
   mkdirSync(dirname(TRIGGER_PATH), { recursive: true });
-  writeFileSync(TRIGGER_PATH, new Date().toISOString() + '
-'); // production entrypoint duy nhat
+  writeFileSync(TRIGGER_PATH, new Date().toISOString() + '\n'); // production entrypoint duy nhat
   gitCommitPush('supervisor(' + note + '): release lock + resume production qua entrypoint duy nhat (incident ' + incidentId + ')');
   console.log('supervisor: verification/repair GREEN — lock released, production RESUMED (incident ' + incidentId + ').');
 }
@@ -159,14 +154,11 @@ function terminal(incidentId, reason, attempts) {
   a.supervisor = Object.assign({}, a.supervisor || {}, { status: 'terminal', last_incident_id: incidentId });
   a.supervisor.terminal_incidents = (a.supervisor.terminal_incidents || []).concat([incidentId]);
   mkdirSync(join(ROOT, 'data'), { recursive: true });
-  writeFileSync(AGENT_PATH, JSON.stringify(a, null, 2) + '
-');
+  writeFileSync(AGENT_PATH, JSON.stringify(a, null, 2) + '\n');
   mkdirSync(dirname(LEDGER_PATH), { recursive: true });
-  appendFileSync(LEDGER_PATH, JSON.stringify({ ts: new Date().toISOString(), incident_id: incidentId, outcome: 'supervisor-terminal', reason, attempts }) + '
-');
+  appendFileSync(LEDGER_PATH, JSON.stringify({ ts: new Date().toISOString(), incident_id: incidentId, outcome: 'supervisor-terminal', reason, attempts }) + '\n');
   mkdirSync(dirname(REPORT_PATH), { recursive: true });
-  writeFileSync(REPORT_PATH, JSON.stringify({ status: 'blocked — production GIU PAUSE sau chain #4 -> #5', incident_id: incidentId, reason, attempts, ts: new Date().toISOString() }, null, 2) + '
-');
+  writeFileSync(REPORT_PATH, JSON.stringify({ status: 'blocked — production GIU PAUSE sau chain #4 -> #5', incident_id: incidentId, reason, attempts, ts: new Date().toISOString() }, null, 2) + '\n');
   gitCommitPush('supervisor(terminal): incident ' + incidentId + ' — GIU PAUSE, blocker xem reports/supervisor-latest.json (chain #4 -> #5 -> human DONE)');
   console.log('::error::SUPERVISOR BLOCKER: ' + reason + ' — production paused, can nguoi quan tri xem reports/supervisor-latest.json. STOP.');
   process.exit(1);
@@ -188,8 +180,7 @@ async function cmdRun(incidentArg) {
   writeAgent({ supervisor: { status: 'running', last_incident_id: incidentId } });
   if (outcome === 'SUCCESS') {
     const checks = await verifySuite(headers);
-    console.log(checks.map((c) => '  ' + c.name + ': ' + (c.ok ? 'OK' : 'FAIL ' + c.detail)).join('
-'));
+    console.log(checks.map((c) => '  ' + c.name + ': ' + (c.ok ? 'OK' : 'FAIL ' + c.detail)).join('\n'));
     if (verificationVerdict(checks)) { resumeProduction(incidentId, 'verify-green'); return; }
     writeState({ paused: true, paused_by: 'supervisor-recovery', paused_at: new Date().toISOString(), escalated: true, blocker: 'supervisor-verify-failed' });
     terminal(incidentId, 'verification KHONG green sau #4 SUCCESS: ' + checks.filter((c) => !c.ok).map((c) => c.name).join(', '), ['verify-only']);
@@ -209,8 +200,7 @@ async function cmdRun(incidentArg) {
   const checks = await verifySuite(headers);
   if (verificationVerdict(checks)) {
     mkdirSync(dirname(LEDGER_PATH), { recursive: true });
-    appendFileSync(LEDGER_PATH, JSON.stringify({ ts: new Date().toISOString(), incident_id: incidentId, outcome: 'supervisor-repaired', signature: sig.id, action: plan.action }) + '
-');
+    appendFileSync(LEDGER_PATH, JSON.stringify({ ts: new Date().toISOString(), incident_id: incidentId, outcome: 'supervisor-repaired', signature: sig.id, action: plan.action }) + '\n');
     resumeProduction(incidentId, 'second-line-repair-green');
     return;
   }

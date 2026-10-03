@@ -1,0 +1,44 @@
+name: Director watchdog (agent 6)
+
+# DIRECTOR/WATCHDOG — agent thu 6, MÔT job duy nhat: wake production neu 2 gio
+# lien tuc KHONG co tien tri hop le (writer staging that, publish/integration
+# tien tri, chu ky hoan tat). Heartbeat, log, check, poll, that bai KHONG tinh.
+# Truoc khi trigger bat buoc xac minh: #4 idle, #5 idle, khong maintenance lock,
+# production khong pause chu dong, khong writer cycle active, khong
+# publisher/integration/build/deploy dang chay. Neu co -> khong lam gi, cho tiep.
+# Sau 2h im lang that su: trigger DUNG MÔT production entrypoint (commit
+# data/.coordinator-trigger tren main) — he thong production tu allocate + fan
+# out 3 writer. KHONG tay writer rieng le, KHONG duplicate cycle, KHONG cancel
+# run active, KHONG repair, KHONG sua content/queue/manifest/SQLite/workflow.
+# Sau khi trigger mot lan: reset timer, quay lai idle.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: director-watchdog
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  watch:
+    name: Wake production sau 2h khong tien tri
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Director check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/director-watchdog.mjs --check

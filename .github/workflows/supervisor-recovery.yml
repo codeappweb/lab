@@ -1,0 +1,54 @@
+name: Supervisor recovery (agent 5)
+
+# SUPERVISOR/RECOVERY — agent thu 5, INFRA ONLY:
+#   - Chi chay SAU khi Repair Agent (#4) ket thuc (SUCCESS hoac ESCALATE):
+#     trigger = workflow_run cua "Repair agent" completed + guard trong script
+#     (tu choi neu #4 con run in-progress hoac chua co ket qua). KHONG schedule.
+#   - Concurrency group rieng + trigger completed => #4 va #5 khong bao gio
+#     chay dong thoi.
+#   - #4 SUCCESS -> #5 doc lap verify (syntax, regression, manifest, sitemap,
+#     content, CI green, state/queue/assignments/checkpoint). Green -> release
+#     lock + resume production QUA production entrypoint duy nhat
+#     (data/.coordinator-trigger). Khong green -> pause lai + report + terminal.
+#   - #4 ESCALATE -> #5 MÔT second-line diagnosis + MÔT repair attempt nho nhat
+#     (chi khi playbook class = safe); regression green -> release lock + resume.
+#     Nguoc lai -> GIU pause, reports/supervisor-latest.json, STOP.
+#   - Chain toi da moi incident: #4 mot lan -> #5 mot lan -> human report.
+#   - KHONG viet bai, KHONG de bai, KHONG doi content strategy.
+
+on:
+  workflow_run:
+    workflows: ['Repair agent (infrastructure only)']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      incident_id:
+        description: 'Incident id (rong = doc tu production-state)'
+        type: string
+        default: ''
+
+concurrency:
+  group: supervisor-recovery
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  supervise:
+    name: Guard + verify hoac second-line (mot lan moi incident)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Supervisor run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/supervisor-recovery.mjs --run --incident "${{ inputs.incident_id || github.event.workflow_run.id }}"

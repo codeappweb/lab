@@ -1,0 +1,17 @@
+{
+  "repair": {
+    "status": "idle",
+    "incident_id": null,
+    "outcome": null,
+    "finished_at": null
+  },
+  "supervisor": {
+    "status": "idle",
+    "last_incident_id": null,
+    "terminal_incidents": []
+  },
+  "director": {
+    "last_valid_progress_at": null,
+    "last_trigger_at": null
+  }
+}

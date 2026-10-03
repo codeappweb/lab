@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070015",
   "base_sha": "45d1255669d37e75f5f9091334b95e2baa0bffc9",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C07-0015",
@@ -30,7 +30,12 @@
       "suy-giam-pin-xe-may-dien-sau-hai-nam-con-so-thuc-te"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-03T01:39:53.906Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -208,8 +213,31 @@
         "verified_at": "2026-10-03T01:20:37.529Z"
       },
       "completed_at": "2026-10-03T01:20:37.529Z"
+    },
+    {
+      "cycle_id": "cyc-c070015",
+      "base_sha": "45d1255669d37e75f5f9091334b95e2baa0bffc9",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "577b9804960fcbfd222e5ce5c28d3f1a1d19829e",
+        "ids": [
+          "the-xanh-xe-may-la-gi-va-ap-dung-voi-ai",
+          "xe-may-chet-may-giua-duong-dong-xu-ly-an-toan",
+          "di-tay-ho-bang-xe-dap-buoi-sang-tuyen-duong-dep",
+          "dinh-gia-xe-may-cu-theo-so-km-da-chay",
+          "phuot-ninh-binh-trang-an-xuat-phat-tu-ha-noi",
+          "suy-giam-pin-xe-may-dien-sau-hai-nam-con-so-thuc-te"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-03T01:39:53.906Z"
+      },
+      "completed_at": "2026-10-03T01:39:53.906Z"
     }
   ],
   "created_at": "2026-10-03T01:24:20.428Z",
-  "updated_at": "2026-10-03T01:38:08.533Z"
+  "updated_at": "2026-10-03T01:39:53.906Z"
 }

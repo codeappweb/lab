@@ -3,11 +3,11 @@
   "phase": "smart-blog-app",
   "content_budget_total": 3000,
   "articles": {
-    "planned": 270,
+    "planned": 264,
     "researching": 0,
     "drafted": 0,
     "qa": 0,
-    "published": 271,
+    "published": 277,
     "merged": 0,
     "skipped": 0,
     "update_needed": 0,
@@ -281,5 +281,5 @@
     "publish_verification": "sitemap 43 URL (có 22 post + danh mục), assets/search.json 35 entry, homepage hiển thị 22 bài — deploy live đã xác nhận"
   },
   "manifest_rows": 541,
-  "posts_on_disk": 271
+  "posts_on_disk": 277
 }

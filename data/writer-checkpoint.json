@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c010032",
-  "base_sha": "7ff085c71f1910e76f78d59aa6eb1d82fcd9d73b",
-  "status": "complete",
+  "cycle_id": "cyc-c070015",
+  "base_sha": "45d1255669d37e75f5f9091334b95e2baa0bffc9",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C01-0032",
-      "C04-0031",
-      "C02-0031",
-      "C05-0037",
-      "C03-0033",
-      "C06-0015"
+      "C07-0015",
+      "C10-0015",
+      "C08-0015",
+      "C11-0015",
+      "C09-0015",
+      "C12-0015"
     ],
     "slugs": [
-      "thue-xe-dien-o-ha-noi-tron-goi-cho-nguoi-moi",
-      "xe-dap-dien-cho-nguoi-trung-nien-diem-can-can-nhac",
-      "danh-gia-xe-50cc-cho-hoc-sinh-sinh-vien-uu-va-nhuoc-diem",
-      "xe-may-hao-xang-bat-thuong-kiem-tra-theo-trinh-tu",
-      "di-xe-may-dien-trong-mua-to-can-chu-y-gi",
-      "ma-phanh-dia-va-ma-phanh-trong-khac-biet-thuc-te"
+      "the-xanh-xe-may-la-gi-va-ap-dung-voi-ai",
+      "xe-may-chet-may-giua-duong-dong-xu-ly-an-toan",
+      "di-tay-ho-bang-xe-dap-buoi-sang-tuyen-duong-dep",
+      "dinh-gia-xe-may-cu-theo-so-km-da-chay",
+      "phuot-ninh-binh-trang-an-xuat-phat-tu-ha-noi",
+      "suy-giam-pin-xe-may-dien-sau-hai-nam-con-so-thuc-te"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T01:20:37.530Z"
+  "updated_at": "2026-10-03T01:38:07.295Z"
 }

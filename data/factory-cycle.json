@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070015",
   "base_sha": "45d1255669d37e75f5f9091334b95e2baa0bffc9",
   "coordinator_run_id": null,
-  "phase": "allocated",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C07-0015",
@@ -19,7 +19,16 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "the-xanh-xe-may-la-gi-va-ap-dung-voi-ai",
+      "xe-may-chet-may-giua-duong-dong-xu-ly-an-toan",
+      "di-tay-ho-bang-xe-dap-buoi-sang-tuyen-duong-dep",
+      "dinh-gia-xe-may-cu-theo-so-km-da-chay",
+      "phuot-ninh-binh-trang-an-xuat-phat-tu-ha-noi",
+      "suy-giam-pin-xe-may-dien-sau-hai-nam-con-so-thuc-te"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -201,5 +210,5 @@
     }
   ],
   "created_at": "2026-10-03T01:24:20.428Z",
-  "updated_at": "2026-10-03T01:24:20.428Z"
+  "updated_at": "2026-10-03T01:37:32.000Z"
 }

@@ -2,10 +2,12 @@ name: Production (coordinator)
 
 # 3-WRITER STAGED COORDINATOR cho codeappweb/lab (deterministic, KHONG AI,
 # KHONG cron):
-#   WRITERS (writer-1/2/3): chay `next-pair.mjs --allocate` (MOT lan dau chu
-#           ky, tao data/factory-cycle.json: cycle_id + base_sha + assignment
-#           plan bat bien, MÔT commit tren main) roi `next-pair.mjs --writer
-#           writer-K` — doc dung plan cua cycle, KHONG tu derive tu HEAD moi.
+#   WRITERS (writer-1/2/3): KHONG doc manifest, KHONG tu allocate. COORDINATOR
+#           (buoc 0d) chay `next-pair.mjs --allocate` — tao data/factory-cycle.json
+#           + data/writer-assignments.json (slice row du lieu day du cho tung
+#           writer, MÔT commit tren main, message cycle(allocate)). Writer chi
+#           chay `next-pair.mjs --writer writer-K` — doc dung slice cua minh
+#           tu assignment file, KHONG tu derive tu HEAD moi, KHONG doc manifest.
 #           Writer chi viet _posts/*.md kem factory metadata, push len nhanh
 #           rieng staging/writer-K. KHONG push main, KHONG cham state chia se.
 #   SIGNAL (staging-signal.yml, NHE): push _posts/** len staging/writer-* chi
@@ -180,6 +182,30 @@ jobs:
           set -eu
           node scripts/cycle-phase.mjs --resume
 
+      # ---- 0d. cycle allocate (coordinator tao assignment slice cho writer; -----
+      # ---- writer KHONG doc manifest — chi doc data/writer-assignments.json) ---
+      - name: Cycle allocate (cap slice cho writer khi khong con cycle mo)
+        run: |
+          set -eu
+          PHASE=$(node -e 'try { console.log(JSON.parse(require("fs").readFileSync("data/factory-cycle.json", "utf8")).phase || "idle"); } catch (e) { console.log("idle"); }')
+          if [ "$PHASE" != "idle" ] && [ "$PHASE" != "complete" ]; then
+            echo "cycle dang o phase $PHASE (recoverable/active) — khong tu allocate."
+            exit 0
+          fi
+          if ! node scripts/next-pair.mjs --allocate; then
+            echo "::warning::allocate tu choi (het row hop le hoac drift) — khong tao cycle moi; xem log tren."
+            exit 0
+          fi
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          git add data/factory-cycle.json data/writer-assignments.json
+          if git diff --cached --quiet; then
+            echo "allocate: khong co thay doi — khong commit."
+            exit 0
+          fi
+          git commit -m "cycle(allocate): $(node -e 'console.log(JSON.parse(require("fs").readFileSync("data/factory-cycle.json", "utf8")).cycle_id)')"
+          git push origin HEAD:main
+
       # ---- 1. cho du output cac writer cua cycle, roi snapshot --------------
       - name: Collect staging snapshot (wait for cycle writers, read-only)
         id: collect
@@ -309,6 +335,28 @@ jobs:
       - name: Reset staging branches (force-with-lease = sha da snapshot)
         if: steps.guard.outputs.noop != 'true' && success()
         run: sh /tmp/reset-staging.sh
+
+      # ---- 8. chu ky tiep: ngay sau publish + finalize, coordinator tao -------
+      # ---- assignment slice moi (writer chi viec doc slice va viet bai) --------
+      - name: Cycle allocate (chu ky tiep — assignment moi ngay sau publish)
+        if: steps.guard.outputs.noop != 'true' && success()
+        run: |
+          set -eu
+          git checkout main
+          git pull --ff-only origin main
+          if ! node scripts/next-pair.mjs --allocate; then
+            echo "::warning::allocate tu choi (het row hop le hoac drift) — khong tao cycle moi; xem log tren."
+            exit 0
+          fi
+          git config user.name 'lab-factory'
+          git config user.email 'codeappweb@users.noreply.github.com'
+          git add data/factory-cycle.json data/writer-assignments.json
+          if git diff --cached --quiet; then
+            echo "allocate: khong co thay doi — khong commit."
+            exit 0
+          fi
+          git commit -m "cycle(allocate): $(node -e 'console.log(JSON.parse(require("fs").readFileSync("data/factory-cycle.json", "utf8")).cycle_id)')"
+          git push origin HEAD:main
 
       - name: Noop (khong co bai moi tren staging)
         if: steps.guard.outputs.noop == 'true'

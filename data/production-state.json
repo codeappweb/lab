@@ -3,10 +3,10 @@
   "paused_by": "repair-agent",
   "resumed_at": "2026-10-03T14:07:37.359Z",
   "resumed_by": "recovery(cyc-c050042)",
-  "run_id": "37128550402",
-  "reason": "infra failure run 37128550402",
-  "escalated": true,
+  "run_id": "37138460475",
+  "reason": "infra failure run 37138460475",
+  "escalated": false,
   "blocker": "unclassified",
   "incident_resolved": true,
-  "paused_at": "2026-10-03T14:08:11.233Z"
+  "paused_at": "2026-10-03T16:52:53.579Z"
 }

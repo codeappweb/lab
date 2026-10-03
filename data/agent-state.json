@@ -6,9 +6,11 @@
     "finished_at": null
   },
   "supervisor": {
-    "status": "idle",
-    "last_incident_id": null,
-    "terminal_incidents": []
+    "status": "terminal",
+    "last_incident_id": "37118189364",
+    "terminal_incidents": [
+      "37118189364"
+    ]
   },
   "director": {
     "last_valid_progress_at": null,

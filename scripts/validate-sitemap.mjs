@@ -67,11 +67,34 @@ for (const loc of indexUrls) {
 function postSlug(f) { return f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, ''); }
 const posts = existsSync(join(ROOT, '_posts')) ? readdirSync(join(ROOT, '_posts')).filter(f => f.endsWith('.md')) : [];
 const eligible = new Set();
-for (const f of posts) {
-  const text = readFileSync(join(ROOT, '_posts', f), 'utf8');
-  const fmRaw = text.split('\n---')[0] || '';
-  if (/noindex:\s*true/.test(fmRaw) || /sitemap:\s*false/.test(fmRaw)) continue; // not eligible
-  eligible.add(SITE + '/' + postSlug(f) + '/');
+const SCOPED_S = process.argv.includes('--only');
+if (!SCOPED_S) {
+  for (const f of posts) {
+    const text = readFileSync(join(ROOT, '_posts', f), 'utf8');
+    const fmRaw = text.split('\n---')[0] || '';
+    if (/noindex:\s*true/.test(fmRaw) || /sitemap:\s*false/.test(fmRaw)) continue; // not eligible
+    eligible.add(SITE + '/' + postSlug(f) + '/');
+  }
+} else {
+  // Scoped: eligible từ content-index (slug + cờ eligible ghi lúc QA bài) —
+  // KHÔNG đọc lại mọi post. Fail-closed: post thiếu row index → LỖI.
+  let idxRowsS = null;
+  try {
+    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
+    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
+    idxRowsS = new Map(rawIdx.split('\n').filter(Boolean).map(l => {
+      const r = JSON.parse(l);
+      return [r.path, r];
+    }));
+  } catch (e) {
+    errs.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    idxRowsS = new Map();
+  }
+  for (const f of posts) {
+    const r = idxRowsS.get('_posts/' + f);
+    if (!r) { errs.push('_posts/' + f + ': không có trong content-index — rebuild index (fail-closed)'); continue; }
+    if (r.eligible) eligible.add(SITE + '/' + postSlug(f) + '/');
+  }
 }
 const sitemapArticles = new Set([...urlsetUrls].filter(u => {
   const rel = u.slice(SITE.length);

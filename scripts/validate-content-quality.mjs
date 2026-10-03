@@ -20,6 +20,28 @@ const ROOT = process.cwd();
 const errors = [];
 const warnings = [];
 
+// Scoped QA qua content-index: --only a,b chỉ deep-check file liệt kê; file
+// nội dung site khác chỉ được tin khi index row qa_status=passed. Full mode
+// (mặc định — CI/full audit) đọc TOÀN BỘ file như cũ: KHÔNG yếu đi.
+const onlyIdxQ = process.argv.indexOf('--only');
+const SCOPED_Q = onlyIdxQ !== -1;
+const ONLY_Q = SCOPED_Q ? (process.argv[onlyIdxQ + 1] || '').split(',').map(s => s.trim()).filter(Boolean) : null;
+const isSiteContent = rel => rel.startsWith('_posts/') || rel.startsWith('danh-muc/') || rel.startsWith('hub/') || /^[a-z0-9-]+\.md$/.test(rel);
+let idxRowsQ = null;
+if (SCOPED_Q) {
+  idxRowsQ = new Map();
+  try {
+    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
+    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
+    for (const l of rawIdx.split('\n').filter(Boolean)) {
+      const r = JSON.parse(l);
+      idxRowsQ.set(r.path, r);
+    }
+  } catch (e) {
+    errors.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+  }
+}
+
 const TECH_WHITELIST = /\b(BMS|GPS|LFP|Lithium|Smartkey|CVT|LED|ABS|A1|A2|Watt|Ah|km\/h|cc)\b/;
 const CJK = /[一-鿿぀-ヿ가-힯]/;
 const UNDEF = /undefined/;
@@ -78,6 +100,16 @@ for (const f of mdFiles) {
 
   if (UNDEF.test(name)) errors.push(rel + ': filename contains "undefined"');
   if (/\s/.test(name)) errors.push(rel + ': filename contains whitespace');
+
+  // Scoped QA: file không nằm trong scope chu kỳ này — tin content-index
+  // (fail-closed khi thiếu row / row chưa qua QA). Không đọc lại nội dung.
+  if (SCOPED_Q && !ONLY_Q.includes(rel)) {
+    if (isTechnicalDoc(rel) || !isSiteContent(rel)) continue;
+    const r = idxRowsQ.get(rel);
+    if (!r) errors.push(rel + ': không có trong content-index — rebuild index (fail-closed)');
+    else if (r.qa_status !== 'passed') errors.push(rel + ': qa_status=' + r.qa_status + ' trong content-index — thay đổi chưa qua QA');
+    continue;
+  }
 
   const text = readFileSync(f, 'utf8');
   const parsed = parseFrontMatter(text);

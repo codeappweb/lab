@@ -4,6 +4,16 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 const ROOT = new URL('..', import.meta.url).pathname;
 const errs = [], warns = [];
+// Scoped QA qua content-index (data/content-index.jsonl):
+//   --only a,b     : deep-check ĐÚNG các file liệt kê; post khác chỉ được tin
+//                    khi index có row qa_status=passed (KHÔNG đọc lại bài cũ).
+//   --only none    : chỉ kiểm manifest + index PHỦ mọi post (refill path).
+// Fail-closed: scoped mà index thiếu/hỏng → LỖI, không suy đoán.
+const onlyIdx = process.argv.indexOf('--only');
+const ONLY_RAW = onlyIdx !== -1 ? (process.argv[onlyIdx + 1] ?? '') : null;
+const SCOPED = onlyIdx !== -1 && ONLY_RAW !== 'none';
+const NONE_MODE = onlyIdx !== -1 && ONLY_RAW === 'none';
+const ONLY = SCOPED ? ONLY_RAW.split(',').map(s => s.trim()).filter(Boolean) : null;
 const lines = readFileSync(ROOT + 'data/article-manifest.jsonl', 'utf8').split('\n').filter(Boolean);
 const seen = new Set();
 const STATUS = ['planned','drafting','review','published','skip'];
@@ -25,7 +35,32 @@ for (const r of recs) {
     if (!f) errs.push(`${r.id}: status=published but no post file for slug "${r.slug}"`);
   }
 }
+// content-index cho scoped/none mode (fail-closed khi thiếu/hỏng)
+let idxRows = null;
+if (SCOPED || NONE_MODE) {
+  idxRows = new Map();
+  try {
+    const rawIdx = readFileSync(ROOT + 'data/content-index.jsonl', 'utf8');
+    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
+    for (const l of rawIdx.split('\n').filter(Boolean)) {
+      const r = JSON.parse(l);
+      idxRows.set(r.path, r);
+    }
+  } catch (e) {
+    errs.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    idxRows = new Map();
+  }
+}
 for (const f of posts) {
+  const rel = '_posts/' + f;
+  const inScope = SCOPED && ONLY.includes(rel);
+  if ((SCOPED && !inScope) || NONE_MODE) {
+    // bài cũ không đổi trong chu kỳ này: tin content-index (fail-closed)
+    const r = idxRows.get(rel);
+    if (!r) errs.push(`${rel}: không có trong content-index — rebuild index (fail-closed)`);
+    else if (SCOPED && r.qa_status !== 'passed') errs.push(`${rel}: qa_status=${r.qa_status} trong content-index — bài thay đổi chưa qua QA`);
+    continue;
+  }
   const md = readFileSync(ROOT + '_posts/' + f, 'utf8');
   for (const k of ['title:','date:','cluster:']) if (!md.includes(k)) errs.push(`${f}: front matter thiếu ${k}`);
   // manifest_id liên kết bài với manifest; sync-manifest tự reconciled theo slug

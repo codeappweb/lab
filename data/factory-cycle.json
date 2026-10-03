@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c080018",
   "base_sha": "1564f6c2e7c3fb992d3415331f2b449939cd80ae",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C08-0018",
@@ -20,6 +20,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "72794c9968d01ff7acdbf65ac58f479f01a812db",
     "ids": [
       "lai-suat-tra-gop-xe-may-anh-huong-tong-chi-phi",
       "vong-ho-tay-bang-xe-dien-nhung-diem-dung-dep",
@@ -346,5 +347,5 @@
     }
   ],
   "created_at": "2026-10-03T03:24:04.336Z",
-  "updated_at": "2026-10-03T03:35:51.261Z"
+  "updated_at": "2026-10-03T03:37:04.268Z"
 }

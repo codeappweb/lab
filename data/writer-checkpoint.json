@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c070016",
-  "base_sha": "3de1958ab0d87d921219fa738f2b8108562083df",
-  "status": "complete",
+  "cycle_id": "cyc-c010034",
+  "base_sha": "fc999319130096f0cc49cc076267fa5359e83e8c",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C10-0016",
-      "C07-0016",
-      "C08-0016",
-      "C11-0016",
-      "C09-0016",
-      "C12-0016"
+      "C01-0034",
+      "C04-0033",
+      "C05-0039",
+      "C02-0033",
+      "C03-0035",
+      "C06-0017"
     ],
     "slugs": [
-      "di-xe-giua-trua-he-nong-cach-ngua-say-nang",
-      "muc-phat-khong-doi-mu-bao-hiem-khi-dieu-khien-xe-may",
-      "chua-tran-quoc-buoi-chieu-duong-di-va-gui-xe",
-      "so-sanh-mua-xe-tra-gop-va-tra-thang",
-      "duong-len-mai-chau-doan-kho-va-luu-y-do-xang",
-      "sac-xe-may-dien-tai-nha-ban-dem-an-toan-the-nao"
+      "so-sanh-thue-xe-may-va-xe-dien-khi-du-lich-ha-noi",
+      "xe-dap-touring-cho-cung-duong-bac-viet-chon-khung",
+      "phanh-xe-may-keu-luc-cuc-xu-ly-dung-cach",
+      "so-sanh-xe-so-va-xe-ga-cho-nguoi-moi-lai",
+      "chi-phi-dien-moi-thang-cua-xe-may-dien-thuc-te",
+      "lop-xe-scooter-size-pho-bien-cach-doc-chi-so"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T02:11:13.304Z"
+  "updated_at": "2026-10-03T02:26:06.846Z"
 }

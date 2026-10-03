@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c010031",
-  "base_sha": "d2069fb63349e4e5bf949e6286688279e4b086a7",
+  "cycle_id": "cyc-c070014",
+  "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C01-0031",
-      "C04-0030"
+      "C07-0014",
+      "C10-0014"
     ],
     "writer-2": [
-      "C02-0030",
-      "C05-0036"
+      "C08-0014",
+      "C11-0014"
     ],
     "writer-3": [
-      "C03-0032",
-      "C06-0014"
+      "C09-0014",
+      "C12-0014"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "5c35609cfe796ac0e1ab1eaea7f107b06e9f94fa",
-    "ids": [
-      "thue-xe-may-tu-lai-ha-noi-nguoi-nuoc-ngoai-can-chuan-bi-gi",
-      "xe-dap-di-lam-moi-ngay-o-ha-noi-chon-loai-nao",
-      "de-xe-yeu-buoi-sang-nguyen-nhan-pho-bien",
-      "xe-ga-125cc-cho-nu-chon-mau-nao-ben-va-nhe",
-      "chon-nhot-cho-xe-so-doi-may-cu-loai-nao-phu-hop",
-      "chon-xe-may-dien-cho-nguoi-di-lam-xa-tieu-chi-nao"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T00:56:57.871Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -167,8 +152,31 @@
         "verified_at": "2026-10-03T00:56:57.871Z"
       },
       "completed_at": "2026-10-03T00:56:57.871Z"
+    },
+    {
+      "cycle_id": "cyc-c010031",
+      "base_sha": "d2069fb63349e4e5bf949e6286688279e4b086a7",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "5c35609cfe796ac0e1ab1eaea7f107b06e9f94fa",
+        "ids": [
+          "thue-xe-may-tu-lai-ha-noi-nguoi-nuoc-ngoai-can-chuan-bi-gi",
+          "xe-dap-di-lam-moi-ngay-o-ha-noi-chon-loai-nao",
+          "de-xe-yeu-buoi-sang-nguyen-nhan-pho-bien",
+          "xe-ga-125cc-cho-nu-chon-mau-nao-ben-va-nhe",
+          "chon-nhot-cho-xe-so-doi-may-cu-loai-nao-phu-hop",
+          "chon-xe-may-dien-cho-nguoi-di-lam-xa-tieu-chi-nao"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-03T00:56:57.871Z"
+      },
+      "completed_at": "2026-10-03T00:56:57.871Z"
     }
   ],
-  "created_at": "2026-10-03T00:37:11.318Z",
-  "updated_at": "2026-10-03T00:56:57.871Z"
+  "created_at": "2026-10-03T00:57:34.029Z",
+  "updated_at": "2026-10-03T00:57:34.029Z"
 }

@@ -1,17 +1,16 @@
 {
   "repair": {
     "status": "idle",
-    "incident_id": "37114720761",
+    "incident_id": "37128570543",
     "outcome": "SUCCESS",
-    "finished_at": "2026-10-03T14:07:37.359Z"
+    "finished_at": "2026-10-03T16:53:11.429Z"
   },
   "supervisor": {
-    "status": "terminal",
-    "last_incident_id": "37138474187",
+    "status": "idle",
+    "last_incident_id": "37128570543",
     "terminal_incidents": [
       "37118189364",
-      "37128570543",
-      "37138474187"
+      "37128570543"
     ]
   },
   "director": {
@@ -29,7 +28,14 @@
         "a7538c7e",
         "c66ee61e"
       ],
-      "evidence": "reports/incident-cyc-c050042-resolution.json"
+      "evidence": "reports/incident-cyc-c050042-resolution.json",
+      "content_blocker_resolution": {
+        "run_id": "37128550402",
+        "failed_step": "publish transaction — internal link gate",
+        "broken_link": "/xe-tay-ga-tiet-kiem-xang-thoi-quan-lai-anh-huong-the-nao",
+        "fix": "href-only 1 ky tu: thoi-quan -> thoi-quen (bai dich da xuat ban _posts/2026-10-03-xe-tay-ga-tiet-kiem-xang-thoi-quen-lai-anh-huong-the-nao.md); anchor giu nguyen; staging/writer-1 commit 76814ef7",
+        "fixed_at": "2026-10-03T16:53:11.429Z"
+      }
     }
   }
 }

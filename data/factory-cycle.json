@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c010034",
-  "base_sha": "fc999319130096f0cc49cc076267fa5359e83e8c",
+  "cycle_id": "cyc-c070017",
+  "base_sha": "57a2634cb2b48fc243c84fee9370c44f78e71425",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C01-0034",
-      "C04-0033"
+      "C07-0017",
+      "C10-0017"
     ],
     "writer-2": [
-      "C02-0033",
-      "C05-0039"
+      "C08-0017",
+      "C11-0017"
     ],
     "writer-3": [
-      "C03-0035",
-      "C06-0017"
+      "C09-0017",
+      "C01-0035"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "d63cb5e1b6921b331f3bec43e512970010779993",
-    "ids": [
-      "so-sanh-thue-xe-may-va-xe-dien-khi-du-lich-ha-noi",
-      "xe-dap-touring-cho-cung-duong-bac-viet-chon-khung",
-      "phanh-xe-may-keu-luc-cuc-xu-ly-dung-cach",
-      "so-sanh-xe-so-va-xe-ga-cho-nguoi-moi-lai",
-      "chi-phi-dien-moi-thang-cua-xe-may-dien-thuc-te",
-      "lop-xe-scooter-size-pho-bien-cach-doc-chi-so"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T02:27:42.443Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -307,6 +292,6 @@
       "completed_at": "2026-10-03T02:27:42.443Z"
     }
   ],
-  "created_at": "2026-10-03T02:12:07.422Z",
-  "updated_at": "2026-10-03T02:27:42.443Z"
+  "created_at": "2026-10-03T02:28:15.525Z",
+  "updated_at": "2026-10-03T02:28:15.525Z"
 }

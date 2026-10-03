@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c010033",
-  "base_sha": "bda9764b6e662c2bad2eaeeb72e7b52eb07c6338",
-  "status": "complete",
+  "cycle_id": "cyc-c070016",
+  "base_sha": "3de1958ab0d87d921219fa738f2b8108562083df",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C04-0032",
-      "C01-0033",
-      "C05-0038",
-      "C02-0032",
-      "C06-0016",
-      "C03-0034"
+      "C10-0016",
+      "C07-0016",
+      "C08-0016",
+      "C11-0016",
+      "C09-0016",
+      "C12-0016"
     ],
     "slugs": [
-      "so-sanh-xe-dap-gap-va-xe-dap-city",
-      "thue-xe-dap-du-lich-pho-co-ha-noi-dia-diem-va-gia",
-      "tieng-hu-tu-banh-xe-may-khi-vao-cua-chan-doan",
-      "xe-may-cu-nam-nam-su-dung-con-dang-mua-khong",
-      "ac-quy-xe-may-dry-cell-va-ac-quy-nuoc-chon-loai-nao",
-      "xe-may-dien-leo-doc-dai-cach-giu-suc-keo"
+      "di-xe-giua-trua-he-nong-cach-ngua-say-nang",
+      "muc-phat-khong-doi-mu-bao-hiem-khi-dieu-khien-xe-may",
+      "chua-tran-quoc-buoi-chieu-duong-di-va-gui-xe",
+      "so-sanh-mua-xe-tra-gop-va-tra-thang",
+      "duong-len-mai-chau-doan-kho-va-luu-y-do-xang",
+      "sac-xe-may-dien-tai-nha-ban-dem-an-toan-the-nao"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T01:55:58.149Z"
+  "updated_at": "2026-10-03T02:09:55.837Z"
 }

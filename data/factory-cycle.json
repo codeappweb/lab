@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070015",
   "base_sha": "45d1255669d37e75f5f9091334b95e2baa0bffc9",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C07-0015",
@@ -20,6 +20,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "577b9804960fcbfd222e5ce5c28d3f1a1d19829e",
     "ids": [
       "the-xanh-xe-may-la-gi-va-ap-dung-voi-ai",
       "xe-may-chet-may-giua-duong-dong-xu-ly-an-toan",
@@ -210,5 +211,5 @@
     }
   ],
   "created_at": "2026-10-03T01:24:20.428Z",
-  "updated_at": "2026-10-03T01:37:32.000Z"
+  "updated_at": "2026-10-03T01:38:08.533Z"
 }

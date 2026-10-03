@@ -56,6 +56,7 @@ name: Production (coordinator)
 #   buoc 0a duoi day) -> inspect dung log job fail -> classify theo
 #   data/repair-playbook.json: safe + chua qua 2 lan cung signature = fix nho
 #   nhat + regression green -> commit -> resume; unclear/major/repeated = KHONG
+
 #   doan, GIU pause, report blocker. Writer tu fix content-only phia staging.
 
 on:
@@ -362,7 +363,7 @@ jobs:
           git push origin HEAD:main
 
       # ---- 6. reset staging (force-with-lease = sha da snapshot) -----------
-      - name: Reset staging branches (safe: verify moi file byte-identical tren origin/main truoc khi reset)
+      - name: Reset staging branches (safe reset — verify moi file byte-identical tren origin/main truoc khi reset)
         if: steps.guard.outputs.noop != 'true' && success()
         run: |
           set -eu

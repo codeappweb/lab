@@ -137,25 +137,11 @@ console.log('publish-loop: scope OK — ' + added.length + ' new post(s), hard m
 run('node', ['scripts/gen-sitemap-shards.mjs'], 'regenerate sitemap shards');
 run('node', ['scripts/sync-manifest.mjs'], 'sync manifest + progress with repository truth');
 
-// ---- 1b. sqlite content index (QA scoped — không quét lại bài cũ) ------------
-// data/content-index.sqlite là DERIVED CACHE gitignored (không commit): runner
-// tạm nên index được rebuild an toàn từ source of truth (manifest + content)
-// mỗi run — row published → qa passed (đã qua gate khi publish), row mới/sửa →
-// pending. Bài/page đổi từ commit publish gần nhất (git diff) + scope chu kỳ
-// được ép pending (--force-pending) → 4 gate deep-check đúng file đó; pending
-// NGOÀI scope → chu kỳ này chạy FULL audit (fail-closed, không yếu đi QA).
-const SCOPE = [...new Set([...added, ...repaired])];
-let changedSincePublish = [];
-try {
-  const cycPrev = JSON.parse(readFileSync(join(ROOT, 'data/factory-cycle.json'), 'utf8'));
-  const prevSha = cycPrev && cycPrev.publication && cycPrev.publication.main_sha;
-  if (prevSha) {
-    const df = spawnSync('git', ['diff', '--name-only', prevSha, 'HEAD'], { cwd: ROOT, encoding: 'utf8' });
-    if (df.status === 0) changedSincePublish = (df.stdout || '').split('\n').map(x => x.trim()).filter(p => p.endsWith('.md'));
-  }
-} catch { /* chu kỳ đầu — không có baseline publish */ }
-const FORCE_PENDING_PATHS = [...new Set([...SCOPE, ...changedSincePublish])];
-const idxRun = spawnSync('node', ['scripts/content-index.mjs', '--update', '--force-pending=' + FORCE_PENDING_PATHS.join(',')], { cwd: ROOT, encoding: 'utf8' });
+// ---- 1b. persistent content index (QA scoped — không quét lại bài cũ) --------
+// Index cho phép 4 gate deep-check CHỈ bài mới/sửa; bài cũ tin theo row
+// qa_status=passed + sha256. Index mới/lệch/pending ngoài scope → chu kỳ này
+// chạy FULL audit (fail-closed, không yếu đi QA).
+const idxRun = spawnSync('node', ['scripts/content-index.mjs', '--update'], { cwd: ROOT, encoding: 'utf8' });
 if (idxRun.status !== 0) {
   console.error(idxRun.stdout || '');
   console.error(idxRun.stderr || '');
@@ -164,6 +150,7 @@ if (idxRun.status !== 0) {
 let IDX = { fresh: false, pending: [] };
 try { IDX = JSON.parse((idxRun.stdout || '').trim().split('\n').pop()); }
 catch (e) { die('content-index --update: output không phải JSON — ' + e.message); }
+const SCOPE = [...new Set([...added, ...repaired])];
 const pendingOutside = (IDX.pending || []).filter(p => !SCOPE.includes(p));
 let prevPublished = null;
 try {
@@ -175,10 +162,10 @@ const publishedNow = rowsPreCount.filter(r => r.status === 'published').length;
 const EVERY = CFG.content_index && Number.isInteger(CFG.content_index.full_audit_every_published) && CFG.content_index.full_audit_every_published > 0
   ? CFG.content_index.full_audit_every_published : 500;
 const crossedCheckpoint = prevPublished !== null && Math.floor(publishedNow / EVERY) > Math.floor(prevPublished / EVERY);
-const FULL_AUDIT = existsSync('/tmp/qa-full-scope') || crossedCheckpoint || pendingOutside.length > 0;
+const FULL_AUDIT = existsSync('/tmp/qa-full-scope') || IDX.fresh || crossedCheckpoint || pendingOutside.length > 0;
 const onlyArgs = FULL_AUDIT ? [] : ['--only', SCOPE.join(',')];
 console.log('publish-loop: QA scope — ' + (FULL_AUDIT
-  ? 'FULL audit (' + (crossedCheckpoint ? 'checkpoint mỗi ' + EVERY + ' bài' : pendingOutside.length + ' row pending ngoài scope') + ')'
+  ? 'FULL audit (' + (IDX.fresh ? 'index fresh' : crossedCheckpoint ? 'checkpoint mỗi ' + EVERY + ' bài' : pendingOutside.length + ' row pending ngoài scope') + ')'
   : 'scoped: ' + (SCOPE.length ? SCOPE.join(', ') : '(noop — chỉ verify manifest + độ phủ index)')));
 
 // ---- 2. blocking light QA gates ----------------------------------------------
@@ -193,7 +180,9 @@ if (CHECK) {
   run('node', ['scripts/content-index.mjs', '--qa-pass'], 'content index: mark QA passed');
   const st = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
   if (st.status !== 0) die('git status failed in --check mode');
-  const pending = changedPaths(st.stdout);
+  // data/content-index.sqlite là derived cache gitignored — KHÔNG bao giờ nằm
+  // trong derived allowlist; nếu vẫn lọt vào status (edge case) thì bỏ qua.
+  const pending = changedPaths(st.stdout).filter(p => p !== 'data/content-index.sqlite');
   if (pending.length) {
     die('--check: derived state NOT committed by the writer: ' + pending.join(', ') + ' — run scripts/prepare-article.mjs <id>, then commit these files together with the article in ONE push (CI never commits)');
   }
@@ -320,7 +309,9 @@ if (status.status !== 0) die('git status failed');
 // git status --porcelain v1: "XY <path>" (XY = 2 status chars + 1 space).
 // NOTE: do NOT trim the line first — a leading space (e.g. " M path") is
 // part of the format; trimming it eats the first character of the path.
-const changed = changedPaths(status.stdout);
+// data/content-index.sqlite là derived cache gitignored — KHÔNG bao giờ được
+// commit; nếu vẫn lọt vào status (fixture chưa có .gitignore) thì bỏ qua.
+const changed = changedPaths(status.stdout).filter(p => p !== 'data/content-index.sqlite');
 if (changed.length === 0) {
   console.log('publish-loop: nothing to publish — derived state already in sync (idempotent re-run).');
   process.exit(0);

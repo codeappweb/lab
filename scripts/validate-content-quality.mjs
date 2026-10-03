@@ -14,9 +14,7 @@
 //     Liquid filters such as `relative_url` are no longer flagged as
 //     underscore artifacts while real garbage (word_word in prose) is caught.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, basename, dirname } from 'node:path';
-import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { join, basename } from 'node:path';
 
 const ROOT = process.cwd();
 const errors = [];
@@ -31,17 +29,12 @@ const ONLY_Q = SCOPED_Q ? (process.argv[onlyIdxQ + 1] || '').split(',').map(s =>
 const isSiteContent = rel => rel.startsWith('_posts/') || rel.startsWith('danh-muc/') || rel.startsWith('hub/') || /^[a-z0-9-]+\.md$/.test(rel);
 let idxRowsQ = null;
 if (SCOPED_Q) {
-  idxRowsQ = new Map();
   try {
-    const idxScript = join(dirname(fileURLToPath(import.meta.url)), 'content-index.mjs');
-    const dump = spawnSync(process.execPath, [idxScript, '--dump'], { encoding: 'utf8' });
-    if (dump.status !== 0) throw new Error(((dump.stderr || '') + ' ' + (dump.stdout || '')).trim() || ('exit ' + dump.status));
-    for (const l of (dump.stdout || '').split('\n').filter(Boolean)) {
-      const r = JSON.parse(l);
-      idxRowsQ.set(r.path, r);
-    }
+    // SQLite derived cache (read-only): file cũ tin theo row qa_status=passed.
+    const { openReadOnly, rowsMap } = await import('./content-index-lib.mjs');
+    idxRowsQ = rowsMap(await openReadOnly(ROOT));
   } catch (e) {
-    errors.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --ensure (writer) / --build (coordinator) — fail-closed');
+    errors.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
   }
 }
 

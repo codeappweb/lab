@@ -192,11 +192,15 @@ test('T7: the transaction only writes derived allowlist files', () => {
   const r = runLoop(root, '_posts/2026-01-02-bai-moi.md');
   assert.equal(r.status, 0, 'run succeeds');
   const after = snapshot(root);
-  const created = after.filter(p => !before.includes(p));
+  // data/content-index.sqlite là derived cache (gitignored ngoài fixture) —
+  // KHÔNG thuộc publication transaction; loại khỏi snapshot như trạng thái
+  // không-git của cache.
+  const isCache = p => p === 'data/content-index.sqlite';
+  const created = after.filter(p => !before.includes(p) && !isCache(p));
   const allowed = ['sitemap.xml', 'data/sitemap-shards.json', 'data/progress.json',
-    'sitemaps/articles-001.xml', 'sitemaps/categories.xml', 'sitemaps/static.xml', 'data/content-index.sqlite'];
+    'sitemaps/articles-001.xml', 'sitemaps/categories.xml', 'sitemaps/static.xml'];
   for (const p of created) assert.ok(allowed.includes(p), 'unexpected new file: ' + p);
-  assert.ok(after.every(p => before.includes(p) || allowed.includes(p)), 'no file removed or renamed');
+  assert.ok(after.every(p => before.includes(p) || allowed.includes(p) || isCache(p)), 'no file removed or renamed');
 });
 
 function gitFixture() {

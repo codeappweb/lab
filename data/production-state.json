@@ -1,0 +1,8 @@
+{
+  "paused": true,
+  "paused_by": "repair-agent",
+  "paused_at": "2026-10-03T09:56:49.317Z",
+  "run_id": "37114720761",
+  "reason": "infra failure run 37114720761",
+  "escalated": false
+}

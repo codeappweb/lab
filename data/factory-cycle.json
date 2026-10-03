@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c070015",
-  "base_sha": "45d1255669d37e75f5f9091334b95e2baa0bffc9",
+  "cycle_id": "cyc-c010033",
+  "base_sha": "bda9764b6e662c2bad2eaeeb72e7b52eb07c6338",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C07-0015",
-      "C10-0015"
+      "C01-0033",
+      "C04-0032"
     ],
     "writer-2": [
-      "C08-0015",
-      "C11-0015"
+      "C02-0032",
+      "C05-0038"
     ],
     "writer-3": [
-      "C09-0015",
-      "C12-0015"
+      "C03-0034",
+      "C06-0016"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "577b9804960fcbfd222e5ce5c28d3f1a1d19829e",
-    "ids": [
-      "the-xanh-xe-may-la-gi-va-ap-dung-voi-ai",
-      "xe-may-chet-may-giua-duong-dong-xu-ly-an-toan",
-      "di-tay-ho-bang-xe-dap-buoi-sang-tuyen-duong-dep",
-      "dinh-gia-xe-may-cu-theo-so-km-da-chay",
-      "phuot-ninh-binh-trang-an-xuat-phat-tu-ha-noi",
-      "suy-giam-pin-xe-may-dien-sau-hai-nam-con-so-thuc-te"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T01:39:53.906Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -176,7 +161,7 @@
         "main_sha": "fd82e5f48bb54f6833f10a0d49c99a86d1810e01",
         "ids": [
           "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
-          "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
+          "di-xe-khi-suong-mu-buoi-sam-mien-nui-cach-xu-ly",
           "gui-xe-quanh-ho-guom-cuoi-tuan-diem-gui-uy-tin",
           "xe-may-cu-gia-duoi-hai-muoi-trieu-chon-duoc-gi",
           "lo-trinh-ha-noi-tam-dao-bang-xe-may-chia-chang-ro-rang",
@@ -238,6 +223,6 @@
       "completed_at": "2026-10-03T01:39:53.906Z"
     }
   ],
-  "created_at": "2026-10-03T01:24:20.428Z",
-  "updated_at": "2026-10-03T01:39:53.906Z"
+  "created_at": "2026-10-03T01:41:09.834Z",
+  "updated_at": "2026-10-03T01:41:09.834Z"
 }

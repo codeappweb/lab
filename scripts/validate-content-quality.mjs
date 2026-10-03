@@ -14,7 +14,9 @@
 //     Liquid filters such as `relative_url` are no longer flagged as
 //     underscore artifacts while real garbage (word_word in prose) is caught.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, basename } from 'node:path';
+import { join, basename, dirname } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = process.cwd();
 const errors = [];
@@ -31,14 +33,15 @@ let idxRowsQ = null;
 if (SCOPED_Q) {
   idxRowsQ = new Map();
   try {
-    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    for (const l of rawIdx.split('\n').filter(Boolean)) {
+    const idxScript = join(dirname(fileURLToPath(import.meta.url)), 'content-index.mjs');
+    const dump = spawnSync(process.execPath, [idxScript, '--dump'], { encoding: 'utf8' });
+    if (dump.status !== 0) throw new Error(((dump.stderr || '') + ' ' + (dump.stdout || '')).trim() || ('exit ' + dump.status));
+    for (const l of (dump.stdout || '').split('\n').filter(Boolean)) {
       const r = JSON.parse(l);
       idxRowsQ.set(r.path, r);
     }
   } catch (e) {
-    errors.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    errors.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --ensure (writer) / --build (coordinator) — fail-closed');
   }
 }
 

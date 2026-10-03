@@ -63,7 +63,7 @@ jobs:
           echo "scope: engine=$ENGINE content=[$CONTENT]"
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Syntax check mọi script
         if: steps.scope.outputs.engine == 'true'
         run: |
@@ -101,7 +101,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
@@ -131,7 +131,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Legal freshness audit
         run: node scripts/legal-freshness-audit.mjs || echo "::warning::legal-freshness-audit trả về khác 0 — xem artifact để đánh giá"
       - name: Upload báo cáo audit (artifact, KHÔNG commit)

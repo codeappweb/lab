@@ -2,9 +2,12 @@
 // validate-content.mjs — QA nhẹ manifest + bài viết. Usage: node validate-content.mjs
 // Trạng thái đơn giản: planned -> drafting -> review -> published (skip để bỏ bài).
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 const ROOT = new URL('..', import.meta.url).pathname;
 const errs = [], warns = [];
-// Scoped QA qua content-index (data/content-index.jsonl):
+// Scoped QA qua content-index sqlite (data/content-index.sqlite):
 //   --only a,b     : deep-check ĐÚNG các file liệt kê; post khác chỉ được tin
 //                    khi index có row qa_status=passed (KHÔNG đọc lại bài cũ).
 //   --only none    : chỉ kiểm manifest + index PHỦ mọi post (refill path).
@@ -40,14 +43,15 @@ let idxRows = null;
 if (SCOPED || NONE_MODE) {
   idxRows = new Map();
   try {
-    const rawIdx = readFileSync(ROOT + 'data/content-index.jsonl', 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    for (const l of rawIdx.split('\n').filter(Boolean)) {
+    const idxScript = join(dirname(fileURLToPath(import.meta.url)), 'content-index.mjs');
+    const dump = spawnSync(process.execPath, [idxScript, '--dump'], { encoding: 'utf8' });
+    if (dump.status !== 0) throw new Error(((dump.stderr || '') + ' ' + (dump.stdout || '')).trim() || ('exit ' + dump.status));
+    for (const l of (dump.stdout || '').split('\n').filter(Boolean)) {
       const r = JSON.parse(l);
       idxRows.set(r.path, r);
     }
   } catch (e) {
-    errs.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    errs.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --ensure (writer) / --build (coordinator) — fail-closed');
     idxRows = new Map();
   }
 }

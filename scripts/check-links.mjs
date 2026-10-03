@@ -9,7 +9,9 @@
 // (technical docs README/AGENTS/CONTRIBUTING/docs are excluded).
 // Both markdown links and Liquid relative_url filters are checked.
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 
@@ -72,14 +74,15 @@ let idxRowsL = null;
 if (ONLY) {
   idxRowsL = new Map();
   try {
-    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    for (const l of rawIdx.split('\n').filter(Boolean)) {
+    const idxScript = join(dirname(fileURLToPath(import.meta.url)), 'content-index.mjs');
+    const dump = spawnSync(process.execPath, [idxScript, '--dump'], { encoding: 'utf8' });
+    if (dump.status !== 0) throw new Error(((dump.stderr || '') + ' ' + (dump.stdout || '')).trim() || ('exit ' + dump.status));
+    for (const l of (dump.stdout || '').split('\n').filter(Boolean)) {
       const r = JSON.parse(l);
       idxRowsL.set(r.path, r);
     }
   } catch (e) {
-    console.error('::error::data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    console.error('::error::data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --ensure (writer) hoặc --build (coordinator) — fail-closed');
     process.exit(1);
   }
 }

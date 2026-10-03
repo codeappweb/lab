@@ -100,16 +100,20 @@ jobs:
         run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Content index (verify; rebuild + full QA nếu lệch)
         run: |
           set -eu
-          if [ -f data/content-index.jsonl ] && node scripts/content-index.mjs --verify; then
+          if [ -f data/content-index.sqlite ] && node scripts/content-index.mjs --verify; then
             echo "content-index: structurally OK"
           else
             echo "::warning::content-index thiếu/lệch — REBUILD fail-closed; chu kỳ này chạy FULL QA."
+            if [ ! -f data/content-index.sqlite ]; then
+              echo "content-index.sqlite chưa có (derived cache, gitignored) — rebuild an toàn từ manifest + content."
+            else
+              touch /tmp/qa-full-scope
+            fi
             node scripts/content-index.mjs --build
-            touch /tmp/qa-full-scope
           fi
 
       # ---- 0. safety stop + crash recovery ---------------------------------
@@ -349,11 +353,11 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Content index (verify; rebuild nếu lệch — phục vụ validate --only none)
         run: |
           set -eu
-          if [ -f data/content-index.jsonl ] && node scripts/content-index.mjs --verify; then
+          if [ -f data/content-index.sqlite ] && node scripts/content-index.mjs --verify; then
             echo "content-index: structurally OK"
           else
             echo "::warning::content-index thiếu/lệch — REBUILD fail-closed."

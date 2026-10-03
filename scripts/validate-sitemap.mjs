@@ -8,7 +8,9 @@
 // on-site; article URL set == eligible post URL set (missing AND extra both
 // fail); no noindex page listed; no hub page listed.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const SITE = 'https://codeappweb.github.io/lab';
@@ -80,14 +82,15 @@ if (!SCOPED_S) {
   // KHÔNG đọc lại mọi post. Fail-closed: post thiếu row index → LỖI.
   let idxRowsS = null;
   try {
-    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    idxRowsS = new Map(rawIdx.split('\n').filter(Boolean).map(l => {
+    const idxScript = join(dirname(fileURLToPath(import.meta.url)), 'content-index.mjs');
+    const dump = spawnSync(process.execPath, [idxScript, '--dump'], { encoding: 'utf8' });
+    if (dump.status !== 0) throw new Error(((dump.stderr || '') + ' ' + (dump.stdout || '')).trim() || ('exit ' + dump.status));
+    idxRowsS = new Map((dump.stdout || '').split('\n').filter(Boolean).map(l => {
       const r = JSON.parse(l);
       return [r.path, r];
     }));
   } catch (e) {
-    errs.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    errs.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --ensure (writer) / --build (coordinator) — fail-closed');
     idxRowsS = new Map();
   }
   for (const f of posts) {

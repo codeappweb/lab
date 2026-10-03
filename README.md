@@ -63,15 +63,14 @@ Mỗi ứng viên được dedup chống TOÀN BỘ manifest trước khi nhận
 
 Log mỗi lần chạy: `reports/queue-refill-latest.json` (chi tiết kèm danh sách row mới) và `data/queue-refill-log.jsonl` (một dòng tóm tắt mỗi run: before/threshold/target/candidates/rejected/appended/after/result). Cơ chế cấp phát thủ công cũ (`diagnostics/allocate-rows.json`) vẫn dùng được như công cụ quản trị tùy chọn, không còn bắt buộc.
 
-## Chỉ mục nội dung nhẹ (content-index) — QA không quét lại bài cũ
-
-`data/content-index.jsonl` (derived state, commit trong publication transaction) lưu cho mỗi file nội dung (`_posts/**`, `danh-muc/**`, `hub/**`, trang tĩnh gốc): id, slug, path, tiêu đề chuẩn hóa, intent, entities, cluster, sha256, permalink, cờ eligible, qa_status.
-
-- Mỗi chu kỳ, coordinator chạy `scripts/content-index.mjs --update` (chỉ đọc file mới/thay đổi theo git status; không có git thì quét hash). Bốn gate (`validate-content`, `validate-content-quality`, `check-links`, `validate-sitemap`) chạy scoped `--only`: deep-check đúng bài mới/sửa; bài cũ chỉ được tin khi index row qa_status=passed — writer/QA KHÔNG đọc lại hàng nghìn bài cũ mỗi chu kỳ. Sau khi TẤT CẢ gate + Jekyll build xanh: `--qa-pass` đánh dấu pending → passed và index được commit trong CÙNG publication commit (transactional, fail-closed).
-- Duplicate/cannibalization vẫn đối chiếu toàn bộ qua manifest in-memory (`detect-duplicates.mjs`, `queue-refill.mjs` — vốn đã nhẹ, không đọc file bài). check-links/validate-sitemap lấy slug/permalink/eligible từ index thay vì đọc front matter mọi bài.
-- Full audit (đọc lại toàn bộ) vẫn chạy khi: index thiếu/lệch (coordinator verify → rebuild + marker full QA), index mới build, có row pending ngoài scope, hoặc mỗi `content_index.full_audit_every_published` bài published mới (mặc định 500) — và qua CI/workflow_dispatch như cũ.
-- File cũ bị sửa được phát hiện qua git status/sha256 → chỉ đúng file đó được QA lại. Scoped mà index thiếu row/hỏng JSONL → gate LỖI (fail-closed), không suy đoán.
-
+## Chỉ mục nội dung SQLite (content-index.sqlite) — QA không quét lại bài cũ
+`data/content-index.sqlite` là DERIVED CACHE (gitignored, không commit) — source of truth vẫn là `data/article-manifest.jsonl` + file nội dung. Mỗi row: id, slug, path, kind, tiêu đề chuẩn hóa, intent, entities, cluster, content_hash (sha256), size, permalink, cờ eligible, qa_status (pending/passed), qa_at, published_at. Yêu cầu Node >= 22.13 (node:sqlite).
+- COORDINATOR là bên duy nhất được ghi/rebuild SQLite (`--build`, `--update`, `--qa-pass`): runner tạm nên mỗi run rebuild an toàn từ manifest + content (row published → qa passed vì đã qua gate khi publish; row mới/sửa → pending). Bài/page đổi từ commit publish gần nhất (git diff) và scope chu kỳ được ép pending qua `--force-pending` → 4 gate scoped deep-check đúng file đó.
+- 3 WRITER READ-ONLY với index: `node scripts/content-index.mjs --ensure` (rebuild cục bộ khi thiếu/hỏng/schema lệch — derived từ source of truth, KHÔNG BAO GIỜ tự đánh qa-pass) và `--dump` (đọc). Writer KHÔNG ghi SQLite dùng chung, KHÔNG commit SQLite (gitignored).
+- Bốn gate (`validate-content`, `validate-content-quality`, `check-links`, `validate-sitemap`) chạy scoped `--only`: đọc index qua `--dump`; bài cũ chỉ được tin khi row qa_status=passed — KHÔNG đọc lại hàng nghìn bài cũ mỗi chu kỳ. Scoped mà index thiếu/hỏng → gate LỖI (fail-closed), không suy đoán.
+- Duplicate/cannibalization vẫn đối chiếu toàn bộ qua manifest in-memory (`detect-duplicates.mjs`, `queue-refill.mjs` — vốn đã nhẹ, không đọc file bài).
+- Full audit (đọc lại toàn bộ) vẫn chạy khi: có row pending ngoài scope, mỗi `content_index.full_audit_every_published` bài published mới (mặc định 500), qua CI/workflow_dispatch, hoặc khi index integrity fail mà rebuild không xác minh được.
+- File cũ bị sửa được phát hiện qua git status/git diff/sha256 → chỉ đúng file đó được QA lại. SQLite thiếu/hỏng/stale → rebuild an toàn từ manifest + content (fail-closed).
 ## Nội quy
 
 - Không bịa giá, thông số kỹ thuật, luật, trải nghiệm, nguồn dẫn. Bài có khẳng định pháp lý/an toàn chưa kiểm chứng giữ `review` hoặc bỏ khẳng định.
@@ -83,6 +82,8 @@ Log mỗi lần chạy: `reports/queue-refill-latest.json` (chi tiết kèm danh
 
 ```bash
 git fetch origin && git reset --hard origin/main
+# index QA cục bộ (sqlite derived cache, gitignored — KHÔNG commit):
+node scripts/content-index.mjs --ensure
 # đầu chu kỳ (một writer bất kỳ, MỘT lần):
 node scripts/next-pair.mjs --allocate
 git add data/factory-cycle.json && git commit -m "cycle(allocate): <cycle_id>" && git push origin main

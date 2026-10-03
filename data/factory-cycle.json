@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c120017",
   "base_sha": "30315d3dab0800ff699ef3a68d8fd78059c37a66",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C12-0017",
@@ -32,6 +32,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "c1db1578ad11832675be8bfb23d5575b6d733861",
     "ids": [
       "chay-thu-route-am-thuc-banh-mi-pho-co-ha-noi",
       "day-curoa-xe-ga-tuoi-tho-va-moc-thay-dung-han",
@@ -393,5 +394,5 @@
     }
   ],
   "created_at": "2026-10-03T09:09:14.771Z",
-  "updated_at": "2026-10-03T09:19:29.504Z"
+  "updated_at": "2026-10-03T09:20:27.679Z"
 }

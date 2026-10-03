@@ -5,7 +5,7 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c010032",
   "base_sha": "7ff085c71f1910e76f78d59aa6eb1d82fcd9d73b",
-  "status": "failed",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C07-0014",
-      "C10-0014",
-      "C08-0014",
-      "C11-0014",
-      "C09-0014",
-      "C12-0014"
+      "C01-0032",
+      "C04-0031",
+      "C02-0031",
+      "C05-0037",
+      "C03-0033",
+      "C06-0015"
     ],
     "slugs": [
-      "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
-      "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
-      "gui-xe-quanh-ho-guom-cuoi-tuan-diem-gui-uy-tin",
-      "xe-may-cu-gia-duoi-hai-muoi-trieu-chon-duoc-gi",
-      "lo-trinh-ha-noi-tam-dao-bang-xe-may-chia-chang-ro-rang",
-      "so-sanh-pin-lithium-ion-va-pin-chi-cho-xe-may-dien"
+      "thue-xe-dien-o-ha-noi-tron-goi-cho-nguoi-moi",
+      "xe-dap-dien-cho-nguoi-trung-nien-diem-can-can-nhac",
+      "danh-gia-xe-50cc-cho-hoc-sinh-sinh-vien-uu-va-nhuoc-diem",
+      "xe-may-hao-xang-bat-thuong-kiem-tra-theo-trinh-tu",
+      "di-xe-may-dien-trong-mua-to-can-chu-y-gi",
+      "ma-phanh-dia-va-ma-phanh-trong-khac-biet-thuc-te"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T01:17:25.443Z"
+  "updated_at": "2026-10-03T01:18:50.947Z"
 }

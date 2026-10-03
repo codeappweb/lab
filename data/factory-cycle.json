@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c010032",
   "base_sha": "7ff085c71f1910e76f78d59aa6eb1d82fcd9d73b",
   "coordinator_run_id": null,
-  "phase": "failed",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C01-0032",
@@ -19,7 +19,16 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "thue-xe-dien-o-ha-noi-tron-goi-cho-nguoi-moi",
+      "xe-dap-dien-cho-nguoi-trung-nien-diem-can-can-nhac",
+      "danh-gia-xe-50cc-cho-hoc-sinh-sinh-vien-uu-va-nhuoc-diem",
+      "xe-may-hao-xang-bat-thuong-kiem-tra-theo-trinh-tu",
+      "di-xe-may-dien-trong-mua-to-can-chu-y-gi",
+      "ma-phanh-dia-va-ma-phanh-trong-khac-biet-thuc-te"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -178,5 +187,5 @@
     }
   ],
   "created_at": "2026-10-03T01:12:56.334Z",
-  "updated_at": "2026-10-03T01:17:25.443Z"
+  "updated_at": "2026-10-03T01:17:52.187Z"
 }

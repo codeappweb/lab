@@ -194,7 +194,7 @@ test('T7: the transaction only writes derived allowlist files', () => {
   const after = snapshot(root);
   const created = after.filter(p => !before.includes(p));
   const allowed = ['sitemap.xml', 'data/sitemap-shards.json', 'data/progress.json',
-    'sitemaps/articles-001.xml', 'sitemaps/categories.xml', 'sitemaps/static.xml'];
+    'sitemaps/articles-001.xml', 'sitemaps/categories.xml', 'sitemaps/static.xml', 'data/content-index.jsonl'];
   for (const p of created) assert.ok(allowed.includes(p), 'unexpected new file: ' + p);
   assert.ok(after.every(p => before.includes(p) || allowed.includes(p)), 'no file removed or renamed');
 });

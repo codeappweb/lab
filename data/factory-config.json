@@ -32,5 +32,8 @@
   "queue_refill": {
     "low_threshold": 100,
     "target": 300
+  },
+  "content_index": {
+    "full_audit_every_published": 500
   }
 }

@@ -63,13 +63,41 @@ for (const f of readdirSync(ROOT).filter(f => f.endsWith('.md'))) {
 }
 targets.add(norm('/index'));
 
-// posts: slug from filename + permalink if present
+// posts: slug từ tên file (KHÔNG cần đọc file) + permalink.
+// Scoped (có --only): permalink lấy từ content-index — KHÔNG đọc lại front
+// matter của mọi bài cũ; post thiếu row index → LỖI (fail-closed).
+// Full mode (mặc định — CI/full audit) đọc trực tiếp như cũ: KHÔNG yếu đi.
 const postFiles = walkMd(join(ROOT, '_posts'));
+let idxRowsL = null;
+if (ONLY) {
+  idxRowsL = new Map();
+  try {
+    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
+    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
+    for (const l of rawIdx.split('\n').filter(Boolean)) {
+      const r = JSON.parse(l);
+      idxRowsL.set(r.path, r);
+    }
+  } catch (e) {
+    console.error('::error::data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    process.exit(1);
+  }
+}
 for (const f of postFiles) {
+  const relL = f.slice(ROOT.length).replace(/\\/g, '/');
   const slug = f.replace(/^.*\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '');
   addTarget('/' + slug);
-  const meta = parseFm(readFileSync(f, 'utf8')) || {};
-  if (meta.permalink) addTarget(meta.permalink);
+  if (!idxRowsL) {
+    const meta = parseFm(readFileSync(f, 'utf8')) || {};
+    if (meta.permalink) addTarget(meta.permalink);
+  } else {
+    const r = idxRowsL.get(relL);
+    if (!r) {
+      console.error('::error::' + relL + ': không có trong content-index — rebuild index (fail-closed)');
+      process.exit(1);
+    }
+    if (r.permalink) addTarget(r.permalink);
+  }
 }
 
 // category and hub pages on disk (permalink wins over path)
@@ -82,6 +110,13 @@ for (const dir of ['danh-muc', 'hub']) {
     if (meta.permalink) addTarget(meta.permalink);
     addTarget(rel.replace(/\.md$/, ''));
   }
+}
+
+// Scoped noop (scope rỗng — chu kỳ không có bài mới): target set + độ phủ
+// content-index đã được verify ở trên; không đọc lại nội dung bài cũ.
+if (ONLY && ONLY.length === 0) {
+  console.log('link check OK (scope rỗng — target set + content-index coverage verified)');
+  process.exit(0);
 }
 
 // ---- Collect internal links from the files we own ----

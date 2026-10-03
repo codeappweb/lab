@@ -101,6 +101,16 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: '20'
+      - name: Content index (verify; rebuild + full QA nếu lệch)
+        run: |
+          set -eu
+          if [ -f data/content-index.jsonl ] && node scripts/content-index.mjs --verify; then
+            echo "content-index: structurally OK"
+          else
+            echo "::warning::content-index thiếu/lệch — REBUILD fail-closed; chu kỳ này chạy FULL QA."
+            node scripts/content-index.mjs --build
+            touch /tmp/qa-full-scope
+          fi
 
       # ---- 0. safety stop + crash recovery ---------------------------------
       # ---- 0b. reconcile derived state (self-heal, TRUOC moi allocation/noop) ----
@@ -151,7 +161,7 @@ jobs:
           set -eu
           node scripts/queue-refill.mjs
           node scripts/sync-manifest.mjs
-          node scripts/validate-content.mjs
+          node scripts/validate-content.mjs --only none
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
           git add data/article-manifest.jsonl data/progress.json data/queue-refill-log.jsonl reports/queue-refill-latest.json
@@ -340,6 +350,15 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: '20'
+      - name: Content index (verify; rebuild nếu lệch — phục vụ validate --only none)
+        run: |
+          set -eu
+          if [ -f data/content-index.jsonl ] && node scripts/content-index.mjs --verify; then
+            echo "content-index: structurally OK"
+          else
+            echo "::warning::content-index thiếu/lệch — REBUILD fail-closed."
+            node scripts/content-index.mjs --build
+          fi
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
@@ -362,7 +381,7 @@ jobs:
           set -eu
           node scripts/queue-refill.mjs
           node scripts/sync-manifest.mjs
-          node scripts/validate-content.mjs
+          node scripts/validate-content.mjs --only none
           git config user.name 'lab-factory'
           git config user.email 'codeappweb@users.noreply.github.com'
           git add data/article-manifest.jsonl data/progress.json data/queue-refill-log.jsonl reports/queue-refill-latest.json

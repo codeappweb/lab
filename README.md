@@ -63,6 +63,15 @@ Mỗi ứng viên được dedup chống TOÀN BỘ manifest trước khi nhận
 
 Log mỗi lần chạy: `reports/queue-refill-latest.json` (chi tiết kèm danh sách row mới) và `data/queue-refill-log.jsonl` (một dòng tóm tắt mỗi run: before/threshold/target/candidates/rejected/appended/after/result). Cơ chế cấp phát thủ công cũ (`diagnostics/allocate-rows.json`) vẫn dùng được như công cụ quản trị tùy chọn, không còn bắt buộc.
 
+## Chỉ mục nội dung nhẹ (content-index) — QA không quét lại bài cũ
+
+`data/content-index.jsonl` (derived state, commit trong publication transaction) lưu cho mỗi file nội dung (`_posts/**`, `danh-muc/**`, `hub/**`, trang tĩnh gốc): id, slug, path, tiêu đề chuẩn hóa, intent, entities, cluster, sha256, permalink, cờ eligible, qa_status.
+
+- Mỗi chu kỳ, coordinator chạy `scripts/content-index.mjs --update` (chỉ đọc file mới/thay đổi theo git status; không có git thì quét hash). Bốn gate (`validate-content`, `validate-content-quality`, `check-links`, `validate-sitemap`) chạy scoped `--only`: deep-check đúng bài mới/sửa; bài cũ chỉ được tin khi index row qa_status=passed — writer/QA KHÔNG đọc lại hàng nghìn bài cũ mỗi chu kỳ. Sau khi TẤT CẢ gate + Jekyll build xanh: `--qa-pass` đánh dấu pending → passed và index được commit trong CÙNG publication commit (transactional, fail-closed).
+- Duplicate/cannibalization vẫn đối chiếu toàn bộ qua manifest in-memory (`detect-duplicates.mjs`, `queue-refill.mjs` — vốn đã nhẹ, không đọc file bài). check-links/validate-sitemap lấy slug/permalink/eligible từ index thay vì đọc front matter mọi bài.
+- Full audit (đọc lại toàn bộ) vẫn chạy khi: index thiếu/lệch (coordinator verify → rebuild + marker full QA), index mới build, có row pending ngoài scope, hoặc mỗi `content_index.full_audit_every_published` bài published mới (mặc định 500) — và qua CI/workflow_dispatch như cũ.
+- File cũ bị sửa được phát hiện qua git status/sha256 → chỉ đúng file đó được QA lại. Scoped mà index thiếu row/hỏng JSONL → gate LỖI (fail-closed), không suy đoán.
+
 ## Nội quy
 
 - Không bịa giá, thông số kỹ thuật, luật, trải nghiệm, nguồn dẫn. Bài có khẳng định pháp lý/an toàn chưa kiểm chứng giữ `review` hoặc bỏ khẳng định.

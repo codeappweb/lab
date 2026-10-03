@@ -41,6 +41,7 @@ const DERIVED_ALLOWLIST = [
   'data/factory-cycle.json',
   'data/writer-checkpoint.json',
   'data/coordinator-state.json',
+  'data/content-index.jsonl',
 ];
 const POST_RE = /^_posts\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
 
@@ -137,15 +138,47 @@ console.log('publish-loop: scope OK — ' + added.length + ' new post(s), hard m
 run('node', ['scripts/gen-sitemap-shards.mjs'], 'regenerate sitemap shards');
 run('node', ['scripts/sync-manifest.mjs'], 'sync manifest + progress with repository truth');
 
+// ---- 1b. persistent content index (QA scoped — không quét lại bài cũ) --------
+// Index cho phép 4 gate deep-check CHỈ bài mới/sửa; bài cũ tin theo row
+// qa_status=passed + sha256. Index mới/lệch/pending ngoài scope → chu kỳ này
+// chạy FULL audit (fail-closed, không yếu đi QA).
+const idxRun = spawnSync('node', ['scripts/content-index.mjs', '--update'], { cwd: ROOT, encoding: 'utf8' });
+if (idxRun.status !== 0) {
+  console.error(idxRun.stdout || '');
+  console.error(idxRun.stderr || '');
+  die('STEP FAILED: content-index --update');
+}
+let IDX = { fresh: false, pending: [] };
+try { IDX = JSON.parse((idxRun.stdout || '').trim().split('\n').pop()); }
+catch (e) { die('content-index --update: output không phải JSON — ' + e.message); }
+const SCOPE = [...new Set([...added, ...repaired])];
+const pendingOutside = (IDX.pending || []).filter(p => !SCOPE.includes(p));
+let prevPublished = null;
+try {
+  const tele = readFileSync(join(ROOT, 'data', 'production-telemetry.jsonl'), 'utf8').trim().split('\n').filter(Boolean);
+  if (tele.length) prevPublished = JSON.parse(tele[tele.length - 1]).published_count ?? null;
+} catch { /* chưa có telemetry = chu kỳ đầu — không có baseline */ }
+const rowsPreCount = readFileSync(manifestPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+const publishedNow = rowsPreCount.filter(r => r.status === 'published').length;
+const EVERY = CFG.content_index && Number.isInteger(CFG.content_index.full_audit_every_published) && CFG.content_index.full_audit_every_published > 0
+  ? CFG.content_index.full_audit_every_published : 500;
+const crossedCheckpoint = prevPublished !== null && Math.floor(publishedNow / EVERY) > Math.floor(prevPublished / EVERY);
+const FULL_AUDIT = existsSync('/tmp/qa-full-scope') || IDX.fresh || crossedCheckpoint || pendingOutside.length > 0;
+const onlyArgs = FULL_AUDIT ? [] : ['--only', SCOPE.join(',')];
+console.log('publish-loop: QA scope — ' + (FULL_AUDIT
+  ? 'FULL audit (' + (IDX.fresh ? 'index fresh' : crossedCheckpoint ? 'checkpoint mỗi ' + EVERY + ' bài' : pendingOutside.length + ' row pending ngoài scope') + ')'
+  : 'scoped: ' + (SCOPE.length ? SCOPE.join(', ') : '(noop — chỉ verify manifest + độ phủ index)')));
+
 // ---- 2. blocking light QA gates ----------------------------------------------
-run('node', ['scripts/validate-content.mjs'], 'manifest + posts validation');
-run('node', ['scripts/validate-content-quality.mjs'], 'content quality gate');
+run('node', ['scripts/validate-content.mjs', ...onlyArgs], 'manifest + posts validation');
+run('node', ['scripts/validate-content-quality.mjs', ...onlyArgs], 'content quality gate');
 run('node', ['scripts/detect-duplicates.mjs'], 'duplicate detection gate');
-run('node', ['scripts/check-links.mjs'], 'internal link gate');
-run('node', ['scripts/validate-sitemap.mjs'], 'sitemap integrity gate');
+run('node', ['scripts/check-links.mjs', ...onlyArgs], 'internal link gate');
+run('node', ['scripts/validate-sitemap.mjs', ...onlyArgs], 'sitemap integrity gate');
 run('node', ['scripts/sync-manifest.mjs', '--dry-run'], 'manifest dry-run (in-sync proof)');
 
 if (CHECK) {
+  run('node', ['scripts/content-index.mjs', '--qa-pass'], 'content index: mark QA passed');
   const st = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
   if (st.status !== 0) die('git status failed in --check mode');
   const pending = changedPaths(st.stdout);
@@ -157,6 +190,7 @@ if (CHECK) {
 }
 
 if (NO_GIT) {
+  run('node', ['scripts/content-index.mjs', '--qa-pass'], 'content index: mark QA passed');
   console.log('publish-loop: dry-run/no-git mode — derive + gates green, commit skipped.');
   process.exit(0);
 }
@@ -168,6 +202,7 @@ if (INTEGRATE) {
   run('bundle', ['exec', 'jekyll', 'build', '--strict_front_matter'], 'jekyll build (blocking, integrate)');
   const buildSeconds = (Date.now() - buildT0) / 1000;
   run('node', ['scripts/validate-built.mjs'], 'validate built _site');
+  run('node', ['scripts/content-index.mjs', '--qa-pass'], 'content index: mark QA passed');
   function sh(cmd) {
     const r = spawnSync('bash', ['-c', cmd], { cwd: ROOT, encoding: 'utf8' });
     return (r.stdout || '').trim();

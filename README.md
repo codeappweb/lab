@@ -7,8 +7,11 @@ Mô hình: 3 writer Mistral (phiên đăng nhập hiện có) viết bài song s
 ## Kiến trúc (bắt buộc)
 
 ```
-next-pair --allocate  →  data/factory-cycle.json (cycle_id + base_sha + plan BAT BIEN, 1 commit main)
-writer-1 / writer-2 / writer-3  →  next-pair --writer writer-K (đọc đúng plan của cycle)
+COORDINATOR (production.yml, buoc cycle allocate)  →  next-pair --allocate
+   →  data/factory-cycle.json + data/writer-assignments.json (cycle_id + base_sha + plan BAT BIEN
+      + slice row dữ liệu đầy đủ cho từng writer, 1 commit main, message cycle(allocate))
+writer-1 / writer-2 / writer-3  →  next-pair --writer writer-K (đọc đúng slice của mình từ
+   data/writer-assignments.json — writer KHÔNG đọc article-manifest.jsonl)
    |            |            |      viết _posts/*.md + factory metadata, push staging/writer-K
 staging/writer-1..3  →  COORDINATOR (production.yml, singleton, không cancel):
    chờ đủ output (theo plan, có timeout) → collect → integrate-guard
@@ -18,7 +21,7 @@ staging/writer-1..3  →  COORDINATOR (production.yml, singleton, không cancel)
    → finalize cycle → reset staging (force-with-lease theo sha đã snapshot)
 ```
 
-- Mỗi chu kỳ: tối đa 3 writer × `writer_chunk_size` (2) bài, MÔT commit xuất bản, MÔT Pages deployment.
+- Mỗi chu kỳ: 3 writer × `writer_chunk_size` (6) bài = 12–18 bài mỗi chu kỳ, MÔT commit xuất bản, MÔT Pages deployment. Coordinator tự allocate chu kỳ tiếp ngay sau khi publish.
 - Cycle là bat bien: cả 3 writer trong cùng chu kỳ đọc cùng một `base_sha` (plan commit trên main). Không writer nào tự tính từ HEAD mới.
 - Bài sai cycle/base_sha/slice → REVIEW (ghi checkpoint review_queue), không bao giờ lên main.
 - Crash-safe: `data/factory-cycle.json` ghi phase (allocated → collecting → guarded → integrating → building → publishing → deploying → resetting → complete). Coordinator resume đúng cycle đang mở, không tạo cycle mới đè lên cycle recoverable. Bài đã tích hợp giống hệt main được skip idempotent.
@@ -27,8 +30,8 @@ staging/writer-1..3  →  COORDINATOR (production.yml, singleton, không cancel)
 
 ## Vòng lặp writer (mỗi chu kỳ)
 
-1. FETCH fresh main. Đầu chu kỳ (chưa có cycle đang mở): `node scripts/next-pair.mjs --allocate`, commit `data/factory-cycle.json` lên main (message `cycle(allocate): <cycle_id>`).
-2. `node scripts/next-pair.mjs --writer writer-K` — in đúng slice của bạn trong cycle + 3 dòng front matter bắt buộc (`factory_writer`, `factory_cycle`, `factory_base_sha`).
+1. FETCH fresh main. COORDINATOR tự allocate đầu chu kỳ (bước cycle allocate trong `production.yml`): commit `data/factory-cycle.json` + `data/writer-assignments.json` (slice row đầy đủ cho từng writer) lên main, message `cycle(allocate): <cycle_id>`. Writer KHÔNG chạy `--allocate`, KHÔNG đọc `article-manifest.jsonl`.
+2. `node scripts/next-pair.mjs --writer writer-K` — in đúng slice của bạn đọc từ `data/writer-assignments.json` + 3 dòng front matter bắt buộc (`factory_writer`, `factory_cycle`, `factory_base_sha`).
 3. WRITE bài vào `_posts/YYYY-MM-DD-<slug>.md` theo `docs/SCHEMA-ARTICLE.md`, kèm factory metadata.
 4. PUSH NGAY lên `staging/writer-K` (chỉ file bài). Không gom nhiều bài local, không chạy derived/QA thủ công, không đụng manifest/checkpoint/sitemap/scripts.
 5. COORDINATOR tự kích hoạt khi writer push staging; nó chờ đủ cả 3 writer (hoặc timeout rồi xử lý partial). Theo dõi run xanh; chu kỳ hoàn tất khi: MÔT commit main, MÔT Pages deploy, URL live trả nội dung mới, staging được reset.
@@ -75,18 +78,17 @@ Log mỗi lần chạy: `reports/queue-refill-latest.json` (chi tiết kèm danh
 ## Nội quy
 
 - Không bịa giá, thông số kỹ thuật, luật, trải nghiệm, nguồn dẫn. Bài có khẳng định pháp lý/an toàn chưa kiểm chứng giữ `review` hoặc bỏ khẳng định.
-- Không yêu cầu viết dài để đủ quota. Không scale batch: giữ `writer_chunk_size = 2`.
+- Không yêu cầu viết dài để đủ quota. Không scale batch để chạy quota: giữ `writer_chunk_size = 6` (12–18 bài mỗi chu kỳ là thiết kế cố định).
 - Menu/taxonomy/hub/danh-mục/giao diện/baseurl giữ nguyên. Số liệu pháp lý đối chiếu `data/legal-sources.yml`.
-- Soak test: trước khi chạy liên tục không giám sát, yêu cầu 5 chu kỳ 3×2 liên tiếp xanh, không sửa tay.
+- Soak test: trước khi chạy liên tục không giám sát, yêu cầu 5 chu kỳ 3×6 liên tiếp xanh, không sửa tay.
 
 ## Lệnh chính mỗi chu kỳ (writer-K)
 
 ```bash
 git fetch origin && git reset --hard origin/main
-# đầu chu kỳ (một writer bất kỳ, MỘT lần):
-node scripts/next-pair.mjs --allocate
-git add data/factory-cycle.json && git commit -m "cycle(allocate): <cycle_id>" && git push origin main
-# mỗi writer:
+# đầu chu kỳ: COORDINATOR (production.yml) tự allocate + commit
+#   data/factory-cycle.json + data/writer-assignments.json lên main — writer KHÔNG chạy --allocate.
+# mỗi writer (chỉ đọc slice của mình từ data/writer-assignments.json, KHÔNG đọc manifest):
 node scripts/next-pair.mjs --writer writer-K
 # WRITE bài (kèm factory_writer/factory_cycle/factory_base_sha) rồi:
 git push origin HEAD:staging/writer-K

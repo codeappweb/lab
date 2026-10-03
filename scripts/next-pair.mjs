@@ -3,23 +3,26 @@
 // Deterministic, READ-ONLY tru che do --allocate (ghi plan vua mot file).
 //
 // 3 PARALLEL WRITERS + IMMUTABLE CYCLE (cycle-based assignment):
-//   Mot chu ky production = MÔT cycle bat bien trong data/factory-cycle.json:
-//     node scripts/next-pair.mjs --allocate
+//   Mot chu ky production = MÔT cycle bat bien trong data/factory-cycle.json
+//   + data/writer-assignments.json (slice row du lieu day du cho tung writer):
+//     node scripts/next-pair.mjs --allocate      [CHI COORDINATOR chay — production.yml]
 //       -> doc manifest + review_queue TAI CHINH XAC origin/main (base_sha),
 //          chon writers x writer_chunk_size row eligible dau tien, chia slice
 //          deterministic (i % writers == K-1), ghi plan {cycle_id, base_sha,
-//          assignments} vao data/factory-cycle.json (MÔT commit rieng tren main,
-//          message "cycle(allocate): ..."). TU CHOI allocate khi con cycle
-//          chua complete/failed (recovery-safe: khong bao gio tao cycle moi
-//          de len cycle recoverable). TU CHOI allocate khi manifest/checkpoint
+//          assignments} vao data/factory-cycle.json VA row du lieu day du cua
+//          tung writer vao data/writer-assignments.json (MÔT commit rieng tren
+//          main, message "cycle(allocate): ..."). TU CHOI allocate khi con
+//          cycle chua complete/failed (recovery-safe: khong bao gio tao cycle
+//          moi de len cycle recoverable). TU CHOI allocate khi manifest/checkpoint
 //          drift (sync-manifest --dry-run exit 1 hoac checkpoint
 //          last_publication chua duoc manifest danh published) — phai chay
 //          maintenance dispatch (production.yml, maintenance=true) truoc.
 //     node scripts/next-pair.mjs --writer writer-K [--base-sha <sha>]
-//       -> doc plan tu data/factory-cycle.json (bat bien, commit tren main),
-//          KHONG tu derive tu HEAD moi. --base-sha (neu truyen) phai khop
-//          base_sha cua cycle — writer session fetch main nao thi phai ghi
-//          bai theo plan cua chu ky do.
+//       -> doc DUNG slice cua minh tu data/writer-assignments.json (writer
+//          KHONG doc manifest — fail-closed neu assignment file thieu hoac
+//          khong khop cycle). --base-sha (neu truyen) phai khop base_sha cua
+//          cycle — writer session fetch main nao thi phai ghi bai theo plan
+//          cua chu ky do.
 //   Writer ghi bai kem front matter: factory_writer, factory_cycle,
 //   factory_base_sha (xem docs/SCHEMA-ARTICLE.md) — integrate-guard kiem tra
 //   ba truong nay khi tich hop; sai cycle/slice -> REVIEW, khong publish.
@@ -68,28 +71,31 @@ const countOpt = opt('--count');
 const baseShaOpt = opt('--base-sha');
 const ALLOCATE = args.includes('--allocate');
 
-// ---- load manifest + review_queue ------------------------------------------
+// ---- manifest + review_queue (CHI can cho --allocate va che do legacy) ----
+// ---- writer cycle mode KHONG doc manifest — doc slice tu assignment file. --
 const manifestPath = join(ROOT, 'data', 'article-manifest.jsonl');
-if (!existsSync(manifestPath)) die('data/article-manifest.jsonl thieu');
-let rows;
-try {
-  rows = readFileSync(manifestPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
-} catch (e) {
-  die('manifest JSONL hong: ' + e.message);
-}
-
-const review = new Set();
 const cpPath = join(ROOT, 'data', 'writer-checkpoint.json');
-if (existsSync(cpPath)) {
+let rows = null;
+let review = new Set();
+let eligible = null;
+function ensureManifest() {
+  if (eligible) return;
+  if (!existsSync(manifestPath)) die('data/article-manifest.jsonl thieu');
   try {
-    const cp = JSON.parse(readFileSync(cpPath, 'utf8'));
-    for (const r of (cp.review_queue || [])) review.add(String(r.id));
+    rows = readFileSync(manifestPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
   } catch (e) {
-    die('writer-checkpoint hong: ' + e.message);
+    die('manifest JSONL hong: ' + e.message);
   }
+  if (existsSync(cpPath)) {
+    try {
+      const cp = JSON.parse(readFileSync(cpPath, 'utf8'));
+      for (const r of (cp.review_queue || [])) review.add(String(r.id));
+    } catch (e) {
+      die('writer-checkpoint hong: ' + e.message);
+    }
+  }
+  eligible = rows.filter(r => r.status === 'planned' && !review.has(String(r.id)));
 }
-
-const eligible = rows.filter(r => r.status === 'planned' && !review.has(String(r.id)));
 
 function printRows(list) {
   for (const r of list) console.log('  ' + r.id + '  ' + (r.cluster || '') + '  ' + r.slug + '  ' + (r.primary_topic || r.title || ''));
@@ -105,6 +111,7 @@ const cycleActive = cycle && cycle.cycle_id && !["idle", "complete"].includes(cy
 
 // ---- ALLOCATE: tao plan bat bien cho chu ky moi -----------------------------
 if (ALLOCATE) {
+  ensureManifest();
   if (cycle && !['idle', 'complete', 'failed'].includes(cycle.phase)) {
     die('TU CHOI allocate: cycle ' + cycle.cycle_id + ' dang o phase ' + cycle.phase +
       ' (chua complete/failed). Hoan thanh/phuc hoi cycle nay truoc — khong bao gio tao cycle moi de len cycle recoverable.');
@@ -166,12 +173,25 @@ if (ALLOCATE) {
     created_at: new Date().toISOString(),
   };
   writeFileSync(cyclePath, JSON.stringify(plan, null, 2) + '\n');
+  // Slice row du lieu DAY DU cho tung writer — writer KHONG bao gio doc manifest.
+  const assignFile = {
+    schema_version: 1,
+    cycle_id: plan.cycle_id,
+    base_sha: baseSha,
+    rows_total: batch.length,
+    writers: {},
+    created_at: new Date().toISOString(),
+  };
+  for (let k = 1; k <= writers; k++) assignFile.writers['writer-' + k] = [];
+  batch.forEach((r, i) => { assignFile.writers['writer-' + ((i % writers) + 1)].push(r); });
+  const assignPath = join(ROOT, 'data', 'writer-assignments.json');
+  writeFileSync(assignPath, JSON.stringify(assignFile, null, 2) + '\n');
   console.log('next-pair: ALLOCATED cycle ' + plan.cycle_id + ' (base=' + plan.base_sha.slice(0, 10) + ') — ' +
     batch.length + ' bai / ' + writers + ' writer:');
   for (let k = 1; k <= writers; k++) {
     console.log('  writer-' + k + ': ' + (assignments['writer-' + k].join(', ') || '(rong)'));
   }
-  console.log('next-pair: COMMIT file data/factory-cycle.json vao main (message: cycle(allocate): ' + plan.cycle_id + ') truoc khi writer bat dau.');
+  console.log('next-pair: COMMIT data/factory-cycle.json + data/writer-assignments.json vao main (message: cycle(allocate): ' + plan.cycle_id + ') truoc khi writer bat dau.');
   console.log('next-pair: sau do moi writer chay: node scripts/next-pair.mjs --writer writer-K --base-sha ' + plan.base_sha);
   process.exit(0);
 }
@@ -180,6 +200,7 @@ if (ALLOCATE) {
 const legacyMode = writerName === undefined && writersOpt === undefined && countOpt === undefined;
 
 if (legacyMode) {
+  ensureManifest();
   const n = Number.parseInt(args[0] || String(chunk), 10);
   if (!Number.isInteger(n) || n < 1) die('so bai phai la so nguyen duong');
   if (n > chunkMax) die(n + ' vuot chunk_size_max=' + chunkMax);
@@ -213,18 +234,26 @@ if (countOpt !== undefined) {
 }
 if (n > chunkMax) die(n + ' vuot chunk_size_max=' + chunkMax + ' (hard invariant cua publish transaction cho moi push)');
 
-// CYCLE MODE: plan bat bien tu data/factory-cycle.json
+// CYCLE MODE: doc DUNG slice tu data/writer-assignments.json — KHONG doc manifest
 if (cycleActive && cycle.assignments && Array.isArray(cycle.assignments['writer-' + K])) {
   if (baseShaOpt !== undefined && baseShaOpt !== cycle.base_sha) {
     die('--base-sha ' + baseShaOpt + ' KHAC base_sha cua cycle dang mo (' + cycle.base_sha + ') — ca 3 writer cung chu ky PHAI doc cung mot snapshot bat bien; fetch main cua ban da tien truoc cycle. Dung plan cua cycle ' + cycle.cycle_id + ' (base ' + cycle.base_sha.slice(0, 10) + ') hoac cho cycle nay complete.');
   }
-  const sliceRows = [];
-  for (const id of cycle.assignments['writer-' + K]) {
-    const r = rows.find(x => String(x.id) === String(id));
-    if (!r) die('cycle plan tham chieu id ' + id + ' khong ton tai trong manifest — cycle state khong nhat quan, kiem tra tay');
-    if (r.status !== 'planned' && r.status !== 'drafting' && r.status !== 'review') continue; // da published trong ky nay
-    sliceRows.push(r);
+  const assignPath = join(ROOT, 'data', 'writer-assignments.json');
+  if (!existsSync(assignPath)) {
+    die('data/writer-assignments.json thieu — coordinator chua tao assignment slice cho cycle ' + cycle.cycle_id + '. Fail-closed: writer KHONG doc manifest; cho coordinator chay cycle allocate (production.yml) truoc.');
   }
+  let assign;
+  try { assign = JSON.parse(readFileSync(assignPath, 'utf8')); }
+  catch (e) { die('writer-assignments.json hong: ' + e.message); }
+  if (assign.cycle_id !== cycle.cycle_id || assign.base_sha !== cycle.base_sha) {
+    die('writer-assignments.json (cycle ' + assign.cycle_id + ') KHONG khop cycle dang mo ' + cycle.cycle_id + ' — assignment file khong nhat quan voi factory-cycle.json, kiem tra tay');
+  }
+  const assignRows = assign.writers && Array.isArray(assign.writers['writer-' + K]) ? assign.writers['writer-' + K] : null;
+  if (!assignRows) {
+    die('slice cua ' + writerName + ' khong ton tai trong writer-assignments.json cua cycle ' + cycle.cycle_id);
+  }
+  const sliceRows = assignRows.filter(r => r.status === 'planned' || r.status === 'drafting' || r.status === 'review'); // da published trong ky nay
   if (sliceRows.length === 0) {
     console.log('next-pair: writer-' + K + ' khong con row planned trong slice cua cycle ' + cycle.cycle_id + ' (co the da publish trong chu ky nay).');
     process.exit(0);
@@ -240,6 +269,7 @@ if (cycleActive && cycle.assignments && Array.isArray(cycle.assignments['writer-
 }
 
 // Legacy slice (khong cycle dang mo) — giu hanh vi cu, them canh bao.
+ensureManifest();
 const slice = eligible.filter((r, i) => i % N === K - 1).slice(0, n);
 if (slice.length === 0) {
   console.log('next-pair: writer-' + K + ' khong con row planned trong slice — cac writer khac co the da phan het. Row khong bi danh COMPLETE; chu ky sau se cap lai.');

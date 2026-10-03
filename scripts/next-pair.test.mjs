@@ -12,9 +12,13 @@
 //   W7  writer-K ngoai pham vi 1..N bi tu choi (exit != 0)
 //   W8  --count override hoat dong
 //   W9  slice rong → exit 0 voi thong bao, khong loi
+//   W10 --allocate (coordinator) tao factory-cycle.json + writer-assignments.json
+//       18 row / 3 writer, chia slice deterministic, row du lieu day du
+//   W11 writer cycle mode KHONG doc manifest (xoa manifest sau allocate → van OK)
+//   W12 assignment file thieu / lech cycle_id → fail-closed (exit 1)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -142,6 +146,92 @@ test('W8: --count override hoat dong', () => {
     const r = run(root, ['--writer', 'writer-1', '--count', '1']);
     assert.equal(r.status, 0);
     assert.deepEqual(ids(r.out), ['C05-0001']);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+// ---- fixture cho che do --allocate (W10–W12) -------------------------------
+
+function fixtureAlloc(cfg, rows, review) {
+  const root = fixture(cfg, rows, review);
+  // allocate chay sync-manifest --dry-run (spawnSync, cwd=LAB_ROOT) — stub exit 0
+  mkdirSync(join(root, 'scripts'), { recursive: true });
+  writeFileSync(join(root, 'scripts', 'sync-manifest.mjs'), 'process.exit(0);\n');
+  return root;
+}
+
+function allocRows() {
+  const rows = [row('C05-0000', 'published')];
+  for (let i = 1; i <= 20; i++) rows.push(row('C05-' + String(i).padStart(4, '0'), 'planned'));
+  return rows;
+}
+
+const CFG18 = { chunk_size: 2, chunk_size_max: 6, writers: 3, writer_chunk_size: 6 };
+
+test('W10: --allocate tao cycle + writer-assignments 18 row / 3 writer, chia deterministic', () => {
+  const root = fixtureAlloc(CFG18, allocRows(), []);
+  try {
+    const r = run(root, ['--allocate', '--base-sha', 'deadbeef']);
+    assert.equal(r.status, 0, r.err);
+    assert.match(r.out, /ALLOCATED cycle cyc-c050001/);
+    const cyc = JSON.parse(readFileSync(join(root, 'data', 'factory-cycle.json'), 'utf8'));
+    assert.equal(cyc.phase, 'allocated');
+    assert.equal(cyc.cycle_id, 'cyc-c050001');
+    assert.equal(cyc.base_sha, 'deadbeef');
+    const assign = JSON.parse(readFileSync(join(root, 'data', 'writer-assignments.json'), 'utf8'));
+    assert.equal(assign.cycle_id, 'cyc-c050001');
+    assert.equal(assign.base_sha, 'deadbeef');
+    assert.equal(assign.rows_total, 18);
+    assert.deepEqual(Object.keys(assign.writers).sort(), ['writer-1', 'writer-2', 'writer-3']);
+    const a1 = assign.writers['writer-1'], a2 = assign.writers['writer-2'], a3 = assign.writers['writer-3'];
+    assert.deepEqual(a1.map(x => x.id), ['C05-0001', 'C05-0004', 'C05-0007', 'C05-0010', 'C05-0013', 'C05-0016']);
+    assert.deepEqual(a2.map(x => x.id), ['C05-0002', 'C05-0005', 'C05-0008', 'C05-0011', 'C05-0014', 'C05-0017']);
+    assert.deepEqual(a3.map(x => x.id), ['C05-0003', 'C05-0006', 'C05-0009', 'C05-0012', 'C05-0015', 'C05-0018']);
+    // row du lieu DAY DU — writer khong can doc manifest
+    for (const arr of [a1, a2, a3]) {
+      for (const x of arr) {
+        assert.equal(x.slug, 'slug-' + x.id.toLowerCase());
+        assert.equal(x.cluster, 'C05');
+        assert.ok(x.primary_topic);
+        assert.equal(x.status, 'planned');
+      }
+    }
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('W11: writer cycle mode KHONG doc manifest (xoa manifest sau allocate van OK)', () => {
+  const root = fixtureAlloc(CFG18, allocRows(), []);
+  try {
+    const a = run(root, ['--allocate', '--base-sha', 'deadbeef']);
+    assert.equal(a.status, 0, a.err);
+    // writer chi duoc doc factory-cycle.json + writer-assignments.json
+    rmSync(join(root, 'data', 'article-manifest.jsonl'));
+    rmSync(join(root, 'data', 'writer-checkpoint.json'));
+    const w = run(root, ['--writer', 'writer-2']);
+    assert.equal(w.status, 0, w.err);
+    assert.match(w.out, /RESERVED \(cycle plan\)/);
+    assert.deepEqual(ids(w.out), ['C05-0002', 'C05-0005', 'C05-0008', 'C05-0011', 'C05-0014', 'C05-0017']);
+    assert.match(w.out, /factory_cycle: cyc-c050001/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('W12: assignment file thieu hoac lech cycle_id → fail-closed', () => {
+  const root = fixtureAlloc(CFG18, allocRows(), []);
+  try {
+    const a = run(root, ['--allocate', '--base-sha', 'deadbeef']);
+    assert.equal(a.status, 0, a.err);
+    const assignPath = join(root, 'data', 'writer-assignments.json');
+    const assign = JSON.parse(readFileSync(assignPath, 'utf8'));
+    // (a) file thieu
+    rmSync(assignPath);
+    const m1 = run(root, ['--writer', 'writer-1']);
+    assert.equal(m1.status, 1);
+    assert.match(m1.err, /writer-assignments\.json thieu/);
+    // (b) sai cycle_id
+    assign.cycle_id = 'cyc-sai';
+    writeFileSync(assignPath, JSON.stringify(assign));
+    const m2 = run(root, ['--writer', 'writer-1']);
+    assert.equal(m2.status, 1);
+    assert.match(m2.err, /KHONG khop cycle/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

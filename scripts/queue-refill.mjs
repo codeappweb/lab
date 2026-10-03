@@ -185,6 +185,7 @@ while (chosen.length < need && active.length > 0) {
       }
     }
     if (ptr[c] < bankList[c].length && perC[c].count < (CLUSTERS[c].budget || Infinity)) next.push(c);
+    else if (ptr[c] < bankList[c].length) summary.rejected_budget += bankList[c].length - ptr[c];
   }
   if (next.length === 0) break;
   active = next;

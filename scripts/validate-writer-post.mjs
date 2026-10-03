@@ -56,7 +56,9 @@ function validatePost(relPath, content, ctx) {
     if (fm.title && (t < 10 || t > 120)) issues.push('title do dai ' + t + ' ngoai khoang 10-120');
     if (ctx && ctx.cycleId && fm.factory_cycle && fm.factory_cycle !== ctx.cycleId) issues.push('factory_cycle (' + fm.factory_cycle + ') != cycle hien tai (' + ctx.cycleId + ')');
     if (ctx && ctx.baseSha && fm.factory_base_sha && fm.factory_base_sha !== ctx.baseSha) issues.push('factory_base_sha khong khop base_sha cua cycle');
-    if (ctx && ctx.assignmentIds && fm.id && !ctx.assignmentIds.includes(fm.id)) issues.push('id khong nam trong assignment cua cycle: ' + fm.id);
+    if (ctx && ctx.assignmentIds && fm.manifest_id && !ctx.assignmentIds.includes(fm.manifest_id)) issues.push('manifest_id khong nam trong assignment cua cycle: ' + fm.manifest_id);
+    if (ctx && ctx.assignmentSlugs && m && fm.id && !ctx.assignmentSlugs.includes(fm.id)) issues.push('id (slug) khong nam trong assignment cua cycle: ' + fm.id);
+    if (ctx && ctx.writerById && fm.manifest_id && ctx.writerById[fm.manifest_id] && fm.factory_writer && ctx.writerById[fm.manifest_id] !== fm.factory_writer) issues.push('factory_writer (' + fm.factory_writer + ') khong khop writer duoc giao manifest_id ' + fm.manifest_id);
   }
   if (CJK.test(content)) issues.push('nhiem ky tu CJK (Trung/Nhat/Han) — dich tieu de tieng Viet, khong CJK');
   if (/\bundefined\b/.test(content)) issues.push('chua token undefined (metadata/body rac)');
@@ -75,7 +77,17 @@ function loadCtx() {
     const cyc = JSON.parse(readFileSync(join(ROOT, 'data', 'factory-cycle.json'), 'utf8'));
     if (!['idle', 'complete', 'failed'].includes(cyc.phase)) {
       const ids = Object.values(cyc.assignments || {}).flat();
-      return { cycleId: cyc.cycle_id, baseSha: cyc.base_sha, assignmentIds: ids };
+      let slugs = null; let writerById = null;
+      try {
+        const wa = JSON.parse(readFileSync(join(ROOT, 'data', 'writer-assignments.json'), 'utf8'));
+        if (wa.cycle_id === cyc.cycle_id) {
+          slugs = []; writerById = {};
+          for (const [w, rows] of Object.entries(wa.writers || {})) {
+            for (const row of rows || []) { slugs.push(row.slug); writerById[row.id] = w; }
+          }
+        }
+      } catch (e2) {}
+      return { cycleId: cyc.cycle_id, baseSha: cyc.base_sha, assignmentIds: ids, assignmentSlugs: slugs, writerById };
     }
   } catch (e) {}
   return null;

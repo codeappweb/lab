@@ -152,13 +152,17 @@ test('validatePost: it link noi boi bi chan', () => {
   assert.ok(validatePost(P, c).some((i) => i.includes('link noi boi')));
 });
 test('validatePost: sai factory_cycle so voi cycle hien tai bi chan', () => {
-  const ctx = { cycleId: 'cyc-c050042', baseSha: '313a243942a366ed005b514d3aacd0885450d4e4', assignmentIds: ['bai-mau-hop-le-cho-test'] };
+  const ctx = { cycleId: 'cyc-c050042', baseSha: '313a243942a366ed005b514d3aacd0885450d4e4', assignmentIds: ['C08-0021'], assignmentSlugs: ['bai-mau-hop-le-cho-test'], writerById: { 'C08-0021': 'writer-1' } };
   const c = mkPost({ fm: { factory_cycle: 'cyc-KHAC' } });
   assert.ok(validatePost(P, c, ctx).some((i) => i.includes('factory_cycle')));
 });
 test('validatePost: id khong khop filename bi chan', () => {
   const c = mkPost({ fm: { id: 'id-khac-filename' } });
   assert.ok(validatePost(P, c).some((i) => i.includes('khong khop slug')));
+});
+test('validatePost: manifest_id ngoai assignment cua cycle bi chan', () => {
+  const ctx = { cycleId: 'cyc-c050042', baseSha: '313a243942a366ed005b514d3aacd0885450d4e4', assignmentIds: ['C99-9999'], assignmentSlugs: [], writerById: {} };
+  assert.ok(validatePost(P, mkPost(), ctx).some((i) => i.includes('manifest_id khong nam trong assignment')));
 });
 test('validatePost: thieu metadata factory bi chan', () => {
   const c = mkPost({ fm: { manifest_id: '' } });
@@ -239,6 +243,7 @@ test('reset-staging-safe: tip da DOI (writer push moi) -> SKIP, khong clobber', 
   gitIn(f.w, ['add', '-A']);
   gitIn(f.w, ['commit', '-m', 'writer push moi sau snapshot']);
   gitIn(f.w, ['push', 'origin', 'HEAD:refs/heads/staging/writer-1']);
+
   const moved = gitIn(f.w, ['rev-parse', 'HEAD']);
   gitIn(f.w, ['checkout', 'main']);
   gitIn(f.w, ['fetch', 'origin']);
@@ -261,19 +266,34 @@ test('production-paused: paused -> exit 1; khong -> exit 0; --is-paused dao nguo
   assert.equal(run(['--is-paused']).status, 1);
 });
 
-test('recovery cyc-c050042: du 18 bai verbatim, id khop assignment, metadata factory nguyen', () => {
+test('recovery cyc-c050042: du 18 bai verbatim, manifest_id khop assignment, metadata factory nguyen', () => {
   const rec = JSON.parse(read('recovery/cyc-c050042/posts.json'));
   const cyc = JSON.parse(read('data/factory-cycle.json'));
   assert.equal(cyc.cycle_id, 'cyc-c050042');
   const ids = Object.values(cyc.assignments || {}).flat();
   assert.equal(ids.length, 18);
   assert.equal(rec.posts.length, 18);
+  const wa = JSON.parse(read('data/writer-assignments.json'));
+  assert.equal(wa.cycle_id, 'cyc-c050042');
+  const writerById = {}; const slugById = {};
+  for (const [w, rows] of Object.entries(wa.writers || {})) {
+    for (const row of rows || []) { writerById[row.id] = w; slugById[row.id] = row.slug; }
+  }
+  assert.equal(Object.keys(writerById).length, 18);
   const recovered = new Set();
   for (const p of rec.posts) {
     assert.ok(p.path.startsWith('_posts/2026-10-03-'), 'path le: ' + p.path);
     const slug = p.path.replace(/^_posts\/2026-10-03-/, '').replace(/\.md$/, '');
-    assert.ok(ids.includes(slug), 'slug khong nam trong assignment: ' + slug);
-    recovered.add(slug);
+    const fmId = /\nid: ([a-z0-9-]+)\n/.exec(p.content);
+    assert.ok(fmId && fmId[1] === slug, 'id front matter khong khop slug path: ' + slug);
+    const mid = /manifest_id: ?\"?([A-Z]\d{2}-\d{3,5})\"?/.exec(p.content);
+    assert.ok(mid, 'thieu manifest_id: ' + slug);
+    assert.ok(ids.includes(mid[1]), 'manifest_id khong nam trong assignment: ' + mid[1]);
+    assert.equal(slugById[mid[1]], slug, 'slug khong khop assignment ' + mid[1]);
+    const w = writerById[mid[1]];
+    assert.ok(w, 'khong tim thay writer cho assignment ' + mid[1]);
+    assert.equal(p.writer, w, 'writer khong khop assignment: ' + slug + ' (' + p.writer + ' != ' + w + ')');
+    recovered.add(mid[1]);
     assert.ok(p.content.startsWith('---\n'), 'front matter hong: ' + slug);
     assert.ok(p.content.includes('factory_cycle: cyc-c050042'), 'sai factory_cycle: ' + slug);
     assert.ok(p.content.length > 1000, 'noi dung qua ngan: ' + slug);

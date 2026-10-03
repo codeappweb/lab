@@ -5,8 +5,8 @@
   "resumed_by": "recovery(cyc-c050042)",
   "run_id": "37128550402",
   "reason": "infra failure run 37128550402",
-  "escalated": false,
-  "blocker": null,
+  "escalated": true,
+  "blocker": "unclassified",
   "incident_resolved": true,
-  "paused_at": "2026-10-03T14:08:09.598Z"
+  "paused_at": "2026-10-03T14:08:11.233Z"
 }

@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c070014",
-  "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
+  "cycle_id": "cyc-c010032",
+  "base_sha": "7ff085c71f1910e76f78d59aa6eb1d82fcd9d73b",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C07-0014",
-      "C10-0014"
+      "C01-0032",
+      "C04-0031"
     ],
     "writer-2": [
-      "C08-0014",
-      "C11-0014"
+      "C02-0031",
+      "C05-0037"
     ],
     "writer-3": [
-      "C09-0014",
-      "C12-0014"
+      "C03-0033",
+      "C06-0015"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "fd82e5f48bb54f6833f10a0d49c99a86d1810e01",
-    "ids": [
-      "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
-      "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
-      "gui-xe-quanh-ho-guom-cuoi-tuan-diem-gui-uy-tin",
-      "xe-may-cu-gia-duoi-hai-muoi-trieu-chon-duoc-gi",
-      "lo-trinh-ha-noi-tam-dao-bang-xe-may-chia-chang-ro-rang",
-      "so-sanh-pin-lithium-ion-va-pin-chi-cho-xe-may-dien"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T01:12:06.365Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -190,31 +175,8 @@
         "verified_at": "2026-10-03T00:56:57.871Z"
       },
       "completed_at": "2026-10-03T00:56:57.871Z"
-    },
-    {
-      "cycle_id": "cyc-c070014",
-      "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
-      "phase": "complete",
-      "publication": {
-        "main_sha": "fd82e5f48bb54f6833f10a0d49c99a86d1810e01",
-        "ids": [
-          "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
-          "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
-          "gui-xe-quanh-ho-guom-cuoi-tuan-diem-gui-uy-tin",
-          "xe-may-cu-gia-duoi-hai-muoi-trieu-chon-duoc-gi",
-          "lo-trinh-ha-noi-tam-dao-bang-xe-may-chia-chang-ro-rang",
-          "so-sanh-pin-lithium-ion-va-pin-chi-cho-xe-may-dien"
-        ]
-      },
-      "pages": {
-        "deployment_id": null,
-        "status": "success",
-        "live_verified": true,
-        "verified_at": "2026-10-03T01:12:06.365Z"
-      },
-      "completed_at": "2026-10-03T01:12:06.365Z"
     }
   ],
-  "created_at": "2026-10-03T00:57:34.029Z",
-  "updated_at": "2026-10-03T01:12:06.365Z"
+  "created_at": "2026-10-03T01:12:56.334Z",
+  "updated_at": "2026-10-03T01:12:56.334Z"
 }

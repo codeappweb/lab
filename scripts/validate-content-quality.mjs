@@ -29,6 +29,7 @@ const ONLY_Q = SCOPED_Q ? (process.argv[onlyIdxQ + 1] || '').split(',').map(s =>
 const isSiteContent = rel => rel.startsWith('_posts/') || rel.startsWith('danh-muc/') || rel.startsWith('hub/') || /^[a-z0-9-]+\.md$/.test(rel);
 let idxRowsQ = null;
 if (SCOPED_Q) {
+  idxRowsQ = new Map(); // fail-closed: thiếu/hỏng cache → rỗng → mọi file cũ báo lỗi ở dưới
   try {
     // SQLite derived cache (read-only): file cũ tin theo row qa_status=passed.
     const { openReadOnly, rowsMap } = await import('./content-index-lib.mjs');

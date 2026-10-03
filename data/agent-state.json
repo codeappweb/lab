@@ -6,11 +6,12 @@
     "finished_at": "2026-10-03T16:53:11.429Z"
   },
   "supervisor": {
-    "status": "idle",
-    "last_incident_id": "37128570543",
+    "status": "terminal",
+    "last_incident_id": "37138741971",
     "terminal_incidents": [
       "37118189364",
-      "37128570543"
+      "37128570543",
+      "37138741971"
     ]
   },
   "director": {

@@ -1,9 +1,9 @@
 {
   "status": "blocked — production GIU PAUSE sau chain #4 -> #5",
-  "incident_id": "37138474187",
-  "reason": "second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan",
+  "incident_id": "37138741971",
+  "reason": "verification KHONG green sau #4 SUCCESS: regression",
   "attempts": [
-    "diagnose:unclassified"
+    "verify-only"
   ],
-  "ts": "2026-10-03T16:53:07.543Z"
+  "ts": "2026-10-03T16:57:36.744Z"
 }

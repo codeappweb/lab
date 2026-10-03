@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c070017",
-  "base_sha": "57a2634cb2b48fc243c84fee9370c44f78e71425",
+  "cycle_id": "cyc-c020034",
+  "base_sha": "3e18d3ae276f64ef7f57d1f953b075ee6fe4e75b",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C07-0017",
-      "C10-0017"
+      "C02-0034",
+      "C05-0040"
     ],
     "writer-2": [
-      "C08-0017",
-      "C11-0017"
+      "C03-0036",
+      "C06-0018"
     ],
     "writer-3": [
-      "C09-0017",
-      "C01-0035"
+      "C04-0034",
+      "C07-0018"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "08f284501a5f7b539b33d62643d939173d67fe32",
-    "ids": [
-      "tra-cuu-va-nop-phat-nguoi-xe-may-o-ha-noi-cach-lam",
-      "vet-dau-tron-tren-duong-mua-nhan-dien-va-tranh",
-      "kiem-tra-xe-may-cu-truoc-khi-mua-checklist-toan-dien",
-      "van-mieu-mua-thi-di-lai-nhu-the-nao-thuan-loi",
-      "moc-chau-mua-hoa-man-trang-lich-trinh-di-xe-may",
-      "thue-xe-may-o-long-bien-dia-diem-giao-xe-uy-tin"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T02:54:13.472Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -330,6 +315,6 @@
       "completed_at": "2026-10-03T02:54:13.472Z"
     }
   ],
-  "created_at": "2026-10-03T02:28:15.525Z",
-  "updated_at": "2026-10-03T02:54:13.472Z"
+  "created_at": "2026-10-03T03:02:48.916Z",
+  "updated_at": "2026-10-03T03:02:48.916Z"
 }

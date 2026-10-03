@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 2,
+  "consecutive_failures": 0,
   "last_run_id": "37113221769",
   "last_run_status": "failed",
-  "updated_at": "2026-10-03T09:33:08.176Z"
+  "ledger_reset_reason": "cyc-c050042 incident resolved: root cause (blind staging force-reset + parallel publishers) fixed in 68e71f9..c66ee61e, regression tests green in CI; reset theo huong dan cycle-phase --check-stop",
+  "updated_at": "2026-10-03T14:07:37.359Z"
 }

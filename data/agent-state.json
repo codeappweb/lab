@@ -1,12 +1,12 @@
 {
   "repair": {
     "status": "idle",
-    "incident_id": null,
-    "outcome": null,
-    "finished_at": null
+    "incident_id": "37114720761",
+    "outcome": "SUCCESS",
+    "finished_at": "2026-10-03T14:07:37.359Z"
   },
   "supervisor": {
-    "status": "terminal",
+    "status": "idle",
     "last_incident_id": "37118189364",
     "terminal_incidents": [
       "37118189364"
@@ -15,5 +15,19 @@
   "director": {
     "last_valid_progress_at": null,
     "last_trigger_at": null
+  },
+  "incidents": {
+    "cyc-c050042": {
+      "status": "resolved",
+      "resolved_at": "2026-10-03T14:07:37.359Z",
+      "root_cause": "staging force-reset trong run #284/#285 khi chua co publish commit (blind reset + parallel publishers, cancel khong ghi ledger)",
+      "fix_commits": [
+        "68e71f9",
+        "54ce40ca",
+        "a7538c7e",
+        "c66ee61e"
+      ],
+      "evidence": "reports/incident-cyc-c050042-resolution.json"
+    }
   }
 }

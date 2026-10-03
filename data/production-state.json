@@ -1,9 +1,11 @@
 {
-  "paused": true,
-  "paused_by": "repair-agent",
-  "paused_at": "2026-10-03T09:56:51.198Z",
+  "paused": false,
+  "paused_by": null,
+  "resumed_at": "2026-10-03T14:07:37.359Z",
+  "resumed_by": "recovery(cyc-c050042)",
   "run_id": "37114720761",
-  "reason": "infra failure run 37114720761",
-  "escalated": true,
-  "blocker": "unclassified"
+  "reason": "incident cyc-c050042 RESOLVED — root cause fixed; 18 recovered articles verified verbatim on staging",
+  "escalated": false,
+  "blocker": null,
+  "incident_resolved": true
 }

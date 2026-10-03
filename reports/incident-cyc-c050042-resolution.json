@@ -1,0 +1,22 @@
+{
+  "incident": "cyc-c050042",
+  "status": "resolved",
+  "resolved_at": "2026-10-03T14:07:37.359Z",
+  "root_cause": "production.yml cu chua blind staging reset (sh /tmp/reset-staging.sh) force-reset 3 nhanh staging ve main KHONG kiem tra snapshot da duoc publish chua. Hai run Production chay song song (#284/#285) vi concurrency group thieu/khong cancel-in-progress false: mot run reset staging trong khi run kia chua push publish commit -> 18 bai writer output bi xoa, khong co publish commit, cycle failed. Run bi cancel khong duoc ghi vao failure ledger -> coordinator khong thay 2 fail lien tiep de dung an toan.",
+  "fix": "68e71f9: singleton publisher (group production-coordinator, cancel-in-progress false), preflight validation truoc guard, post-publish verify truoc deploy, reset-staging-safe.mjs (reset chi khi tip khong doi VA moi file snapshot byte-identical tren origin/main; neu chua integrate -> QUARANTINE khong reset), failure ledger ghi ca cancelled.",
+  "regression_tests": "scripts/publisher-safety.test.mjs: singleton publisher, KHONG blind reset, preflight<guard, verify<deploy, failure||cancelled, reset-staging-safe QUARANTINE/SKIP behavioral git-fixture tests. CI green tai c66ee61e.",
+  "recovered_articles": {
+    "count": 18,
+    "verification": "Blob SHA cua 18 file tren staging (retry commits fe5020a5/607fc86b/db3fbdb7) IDENTICAL voi 3 writer commit goc (5ca51ceb/1c205e2d/17dbbb63) — verbatim, khong viet lai.",
+    "publish_path": "coordinator entrypoint duy nhat (data/.coordinator-trigger) — collect -> preflight -> guard -> integrate -> build -> 1 publish commit -> 1 Pages deploy -> safe reset staging."
+  },
+  "pre_resume_verification": {
+    "ci_head": "c66ee61e success",
+    "pages_last_deploy": "37118208413 success",
+    "repair_agent": "idle",
+    "supervisor": "idle",
+    "director": "healthy/passive (37125747232 success, khong trigger)",
+    "staging_branches": "18/18 bai verbatim, khong bai nao tren main",
+    "failure_ledger_reset": "consecutive_failures 2 -> 0 theo huong dan check-stop (nguyen goc da sua, CI xanh)"
+  }
+}

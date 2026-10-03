@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c010031",
   "base_sha": "d2069fb63349e4e5bf949e6286688279e4b086a7",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C01-0031",
@@ -20,6 +20,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "5c35609cfe796ac0e1ab1eaea7f107b06e9f94fa",
     "ids": [
       "thue-xe-may-tu-lai-ha-noi-nguoi-nuoc-ngoai-can-chuan-bi-gi",
       "xe-dap-di-lam-moi-ngay-o-ha-noi-chon-loai-nao",
@@ -141,5 +142,5 @@
     }
   ],
   "created_at": "2026-10-03T00:37:11.318Z",
-  "updated_at": "2026-10-03T00:54:22.245Z"
+  "updated_at": "2026-10-03T00:55:22.870Z"
 }

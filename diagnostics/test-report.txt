@@ -1,273 +1,45 @@
-✔ CI1: --build tạo index hợp lệ (post + trang tĩnh, pending) (38.084293ms)
-✔ CI2: qa-pass rồi update không đổi → idempotent, không pending (106.769808ms)
-✔ CI3: sửa 1 bài → chỉ row đó pending; qa-pass đánh passed (135.950767ms)
-✔ CI4: --verify bắt file mới chưa có trong index (fail-closed) (135.956662ms)
-✔ CI5: --verify bắt index hỏng (JSON sai) (136.392738ms)
-✔ CI6: verify cấu trúc OK nhưng --hashes bắt nội dung đã đổi (164.215945ms)
-✔ CI7: validate-content --only — tin index, fail-closed khi thiếu/pending (234.677641ms)
-✔ CI8: xóa file → update bỏ row, không ghost (130.095225ms)
-✔ CI9: validate-content-quality --only bỏ qua file cũ passed, bắt file trong scope hỏng (112.198224ms)
-✔ W1: legacy mode giu nguyen hanh vi cu — chunk_size ID dau tien (34.281009ms)
-✔ W1b: legacy positional count va gioi han chunk_size_max (32.97561ms)
-✔ W2 + W3: ba slice roi sac hai hai va union = dung cac row eligible dau (100.162964ms)
-✔ W4: row published va review_queue khong bao gio duoc cap (90.292268ms)
-✔ W5: --count vuot chunk_size_max bi tu choi (24.229923ms)
-✔ W6: ten writer sai dinh dang bi tu choi (29.913172ms)
-✔ W7: writer-K ngoai pham vi 1..N bi tu choi (28.172059ms)
-✔ W8: --count override hoat dong (35.248705ms)
-✔ W9: slice rong thoat 0 voi thong bao, khong loi (39.336434ms)
-✔ P1: unknown id and row-less post file are refused (50.040896ms)
-✔ P2: valid row prepares, gates green, prints the exact commit list (541.09343ms)
-✔ P3: a published row without its file is never claimed again (35.593165ms)
-✔ T1: one passing article publishes independently (331.181274ms)
-✔ T2: a failing article is refused and does not block the next valid one (464.495963ms)
-✔ T3 + T4: restart / connection-loss re-run is idempotent, no duplicates (546.722328ms)
-✔ T5: out-of-scope and duplicate-claim pushes are refused (75.94906ms)
-✔ T6: gate failure is never reported as success (25.88625ms)
-✔ T8: porcelain parser never eats the first character of a path (5.977375ms)
-✔ T7: the transaction only writes derived allowlist files (271.181802ms)
-✔ T9: --check fails while derived state is uncommitted — and never commits (311.469905ms)
-✔ T10: --check is green once the writer committed article + derived state together (597.191608ms)
-✔ T11: two consecutive article rounds + resume after interruption (fixture only) (1422.341406ms)
-✖ R1: queue >= threshold -> khong mutation, manifest byte-identical (23.188508ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:61:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at node:internal/test_runner/harness:255:12
-      at node:internal/process/task_queues:140:7
-      at AsyncResource.runInAsyncScope (node:async_hooks:206:9)
-      at AsyncResource.runMicrotask (node:internal/process/task_queues:137:8) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✖ R2: queue thap -> append dung den target, giu nguyen lich su (24.044666ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:73:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✖ R3: manifest rong (0 planned) -> refill thay vi terminate (23.074657ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:93:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✖ R4: ung vien trung slug/topic/near-dup bi tu choi (21.627739ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:114:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✖ R5: ung vien invalid bi skip, khong tao dong hong (22.509367ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:133:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✖ R6: vuot budget cluster -> phan bo theo budget (22.604667ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:148:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✔ R7: manifest malformed -> exit 1, file khong doi (24.638701ms)
-✖ R8: id moi tiep tu max seq hien co (22.882729ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:168:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✖ R9: chay lan hai (queue da day) -> noop, khong doi (24.418681ms)
+✔ CI1: --build tạo index hợp lệ (post + trang tĩnh, pending) (43.215456ms)
+✔ CI2: qa-pass rồi update không đổi → idempotent, không pending (121.377079ms)
+✔ CI3: sửa 1 bài → chỉ row đó pending; qa-pass đánh passed (158.225475ms)
+✔ CI4: --verify bắt file mới chưa có trong index (fail-closed) (182.178058ms)
+✔ CI5: --verify bắt index hỏng (JSON sai) (135.628901ms)
+✔ CI6: verify cấu trúc OK nhưng --hashes bắt nội dung đã đổi (188.084722ms)
+✔ CI7: validate-content --only — tin index, fail-closed khi thiếu/pending (291.526859ms)
+✔ CI8: xóa file → update bỏ row, không ghost (161.398369ms)
+✔ CI9: validate-content-quality --only bỏ qua file cũ passed, bắt file trong scope hỏng (144.010933ms)
+✔ W1: legacy mode giu nguyen hanh vi cu — chunk_size ID dau tien (39.967215ms)
+✔ W1b: legacy positional count va gioi han chunk_size_max (27.862866ms)
+✔ W2 + W3: ba slice roi sac hai hai va union = dung cac row eligible dau (104.791134ms)
+✔ W4: row published va review_queue khong bao gio duoc cap (98.564025ms)
+✔ W5: --count vuot chunk_size_max bi tu choi (38.296701ms)
+✔ W6: ten writer sai dinh dang bi tu choi (40.574562ms)
+✔ W7: writer-K ngoai pham vi 1..N bi tu choi (38.899942ms)
+✔ W8: --count override hoat dong (41.935318ms)
+✔ W9: slice rong thoat 0 voi thong bao, khong loi (40.860063ms)
+✔ P1: unknown id and row-less post file are refused (76.34779ms)
+✔ P2: valid row prepares, gates green, prints the exact commit list (704.579309ms)
+✔ P3: a published row without its file is never claimed again (33.759692ms)
+✔ T1: one passing article publishes independently (397.723401ms)
+✔ T2: a failing article is refused and does not block the next valid one (569.031897ms)
+✔ T3 + T4: restart / connection-loss re-run is idempotent, no duplicates (647.109967ms)
+✔ T5: out-of-scope and duplicate-claim pushes are refused (83.046481ms)
+✔ T6: gate failure is never reported as success (29.08544ms)
+✔ T8: porcelain parser never eats the first character of a path (5.927766ms)
+✔ T7: the transaction only writes derived allowlist files (325.722893ms)
+✔ T9: --check fails while derived state is uncommitted — and never commits (356.580615ms)
+✔ T10: --check is green once the writer committed article + derived state together (690.694752ms)
+✔ T11: two consecutive article rounds + resume after interruption (fixture only) (1655.409685ms)
+✔ R1: queue >= threshold -> khong mutation, manifest byte-identical (37.060273ms)
+✔ R2: queue thap -> append dung den target, giu nguyen lich su (32.284457ms)
+✔ R3: manifest rong (0 planned) -> refill thay vi terminate (29.630311ms)
+✔ R4: ung vien trung slug/topic/near-dup bi tu choi (36.325588ms)
+✔ R5: ung vien invalid bi skip, khong tao dong hong (36.287365ms)
+✖ R6: vuot budget cluster -> phan bo theo budget (35.953805ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
   
-  1 !== 0
+  0 !== 4
   
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:179:10)
+      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:152:10)
       at Test.runInAsyncScope (node:async_hooks:206:9)
       at Test.run (node:internal/test_runner/test:796:25)
       at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
@@ -276,309 +48,41 @@
       at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
     generatedMessage: true,
     code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
+    actual: 0,
+    expected: 4,
     operator: 'strictEqual'
   }
 
-✖ R10: trung cap entities+intent+cluster (cannibalization) -> chi nhan mot (24.964949ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:193:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-✔ valid page + README without front matter are accepted (27.329146ms)
-✔ underscore artifact in real prose is blocked (33.500636ms)
-✔ CJK artifact in real prose is blocked (25.748433ms)
-✔ site page without front matter is blocked (28.807439ms)
-✔ README with relative_url liquid filter is not flagged (30.819804ms)
-✔ README naming YAML fields and the undefined detection is not flagged (32.816287ms)
-✔ CJK junk in README prose is still blocked (31.763453ms)
-✔ underscore artifact in docs/ file prose is exempt, CJK is not (24.42207ms)
+✔ R7: manifest malformed -> exit 1, file khong doi (27.608649ms)
+✔ R8: id moi tiep tu max seq hien co (38.113444ms)
+✔ R9: chay lan hai (queue da day) -> noop, khong doi (66.042504ms)
+✔ R10: trung cap entities+intent+cluster (cannibalization) -> chi nhan mot (31.46531ms)
+✔ valid page + README without front matter are accepted (32.894583ms)
+✔ underscore artifact in real prose is blocked (29.952494ms)
+✔ CJK artifact in real prose is blocked (35.362097ms)
+✔ site page without front matter is blocked (33.894549ms)
+✔ README with relative_url liquid filter is not flagged (28.795021ms)
+✔ README naming YAML fields and the undefined detection is not flagged (27.763611ms)
+✔ CJK junk in README prose is still blocked (29.871788ms)
+✔ underscore artifact in docs/ file prose is exempt, CJK is not (31.471624ms)
 ℹ tests 49
 ℹ suites 0
-ℹ pass 40
-ℹ fail 9
+ℹ pass 48
+ℹ fail 1
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 4569.412045
+ℹ duration_ms 5349.946334
 
 ✖ failing tests:
 
-test at scripts/queue-refill.test.mjs:54:1
-✖ R1: queue >= threshold -> khong mutation, manifest byte-identical (23.188508ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:61:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at node:internal/test_runner/harness:255:12
-      at node:internal/process/task_queues:140:7
-      at AsyncResource.runInAsyncScope (node:async_hooks:206:9)
-      at AsyncResource.runMicrotask (node:internal/process/task_queues:137:8) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:66:1
-✖ R2: queue thap -> append dung den target, giu nguyen lich su (24.044666ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:73:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:90:1
-✖ R3: manifest rong (0 planned) -> refill thay vi terminate (23.074657ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:93:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:100:1
-✖ R4: ung vien trung slug/topic/near-dup bi tu choi (21.627739ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:114:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:123:1
-✖ R5: ung vien invalid bi skip, khong tao dong hong (22.509367ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:133:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
 test at scripts/queue-refill.test.mjs:141:1
-✖ R6: vuot budget cluster -> phan bo theo budget (22.604667ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:148:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:163:1
-✖ R8: id moi tiep tu max seq hien co (22.882729ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:168:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:173:1
-✖ R9: chay lan hai (queue da day) -> noop, khong doi (24.418681ms)
+✖ R6: vuot budget cluster -> phan bo theo budget (35.953805ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
   
-  1 !== 0
+  0 !== 4
   
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:179:10)
+      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:152:10)
       at Test.runInAsyncScope (node:async_hooks:206:9)
       at Test.run (node:internal/test_runner/test:796:25)
       at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
@@ -587,42 +91,8 @@ test at scripts/queue-refill.test.mjs:173:1
       at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
     generatedMessage: true,
     code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
-    operator: 'strictEqual'
-  }
-
-test at scripts/queue-refill.test.mjs:186:1
-✖ R10: trung cap entities+intent+cluster (cannibalization) -> chi nhan mot (24.964949ms)
-  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1210
-    throw err;
-    ^
-  
-  Error: Cannot find module '/home/runner/work/lab/lab/queue-refill.mjs'
-      at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
-      at Module._load (node:internal/modules/cjs/loader:1038:27)
-      at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)
-      at node:internal/main/run_main_module:28:49 {
-    code: 'MODULE_NOT_FOUND',
-    requireStack: []
-  }
-  
-  Node.js v20.20.2
-  
-  
-  1 !== 0
-  
-      at TestContext.<anonymous> (file:///home/runner/work/lab/lab/scripts/queue-refill.test.mjs:193:10)
-      at Test.runInAsyncScope (node:async_hooks:206:9)
-      at Test.run (node:internal/test_runner/test:796:25)
-      at Test.processPendingSubtests (node:internal/test_runner/test:526:18)
-      at Test.postRun (node:internal/test_runner/test:889:19)
-      at Test.run (node:internal/test_runner/test:835:12)
-      at async Test.processPendingSubtests (node:internal/test_runner/test:526:7) {
-    generatedMessage: false,
-    code: 'ERR_ASSERTION',
-    actual: 1,
-    expected: 0,
+    actual: 0,
+    expected: 4,
     operator: 'strictEqual'
   }
 EXIT=1

@@ -71,7 +71,18 @@ jobs:
           for f in scripts/*.mjs; do node --check "$f"; done
       - name: Regression tests (chỉ khi đổi engine/workflow)
         if: steps.scope.outputs.engine == 'true'
-        run: node --test --test-reporter=spec scripts/*.test.mjs
+        run: |
+          set +e
+          node --test --test-reporter=spec scripts/*.test.mjs > /tmp/reg.log 2>&1
+          st=$?
+          if [ $st -ne 0 ]; then
+            echo "regression failed (exit $st) — key lines:"
+            grep -nE "✖|not ok|fail [0-9]|AssertionError|expected|actual|Error:" /tmp/reg.log | head -n 12 | while IFS= read -r l; do
+              echo "::error::$(echo "$l" | tr -d '\000-\010\013\014\016-\037' | cut -c1-250)"
+            done
+          fi
+          cat /tmp/reg.log
+          exit $st
       - name: Manifest + bài viết
         run: node scripts/validate-content.mjs
       - name: Chất lượng nội dung

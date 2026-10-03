@@ -29,16 +29,13 @@ const ONLY_Q = SCOPED_Q ? (process.argv[onlyIdxQ + 1] || '').split(',').map(s =>
 const isSiteContent = rel => rel.startsWith('_posts/') || rel.startsWith('danh-muc/') || rel.startsWith('hub/') || /^[a-z0-9-]+\.md$/.test(rel);
 let idxRowsQ = null;
 if (SCOPED_Q) {
-  idxRowsQ = new Map();
+  idxRowsQ = new Map(); // fail-closed: thiếu/hỏng cache → rỗng → mọi file cũ báo lỗi ở dưới
   try {
-    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    for (const l of rawIdx.split('\n').filter(Boolean)) {
-      const r = JSON.parse(l);
-      idxRowsQ.set(r.path, r);
-    }
+    // SQLite derived cache (read-only): file cũ tin theo row qa_status=passed.
+    const { openReadOnly, rowsMap } = await import('./content-index-lib.mjs');
+    idxRowsQ = rowsMap(await openReadOnly(ROOT));
   } catch (e) {
-    errors.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    errors.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
   }
 }
 

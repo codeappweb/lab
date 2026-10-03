@@ -100,17 +100,16 @@ jobs:
         run: git fetch origin '+refs/heads/staging/*:refs/remotes/origin/staging/*' --quiet
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
-      - name: Content index (verify; rebuild + full QA nếu lệch)
-        run: |
-          set -eu
-          if [ -f data/content-index.jsonl ] && node scripts/content-index.mjs --verify; then
-            echo "content-index: structurally OK"
-          else
-            echo "::warning::content-index thiếu/lệch — REBUILD fail-closed; chu kỳ này chạy FULL QA."
-            node scripts/content-index.mjs --build
-            touch /tmp/qa-full-scope
-          fi
+          node-version: '24'
+      - name: Content index cache (SQLite derived — restore, KHÔNG commit)
+        uses: actions/cache@v6
+        with:
+          path: data/content-index.sqlite
+          key: content-index-v1-${{ hashFiles('data/article-manifest.jsonl') }}
+          restore-keys: |
+            content-index-v1-
+      - name: Content index (update; safe-rebuild nếu thiếu/hỏng/stale)
+        run: node scripts/content-index.mjs --update
 
       # ---- 0. safety stop + crash recovery ---------------------------------
       # ---- 0b. reconcile derived state (self-heal, TRUOC moi allocation/noop) ----
@@ -349,16 +348,16 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
-      - name: Content index (verify; rebuild nếu lệch — phục vụ validate --only none)
-        run: |
-          set -eu
-          if [ -f data/content-index.jsonl ] && node scripts/content-index.mjs --verify; then
-            echo "content-index: structurally OK"
-          else
-            echo "::warning::content-index thiếu/lệch — REBUILD fail-closed."
-            node scripts/content-index.mjs --build
-          fi
+          node-version: '24'
+      - name: Content index cache (SQLite derived — restore, KHÔNG commit)
+        uses: actions/cache@v6
+        with:
+          path: data/content-index.sqlite
+          key: content-index-v1-${{ hashFiles('data/article-manifest.jsonl') }}
+          restore-keys: |
+            content-index-v1-
+      - name: Content index (update; safe-rebuild nếu thiếu/hỏng/stale — phục vụ validate --only none)
+        run: node scripts/content-index.mjs --update
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'

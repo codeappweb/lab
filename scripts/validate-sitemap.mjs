@@ -80,14 +80,11 @@ if (!SCOPED_S) {
   // KHÔNG đọc lại mọi post. Fail-closed: post thiếu row index → LỖI.
   let idxRowsS = null;
   try {
-    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    idxRowsS = new Map(rawIdx.split('\n').filter(Boolean).map(l => {
-      const r = JSON.parse(l);
-      return [r.path, r];
-    }));
+    // SQLite derived cache (read-only): eligible lấy từ index row.
+    const { openReadOnly, rowsMap } = await import('./content-index-lib.mjs');
+    idxRowsS = rowsMap(await openReadOnly(ROOT));
   } catch (e) {
-    errs.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    errs.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
     idxRowsS = new Map();
   }
   for (const f of posts) {

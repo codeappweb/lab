@@ -70,16 +70,13 @@ targets.add(norm('/index'));
 const postFiles = walkMd(join(ROOT, '_posts'));
 let idxRowsL = null;
 if (ONLY) {
-  idxRowsL = new Map();
   try {
-    const rawIdx = readFileSync(join(ROOT, 'data/content-index.jsonl'), 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    for (const l of rawIdx.split('\n').filter(Boolean)) {
-      const r = JSON.parse(l);
-      idxRowsL.set(r.path, r);
-    }
+    // SQLite derived cache (read-only): permalink của bài cũ lấy từ index —
+    // KHÔNG đọc lại front matter mọi bài cũ. Writer KHÔNG thể mutate cache.
+    const { openReadOnly, rowsMap } = await import('./content-index-lib.mjs');
+    idxRowsL = rowsMap(await openReadOnly(ROOT));
   } catch (e) {
-    console.error('::error::data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    console.error('::error::data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
     process.exit(1);
   }
 }

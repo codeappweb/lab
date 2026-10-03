@@ -41,7 +41,6 @@ const DERIVED_ALLOWLIST = [
   'data/factory-cycle.json',
   'data/writer-checkpoint.json',
   'data/coordinator-state.json',
-  'data/content-index.jsonl',
 ];
 const POST_RE = /^_posts\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
 
@@ -181,7 +180,9 @@ if (CHECK) {
   run('node', ['scripts/content-index.mjs', '--qa-pass'], 'content index: mark QA passed');
   const st = spawnSync('git', ['status', '--porcelain'], { cwd: ROOT, encoding: 'utf8' });
   if (st.status !== 0) die('git status failed in --check mode');
-  const pending = changedPaths(st.stdout);
+  // data/content-index.sqlite là derived cache gitignored — KHÔNG bao giờ nằm
+  // trong derived allowlist; nếu vẫn lọt vào status (edge case) thì bỏ qua.
+  const pending = changedPaths(st.stdout).filter(p => p !== 'data/content-index.sqlite');
   if (pending.length) {
     die('--check: derived state NOT committed by the writer: ' + pending.join(', ') + ' — run scripts/prepare-article.mjs <id>, then commit these files together with the article in ONE push (CI never commits)');
   }
@@ -308,7 +309,9 @@ if (status.status !== 0) die('git status failed');
 // git status --porcelain v1: "XY <path>" (XY = 2 status chars + 1 space).
 // NOTE: do NOT trim the line first — a leading space (e.g. " M path") is
 // part of the format; trimming it eats the first character of the path.
-const changed = changedPaths(status.stdout);
+// data/content-index.sqlite là derived cache gitignored — KHÔNG bao giờ được
+// commit; nếu vẫn lọt vào status (fixture chưa có .gitignore) thì bỏ qua.
+const changed = changedPaths(status.stdout).filter(p => p !== 'data/content-index.sqlite');
 if (changed.length === 0) {
   console.log('publish-loop: nothing to publish — derived state already in sync (idempotent re-run).');
   process.exit(0);

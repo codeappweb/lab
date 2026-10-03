@@ -4,7 +4,7 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 const ROOT = new URL('..', import.meta.url).pathname;
 const errs = [], warns = [];
-// Scoped QA qua content-index (data/content-index.jsonl):
+// Scoped QA qua content-index (data/content-index.sqlite — derived cache, read-only):
 //   --only a,b     : deep-check ĐÚNG các file liệt kê; post khác chỉ được tin
 //                    khi index có row qa_status=passed (KHÔNG đọc lại bài cũ).
 //   --only none    : chỉ kiểm manifest + index PHỦ mọi post (refill path).
@@ -38,16 +38,12 @@ for (const r of recs) {
 // content-index cho scoped/none mode (fail-closed khi thiếu/hỏng)
 let idxRows = null;
 if (SCOPED || NONE_MODE) {
-  idxRows = new Map();
   try {
-    const rawIdx = readFileSync(ROOT + 'data/content-index.jsonl', 'utf8');
-    if (rawIdx && !rawIdx.endsWith('\n')) throw new Error('không kết thúc bằng newline');
-    for (const l of rawIdx.split('\n').filter(Boolean)) {
-      const r = JSON.parse(l);
-      idxRows.set(r.path, r);
-    }
+    // SQLite derived cache (read-only): bài cũ tin theo row qa_status=passed.
+    const { openReadOnly, rowsMap } = await import('./content-index-lib.mjs');
+    idxRows = rowsMap(await openReadOnly(ROOT));
   } catch (e) {
-    errs.push('data/content-index.jsonl thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
+    errs.push('data/content-index.sqlite thiếu/hỏng (' + e.message + ') — chạy node scripts/content-index.mjs --build (fail-closed)');
     idxRows = new Map();
   }
 }

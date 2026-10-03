@@ -6,3 +6,8 @@ node_modules/
 _tmpchunks/
 .bundle/
 vendor/
+# sqlite content index — derived cache, KHÔNG commit (coordinator rebuild/restore an toàn)
+data/content-index.sqlite
+data/content-index.sqlite.tmp
+data/content-index.sqlite-wal
+data/content-index.sqlite-shm

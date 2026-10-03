@@ -63,15 +63,15 @@ Mỗi ứng viên được dedup chống TOÀN BỘ manifest trước khi nhận
 
 Log mỗi lần chạy: `reports/queue-refill-latest.json` (chi tiết kèm danh sách row mới) và `data/queue-refill-log.jsonl` (một dòng tóm tắt mỗi run: before/threshold/target/candidates/rejected/appended/after/result). Cơ chế cấp phát thủ công cũ (`diagnostics/allocate-rows.json`) vẫn dùng được như công cụ quản trị tùy chọn, không còn bắt buộc.
 
-## Chỉ mục nội dung nhẹ (content-index) — QA không quét lại bài cũ
+## Chỉ mục nội dung SQLite (content-index.sqlite) — QA không quét lại bài cũ
 
-`data/content-index.jsonl` (derived state, commit trong publication transaction) lưu cho mỗi file nội dung (`_posts/**`, `danh-muc/**`, `hub/**`, trang tĩnh gốc): id, slug, path, tiêu đề chuẩn hóa, intent, entities, cluster, sha256, permalink, cờ eligible, qa_status.
+`data/content-index.sqlite` là DERIVED CACHE ONLY (gitignored, KHÔNG commit; persist qua actions/cache của coordinator) — source of truth vẫn là `data/article-manifest.jsonl` + file nội dung (`_posts/**`, `danh-muc/**`, `hub/**`, trang tĩnh gốc). Mỗi row: id, slug, path, kind, tiêu đề chuẩn hóa, intent, entities, cluster, content_hash (sha256), size, permalink, cờ eligible, qa_status (pending/passed), qa_at, published_at. Yêu cầu Node >= 23.4 (node:sqlite).
 
-- Mỗi chu kỳ, coordinator chạy `scripts/content-index.mjs --update` (chỉ đọc file mới/thay đổi theo git status; không có git thì quét hash). Bốn gate (`validate-content`, `validate-content-quality`, `check-links`, `validate-sitemap`) chạy scoped `--only`: deep-check đúng bài mới/sửa; bài cũ chỉ được tin khi index row qa_status=passed — writer/QA KHÔNG đọc lại hàng nghìn bài cũ mỗi chu kỳ. Sau khi TẤT CẢ gate + Jekyll build xanh: `--qa-pass` đánh dấu pending → passed và index được commit trong CÙNG publication commit (transactional, fail-closed).
+- CHỈ COORDINATOR được ghi/rebuild SQLite (`--build`, `--update`, `--qa-pass`). Mỗi chu kỳ coordinator restore cache (actions/cache) rồi chạy `--update` incremental: chỉ đọc file mới/thay đổi theo git status; hash không đổi → giữ qa_status; DB thiếu/hỏng/schema lệch → REBUILD an toàn từ manifest + content (mọi row pending → chu kỳ đó chạy FULL QA, fail-closed). Sau khi TẤT CẢ gate + Jekyll build xanh: `--qa-pass` đánh dấu pending → passed.
+- 3 WRITER READ-ONLY với cache: các gate scoped đọc qua `scripts/content-index-lib.mjs` (mở SQLite `readOnly`, writer KHÔNG THỂ mutate). Bốn gate (`validate-content`, `validate-content-quality`, `check-links`, `validate-sitemap`) chạy scoped `--only`: deep-check đúng bài mới/sửa; bài cũ chỉ được tin khi index row qa_status=passed — writer/QA KHÔNG đọc lại hàng nghìn bài cũ mỗi chu kỳ.
 - Duplicate/cannibalization vẫn đối chiếu toàn bộ qua manifest in-memory (`detect-duplicates.mjs`, `queue-refill.mjs` — vốn đã nhẹ, không đọc file bài). check-links/validate-sitemap lấy slug/permalink/eligible từ index thay vì đọc front matter mọi bài.
-- Full audit (đọc lại toàn bộ) vẫn chạy khi: index thiếu/lệch (coordinator verify → rebuild + marker full QA), index mới build, có row pending ngoài scope, hoặc mỗi `content_index.full_audit_every_published` bài published mới (mặc định 500) — và qua CI/workflow_dispatch như cũ.
-- File cũ bị sửa được phát hiện qua git status/sha256 → chỉ đúng file đó được QA lại. Scoped mà index thiếu row/hỏng JSONL → gate LỖI (fail-closed), không suy đoán.
-
+- Full audit (đọc lại toàn bộ) vẫn chạy khi: cache bị rebuild (cold), có row pending ngoài scope, mỗi `content_index.full_audit_every_published` bài published mới (mặc định 500) — và qua CI/workflow_dispatch như cũ.
+- File cũ bị sửa được phát hiện qua git status/content_hash → chỉ đúng file đó được QA lại. Scoped mà cache thiếu row/hỏng → gate LỖI (fail-closed), không suy đoán.
 ## Nội quy
 
 - Không bịa giá, thông số kỹ thuật, luật, trải nghiệm, nguồn dẫn. Bài có khẳng định pháp lý/an toàn chưa kiểm chứng giữ `review` hoặc bỏ khẳng định.

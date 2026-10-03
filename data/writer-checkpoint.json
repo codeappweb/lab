@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c020034",
-  "base_sha": "3e18d3ae276f64ef7f57d1f953b075ee6fe4e75b",
-  "status": "complete",
+  "cycle_id": "cyc-c080018",
+  "base_sha": "1564f6c2e7c3fb992d3415331f2b449939cd80ae",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,20 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C02-0034",
-      "C05-0040",
-      "C06-0018",
-      "C03-0036",
-      "C07-0018",
-      "C04-0034"
+      "C11-0018",
+      "C08-0018",
+      "C12-0018",
+      "C09-0018"
     ],
     "slugs": [
-      "cach-nhan-biet-xe-ga-cu-tung-bi-ngap-nuoc",
-      "xe-ga-rung-khi-dung-den-do-chan-doan-nguyen-nhan",
-      "nhot-lap-xe-ga-thay-khi-nao-la-dung",
-      "xe-may-dien-cho-nguoi-cao-tren-mot-met-tam-chon-khung-nao",
-      "bao-hiem-trach-nhiem-dan-su-xe-may-loai-bat-buoc",
-      "dieu-chinh-yen-xe-dap-de-khong-dau-lung"
+      "lai-suat-tra-gop-xe-may-anh-huong-tong-chi-phi",
+      "vong-ho-tay-bang-xe-dien-nhung-diem-dung-dep",
+      "tram-sac-xe-hai-banh-o-ha-noi-hien-trang-su-dung",
+      "vong-ha-giang-bon-ngay-tu-ha-noi-chia-ngay-cu-the"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T03:16:50.521Z"
+  "updated_at": "2026-10-03T03:37:01.858Z"
 }

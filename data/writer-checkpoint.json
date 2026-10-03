@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c070017",
-  "base_sha": "57a2634cb2b48fc243c84fee9370c44f78e71425",
-  "status": "complete",
+  "cycle_id": "cyc-c020034",
+  "base_sha": "3e18d3ae276f64ef7f57d1f953b075ee6fe4e75b",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C07-0017",
-      "C10-0017",
-      "C11-0017",
-      "C08-0017",
-      "C09-0017",
-      "C01-0035"
+      "C02-0034",
+      "C05-0040",
+      "C06-0018",
+      "C03-0036",
+      "C07-0018",
+      "C04-0034"
     ],
     "slugs": [
-      "tra-cuu-va-nop-phat-nguoi-xe-may-o-ha-noi-cach-lam",
-      "vet-dau-tron-tren-duong-mua-nhan-dien-va-tranh",
-      "kiem-tra-xe-may-cu-truoc-khi-mua-checklist-toan-dien",
-      "van-mieu-mua-thi-di-lai-nhu-the-nao-thuan-loi",
-      "moc-chau-mua-hoa-man-trang-lich-trinh-di-xe-may",
-      "thue-xe-may-o-long-bien-dia-diem-giao-xe-uy-tin"
+      "cach-nhan-biet-xe-ga-cu-tung-bi-ngap-nuoc",
+      "xe-ga-rung-khi-dung-den-do-chan-doan-nguyen-nhan",
+      "nhot-lap-xe-ga-thay-khi-nao-la-dung",
+      "xe-may-dien-cho-nguoi-cao-tren-mot-met-tam-chon-khung-nao",
+      "bao-hiem-trach-nhiem-dan-su-xe-may-loai-bat-buoc",
+      "dieu-chinh-yen-xe-dap-de-khong-dau-lung"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T02:54:13.473Z"
+  "updated_at": "2026-10-03T03:15:02.425Z"
 }

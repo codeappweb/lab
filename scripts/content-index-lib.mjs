@@ -35,10 +35,12 @@ export async function openReadOnly(root) {
 
 export function rowsMap(db) {
   const out = new Map();
-  const stmt = db.prepare('SELECT path, kind, id, slug, norm_title, intent, entities, cluster, content_hash, permalink, eligible, qa_status, qa_at, published_at FROM articles');
+  const stmt = db.prepare('SELECT path, kind, id, slug, norm_title, intent, entities, topic_cluster, content_hash, permalink, eligible, qa_status, qa_at, published_at FROM articles');
   for (const raw of stmt.all()) {
     const r = {};
     for (const [k, v] of Object.entries(raw)) r[k] = typeof v === 'bigint' ? Number(v) : v;
+    r.cluster = r.topic_cluster; // "cluster" là keyword của SQLite → cột đặt tên topic_cluster
+    delete r.topic_cluster;
     r.entities = JSON.parse(r.entities || '[]');
     r.eligible = !!r.eligible;
     out.set(r.path, r);

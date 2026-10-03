@@ -60,7 +60,7 @@ function die(msg) {
 const MODE = (process.argv.find(a => a === '--update' || a === '--build' || a === '--qa-pass' || a === '--verify' || a === '--dump') || '--update');
 const WITH_HASHES = process.argv.includes('--hashes');
 
-const COLS = 'path,kind,id,slug,norm_title,intent,entities,cluster,content_hash,size,permalink,eligible,qa_status,qa_at,published_at';
+const COLS = 'path,kind,id,slug,norm_title,intent,entities,topic_cluster,content_hash,size,permalink,eligible,qa_status,qa_at,published_at';
 const COLS_PH = '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?';
 const DDL = [
   'CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);',
@@ -72,7 +72,7 @@ const DDL = [
   '  norm_title TEXT NOT NULL,',
   "  intent TEXT NOT NULL DEFAULT 'informational',",
   '  entities TEXT NOT NULL DEFAULT \'[]\'',
-  '  cluster TEXT NOT NULL DEFAULT \'\'',
+  '  topic_cluster TEXT NOT NULL DEFAULT \'\'',
   '  content_hash TEXT NOT NULL,',
   '  size INTEGER NOT NULL DEFAULT 0,',
   '  permalink TEXT NOT NULL,',
@@ -270,7 +270,7 @@ if (MODE === '--update' || MODE === '--build') {
         }
         const sel = db.prepare('SELECT * FROM articles WHERE path = ?');
         const ins = db.prepare('INSERT INTO articles (' + COLS + ') VALUES (' + COLS_PH + ')');
-        const upd = db.prepare('UPDATE articles SET kind=?,id=?,slug=?,norm_title=?,intent=?,entities=?,cluster=?,content_hash=?,size=?,permalink=?,eligible=?,qa_status=?,qa_at=?,published_at=? WHERE path=?');
+        const upd = db.prepare('UPDATE articles SET kind=?,id=?,slug=?,norm_title=?,intent=?,entities=?,topic_cluster=?,content_hash=?,size=?,permalink=?,eligible=?,qa_status=?,qa_at=?,published_at=? WHERE path=?');
         const updPub = db.prepare('UPDATE articles SET published_at=? WHERE path=?');
         for (const f of files) {
           const old = sel.get(f.rel);
@@ -356,6 +356,8 @@ if (MODE === '--dump') {
   const rows = db.prepare('SELECT * FROM articles ORDER BY path').all().map(r => {
     const o = {};
     for (const [k, v] of Object.entries(r)) o[k] = typeof v === 'bigint' ? Number(v) : v;
+    o.cluster = o.topic_cluster; // "cluster" là keyword của SQLite → cột đặt tên topic_cluster
+    delete o.topic_cluster;
     o.entities = JSON.parse(o.entities || '[]');
     o.eligible = !!o.eligible;
     return o;

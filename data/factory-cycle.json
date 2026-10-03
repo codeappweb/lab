@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c020034",
-  "base_sha": "3e18d3ae276f64ef7f57d1f953b075ee6fe4e75b",
+  "cycle_id": "cyc-c080018",
+  "base_sha": "1564f6c2e7c3fb992d3415331f2b449939cd80ae",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C02-0034",
-      "C05-0040"
+      "C08-0018",
+      "C11-0018"
     ],
     "writer-2": [
-      "C03-0036",
-      "C06-0018"
+      "C09-0018",
+      "C12-0018"
     ],
     "writer-3": [
-      "C04-0034",
-      "C07-0018"
+      "C10-0018",
+      "C01-0036"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "adfb350095c43babd26547c2b1894716e03b2a7f",
-    "ids": [
-      "cach-nhan-biet-xe-ga-cu-tung-bi-ngap-nuoc",
-      "xe-ga-rung-khi-dung-den-do-chan-doan-nguyen-nhan",
-      "nhot-lap-xe-ga-thay-khi-nao-la-dung",
-      "xe-may-dien-cho-nguoi-cao-tren-mot-met-tam-chon-khung-nao",
-      "bao-hiem-trach-nhiem-dan-su-xe-may-loai-bat-buoc",
-      "dieu-chinh-yen-xe-dap-de-khong-dau-lung"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T03:16:50.520Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -353,6 +338,6 @@
       "completed_at": "2026-10-03T03:16:50.521Z"
     }
   ],
-  "created_at": "2026-10-03T03:02:48.916Z",
-  "updated_at": "2026-10-03T03:16:50.521Z"
+  "created_at": "2026-10-03T03:24:04.336Z",
+  "updated_at": "2026-10-03T03:24:04.336Z"
 }

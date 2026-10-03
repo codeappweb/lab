@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c010032",
   "base_sha": "7ff085c71f1910e76f78d59aa6eb1d82fcd9d73b",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C01-0032",
@@ -20,6 +20,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "73dd3755721c7179bf53213dc3d4134362966a99",
     "ids": [
       "thue-xe-dien-o-ha-noi-tron-goi-cho-nguoi-moi",
       "xe-dap-dien-cho-nguoi-trung-nien-diem-can-can-nhac",
@@ -187,5 +188,5 @@
     }
   ],
   "created_at": "2026-10-03T01:12:56.334Z",
-  "updated_at": "2026-10-03T01:17:52.187Z"
+  "updated_at": "2026-10-03T01:18:52.298Z"
 }

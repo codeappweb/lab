@@ -58,8 +58,7 @@ test('#6 khong trigger khi maintenance lock / repair / supervisor / publishing-d
 
 test('#6 khong tao duplicate cycle — trigger gan day bi chan, 2h+ duoc phep', () => {
   assert.equal(directorShouldTrigger(Object.assign({}, okDir, { lastTriggerMs: NOW - 30 * 60000 })), false);
-  assert.equ
-al(directorShouldTrigger(Object.assign({}, okDir, { lastTriggerMs: NOW - PROGRESS_IDLE_MS - 60000 })), true);
+  assert.equal(directorShouldTrigger(Object.assign({}, okDir, { lastTriggerMs: NOW - PROGRESS_IDLE_MS - 60000 })), true);
   assert.equal(directorShouldTrigger(Object.assign({}, okDir, { lastValidProgressMs: 0 })), false);
 });
 
@@ -88,8 +87,7 @@ test('#6 chi trigger MÔT production entrypoint — khong dispatch writer/repair
   assert.ok(src.includes("'.coordinator-trigger'"), 'phai commit data/.coordinator-trigger (entrypoint duy nhat)');
   assert.ok(!src.includes('/dispatches'), 'khong duoc dispatch workflow nao qua API');
   assert.ok(!src.includes('refs/heads/staging'), 'khong duoc push nhanh staging writer');
-  const y = readFileSync(join(ROOT, '.github', 'workfl
-ows', 'director-watchdog.yml'), 'utf8');
+  const y = readFileSync(join(ROOT, '.github', 'workflows', 'director-watchdog.yml'), 'utf8');
   assert.ok(y.includes('director-watchdog.mjs --check'));
   assert.ok(!y.includes('staging/writer-1') && !y.includes('staging/writer-2') && !y.includes('staging/writer-3'), 'khong chay writer rieng le');
 });

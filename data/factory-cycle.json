@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070014",
   "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C07-0014",
@@ -30,7 +30,12 @@
       "so-sanh-pin-lithium-ion-va-pin-chi-cho-xe-may-dien"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-03T01:12:06.365Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -185,8 +190,31 @@
         "verified_at": "2026-10-03T00:56:57.871Z"
       },
       "completed_at": "2026-10-03T00:56:57.871Z"
+    },
+    {
+      "cycle_id": "cyc-c070014",
+      "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "fd82e5f48bb54f6833f10a0d49c99a86d1810e01",
+        "ids": [
+          "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
+          "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
+          "gui-xe-quanh-ho-guom-cuoi-tuan-diem-gui-uy-tin",
+          "xe-may-cu-gia-duoi-hai-muoi-trieu-chon-duoc-gi",
+          "lo-trinh-ha-noi-tam-dao-bang-xe-may-chia-chang-ro-rang",
+          "so-sanh-pin-lithium-ion-va-pin-chi-cho-xe-may-dien"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-03T01:12:06.365Z"
+      },
+      "completed_at": "2026-10-03T01:12:06.365Z"
     }
   ],
   "created_at": "2026-10-03T00:57:34.029Z",
-  "updated_at": "2026-10-03T01:10:22.242Z"
+  "updated_at": "2026-10-03T01:12:06.365Z"
 }

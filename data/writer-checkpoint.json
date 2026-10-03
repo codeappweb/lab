@@ -5,7 +5,7 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c010031",
   "base_sha": "d2069fb63349e4e5bf949e6286688279e4b086a7",
-  "status": "failed",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C07-0013",
-      "C10-0013",
-      "C11-0013",
-      "C08-0013",
-      "C09-0013",
-      "C12-0013"
+      "C01-0031",
+      "C04-0030",
+      "C05-0036",
+      "C02-0030",
+      "C06-0014",
+      "C03-0032"
     ],
     "slugs": [
-      "bang-lai-a1-cho-xe-may-duoi-nam-muoi-phan-khoi-pham-vi",
-      "lai-xe-may-trong-mua-lon-noi-thanh-ky-nang-giu-an-toan",
-      "chi-phi-so-huu-xe-may-mot-nam-o-ha-noi-liet-ke-du",
-      "lich-trinh-mot-ngay-pho-co-ha-noi-bang-xe-may",
-      "phuot-ba-vi-mot-ngay-tu-ha-noi-chang-duong-chi-tiet",
-      "pin-lfp-trong-xe-dien-hai-banh-uu-diem-chinh"
+      "thue-xe-may-tu-lai-ha-noi-nguoi-nuoc-ngoai-can-chuan-bi-gi",
+      "xe-dap-di-lam-moi-ngay-o-ha-noi-chon-loai-nao",
+      "de-xe-yeu-buoi-sang-nguyen-nhan-pho-bien",
+      "xe-ga-125cc-cho-nu-chon-mau-nao-ben-va-nhe",
+      "chon-nhot-cho-xe-so-doi-may-cu-loai-nao-phu-hop",
+      "chon-xe-may-dien-cho-nguoi-di-lam-xa-tieu-chi-nao"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T00:51:22.000Z"
+  "updated_at": "2026-10-03T00:55:21.535Z"
 }

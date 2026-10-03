@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070017",
   "base_sha": "57a2634cb2b48fc243c84fee9370c44f78e71425",
   "coordinator_run_id": null,
-  "phase": "failed",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C07-0017",
@@ -19,7 +19,16 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "tra-cuu-va-nop-phat-nguoi-xe-may-o-ha-noi-cach-lam",
+      "vet-dau-tron-tren-duong-mua-nhan-dien-va-tranh",
+      "kiem-tra-xe-may-cu-truoc-khi-mua-checklist-toan-dien",
+      "van-mieu-mua-thi-di-lai-nhu-the-nao-thuan-loi",
+      "moc-chau-mua-hoa-man-trang-lich-trinh-di-xe-may",
+      "thue-xe-may-o-long-bien-dia-diem-giao-xe-uy-tin"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -293,5 +302,5 @@
     }
   ],
   "created_at": "2026-10-03T02:28:15.525Z",
-  "updated_at": "2026-10-03T02:47:48.325Z"
+  "updated_at": "2026-10-03T02:48:20.851Z"
 }

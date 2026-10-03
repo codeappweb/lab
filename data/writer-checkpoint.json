@@ -5,7 +5,7 @@
   "writer_chunk_size": 2,
   "cycle_id": "cyc-c070017",
   "base_sha": "57a2634cb2b48fc243c84fee9370c44f78e71425",
-  "status": "failed",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C01-0034",
-      "C04-0033",
-      "C05-0039",
-      "C02-0033",
-      "C03-0035",
-      "C06-0017"
+      "C07-0017",
+      "C10-0017",
+      "C11-0017",
+      "C08-0017",
+      "C09-0017",
+      "C01-0035"
     ],
     "slugs": [
-      "so-sanh-thue-xe-may-va-xe-dien-khi-du-lich-ha-noi",
-      "xe-dap-touring-cho-cung-duong-bac-viet-chon-khung",
-      "phanh-xe-may-keu-luc-cuc-xu-ly-dung-cach",
-      "so-sanh-xe-so-va-xe-ga-cho-nguoi-moi-lai",
-      "chi-phi-dien-moi-thang-cua-xe-may-dien-thuc-te",
-      "lop-xe-scooter-size-pho-bien-cach-doc-chi-so"
+      "tra-cuu-va-nop-phat-nguoi-xe-may-o-ha-noi-cach-lam",
+      "vet-dau-tron-tren-duong-mua-nhan-dien-va-tranh",
+      "kiem-tra-xe-may-cu-truoc-khi-mua-checklist-toan-dien",
+      "van-mieu-mua-thi-di-lai-nhu-the-nao-thuan-loi",
+      "moc-chau-mua-hoa-man-trang-lich-trinh-di-xe-may",
+      "thue-xe-may-o-long-bien-dia-diem-giao-xe-uy-tin"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T02:47:48.326Z"
+  "updated_at": "2026-10-03T02:49:26.700Z"
 }

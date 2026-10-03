@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c020034",
   "base_sha": "3e18d3ae276f64ef7f57d1f953b075ee6fe4e75b",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C02-0034",
@@ -30,7 +30,12 @@
       "dieu-chinh-yen-xe-dap-de-khong-dau-lung"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-03T03:16:50.520Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -323,8 +328,31 @@
         "verified_at": "2026-10-03T02:54:13.472Z"
       },
       "completed_at": "2026-10-03T02:54:13.472Z"
+    },
+    {
+      "cycle_id": "cyc-c020034",
+      "base_sha": "3e18d3ae276f64ef7f57d1f953b075ee6fe4e75b",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "adfb350095c43babd26547c2b1894716e03b2a7f",
+        "ids": [
+          "cach-nhan-biet-xe-ga-cu-tung-bi-ngap-nuoc",
+          "xe-ga-rung-khi-dung-den-do-chan-doan-nguyen-nhan",
+          "nhot-lap-xe-ga-thay-khi-nao-la-dung",
+          "xe-may-dien-cho-nguoi-cao-tren-mot-met-tam-chon-khung-nao",
+          "bao-hiem-trach-nhiem-dan-su-xe-may-loai-bat-buoc",
+          "dieu-chinh-yen-xe-dap-de-khong-dau-lung"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-03T03:16:50.520Z"
+      },
+      "completed_at": "2026-10-03T03:16:50.521Z"
     }
   ],
   "created_at": "2026-10-03T03:02:48.916Z",
-  "updated_at": "2026-10-03T03:15:06.405Z"
+  "updated_at": "2026-10-03T03:16:50.521Z"
 }

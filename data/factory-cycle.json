@@ -1,41 +1,26 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c070016",
-  "base_sha": "3de1958ab0d87d921219fa738f2b8108562083df",
+  "cycle_id": "cyc-c010034",
+  "base_sha": "fc999319130096f0cc49cc076267fa5359e83e8c",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C07-0016",
-      "C10-0016"
+      "C01-0034",
+      "C04-0033"
     ],
     "writer-2": [
-      "C08-0016",
-      "C11-0016"
+      "C02-0033",
+      "C05-0039"
     ],
     "writer-3": [
-      "C09-0016",
-      "C12-0016"
+      "C03-0035",
+      "C06-0017"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "d4d0572dcf3d7785060b7ae0c00e00e161e09b00",
-    "ids": [
-      "di-xe-giua-trua-he-nong-cach-ngua-say-nang",
-      "muc-phat-khong-doi-mu-bao-hiem-khi-dieu-khien-xe-may",
-      "chua-tran-quoc-buoi-chieu-duong-di-va-gui-xe",
-      "so-sanh-mua-xe-tra-gop-va-tra-thang",
-      "duong-len-mai-chau-doan-kho-va-luu-y-do-xang",
-      "sac-xe-may-dien-tai-nha-ban-dem-an-toan-the-nao"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-03T02:11:13.303Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -284,6 +269,6 @@
       "completed_at": "2026-10-03T02:11:13.303Z"
     }
   ],
-  "created_at": "2026-10-03T01:57:31.420Z",
-  "updated_at": "2026-10-03T02:11:13.303Z"
+  "created_at": "2026-10-03T02:12:07.422Z",
+  "updated_at": "2026-10-03T02:12:07.422Z"
 }

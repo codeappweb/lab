@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c070014",
   "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C07-0014",
@@ -20,6 +20,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "fd82e5f48bb54f6833f10a0d49c99a86d1810e01",
     "ids": [
       "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
       "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
@@ -187,5 +188,5 @@
     }
   ],
   "created_at": "2026-10-03T00:57:34.029Z",
-  "updated_at": "2026-10-03T01:09:22.069Z"
+  "updated_at": "2026-10-03T01:10:22.242Z"
 }

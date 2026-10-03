@@ -6,7 +6,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-const SCRIPT = fileURLToPath(new URL('../queue-refill.mjs', import.meta.url));
+const SCRIPT = fileURLToPath(new URL('./queue-refill.mjs', import.meta.url));
 const CFG = { queue_refill: { low_threshold: 4, target: 6 } };
 const CL = {
   C01: { name: 'c1', budget: 10, desc: 'd', hub_path: '/hub/c01/' },

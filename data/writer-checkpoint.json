@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c010031",
-  "base_sha": "d2069fb63349e4e5bf949e6286688279e4b086a7",
-  "status": "complete",
+  "cycle_id": "cyc-c070014",
+  "base_sha": "0c79e81de0b58a6251fbef1eec209244f7c82757",
+  "status": "publishing",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -14,24 +14,24 @@
   "last_publication": {
     "main_sha": null,
     "ids": [
-      "C01-0031",
-      "C04-0030",
-      "C05-0036",
-      "C02-0030",
-      "C06-0014",
-      "C03-0032"
+      "C07-0014",
+      "C10-0014",
+      "C08-0014",
+      "C11-0014",
+      "C09-0014",
+      "C12-0014"
     ],
     "slugs": [
-      "thue-xe-may-tu-lai-ha-noi-nguoi-nuoc-ngoai-can-chuan-bi-gi",
-      "xe-dap-di-lam-moi-ngay-o-ha-noi-chon-loai-nao",
-      "de-xe-yeu-buoi-sang-nguyen-nhan-pho-bien",
-      "xe-ga-125cc-cho-nu-chon-mau-nao-ben-va-nhe",
-      "chon-nhot-cho-xe-so-doi-may-cu-loai-nao-phu-hop",
-      "chon-xe-may-dien-cho-nguoi-di-lam-xa-tieu-chi-nao"
+      "dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh",
+      "di-xe-khi-suong-mu-buoi-som-mien-nui-cach-xu-ly",
+      "gui-xe-quanh-ho-guom-cuoi-tuan-diem-gui-uy-tin",
+      "xe-may-cu-gia-duoi-hai-muoi-trieu-chon-duoc-gi",
+      "lo-trinh-ha-noi-tam-dao-bang-xe-may-chia-chang-ro-rang",
+      "so-sanh-pin-lithium-ion-va-pin-chi-cho-xe-may-dien"
     ],
     "pages_deployment_id": null,
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-03T00:56:57.872Z"
+  "updated_at": "2026-10-03T01:10:20.409Z"
 }

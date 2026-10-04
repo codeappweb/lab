@@ -2,7 +2,7 @@
   "schema_version": 1,
   "consecutive_failures": 0,
   "last_run_id": "37212011395",
-  "last_run_status": "failed",
+  "last_run_status": "publishing",
   "ledger_reset_reason": "cyc-c110024 run 37212011395 fail nguyen nhan da xac dinh: internal link hong trong bai writer-3 (cho-tre-em-tren-xe-may...) tro den slug khong ton tai (xe-may-cho-hai-nguoi... thay vi xe-ga-cho-hai-nguoi...). Da sua content-only tren staging/writer-3. Reset ledger theo huong dan PRODUCTION STOP sau khi da sua nguyen goc.",
-  "updated_at": "2026-10-04T16:18:30.375Z"
+  "updated_at": "2026-10-04T16:20:36.305Z"
 }

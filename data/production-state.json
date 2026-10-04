@@ -1,9 +1,9 @@
 {
   "paused": false,
   "paused_at": "2026-10-04T15:21:45.176Z",
-  "paused_by": "repair-agent",
-  "resumed_at": "2026-10-04T16:18:30.375Z",
-  "resumed_by": "operator-manual",
+  "paused_by": null,
+  "resumed_at": "2026-10-04T16:23:18.020Z",
+  "resumed_by": "supervisor-recovery",
   "run_id": "37212011395",
   "reason": "infra failure run 37212011395 — resolved: broken internal link trong _posts/2026-10-04-cho-tre-em-tren-xe-may-an-toan-theo-tung-do-tuoi.md (writer-3) da sua tren staging/writer-3 (commit d0f5afec). Quyet dinh resume tu operator (human decision sau supervisor terminal report).",
   "incident_resolved": true,

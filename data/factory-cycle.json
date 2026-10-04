@@ -1,65 +1,38 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c110021",
-  "base_sha": "cc9853f216952a367ae794eb449e26f1d9d6d42b",
+  "cycle_id": "cyc-c050045",
+  "base_sha": "cc3d66838b7c7b19a592c1b0d09eadb5de936602",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C11-0021",
-      "C02-0038",
-      "C05-0044",
-      "C08-0022",
-      "C11-0022",
-      "C02-0039"
+      "C05-0045",
+      "C08-0023",
+      "C11-0023",
+      "C02-0040",
+      "C05-0046",
+      "C08-0024"
     ],
     "writer-2": [
-      "C12-0021",
-      "C03-0040",
-      "C06-0022",
-      "C09-0022",
-      "C12-0022",
-      "C03-0041"
+      "C06-0023",
+      "C09-0023",
+      "C12-0023",
+      "C03-0042",
+      "C06-0024",
+      "C09-0024"
     ],
     "writer-3": [
-      "C01-0039",
-      "C04-0038",
-      "C07-0022",
-      "C10-0022",
-      "C01-0040",
-      "C04-0039"
+      "C07-0023",
+      "C10-0023",
+      "C01-0041",
+      "C04-0040",
+      "C07-0024",
+      "C10-0024"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "9daaf0d06715c6ab620cfe6ad5dd201ff625657c",
-    "ids": [
-      "bao-tang-dan-toc-hoc-di-cuoi-tuan-lo-trinh-goi-y",
-      "chi-phi-chuyen-nhuong-xe-cu-ben-nao-tra-bao-nhieu",
-      "danh-gia-xe-ga-150cc-cho-duong-truong",
-      "may-xe-may-nong-nhanh-khi-leo-doc-dai",
-      "xe-may-honda-hay-yamaha-ben-hon-khi-di-pho-ha-noi",
-      "xe-may-moi-ban-lai-sau-mot-nam-mat-gia-bao-nhieu",
-      "deo-khau-pha-an-toan-kinh-nghiem-len-dinh",
-      "pin-xe-may-dien-bi-phong-nguyen-nhan-va-xu-ly",
-      "so-sanh-xe-may-dien-va-xe-xang-cho-quang-duong-di-cho",
-      "thay-guong-chieu-hau-xe-may-chinh-hang-hay-loai-thuong",
-      "tranh-xa-sau-pin-xe-dien-thoi-quen-sac-dung",
-      "xe-scooter-dien-toc-do-cao-ai-that-su-can",
-      "giay-to-bat-buoc-mang-theo-khi-luu-thong-xe-may",
-      "lop-xe-dap-mong-va-lop-day-uu-va-nhuoc-diem",
-      "mu-bao-hiem-dat-chuan-cach-kiem-tra-nhan-mac",
-      "thue-xe-may-di-san-bay-noi-bai-so-sanh-cac-phuong-an",
-      "tien-coc-khi-thue-xe-may-o-ha-noi-quy-dinh-thuong-gap",
-      "xe-dap-dien-gap-mang-len-xe-buyt-trai-nghiem-thuc-te"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-04T09:16:31.989Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -503,6 +476,5 @@
       "completed_at": "2026-10-04T09:16:31.989Z"
     }
   ],
-  "created_at": "2026-10-03T16:57:13.793Z",
-  "updated_at": "2026-10-04T09:16:31.989Z"
+  "created_at": "2026-10-04T09:16:37.284Z"
 }

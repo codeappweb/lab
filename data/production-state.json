@@ -1,11 +1,12 @@
 {
-  "paused": false,
-  "paused_by": null,
+  "paused": true,
+  "paused_by": "repair-agent",
   "resumed_at": "2026-10-04T07:26:27.261Z",
   "resumed_by": "operator-continuous-production",
-  "run_id": "37138504603",
-  "reason": "supervisor pause 37138741971 la false positive: cycle c050042 complete, live_verified=true, coordinator healthy (0 failures, run 37138504603 success). Operator lenh continuous production — khong co manual stop.",
+  "run_id": "37185790496",
+  "reason": "infra failure run 37185790496",
   "escalated": false,
   "blocker": null,
-  "incident_resolved": true
+  "incident_resolved": true,
+  "paused_at": "2026-10-04T07:37:07.285Z"
 }

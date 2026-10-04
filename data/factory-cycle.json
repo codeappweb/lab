@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c050048",
   "base_sha": "5e11f4a43c43ed28e3df9e7ab4419f188490b6f4",
   "coordinator_run_id": null,
-  "phase": "failed",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C05-0048",
@@ -31,7 +31,28 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "bo-ly-hop-xe-so-bi-hut-chinh-va-bao-duong",
+      "duong-ven-de-song-hong-cho-xe-dap-diem-len-xuong",
+      "khu-pho-tay-dao-duy-tu-ve-dem-gui-xe-va-gia-ca",
+      "so-sanh-chi-phi-di-lai-xe-may-va-xe-buyt-tai-ha-noi",
+      "xe-ga-co-che-do-dap-truoc-ho-tro-uu-diem-khi-ket-xe",
+      "xe-may-ra-khoi-den-nguyen-nhan-va-cach-xu-ly",
+      "bo-do-nghe-toi-thieu-cho-chuyen-phuot-duong-xa",
+      "do-can-mang-khi-phuot-hai-ngay-mot-dem",
+      "lam-sach-va-sap-xich-xe-may-dung-cach",
+      "loc-gio-cotton-va-loc-gio-giay-cho-xe-ga",
+      "mo-hinh-tram-doi-pin-cho-xe-hai-banh-dang-co-gi",
+      "xe-dien-cu-mot-nam-tuoi-nen-mua-hay-khong",
+      "mua-da-giua-duong-chon-cho-tru-an-toan",
+      "muc-phat-nong-do-con-khi-dieu-khien-xe-may",
+      "thue-scooter-dien-o-ha-noi-theo-gio-trai-nghiem-thuc-te",
+      "xe-dap-dien-hao-dien-hon-xe-may-dien-dung-hay-sai",
+      "xu-phat-vi-pham-giao-thong-duong-bo-moi-nhat-voi-xe-hai-banh",
+      "xuong-deo-doc-dai-phanh-dung-cach"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -547,5 +568,5 @@
     }
   ],
   "created_at": "2026-10-04T16:22:55.312Z",
-  "updated_at": "2026-10-04T16:36:15.797Z"
+  "updated_at": "2026-10-04T16:38:02.381Z"
 }

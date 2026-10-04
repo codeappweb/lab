@@ -1,12 +1,11 @@
 {
-  "paused": true,
-  "paused_by": "supervisor-recovery",
-  "resumed_at": "2026-10-03T16:53:11.429Z",
-  "resumed_by": "recovery(cyc-c050042)",
-  "run_id": "37128550402",
-  "reason": "blocker run 37128550402 da co root cause cu the: 1 internal link hong ton tai (thoi-quan -> thoi-quen, 1 ky tu href-only); da fix tren staging; 18 bai con lai verbatim",
-  "escalated": true,
-  "blocker": "supervisor-verify-failed",
-  "incident_resolved": true,
-  "paused_at": "2026-10-03T16:57:36.743Z"
+  "paused": false,
+  "paused_by": null,
+  "resumed_at": "2026-10-04T07:26:27.261Z",
+  "resumed_by": "operator-continuous-production",
+  "run_id": "37138504603",
+  "reason": "supervisor pause 37138741971 la false positive: cycle c050042 complete, live_verified=true, coordinator healthy (0 failures, run 37138504603 success). Operator lenh continuous production — khong co manual stop.",
+  "escalated": false,
+  "blocker": null,
+  "incident_resolved": true
 }

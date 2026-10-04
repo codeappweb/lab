@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c110024",
   "base_sha": "565c0d93248383fc2312b4356abfecf3cce60188",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C11-0024",
@@ -32,6 +32,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "972bd4c5813e6cc489acb6790aa2d6d89e9b5868",
     "ids": [
       "bac-dan-banh-xe-may-hong-tieng-keu-va-kiem-tra",
       "chi-phi-gui-xe-hang-thang-o-ha-noi-muc-pho-bien",
@@ -533,5 +534,5 @@
     }
   ],
   "created_at": "2026-10-04T14:51:25.815Z",
-  "updated_at": "2026-10-04T16:18:49.822Z"
+  "updated_at": "2026-10-04T16:20:37.453Z"
 }

@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c110021",
   "base_sha": "cc9853f216952a367ae794eb449e26f1d9d6d42b",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C11-0021",
@@ -32,6 +32,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "9daaf0d06715c6ab620cfe6ad5dd201ff625657c",
     "ids": [
       "bao-tang-dan-toc-hoc-di-cuoi-tuan-lo-trinh-goi-y",
       "chi-phi-chuyen-nhuong-xe-cu-ben-nao-tra-bao-nhieu",
@@ -463,5 +464,5 @@
     }
   ],
   "created_at": "2026-10-03T16:57:13.793Z",
-  "updated_at": "2026-10-04T09:13:56.501Z"
+  "updated_at": "2026-10-04T09:14:47.476Z"
 }

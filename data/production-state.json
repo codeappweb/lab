@@ -1,12 +1,12 @@
 {
-  "paused": false,
-  "paused_by": null,
+  "paused": true,
+  "paused_by": "repair-agent",
   "resumed_at": "2026-10-04T14:49:13.300Z",
   "resumed_by": "operator-continuous-production",
-  "run_id": "37210318831",
-  "reason": "root cause cu the: publisher-safety.test.mjs (recovery cyc-c050042) doc DATA SONG (data/factory-cycle.json + writer-assignments.json) va hardcode assert cycle_id=cyc-c050042 — moi cycle production moi lam test fail. Da snapshot fixture vao recovery/cyc-c050042/ va tro test doc fixture; regression khong con phu thuoc cycle hien tai.",
+  "run_id": "37210670906",
+  "reason": "infra failure run 37210670906",
   "escalated": false,
   "blocker": null,
   "incident_resolved": true,
-  "paused_at": "2026-10-04T14:43:47.892Z"
+  "paused_at": "2026-10-04T14:49:34.077Z"
 }

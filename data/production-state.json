@@ -1,12 +1,12 @@
 {
-  "paused": false,
-  "paused_by": null,
+  "paused": true,
+  "paused_by": "repair-agent",
   "resumed_at": "2026-10-04T09:11:59.154Z",
   "resumed_by": "operator-continuous-production",
-  "run_id": "37185790496",
-  "reason": "blocker run 37185790496 da co root cause cu the: contamination data/progress.json tren 3 nhanh staging (writer sua file ngoai _posts) da duoc operator revert ve merge-base cc9853f; manifest/progress drift se tu dong dong bo (allowlist) boi maintenance job cua coordinator",
+  "run_id": "37191383948",
+  "reason": "infra failure run 37191383948",
   "escalated": false,
   "blocker": null,
   "incident_resolved": true,
-  "paused_at": "2026-10-04T07:37:08.900Z"
+  "paused_at": "2026-10-04T09:12:24.013Z"
 }

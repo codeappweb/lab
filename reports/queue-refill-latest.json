@@ -1,7 +1,7 @@
 {
-  "ts": "2026-10-04T16:18:43.125Z",
-  "run_id": "37216288032",
-  "before": 158,
+  "ts": "2026-10-04T16:25:49.825Z",
+  "run_id": "37216726746",
+  "before": 140,
   "threshold": 100,
   "target": 300,
   "need": 0,
@@ -10,7 +10,7 @@
   "rejected_invalid": 0,
   "rejected_budget": 0,
   "appended": 0,
-  "after": 158,
+  "after": 140,
   "result": "noop-ok",
   "rows": []
 }

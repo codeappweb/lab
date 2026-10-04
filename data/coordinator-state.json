@@ -2,7 +2,7 @@
   "schema_version": 1,
   "consecutive_failures": 0,
   "last_run_id": "37191466765",
-  "last_run_status": "success",
+  "last_run_status": "publishing",
   "ledger_reset_reason": "cyc-c110021: 4 run fail lien tiep (37185790496..37191383948) deu la he qua cua maintenance lock, khong phai loi moi — run 292 fail that su vi contamination data/progress.json tren staging/writer-1 (writer sua file ngoai _posts), da duoc operator revert ve merge-base cc9853f tren ca 3 writer (8a79d0c, edecb09, 93ae707); cac run sau chi fail vi Production DANG PAUSED va failure ledger tich luy. Reset consecutive_failures=0 theo huong dan PRODUCTION STOP; staging GIU NGUYEN 18 bai cyc-c110021.",
-  "updated_at": "2026-10-04T09:16:31.989Z"
+  "updated_at": "2026-10-04T14:48:32.253Z"
 }

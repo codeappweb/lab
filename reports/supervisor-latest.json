@@ -1,9 +1,9 @@
 {
   "status": "blocked — production GIU PAUSE sau chain #4 -> #5",
-  "incident_id": "37191637296",
+  "incident_id": "37210318831",
   "reason": "verification KHONG green sau #4 SUCCESS: regression",
   "attempts": [
     "verify-only"
   ],
-  "ts": "2026-10-04T09:17:07.141Z"
+  "ts": "2026-10-04T14:43:47.893Z"
 }

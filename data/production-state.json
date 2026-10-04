@@ -1,12 +1,12 @@
 {
-  "paused": false,
-  "paused_by": null,
+  "paused": true,
+  "paused_by": "supervisor-recovery",
   "resumed_at": "2026-10-04T14:36:33.879Z",
   "resumed_by": "operator-continuous-production",
   "run_id": "37191637296",
   "reason": "supervisor verify 37191637296 la false-positive: verify-only regression chay DONG THOI voi coordinator #298 (37191466765) dang push cycle giua chung — checkout main luc 09:17:07 trong khi cycle(complete) 09:16:32 (Pages OK, live verified), QA cua coordinator GREEN, ledger=0, scripts khong doi tu CI #389 (c66ee61, success). Chain #4->#5 cua incident da terminal.",
-  "escalated": false,
-  "blocker": null,
+  "escalated": true,
+  "blocker": "supervisor-verify-failed",
   "incident_resolved": true,
-  "paused_at": "2026-10-04T09:17:07.140Z"
+  "paused_at": "2026-10-04T14:43:47.892Z"
 }

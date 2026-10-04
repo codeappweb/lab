@@ -1,12 +1,12 @@
 {
   "paused": true,
-  "paused_at": "2026-10-04T15:21:43.565Z",
+  "paused_at": "2026-10-04T15:21:45.176Z",
   "paused_by": "repair-agent",
   "resumed_at": "2026-10-04T15:20:04.063Z",
   "resumed_by": "supervisor-recovery",
   "run_id": "37212011395",
   "reason": "infra failure run 37212011395",
   "incident_resolved": true,
-  "blocker": null,
-  "escalated": false
+  "blocker": "unclassified",
+  "escalated": true
 }

@@ -66,8 +66,7 @@
         "published_url": null
       },
       {
- 
-       "id": "C02-0037",
+        "id": "C02-0037",
         "cluster": "C02",
         "status": "planned",
         "primary_topic": "Xe số 125 phân khối bền nhất: Tiêu chí chọn",
@@ -133,8 +132,7 @@
         "cluster": "C06",
         "status": "planned",
         "primary_topic": "Phuộc xe máy mềm và cứng: Ảnh hưởng độ êm",
-       
- "search_intent": "informational",
+        "search_intent": "informational",
         "title": "",
         "slug": "phuoc-xe-may-mem-va-cung-anh-huong-do-em",
         "parent_hub": "/hub/c06/",
@@ -198,8 +196,7 @@
         "title": "",
         "slug": "xe-may-dien-cho-hai-nguoi-anh-huong-pin-the-nao",
         "parent_hub": "/hub/c03/",
-        "entit
-ies": [
+        "entities": [
           "chở hai người",
           "pin xe điện"
         ],
@@ -267,8 +264,7 @@ ies": [
         ],
         "freshness": "low",
         "needs_official_source": true,
-        "similarity_group": "C0
-7-core",
+        "similarity_group": "C07-core",
         "source_plan": [],
         "internal_links": [],
         "published_url": null
@@ -336,8 +332,7 @@ ies": [
       {
         "id": "C07-0021",
         "cluster": "C07",
-        "status": "p
-lanned",
+        "status": "planned",
         "primary_topic": "Chuyển nhượng xe máy giữa hai tỉnh: Thủ tục cần làm",
         "search_intent": "how-to",
         "title": "",

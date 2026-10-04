@@ -5,3 +5,4 @@
 {"ts":"2026-10-03T14:08:24.517Z","incident_id":"37128570543","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
 {"ts":"2026-10-03T16:53:11.429Z","incident_id":"cyc-c050042","outcome":"content-blocker-resolved","reason":"run 37128550402 internal link gate: dung chi 1 broken link (thoi-quan->thoi-quen, 1 ky tu href) — 23/24 target phan tich truoc coi la missing thuc ra DA xuat ban tren main (cycle c120017, 28 bai); sua href-only tren staging/writer-1 76814ef7; 18 bai con lai verbatim; reset ledger + trigger production"}
 {"ts":"2026-10-03T16:57:36.744Z","incident_id":"37138741971","outcome":"supervisor-terminal","reason":"verification KHONG green sau #4 SUCCESS: regression","attempts":["verify-only"]}
+{"ts":"2026-10-04T07:37:08.900Z","run_id":"37185790496","signature":"unclassified","outcome":"escalated"}

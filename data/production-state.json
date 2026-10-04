@@ -5,8 +5,8 @@
   "resumed_by": "operator-continuous-production",
   "run_id": "37185790496",
   "reason": "infra failure run 37185790496",
-  "escalated": false,
-  "blocker": null,
+  "escalated": true,
+  "blocker": "unclassified",
   "incident_resolved": true,
-  "paused_at": "2026-10-04T07:37:07.285Z"
+  "paused_at": "2026-10-04T07:37:08.900Z"
 }

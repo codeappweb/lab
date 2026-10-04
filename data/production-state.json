@@ -1,13 +1,12 @@
 {
-  "paused": true,
-  "paused_by": "repair-agent",
-  "paused_at": "2026-10-04T08:36:32.071Z",
-  "reason": "infra failure run 37189450228",
-  "resumed_at": "2026-10-04T08:35:12.046Z",
+  "paused": false,
+  "paused_by": null,
+  "resumed_at": "2026-10-04T09:11:59.154Z",
   "resumed_by": "operator-continuous-production",
-  "last_run_id": 37188778729,
-  "escalated": true,
+  "run_id": "37185790496",
+  "reason": "blocker run 37185790496 da co root cause cu the: contamination data/progress.json tren 3 nhanh staging (writer sua file ngoai _posts) da duoc operator revert ve merge-base cc9853f; manifest/progress drift se tu dong dong bo (allowlist) boi maintenance job cua coordinator",
+  "escalated": false,
+  "blocker": null,
   "incident_resolved": true,
-  "run_id": "37189450228",
-  "blocker": "unclassified"
+  "paused_at": "2026-10-04T07:37:08.900Z"
 }

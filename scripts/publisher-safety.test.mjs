@@ -37,7 +37,8 @@ test('production.yml: post-publish verify TRUOC deploy (block deploy + reset neu
   const iVerify = y.indexOf('node scripts/publish-verify.mjs');
   const iDeploy = y.indexOf('POST /pages/builds');
   assert.ok(iVerify !== -1, 'thieu publish-verify');
-  assert.ok(iDeploy !== -1);
+  assert.ok(iDeploy !== 
+-1);
   assert.ok(iVerify < iDeploy);
 });
 
@@ -82,7 +83,8 @@ test('repair-agent.yml: thu tu pause -> inspect -> repair -> regression -> resum
   const iV = y.indexOf('--resume');
   const iE = y.indexOf('--escalate');
   for (const x of [iI, iR, iT, iV, iE]) assert.ok(x !== -1);
-  assert.ok(iP !== -1 && iP < iI && iI < iR && iR < iT && iT < iV, 'thu tu phai la pause -> inspect -> repair -> tests -> resume');
+  assert.ok(iP !== -1 && iP < iI && iI 
+< iR && iR < iT && iT < iV, 'thu tu phai la pause -> inspect -> repair -> tests -> resume');
 });
 
 test('repair-playbook: mac dinh manual (unclear -> escalate, khong doan) + max 2 auto-repair cung signature', () => {
@@ -121,7 +123,8 @@ function mkPost(over) {
     '',
     '## Kiem tra giam xoc va phanh',
     '',
-    'Thu xe tren duong loi nhon, dan hang, nghe tieng kim loai va kiem tra phanh khi tai nhe. Ket thuc bai viet mau hop le cho muc dich test unit.'
+    'Thu xe tren duong loi nhon, dan hang, nghe tieng kim loai va kiem tra phanh khi tai nhe. Ket thuc
+ bai viet mau hop le cho muc dich test unit.'
   ].join('\n');
   return '---\n' + fmText + '\n---\n\n' + body + '\n' + (over.tail || '');
 }
@@ -152,7 +155,8 @@ test('validatePost: it link noi boi bi chan', () => {
   assert.ok(validatePost(P, c).some((i) => i.includes('link noi boi')));
 });
 test('validatePost: sai factory_cycle so voi cycle hien tai bi chan', () => {
-  const ctx = { cycleId: 'cyc-c050042', baseSha: '313a243942a366ed005b514d3aacd0885450d4e4', assignmentIds: ['C08-0021'], assignmentSlugs: ['bai-mau-hop-le-cho-test'], writerById: { 'C08-0021': 'writer-1' } };
+  const ctx = { cycleId: 'cyc-c050042', baseSha: '313a243942a366ed005b514d3aacd0885450d4e4', assignmentIds: ['C08-0021'], assignmentSlugs: ['bai-mau-hop-le-cho-test'
+], writerById: { 'C08-0021': 'writer-1' } };
   const c = mkPost({ fm: { factory_cycle: 'cyc-KHAC' } });
   assert.ok(validatePost(P, c, ctx).some((i) => i.includes('factory_cycle')));
 });
@@ -193,7 +197,8 @@ function setupFixture() {
   gitIn(w, ['commit', '-m', 'main base']);
   gitIn(w, ['push', 'origin', 'HEAD:refs/heads/main']);
   gitIn(w, ['checkout', '-b', 'staging/writer-1']);
-  mkfile(w, '_posts/2026-10-03-moi.md', '---\nid: moi\n---\nwriter post');
+  mkfile(w, '_posts/2026-10-03-moi.md', '---\nid: 
+moi\n---\nwriter post');
   gitIn(w, ['add', '-A']);
   gitIn(w, ['commit', '-m', 'writer post']);
   gitIn(w, ['push', 'origin', 'HEAD:refs/heads/staging/writer-1']);
@@ -235,7 +240,8 @@ test('reset-staging-safe: file CHUA integrate -> QUARANTINE, khong reset (khong 
   const tip = gitIn(f.w, ['rev-parse', 'origin/staging/writer-1']);
   assert.equal(tip, f.stagingSha, 'staging PHAI GIU NGUYEN khi bai chua integrate');
 });
-test('reset-staging-safe: tip da DOI (writer push moi) -> SKIP, khong clobber', () => {
+test('reset-stagi
+ng-safe: tip da DOI (writer push moi) -> SKIP, khong clobber', () => {
   const f = setupFixture();
   publishWriterFile(f);
   gitIn(f.w, ['checkout', 'staging/writer-1']);
@@ -268,12 +274,13 @@ test('production-paused: paused -> exit 1; khong -> exit 0; --is-paused dao nguo
 
 test('recovery cyc-c050042: du 18 bai verbatim, manifest_id khop assignment, metadata factory nguyen', () => {
   const rec = JSON.parse(read('recovery/cyc-c050042/posts.json'));
-  const cyc = JSON.parse(read('data/factory-cycle.json'));
+  const cyc = JSON.parse(read('recovery/cyc-c050042/factory-cycle.json'));
   assert.equal(cyc.cycle_id, 'cyc-c050042');
   const ids = Object.values(cyc.assignments || {}).flat();
   assert.equal(ids.length, 18);
-  assert.equal(rec.posts.length, 18);
-  const wa = JSON.parse(read('data/writer-assignments.json'));
+  assert.equal(rec.po
+sts.length, 18);
+  const wa = JSON.parse(read('recovery/cyc-c050042/writer-assignments.json'));
   assert.equal(wa.cycle_id, 'cyc-c050042');
   const writerById = {}; const slugById = {};
   for (const [w, rows] of Object.entries(wa.writers || {})) {

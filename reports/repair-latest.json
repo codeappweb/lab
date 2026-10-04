@@ -2,8 +2,8 @@
   "status": "blocked — production GIU PAUSE",
   "signature": "unclassified",
   "reason": "signature khong khop playbook — coi nhu unclear, khong doan",
-  "repair_count": 4,
-  "run_id": "37189450228",
+  "repair_count": 5,
+  "run_id": "37191383948",
   "log_excerpt": [],
-  "ts": "2026-10-04T08:36:32.071Z"
+  "ts": "2026-10-04T09:12:25.712Z"
 }

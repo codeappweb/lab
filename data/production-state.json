@@ -2,7 +2,7 @@
   "paused": false,
   "paused_at": "2026-10-04T14:49:35.674Z",
   "paused_by": null,
-  "resumed_at": "2026-10-04T14:57:38.984Z",
+  "resumed_at": "2026-10-04T15:05:53.415Z",
   "resumed_by": "supervisor-recovery",
   "run_id": "37210670906",
   "reason": "root cause: test recovery c050042 doc data song data/factory-cycle.json + data/writer-assignments.json -> chuyen sang fixture recovery/cyc-c050042; push fix dau (cb38282a) bi hong syntax do fetch chen ngat dong gia; da lay noi dung goc tu commit f1adada675",

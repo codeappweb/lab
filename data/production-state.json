@@ -2,7 +2,7 @@
   "paused": false,
   "paused_at": "2026-10-04T16:36:12.132Z",
   "paused_by": null,
-  "resumed_at": "2026-10-04T16:44:08.061Z",
+  "resumed_at": "2026-10-04T16:53:50.463Z",
   "resumed_by": "supervisor-recovery",
   "run_id": "37217186973",
   "reason": "infra failure run 37216726746 + 37217186973 — resolved: staging/writer-3 con 6 bai stale cyc-c110024 (staging reset missed vi lease mismatch) khien integrate-guard tu choi (factory_cycle khong khop). Da xoa 6 file stale khoi staging/writer-3; content trung main, khong mat du lieu.",

@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c050045",
   "base_sha": "cc3d66838b7c7b19a592c1b0d09eadb5de936602",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C05-0045",
@@ -54,7 +54,12 @@
       "xe-may-cu-khong-con-dang-kiem-thuc-te-phap-ly"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-04T14:51:20.346Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -496,8 +501,43 @@
         "verified_at": "2026-10-04T09:16:31.989Z"
       },
       "completed_at": "2026-10-04T09:16:31.989Z"
+    },
+    {
+      "cycle_id": "cyc-c050045",
+      "base_sha": "cc3d66838b7c7b19a592c1b0d09eadb5de936602",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "85dc4abbd61bccd51ae5f9779360cad1c0a1ddd9",
+        "ids": [
+          "bugi-xe-ga-ban-dau-hieu-va-cach-ve-sinh",
+          "khong-gian-tap-luyen-quanh-ho-guom-sang-som-giao-thong-xe",
+          "kinh-nghiem-chon-xe-ga-cu-chua-qua-sua-chua-lon",
+          "nen-mua-xe-cu-cua-nguoi-quen-hay-qua-trung-gian",
+          "vuon-bach-thao-ha-noi-di-lai-va-cho-gui-xe",
+          "xe-may-dien-khong-de-duoc-cac-buoc-kiem-tra",
+          "boc-yen-xe-may-da-va-ni-chon-chat-lieu-nao",
+          "mam-hop-kim-xe-may-dep-nhung-can-biet-dieu-gi",
+          "mua-dong-pin-xe-may-dien-tut-nhanh-giai-phap-thuc-dung",
+          "nhiet-do-cao-anh-huong-pin-xe-dien-the-nao",
+          "phuot-mot-minh-nu-gioi-chuan-bi-tu-ha-noi",
+          "ql6-di-hoa-binh-diem-an-uong-dang-dung-chan",
+          "bang-lai-hang-b1-co-duoc-dieu-khien-xe-may-khong",
+          "di-xe-dap-lien-tuc-hai-muoi-km-chuan-bi-the-luc",
+          "di-xe-dem-duong-truong-khong-den-duong-ky-nang",
+          "tai-nan-nhe-khong-chan-thuong-cac-buoc-xu-ly-tai-cho",
+          "thue-xe-may-o-tay-ho-cho-nguoi-nuoc-ngoai-giay-to-can-mang",
+          "xe-may-cu-khong-con-dang-kiem-thuc-te-phap-ly"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-04T14:51:20.346Z"
+      },
+      "completed_at": "2026-10-04T14:51:20.346Z"
     }
   ],
   "created_at": "2026-10-04T09:16:37.284Z",
-  "updated_at": "2026-10-04T14:48:34.699Z"
+  "updated_at": "2026-10-04T14:51:20.346Z"
 }

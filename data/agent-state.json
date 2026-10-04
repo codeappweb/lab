@@ -7,12 +7,13 @@
   },
   "supervisor": {
     "status": "terminal",
-    "last_incident_id": "37186328200",
+    "last_incident_id": "37188794640",
     "terminal_incidents": [
       "37118189364",
       "37128570543",
       "37138741971",
-      "37186328200"
+      "37186328200",
+      "37188794640"
     ]
   },
   "director": {

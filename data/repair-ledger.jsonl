@@ -19,3 +19,4 @@
 {"ts":"2026-10-04T14:43:47.893Z","incident_id":"37210318831","outcome":"supervisor-terminal","reason":"verification KHONG green sau #4 SUCCESS: regression","attempts":["verify-only"]}
 {"ts":"2026-10-04T14:49:35.673Z","run_id":"37210670906","signature":"unclassified","outcome":"escalated"}
 {"ts":"2026-10-04T14:49:46.993Z","incident_id":"37210681639","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
+{"ts":"2026-10-04T14:51:42.487Z","incident_id":"37210812724","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}

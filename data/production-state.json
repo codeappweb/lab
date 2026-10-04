@@ -1,12 +1,11 @@
 {
-  "paused": true,
+  "paused": false,
   "paused_by": "repair-agent",
-  "resumed_at": "2026-10-04T07:26:27.261Z",
+  "paused_at": "2026-10-04T07:37:08.900Z",
+  "reason": "infra failure run 37185790496 — classified FALSE-POSITIVE ordering: reconcile synced staging, queue-refill advanced main, collect compared staging vs new main (drift tu dong self-heal o reconcile buoc 0b chu ky sau)",
+  "resumed_at": "2026-10-04T08:23:39.046Z",
   "resumed_by": "operator-continuous-production",
-  "run_id": "37185790496",
-  "reason": "infra failure run 37185790496",
-  "escalated": true,
-  "blocker": "unclassified",
-  "incident_resolved": true,
-  "paused_at": "2026-10-04T07:37:08.900Z"
+  "last_run_id": 37185790496,
+  "escalated": false,
+  "incident_resolved": true
 }

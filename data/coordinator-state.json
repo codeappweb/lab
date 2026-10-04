@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 3,
-  "last_run_id": "37189450228",
+  "consecutive_failures": 4,
+  "last_run_id": "37191383948",
   "last_run_status": "failed",
   "ledger_reset_reason": "cyc-c050042: root cause (blind staging force-reset + parallel publishers) fixed in 68e71f9..c66ee61e; content blocker cua run 37128550402 (1 broken internal link thoi-quan->thoi-quen trong _posts/2026-10-03-nhong-sen-xe-may-bi-gian-nhan-biet-va-thay-the.md) da sua href-only tren staging/writer-1 (commit 76814ef7); reset theo huong dan cycle-phase --check-stop",
-  "updated_at": "2026-10-04T08:36:19.372Z"
+  "updated_at": "2026-10-04T09:12:14.011Z"
 }

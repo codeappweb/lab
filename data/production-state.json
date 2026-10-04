@@ -1,13 +1,11 @@
 {
-  "paused": true,
+  "paused": false,
   "paused_by": "repair-agent",
-  "paused_at": "2026-10-04T08:24:09.644Z",
-  "reason": "infra failure run 37188778729",
-  "resumed_at": "2026-10-04T08:23:39.046Z",
+  "paused_at": "2026-10-04T08:24:08Z",
+  "reason": "infra failure run 37188778729 — root cause xac dinh: reconcile staging-sync commit lam staging tu cham data/progress.json (3-dot contamination false positive); fix = revert progress.json tren staging ve merge-base cc9853f byte-identical + push bai cycle c110021",
+  "resumed_at": "2026-10-04T08:35:12.046Z",
   "resumed_by": "operator-continuous-production",
-  "last_run_id": 37185790496,
-  "escalated": true,
-  "incident_resolved": true,
-  "run_id": "37188778729",
-  "blocker": "unclassified"
+  "last_run_id": 37188778729,
+  "escalated": false,
+  "incident_resolved": true
 }

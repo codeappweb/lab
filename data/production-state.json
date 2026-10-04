@@ -1,12 +1,12 @@
 {
-  "paused": true,
-  "paused_by": "repair-agent",
-  "resumed_at": "2026-10-04T09:11:59.154Z",
+  "paused": false,
+  "paused_by": null,
+  "resumed_at": "2026-10-04T09:13:33.428Z",
   "resumed_by": "operator-continuous-production",
   "run_id": "37191383948",
-  "reason": "infra failure run 37191383948",
-  "escalated": true,
-  "blocker": "unclassified",
+  "reason": "blocker da co root cause cu the: (1) contamination progress.json tren staging da revert ve merge-base cc9853f; (2) failure ledger 4/2 la false-failures tich luy tu maintenance lock — da reset 0; manifest/progress drift de maintenance job tu dong dong bo (allowlist)",
+  "escalated": false,
+  "blocker": null,
   "incident_resolved": true,
-  "paused_at": "2026-10-04T09:12:25.712Z"
+  "paused_at": "2026-10-04T09:12:24Z"
 }

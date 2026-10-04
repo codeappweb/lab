@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 4,
+  "consecutive_failures": 0,
   "last_run_id": "37191383948",
   "last_run_status": "failed",
-  "ledger_reset_reason": "cyc-c050042: root cause (blind staging force-reset + parallel publishers) fixed in 68e71f9..c66ee61e; content blocker cua run 37128550402 (1 broken internal link thoi-quan->thoi-quen trong _posts/2026-10-03-nhong-sen-xe-may-bi-gian-nhan-biet-va-thay-the.md) da sua href-only tren staging/writer-1 (commit 76814ef7); reset theo huong dan cycle-phase --check-stop",
-  "updated_at": "2026-10-04T09:12:14.011Z"
+  "ledger_reset_reason": "cyc-c110021: 4 run fail lien tiep (37185790496..37191383948) deu la he qua cua maintenance lock, khong phai loi moi — run 292 fail that su vi contamination data/progress.json tren staging/writer-1 (writer sua file ngoai _posts), da duoc operator revert ve merge-base cc9853f tren ca 3 writer (8a79d0c, edecb09, 93ae707); cac run sau chi fail vi Production DANG PAUSED va failure ledger tich luy. Reset consecutive_failures=0 theo huong dan PRODUCTION STOP; staging GIU NGUYEN 18 bai cyc-c110021.",
+  "updated_at": "2026-10-04T09:13:33.428Z"
 }

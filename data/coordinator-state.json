@@ -4,5 +4,5 @@
   "last_run_id": "37217186973",
   "last_run_status": "publishing",
   "ledger_reset_reason": "cyc-c050048 run 37216726746/37217186973 fail nguyen nhan da xac dinh va sua: 6 bai stale cyc-c110024 tren staging/writer-3 (factory_cycle/base_sha cu) — da xoa content-only, khong push lai y het. Reset ledger sau khi da sua nguyen goc.",
-  "updated_at": "2026-10-04T16:40:04.017Z"
+  "updated_at": "2026-10-04T16:40:06.560Z"
 }

@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c050048",
   "base_sha": "5e11f4a43c43ed28e3df9e7ab4419f188490b6f4",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C05-0048",
@@ -32,6 +32,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "7d4d19022a7a73e4e808b905ff231308ad913e01",
     "ids": [
       "bo-ly-hop-xe-so-bi-hut-chinh-va-bao-duong",
       "duong-ven-de-song-hong-cho-xe-dap-diem-len-xuong",
@@ -568,5 +569,5 @@
     }
   ],
   "created_at": "2026-10-04T16:22:55.312Z",
-  "updated_at": "2026-10-04T16:38:02.381Z"
+  "updated_at": "2026-10-04T16:40:06.559Z"
 }

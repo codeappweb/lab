@@ -51,7 +51,7 @@
     "last_action": "verify-green"
   },
   "director": {
-    "last_valid_progress_at": "2026-10-05T12:04:43.000Z",
+    "last_valid_progress_at": "2026-10-05T13:40:33.000Z",
     "last_trigger_at": null
   },
   "incidents": {

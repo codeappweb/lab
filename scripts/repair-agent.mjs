@@ -210,4 +210,4 @@ async function main() {
 const INVOKED = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (INVOKED) main();
 
-export { loadPlaybook, classify, readLedger, countSignature, decidePlan, pauseDecision };
+export { loadPlaybook, classify, readLedger, countSignature, decidePlan };

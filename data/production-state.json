@@ -1,6 +1,6 @@
 {
   "paused": true,
-  "paused_at": "2026-10-05T12:55:12.834Z",
+  "paused_at": "2026-10-05T12:55:14.694Z",
   "paused_by": "repair-agent",
   "resumed_at": "2026-10-05T12:46:48.794Z",
   "resumed_by": "operator-manual",
@@ -8,5 +8,5 @@
   "reason": "infra failure run 37311920532",
   "incident_resolved": true,
   "blocker": "unclassified",
-  "escalated": false
+  "escalated": true
 }

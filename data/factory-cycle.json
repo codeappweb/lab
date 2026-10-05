@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c110027",
   "base_sha": "49e30eb4727ed30f92b6176998e15f85b875712a",
   "coordinator_run_id": null,
-  "phase": "failed",
+  "phase": "building",
   "assignments": {
     "writer-1": [
       "C11-0027",
@@ -31,7 +31,28 @@
     ]
   },
   "staging_snapshot": {},
-  "publication": null,
+  "publication": {
+    "ids": [
+      "ac-quy-xe-may-chet-sau-mot-dem-de-xe-vi-sao",
+      "khu-vuc-ga-ha-noi-di-kham-pha-nhung-con-duong-ngan",
+      "tra-truoc-bao-nhieu-khi-mua-xe-tra-gop-la-hop-ly",
+      "xe-50cc-va-xe-dien-hoc-sinh-nen-chon-loai-nao",
+      "xe-cu-chua-tung-sang-ten-rui-ro-anh-huong-gia",
+      "xe-ga-hop-so-ban-tu-dong-uu-diem-trong-pho",
+      "chay-xe-dien-duong-truong-cuoi-tuan-chuan-bi-gi",
+      "cong-suat-sac-tai-nha-can-bao-nhieu-cho-xe-dien",
+      "ong-gop-giam-thanh-thay-the-luu-y-phap-ly",
+      "phuot-thang-muoi-mot-tay-bac-thoi-tiet-va-chuan-bi",
+      "pin-du-phong-mang-theo-cho-xe-dien-co-dang-khong",
+      "xe-may-dien-cho-giao-do-an-chon-cong-suat-nao",
+      "chi-phi-thue-xe-may-o-ha-noi-ba-ngay-tinh-the-nao-cho-dung",
+      "chon-xe-dap-cho-be-sau-tuoi-hoc-giu-thang-bang",
+      "loi-thuong-gap-khi-nguoi-moi-chay-xe-ga",
+      "phanh-dia-va-phanh-vanh-xe-dap-chon-loai-nao",
+      "quy-dinh-ve-do-tuoi-dieu-khien-xe-may-duoi-muoi-tam",
+      "thue-xe-may-cho-nhom-bon-nguoi-o-ha-noi-cach-tinh-gia"
+    ]
+  },
   "pages": null,
   "history": [
     {
@@ -582,5 +603,5 @@
     }
   ],
   "created_at": "2026-10-04T16:42:58.185Z",
-  "updated_at": "2026-10-05T12:34:46.577Z"
+  "updated_at": "2026-10-05T12:47:47.304Z"
 }

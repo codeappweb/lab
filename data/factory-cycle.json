@@ -1,65 +1,38 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c110027",
-  "base_sha": "49e30eb4727ed30f92b6176998e15f85b875712a",
+  "cycle_id": "cyc-c050051",
+  "base_sha": "00f2982bc03c40c401861bfaf7895de40ce83c82",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C11-0027",
-      "C02-0044",
-      "C05-0050",
-      "C08-0028",
-      "C11-0028",
-      "C02-0045"
+      "C05-0051",
+      "C08-0029",
+      "C11-0029",
+      "C02-0046",
+      "C05-0052",
+      "C08-0030"
     ],
     "writer-2": [
-      "C12-0027",
-      "C03-0046",
-      "C06-0028",
-      "C09-0028",
-      "C12-0028",
-      "C03-0047"
+      "C06-0029",
+      "C09-0029",
+      "C12-0029",
+      "C03-0048",
+      "C06-0030",
+      "C09-0030"
     ],
     "writer-3": [
-      "C01-0045",
-      "C04-0044",
-      "C07-0028",
-      "C10-0028",
-      "C01-0046",
-      "C04-0045"
+      "C07-0029",
+      "C10-0029",
+      "C01-0047",
+      "C04-0046",
+      "C07-0030",
+      "C10-0030"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "84ed5b1081d5e43c3ff9bbc9eb8c9e410404b78f",
-    "ids": [
-      "ac-quy-xe-may-chet-sau-mot-dem-de-xe-vi-sao",
-      "khu-vuc-ga-ha-noi-di-kham-pha-nhung-con-duong-ngan",
-      "tra-truoc-bao-nhieu-khi-mua-xe-tra-gop-la-hop-ly",
-      "xe-50cc-va-xe-dien-hoc-sinh-nen-chon-loai-nao",
-      "xe-cu-chua-tung-sang-ten-rui-ro-anh-huong-gia",
-      "xe-ga-hop-so-ban-tu-dong-uu-diem-trong-pho",
-      "chay-xe-dien-duong-truong-cuoi-tuan-chuan-bi-gi",
-      "cong-suat-sac-tai-nha-can-bao-nhieu-cho-xe-dien",
-      "ong-gop-giam-thanh-thay-the-luu-y-phap-ly",
-      "phuot-thang-muoi-mot-tay-bac-thoi-tiet-va-chuan-bi",
-      "pin-du-phong-mang-theo-cho-xe-dien-co-dang-khong",
-      "xe-may-dien-cho-giao-do-an-chon-cong-suat-nao",
-      "chi-phi-thue-xe-may-o-ha-noi-ba-ngay-tinh-the-nao-cho-dung",
-      "chon-xe-dap-cho-be-sau-tuoi-hoc-giu-thang-bang",
-      "loi-thuong-gap-khi-nguoi-moi-chay-xe-ga",
-      "phanh-dia-va-phanh-vanh-xe-dap-chon-loai-nao",
-      "quy-dinh-ve-do-tuoi-dieu-khien-xe-may-duoi-muoi-tam",
-      "thue-xe-may-cho-nhom-bon-nguoi-o-ha-noi-cach-tinh-gia"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-05T12:59:56.875Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -643,6 +616,5 @@
       "completed_at": "2026-10-05T12:59:56.875Z"
     }
   ],
-  "created_at": "2026-10-04T16:42:58.185Z",
-  "updated_at": "2026-10-05T12:59:56.875Z"
+  "created_at": "2026-10-05T13:00:20.305Z"
 }

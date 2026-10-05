@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "consecutive_failures": 0,
-  "last_run_id": "37316956646",
-  "last_run_status": "publishing",
+  "last_run_id": "37318417053",
+  "last_run_status": "success",
   "ledger_reset_reason": "cyc-c050051 nguyen nuc da sua: 18 bai cu staging da xoa content-only, 18 bai moi du 2 internal link moi bai; cac fail gan day chi la race pause-check voi repair cascade (run 37316389541 chi fail o pause gate 9s). Reset ledger truoc retry cuoi.",
-  "updated_at": "2026-10-05T13:51:54.893Z"
+  "updated_at": "2026-10-05T13:55:22.342Z"
 }

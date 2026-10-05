@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c110030",
   "base_sha": "1fe50e62a8e7b16a6bed9ffbd36f2539e16adbb9",
   "coordinator_run_id": null,
-  "phase": "publishing",
+  "phase": "complete",
   "assignments": {
     "writer-1": [
       "C11-0030",
@@ -54,7 +54,12 @@
       "xe-may-dien-can-dang-ky-gi-truoc-khi-luu-thong"
     ]
   },
-  "pages": null,
+  "pages": {
+    "deployment_id": null,
+    "status": "success",
+    "live_verified": true,
+    "verified_at": "2026-10-05T13:55:22.342Z"
+  },
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -671,8 +676,43 @@
         "verified_at": "2026-10-05T13:33:19.772Z"
       },
       "completed_at": "2026-10-05T13:33:19.772Z"
+    },
+    {
+      "cycle_id": "cyc-c110030",
+      "base_sha": "1fe50e62a8e7b16a6bed9ffbd36f2539e16adbb9",
+      "phase": "complete",
+      "publication": {
+        "main_sha": "71e1c681987ecb3f8f17209a7635c043720854c8",
+        "ids": [
+          "bao-hiem-xe-may-tu-nguyen-co-dang-tien-khong",
+          "dem-giao-thua-quanh-ho-guom-duong-cam-xe-cho-nguoi-di",
+          "mua-xe-may-dien-moi-chinh-sach-ho-tro-tu-hang",
+          "ro-ri-nhot-duoi-gam-xe-xu-ly-an-toan",
+          "xe-may-cu-bi-thay-khoang-may-nhan-biet-the-nao",
+          "xe-moped-co-con-phuc-vu-chi-phi-va-kho-khan-giu-xe",
+          "chua-huong-mua-le-hoi-di-xe-may-va-gui-xe",
+          "kiem-tra-dung-luong-pin-xe-dien-cu-truoc-khi-mua",
+          "mua-xe-may-dien-tra-gop-chi-phi-thuc-te-sau-cung",
+          "phu-kien-chong-trom-xe-may-dang-mua-nhat",
+          "sac-xe-dap-dien-bang-sac-sai-loai-rui-ro-gi",
+          "so-sanh-xe-may-dien-hai-pin-va-xe-mot-pin",
+          "dang-di-xe-gap-sam-set-chon-cho-dung-dung",
+          "den-xe-dap-va-phu-kien-an-toan-khi-di-ban-dem",
+          "thue-xe-dap-dien-o-quan-hai-ba-trung-goi-y-dia-diem",
+          "thue-xe-may-qua-app-o-ha-noi-cach-dung-an-toan",
+          "xe-dap-cho-hang-di-cho-chon-kieu-xe-phu-hop",
+          "xe-may-dien-can-dang-ky-gi-truoc-khi-luu-thong"
+        ]
+      },
+      "pages": {
+        "deployment_id": null,
+        "status": "success",
+        "live_verified": true,
+        "verified_at": "2026-10-05T13:55:22.342Z"
+      },
+      "completed_at": "2026-10-05T13:55:22.342Z"
     }
   ],
   "created_at": "2026-10-05T13:33:26.285Z",
-  "updated_at": "2026-10-05T13:51:54.892Z"
+  "updated_at": "2026-10-05T13:55:22.342Z"
 }

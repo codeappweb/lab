@@ -1,65 +1,38 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c050051",
-  "base_sha": "00f2982bc03c40c401861bfaf7895de40ce83c82",
+  "cycle_id": "cyc-c110030",
+  "base_sha": "1fe50e62a8e7b16a6bed9ffbd36f2539e16adbb9",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C05-0051",
-      "C08-0029",
-      "C11-0029",
-      "C02-0046",
-      "C05-0052",
-      "C08-0030"
+      "C11-0030",
+      "C02-0047",
+      "C05-0053",
+      "C08-0031",
+      "C11-0031",
+      "C02-0048"
     ],
     "writer-2": [
-      "C06-0029",
-      "C09-0029",
-      "C12-0029",
-      "C03-0048",
-      "C06-0030",
-      "C09-0030"
+      "C12-0030",
+      "C03-0049",
+      "C06-0031",
+      "C09-0031",
+      "C12-0031",
+      "C03-0050"
     ],
     "writer-3": [
-      "C07-0029",
-      "C10-0029",
-      "C01-0047",
-      "C04-0046",
-      "C07-0030",
-      "C10-0030"
+      "C01-0048",
+      "C04-0047",
+      "C07-0031",
+      "C10-0031",
+      "C01-0049",
+      "C04-0048"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "6e237b5a82d142276c55ca5fc7941f677a983268",
-    "ids": [
-      "chi-phi-thay-phu-tung-dinh-ky-trong-mot-nam",
-      "ha-noi-mu-suong-thang-ba-di-xe-may-an-toan-the-nao",
-      "hoang-thanh-thang-long-quy-dinh-gui-xe-va-tham-quan",
-      "thay-dau-xe-ga-dung-chu-ky-moi-bao-nhieu-km",
-      "trai-nghiem-xe-ga-110-phan-khoi-di-pho-moi-ngay",
-      "xe-may-duoi-tren-duong-truong-chan-doan-suc-may",
-      "den-led-cho-xe-may-chon-cong-suat-hop-le",
-      "duong-len-thac-bac-hoa-binh-lo-trinh-cuoi-tuan",
-      "gia-thay-bo-nhong-sen-curoa-xe-ga-tron-goi",
-      "hieu-chuan-dong-ho-pin-xe-dien-sau-thoi-gian-dung",
-      "ve-nguon-den-hung-bang-xe-may-lo-trinh-chi-tiet",
-      "xe-may-dien-can-doi-tai-vi-sao-quan-trong-khi-cho-hang",
-      "bao-hiem-xe-may-bat-buoc-va-tu-nguyen-khac-nhau-the-nao",
-      "cap-lai-bang-lai-a1-bi-hong-quy-trinh-moi",
-      "chong-gio-giat-khi-qua-cau-lon-ky-thuat-giu-xe",
-      "nga-xe-tren-nhua-moi-xu-ly-vet-tray-dung-cach",
-      "sua-xe-dap-dien-tai-nha-nhung-viec-nen-tranh",
-      "tra-xe-muon-khi-thue-o-ha-noi-phu-phi-thuong-gap"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-05T13:33:19.772Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -678,6 +651,5 @@
       "completed_at": "2026-10-05T13:33:19.772Z"
     }
   ],
-  "created_at": "2026-10-05T13:00:20.305Z",
-  "updated_at": "2026-10-05T13:33:19.772Z"
+  "created_at": "2026-10-05T13:33:26.285Z"
 }

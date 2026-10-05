@@ -1,6 +1,6 @@
 {
   "paused": true,
-  "paused_at": "2026-10-05T14:06:08.339Z",
+  "paused_at": "2026-10-05T15:34:12.666Z",
   "paused_by": "repair-agent",
   "resumed_at": "2026-10-05T14:05:10.901Z",
   "resumed_by": "supervisor-recovery",

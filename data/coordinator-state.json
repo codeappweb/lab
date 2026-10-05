@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 1,
+  "consecutive_failures": 0,
   "last_run_id": "37311920532",
-  "last_run_status": "failed",
-  "ledger_reset_reason": "cyc-c050048 run 37216726746/37217186973 fail nguyen nhan da xac dinh va sua: 6 bai stale cyc-c110024 tren staging/writer-3 (factory_cycle/base_sha cu) — da xoa content-only, khong push lai y het. Reset ledger sau khi da sua nguyen goc.",
-  "updated_at": "2026-10-05T12:55:00.479Z"
+  "last_run_status": "success",
+  "ledger_reset_reason": "cyc-c110027 run 37311920532 fail chi o live-verify timeout (Pages build chan 5 phut) — publish commit 84ed5b10 da tren origin/main, 437 posts, live verified; reset ledger sau khi da xac nhan live.",
+  "updated_at": "2026-10-05T12:59:56.875Z"
 }

@@ -7,7 +7,7 @@
   },
   "supervisor": {
     "status": "terminal",
-    "last_incident_id": "37310513367",
+    "last_incident_id": "37312871584",
     "terminal_incidents": [
       "37118189364",
       "37128570543",
@@ -30,7 +30,8 @@
       "37217408223",
       "37217424875",
       "37306747553",
-      "37310513367"
+      "37310513367",
+      "37312871584"
     ],
     "last_action": "verify-green"
   },

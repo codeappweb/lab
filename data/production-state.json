@@ -1,9 +1,9 @@
 {
-  "paused": true,
+  "paused": false,
   "paused_at": "2026-10-05T13:10:41.804Z",
   "paused_by": "repair-agent",
-  "resumed_at": "2026-10-05T13:07:18.549Z",
-  "resumed_by": "supervisor-recovery",
+  "resumed_at": "2026-10-05T13:19:46.739Z",
+  "resumed_by": "operator-manual",
   "run_id": "37313478349",
   "reason": "infra failure run 37313478349",
   "incident_resolved": true,

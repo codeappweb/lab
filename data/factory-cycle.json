@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c050054",
   "base_sha": "72cce66db52078cef4c9dff0826858b425329e98",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C05-0054",
@@ -32,6 +32,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "41896c973b7252e15baf6615d37f452e5a0182fa",
     "ids": [
       "bao-tang-my-thuat-di-bang-xe-dien-trai-nghiem-tham-quan",
       "den-bao-pin-xe-dien-chop-lien-tuc-hieu-ma-loi",
@@ -708,5 +709,5 @@
     }
   ],
   "created_at": "2026-10-05T13:55:28.413Z",
-  "updated_at": "2026-10-05T16:40:37.279Z"
+  "updated_at": "2026-10-05T16:42:29.965Z"
 }

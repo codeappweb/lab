@@ -1,0 +1,13 @@
+{
+  "incident_id": "37333865645",
+  "status": "resolved",
+  "resolved_at": "2026-10-05T16:40:11.207Z",
+  "resolved_by": "human-admin (operator tooling)",
+  "failing_run": "37333815953 (CI, commit f946c00, step Regression tests)",
+  "root_cause": "scripts/validate-content-quality.mjs duoc refactor 2026-10-05 sang shared parser scripts/front-matter.mjs (thong nhat schema/parser writer-staging-coordinator, goc loi run 37318644251). Test CI9 trong content-index.test.mjs copy fixture thieu dependency front-matter.mjs -> node loi \"Cannot find module\" -> stdout rong -> assert.match(.../missing or malformed front matter/) RED voi actual \"\".",
+  "classification": "infra-test-fixture (engine), KHONG phai loi noi dung bai viet — 18 bai staging cua cyc-c050054 deu nguyen ven, khong writer review can thiet.",
+  "fix_commit": "521b86f5f16ac49c7496598ca38143db28411e39",
+  "verification": "CI run 37342012159: job \"QA nhẹ (blocking, engine-change)\" = success (Regression tests GREEN). Jekyll build job khong lien quan fix va content khong doi so voi lan xanh truoc do; production coordinator van chay Jekyll build blocking truoc publish.",
+  "action": "Dong incident 37333865645 (da terminal + handled trong agent-state), GO PAUSE hop le qua production-state.json, resume production qua entrypoint duy nhat data/.coordinator-trigger de chu ky cyc-c050054 (18 bai staged) duoc QA/publish/verify live.",
+  "chain": "repair #4 (escalate unclassified) -> supervisor #5 (terminal, khong safe action) -> human (fix goc + resume) — dung quy trinh, khong mo incident moi, khong reset staging, khong force push."
+}

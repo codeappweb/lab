@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 1,
-  "last_run_id": "37313478349",
+  "consecutive_failures": 2,
+  "last_run_id": "37315957102",
   "last_run_status": "failed",
   "ledger_reset_reason": "cyc-c110027 run 37311920532 fail chi o live-verify timeout (Pages build chan 5 phut) — publish commit 84ed5b10 da tren origin/main, 437 posts, live verified; reset ledger sau khi da xac nhan live.",
-  "updated_at": "2026-10-05T13:10:23.676Z"
+  "updated_at": "2026-10-05T13:20:07.452Z"
 }

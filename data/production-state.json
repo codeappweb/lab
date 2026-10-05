@@ -1,12 +1,12 @@
 {
-  "paused": true,
+  "paused": false,
   "paused_at": "2026-10-05T12:02:08.062Z",
-  "paused_by": "supervisor-recovery",
-  "resumed_at": "2026-10-04T16:53:50.463Z",
-  "resumed_by": "supervisor-recovery",
-  "run_id": "37217186973",
-  "reason": "infra failure run 37216726746 + 37217186973 — resolved: staging/writer-3 con 6 bai stale cyc-c110024 (staging reset missed vi lease mismatch) khien integrate-guard tu choi (factory_cycle khong khop). Da xoa 6 file stale khoi staging/writer-3; content trung main, khong mat du lieu.",
+  "paused_by": null,
+  "resumed_at": "2026-10-05T12:24:09.364Z",
+  "resumed_by": "operator-manual",
+  "run_id": "37306747553",
+  "reason": "supervisor verify fail 2026-10-05 (check manifest-sync) — nguyen nhan la truong progress.json.last_updated (04/10) khac ngay dry-run (05/10), KHONG phai drift du lieu that. Coordinator reconcile (buoc 0b) tu dong sync derived state: de production chay lai, reconcile se ghi progress + manifest dung theo repository truth. Khong sua content, khong doi kien truc.",
   "incident_resolved": true,
-  "blocker": "supervisor-verify-failed",
-  "escalated": true
+  "blocker": null,
+  "escalated": false
 }

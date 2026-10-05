@@ -1,11 +1,11 @@
 {
-  "paused": false,
-  "paused_at": "2026-10-05T12:02:08.062Z",
-  "paused_by": null,
+  "paused": true,
+  "paused_at": "2026-10-05T12:34:59.661Z",
+  "paused_by": "repair-agent",
   "resumed_at": "2026-10-05T12:24:09.364Z",
   "resumed_by": "operator-manual",
-  "run_id": "37306747553",
-  "reason": "supervisor verify fail 2026-10-05 (check manifest-sync) — nguyen nhan la truong progress.json.last_updated (04/10) khac ngay dry-run (05/10), KHONG phai drift du lieu that. Coordinator reconcile (buoc 0b) tu dong sync derived state: de production chay lai, reconcile se ghi progress + manifest dung theo repository truth. Khong sua content, khong doi kien truc.",
+  "run_id": "37309290187",
+  "reason": "infra failure run 37309290187",
   "incident_resolved": true,
   "blocker": null,
   "escalated": false

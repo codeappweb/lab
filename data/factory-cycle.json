@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c110030",
   "base_sha": "1fe50e62a8e7b16a6bed9ffbd36f2539e16adbb9",
   "coordinator_run_id": null,
-  "phase": "building",
+  "phase": "publishing",
   "assignments": {
     "writer-1": [
       "C11-0030",
@@ -32,6 +32,7 @@
   },
   "staging_snapshot": {},
   "publication": {
+    "main_sha": "71e1c681987ecb3f8f17209a7635c043720854c8",
     "ids": [
       "bao-hiem-xe-may-tu-nguyen-co-dang-tien-khong",
       "dem-giao-thua-quanh-ho-guom-duong-cam-xe-cho-nguoi-di",
@@ -673,5 +674,5 @@
     }
   ],
   "created_at": "2026-10-05T13:33:26.285Z",
-  "updated_at": "2026-10-05T13:49:24.240Z"
+  "updated_at": "2026-10-05T13:51:54.892Z"
 }

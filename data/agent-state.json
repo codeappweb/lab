@@ -6,8 +6,8 @@
     "finished_at": "2026-10-03T16:53:11.429Z"
   },
   "supervisor": {
-    "status": "human-resolved",
-    "last_incident_id": "37333865645",
+    "status": "resumed",
+    "last_incident_id": "37343483537",
     "terminal_incidents": [
       "37118189364",
       "37128570543",
@@ -68,9 +68,10 @@
       "37328286059",
       "37333865645"
     ],
-    "last_action": "human-admin dong incident 37333865645 sau fix 521b86f (CI9 fixture) — release lock, resume entrypoint duy nhat",
+    "last_action": "verify-green",
     "handled_incidents": [
-      "37333865645"
+      "37333865645",
+      "37343483537"
     ]
   },
   "director": {

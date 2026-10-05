@@ -61,3 +61,4 @@
 {"ts":"2026-10-05T14:16:37.008Z","incident_id":"37323366178","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
 {"ts":"2026-10-05T14:16:47.076Z","incident_id":"37323388386","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
 {"ts":"2026-10-05T14:18:55.266Z","incident_id":"37323673250","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
+{"ts":"2026-10-05T14:19:29.542Z","incident_id":"37323707812","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}

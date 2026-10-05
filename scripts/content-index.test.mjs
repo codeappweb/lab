@@ -231,6 +231,9 @@ test('CI9: validate-content-quality --only bỏ qua file cũ passed, bắt file 
   const root = fixture();
   mkdirSync(join(root, 'scripts'), { recursive: true });
   copyFileSync(join(SCRIPTS_DIR, 'validate-content-quality.mjs'), join(root, 'scripts', 'validate-content-quality.mjs'));
+  // 2026-10-05: validate-content-quality dung shared parser front-matter.mjs —
+  // fixture phai copy theo, neu khong node loi module not found (CI9 RED o run 37333815953).
+  copyFileSync(join(SCRIPTS_DIR, 'front-matter.mjs'), join(root, 'scripts', 'front-matter.mjs'));
   copyFileSync(join(SCRIPTS_DIR, 'content-index-lib.mjs'), join(root, 'scripts', 'content-index-lib.mjs'));
   const vcq = args => spawnSync('node', [join(root, 'scripts', 'validate-content-quality.mjs'), ...args], { encoding: 'utf8', cwd: root });
 

@@ -4,6 +4,11 @@
 //   le), nhiem CJK (ky tu Trung/Nhat/Han — dich tieu de la tieng Viet),
 //   front matter hong / thieu metadata factory, id khong khop filename,
 //   sai cycle/base_sha, it link noi boi, it muc ##.
+//   Front matter dung SHARED parser (front-matter.mjs) — goc loi run
+//   37318644251: parser cu khong doc duoc danh sach YAML (inline [a, b] va
+//   block list "- item") trong front matter, lam RED sai toan bo bai dung
+//   schema docs/SCHEMA-ARTICLE.md. Writer / staging-signal / coordinator
+//   deu dung MỘT parser nay (thong nhat schema + parser).
 //   Cach dung:
 //     --from-scope                 (publisher: doc /tmp/scope.json, git show tung snapshot)
 //     --ref <sha> --base <ref>     (staging-signal: diff base...ref trong _posts/*.md)
@@ -13,27 +18,12 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { parseFrontMatter } from './front-matter.mjs';
 
 const ROOT = process.env.LAB_ROOT ? resolve(process.env.LAB_ROOT) : resolve(join(dirname(fileURLToPath(import.meta.url)), '..'));
 const FENCE = String.fromCharCode(96, 96, 96);
 const CJK = /[\u3001-\u303f\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uac00-\ud7af\uff01-\uff60]/;
 const REQUIRED_KEYS = ['layout', 'title', 'date', 'description', 'id', 'manifest_id', 'factory_writer', 'factory_cycle', 'factory_base_sha'];
-
-function parseFrontMatter(content) {
-  if (content === null || content === undefined) return { fm: null, body: '', issues: ['khong doc duoc noi dung'] };
-  if (!content.startsWith('---\n')) return { fm: null, body: content, issues: ['thieu front matter opening --- dong dau'] };
-  const close = content.indexOf('\n---\n', 4);
-  if (close === -1) return { fm: null, body: '', issues: ['front matter khong dong bang ---'] };
-  const fmText = content.slice(4, close);
-  const body = content.slice(close + 5);
-  const fm = {}; const issues = [];
-  for (const line of fmText.split('\n')) {
-    const m = /^([a-z_][a-z0-9_]*):\s*(.*)$/.exec(line);
-    if (m) fm[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
-    else if (line.trim()) issues.push('front matter dong khong parse duoc: ' + line.slice(0, 80));
-  }
-  return { fm, body, issues };
-}
 
 function validatePost(relPath, content, ctx) {
   const issues = [];

@@ -13,6 +13,9 @@
 //                MÔT repair attempt nho nhat (chi khi playbook class = safe);
 //                regression green -> release lock + resume. Nguoc lai -> GIU
 //                pause, reports/supervisor-latest.json, STOP (terminal).
+// 2026-10-05 (goc loi cascade): #5 bo qua repair SKIPPED/CANCELLED, doi hoi
+// ket qua #4 hop le; MỘT incident chi MỘT chain — incident da handled (resume
+// hoac terminal) khong duoc xu ly lai (chong duplicate incident events).
 // KHONG viet bai, KHONG de bai, KHONG doi content strategy, KHONG sua queue.
 import { readFileSync, writeFileSync, appendFileSync, mkdirSync } from 'node:fs';
 import { resolve, join, dirname } from 'node:path';
@@ -31,7 +34,7 @@ const TRIGGER_PATH = join(ROOT, 'data', '.coordinator-trigger');
 function readState() { try { return JSON.parse(readFileSync(STATE_PATH, 'utf8')); } catch (e) { return {}; } }
 function readAgent() {
   try { return JSON.parse(readFileSync(AGENT_PATH, 'utf8')); }
-  catch (e) { return { repair: {}, supervisor: { terminal_incidents: [] }, director: {} }; }
+  catch (e) { return { repair: {}, supervisor: { terminal_incidents: [], handled_incidents: [] }, director: {} }; }
 }
 function writeState(patch) {
   const st = Object.assign({}, readState(), patch);
@@ -45,6 +48,15 @@ function writeAgent(patch) {
   mkdirSync(join(ROOT, 'data'), { recursive: true });
   writeFileSync(AGENT_PATH, JSON.stringify(st, null, 2) + '\n');
   return st;
+}
+function handledList(agent) {
+  return ((agent.supervisor && agent.supervisor.handled_incidents) || []);
+}
+function markHandled(incidentId) {
+  const agent = readAgent();
+  const list = handledList(agent);
+  if (list.indexOf(incidentId) === -1) list.push(incidentId);
+  writeAgent({ supervisor: { handled_incidents: list } });
 }
 function gitCommitPush(msg) {
   const g = (a) => spawnSync('git', a, { cwd: ROOT, encoding: 'utf8' });
@@ -79,6 +91,7 @@ async function ghText(url, headers) {
 // ---------- pure guards (unit-tested trong agents-guard.test.mjs) ----------
 export function repairOutcomeFromState(state) {
   if (!state || !state.run_id) return null;
+  if (state.repair_outcome === 'skipped' || state.repair_outcome === 'cancelled') return null; // repair bi skip/cancel — KHONG phai ket qua #4 hop le
   if (state.paused === true && state.paused_by === 'repair-agent') return 'ESCALATE';
   if (state.paused === true) return null; // pause boi ben khac — khong phai ket qua #4
   if (state.last_repair || state.resumed_at) return 'SUCCESS';
@@ -87,8 +100,9 @@ export function repairOutcomeFromState(state) {
 export function supervisorCanStart(ctx) {
   if (!ctx || !ctx.incidentId) return false;
   if (ctx.repairAgentRunning || ctx.supervisorRunning) return false; // #4/#5 khong overlap
-  if (ctx.repairOutcome !== 'SUCCESS' && ctx.repairOutcome !== 'ESCALATE') return false; // phai co ket qua #4 hoan tat
+  if (ctx.repairOutcome !== 'SUCCESS' && ctx.repairOutcome !== 'ESCALATE') return false; // phai co ket qua #4 hoan tat (bo qua SKIPPED/CANCELLED)
   if ((ctx.terminalIncidents || []).indexOf(ctx.incidentId) !== -1) return false; // chain #4 -> #5 -> human: STOP
+  if ((ctx.handledIncidents || []).indexOf(ctx.incidentId) !== -1) return false; // MỘT incident = MỘT chain — da handled thi khong xu ly lai (chong duplicate)
   return true;
 }
 export function secondLinePlan(playbook, sig, count) {
@@ -143,6 +157,7 @@ async function verifySuite(headers) {
 }
 function resumeProduction(incidentId, note) {
   writeState({ paused: false, paused_by: null, resumed_at: new Date().toISOString(), resumed_by: 'supervisor-recovery', escalated: false, blocker: null });
+  markHandled(incidentId); // MỘT incident = MỘT chain — danh dau handled, khong xu ly lai
   writeAgent({ supervisor: { status: 'resumed', last_incident_id: incidentId, last_action: note }, repair: { status: 'idle', outcome: 'SUCCESS' } });
   mkdirSync(dirname(TRIGGER_PATH), { recursive: true });
   writeFileSync(TRIGGER_PATH, new Date().toISOString() + '\n'); // production entrypoint duy nhat
@@ -153,6 +168,7 @@ function terminal(incidentId, reason, attempts) {
   const a = readAgent();
   a.supervisor = Object.assign({}, a.supervisor || {}, { status: 'terminal', last_incident_id: incidentId });
   a.supervisor.terminal_incidents = (a.supervisor.terminal_incidents || []).concat([incidentId]);
+  a.supervisor.handled_incidents = handledList(a).indexOf(incidentId) === -1 ? handledList(a).concat([incidentId]) : handledList(a);
   mkdirSync(join(ROOT, 'data'), { recursive: true });
   writeFileSync(AGENT_PATH, JSON.stringify(a, null, 2) + '\n');
   mkdirSync(dirname(LEDGER_PATH), { recursive: true });
@@ -172,9 +188,10 @@ async function cmdRun(incidentArg) {
   const incidentId = String(incidentArg || state.run_id || '');
   const outcome = repairOutcomeFromState(state);
   const terminalIncidents = (agent.supervisor && agent.supervisor.terminal_incidents) || [];
-  const can = supervisorCanStart({ incidentId, repairAgentRunning, supervisorRunning: false, repairOutcome: outcome, terminalIncidents });
+  const handledIncidents = handledList(agent);
+  const can = supervisorCanStart({ incidentId, repairAgentRunning, supervisorRunning: false, repairOutcome: outcome, terminalIncidents, handledIncidents });
   if (!can) {
-    console.log('supervisor: khong du dieu kien chay (incident=' + incidentId + ', outcome=' + outcome + ', #4-running=' + repairAgentRunning + ', terminal=' + (terminalIncidents.indexOf(incidentId) !== -1) + ') — thoat sach, KHONG repair loop.');
+    console.log('supervisor: khong du dieu kien chay (incident=' + incidentId + ', outcome=' + outcome + ', #4-running=' + repairAgentRunning + ', terminal=' + (terminalIncidents.indexOf(incidentId) !== -1) + ', handled=' + (handledIncidents.indexOf(incidentId) !== -1) + ') — thoat sach, KHONG repair loop.');
     process.exit(0);
   }
   writeAgent({ supervisor: { status: 'running', last_incident_id: incidentId } });

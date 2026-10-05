@@ -38,6 +38,20 @@ test('repairOutcomeFromState: doc dung ket qua #4 tu production-state', () => {
   assert.equal(repairOutcomeFromState({}), null);
 });
 
+test('repairOutcomeFromState: repair SKIPPED/CANCELLED khong phai ket qua hop le — #5 bo qua', () => {
+  assert.equal(repairOutcomeFromState({ run_id: 1, repair_outcome: 'skipped' }), null);
+  assert.equal(repairOutcomeFromState({ run_id: 1, repair_outcome: 'cancelled' }), null);
+  assert.equal(supervisorCanStart(Object.assign({}, base, { repairOutcome: 'SKIPPED' })), false);
+  assert.equal(supervisorCanStart(Object.assign({}, base, { repairOutcome: 'CANCELLED' })), false);
+});
+
+test('supervisorCanStart: incident da handled (resume/terminal) khong duoc xu ly lai — chong duplicate incident events', () => {
+  assert.equal(supervisorCanStart(Object.assign({}, base, { handledIncidents: ['X'] })), false);
+  assert.equal(supervisorCanStart(Object.assign({}, base, { handledIncidents: ['Y'] })), true);
+  // trung hop ca terminal va handled cung incident: van false, MỘT incident MỘT chain
+  assert.equal(supervisorCanStart(Object.assign({}, base, { handledIncidents: ['X'], terminalIncidents: ['X'] })), false);
+});
+
 test('secondLinePlan: chi attempt khi signature safe + chua qua limit + co action; con lai terminal', () => {
   const safe = { id: 's1', class: 'safe', action: 'echo fix' };
   assert.equal(secondLinePlan(pb, safe, 0).plan, 'attempt');

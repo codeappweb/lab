@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Repair agent (INFRA ONLY). Signature la regex (case-insensitive) khop voi log error lines cua run that bai, thu tu tren xuong. class=safe: auto-fix toi da max_auto_repair_per_signature lan cung signature, roi escalate. class=manual: KHONG bao gio tu fix. Mac dinh (default_class): coi nhu unclear -> escalate, KHONG doan. action = lenh shell fix nho nhat (rong = khong can fix manh, chi retry chu ky sau).",
+  "note": "Repair agent (INFRA ONLY). Signature la regex (case-insensitive) khop voi log error lines cua run that bai, thu tu tren xuong. class=safe: auto-fix toi da max_auto_repair_per_signature lan cung signature, roi escalate. class=manual: KHONG bao gio tu fix. class=content: loi NOI DUNG bai writer (validator RED) — khong phai loi infra: tra ve writer/review queue, KHONG pause, KHONG incident (phan loai truoc khi lock). Mac dinh (default_class): coi nhu unclear -> escalate, KHONG doan. action = lenh shell fix nho nhat (rong = khong can fix manh, chi retry chu ky sau).",
   "max_auto_repair_per_signature": 2,
   "default_class": "manual",
   "signatures": [
@@ -9,7 +9,14 @@
       "match": "Production DANG PAUSED",
       "class": "manual",
       "action": "",
-      "description": "Run fail vi production dang pause boi repair agent — khong phai loi moi, khong hanh dong."
+      "description": "Run fail vi production dang pause boi repair agent — khong phai loi moi, khong hanh dong. Repair agent khong mo incident moi cho signature nay."
+    },
+    {
+      "id": "writer-content-invalid",
+      "match": "front matter dong khong parse duoc|validate-writer-post.*KHONG hop le|it hon 2 link noi boi|nhiem ky tu CJK|code fence khong can|noi dung qua ngan|thieu factory metadata|front matter thieu/gia tri rong",
+      "class": "content",
+      "action": "",
+      "description": "Loi NOI DUNG bai writer (content gate RED cua validate-writer-post) — khong phai loi infra. Tra ve writer/review queue (data/writer-review-queue.jsonl); writer tu fix content roi push lai staging. KHONG pause production, KHONG mo incident."
     },
     {
       "id": "pages-build-transient",

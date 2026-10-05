@@ -4,8 +4,19 @@
 // failure event (workflow_run completed failure cua Production/CI).
 // KHONG BAO GIO: viet bai, de bai moi, doi content strategy, sua architecture
 // lien quan, cham bai tren main.
-//   --pause <run-id> : acquire maintenance lock (data/production-state.json
-//                      paused=true) — production.yml dung o buoc 0a.
+//   --pause <run-id> : PHAN LOAI TRUOC (classify log cua run), roi moi quyet
+//                      dinh lock (goc loi cascade 2026-10-05: pause-truoc-
+//                      phan-loai lam moi run bi chan boi PAUSE cung mo incident
+//                      moi -> 15+ supervisor terminal commits):
+//                      - PAUSE dang co            -> exit 0, KHONG incident moi
+//                      - run fail vi PAUSE (signature production-paused)
+//                                                -> exit 0, KHONG incident moi
+//                      - loi NOI DUNG bai writer (class content trong playbook)
+//                                                -> ghi writer review queue,
+//                                                   KHONG pause, KHONG incident
+//                      - loi infra that su        -> acquire maintenance lock
+//                        (data/production-state.json paused=true) — production.yml
+//                        dung o buoc 0a.
 //   --inspect <run-id>: tai log cac job FAIL, trich error lines, classify
 //                      theo data/repair-playbook.json, dem so lan cung
 //                      signature trong data/repair-ledger.jsonl. Rate limit
@@ -27,6 +38,7 @@ const LEDGER_PATH = join(ROOT, 'data', 'repair-ledger.jsonl');
 const PLAYBOOK_PATH = join(ROOT, 'data', 'repair-playbook.json');
 const PLAN_PATH = process.env.REPAIR_PLAN_FILE || '/tmp/repair-plan.json';
 const REPORT_PATH = join(ROOT, 'reports', 'repair-latest.json');
+const REVIEW_QUEUE_PATH = join(ROOT, 'data', 'writer-review-queue.jsonl');
 
 function loadPlaybook(p) { return JSON.parse(readFileSync(p, 'utf8')); }
 function classify(playbook, text) {
@@ -38,10 +50,23 @@ function classify(playbook, text) {
 function readLedger(p) { try { return readFileSync(p, 'utf8').split('\n').filter((l) => l.trim()).map((l) => JSON.parse(l)); } catch (e) { return []; } }
 function countSignature(entries, sig) { return entries.filter((e) => e && e.signature === sig).length; }
 function decidePlan(playbook, sig, count) {
+  if (sig.id === 'production-paused') return 'none';
+  if (sig.class === 'content') return 'content';
   if (sig.class !== 'safe') return 'escalate';
   const max = playbook.max_auto_repair_per_signature || 2;
   if (count >= max) return 'escalate';
   return 'safe';
+}
+// Phan loai TRUOC khi lock: quyet dinh pause gate cho run that bai moi.
+//   skip-already-paused : PAUSE dang co — KHONG mo incident moi (chong cascade)
+//   skip-production-paused: run fail vi PAUSE — hau qua, khong phai loi moi
+//   content-review      : loi noi dung bai writer — tra ve writer, KHONG lock
+//   lock                : loi infra that su — acquire maintenance lock
+export function pauseDecision(state, sig) {
+  if (state && state.paused === true) return 'skip-already-paused';
+  if (!sig || sig.id === 'production-paused') return 'skip-production-paused';
+  if (sig.class === 'content') return 'content-review';
+  return 'lock';
 }
 function readState() { try { return JSON.parse(readFileSync(STATE_PATH, 'utf8')); } catch (e) { return {}; } }
 function writeState(patch) {
@@ -76,12 +101,42 @@ async function ghText(url, headers) {
   if (r.status !== 200) return '';
   return r.text();
 }
+async function fetchFailureLogText(runId, headers) {
+  if (!runId) return '';
+  const jobs = await ghJson('https://api.github.com/repos/codeappweb/lab/actions/runs/' + runId + '/jobs?per_page=100', headers);
+  const texts = [];
+  for (const j of (jobs.jobs || [])) {
+    if (j.conclusion === 'failure' && j.logs_url) texts.push(await ghText(j.logs_url, headers));
+  }
+  return texts.join('\n');
+}
 
-function cmdPause(runId) {
+async function cmdPause(runId) {
+  const headers = { Authorization: 'Bearer ' + (process.env.GITHUB_TOKEN || ''), Accept: 'application/vnd.github+json' };
+  // PHAN LOAI TRUOC khi khoa production — chi loi infra that su moi duoc lock.
+  let sig = null;
+  try {
+    const logText = await fetchFailureLogText(runId, headers);
+    sig = classify(loadPlaybook(PLAYBOOK_PATH), logText);
+  } catch (e) {
+    sig = null; // khong classify duoc -> pauseDecision bao thang (an toan)
+  }
   const st = readState();
-  if (st.paused === true && st.run_id && String(st.run_id) !== String(runId)) {
-    const ageMs = st.paused_at ? Date.now() - Date.parse(st.paused_at) : Infinity;
-    if (ageMs < 2 * 3600 * 1000) { console.log('::error::maintenance lock dang giu boi run khac (' + st.run_id + ', ' + Math.round(ageMs / 60000) + ' phut) — thoat de tranh xung dot.'); process.exit(1); }
+  const decision = pauseDecision(st, sig);
+  if (decision === 'skip-already-paused') {
+    console.log('::warning::maintenance lock DANG CO (run ' + st.run_id + ', blocker ' + (st.blocker || '?') + ') — event nay la hau qua cua PAUSE dang co: KHONG mo incident moi, KHONG pause lai.');
+    process.exit(0);
+  }
+  if (decision === 'skip-production-paused') {
+    console.log('::warning::run fail vi production DANG PAUSE (signature production-paused) — khong phai loi moi, KHONG mo incident.');
+    process.exit(0);
+  }
+  if (decision === 'content-review') {
+    const entry = { ts: new Date().toISOString(), run_id: runId, signature: sig.id, route: 'writer-review-queue', reason: sig.description || 'Loi noi dung bai writer (content gate RED) — writer tu fix content roi push lai staging.' };
+    mkdirSync(join(ROOT, 'data'), { recursive: true });
+    appendFileSync(REVIEW_QUEUE_PATH, JSON.stringify(entry) + '\n');
+    console.log('::warning::LOI NOI DUNG BAI VIET (signature ' + sig.id + ') — tra ve writer/review queue (data/writer-review-queue.jsonl), KHONG pause production, KHONG incident. Writer tu fix content roi push lai staging.');
+    process.exit(0);
   }
   writeState({ paused: true, paused_by: 'repair-agent', paused_at: new Date().toISOString(), run_id: runId, reason: 'infra failure run ' + runId, escalated: false });
   gitCommitPush('repair(pause): production paused — maintenance lock cho run ' + runId + ' (infra inspect)');
@@ -96,18 +151,12 @@ async function cmdInspect(runId) {
     eff = d.workflow_runs && d.workflow_runs[0] && d.workflow_runs[0].id;
     if (!eff) { console.log('::warning::khong tim thay run Production that bai — thoat sach.'); process.exit(0); }
   }
-  const jobs = await ghJson('https://api.github.com/repos/codeappweb/lab/actions/runs/' + eff + '/jobs?per_page=100', headers);
-  const texts = [];
-  for (const j of (jobs.jobs || [])) {
-    if (j.conclusion === 'failure' && j.logs_url) texts.push(await ghText(j.logs_url, headers));
-  }
-  const logText = texts.join('\n');
+  const logText = await fetchFailureLogText(eff, headers);
   const errors = logText.split('\n').filter((l) => /::error::|fatal:|Error:|ERROR /i.test(l)).slice(0, 60);
   const playbook = loadPlaybook(PLAYBOOK_PATH);
   const sig = classify(playbook, logText);
   const count = countSignature(readLedger(LEDGER_PATH), sig.id);
-  let plan = decidePlan(playbook, sig, count);
-  if (sig.id === 'production-paused') plan = 'none';
+  const plan = decidePlan(playbook, sig, count);
   mkdirSync(dirname(PLAN_PATH), { recursive: true });
   writeFileSync(PLAN_PATH, JSON.stringify({ run_id: eff, signature: sig.id, class: sig.class, description: sig.description || '', action: sig.action || '', plan, repair_count: count, log_excerpt: errors.slice(0, 40) }, null, 2) + '\n');
   out('plan=' + plan);
@@ -161,4 +210,4 @@ async function main() {
 const INVOKED = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (INVOKED) main();
 
-export { loadPlaybook, classify, readLedger, countSignature, decidePlan };
+export { loadPlaybook, classify, readLedger, countSignature, decidePlan, pauseDecision };

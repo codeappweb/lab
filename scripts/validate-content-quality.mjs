@@ -13,8 +13,12 @@
 //     output/tags, HTML tags, URLs and markdown link targets, so legitimate
 //     Liquid filters such as `relative_url` are no longer flagged as
 //     underscore artifacts while real garbage (word_word in prose) is caught.
+// 2026-10-05: front matter parse dung shared parser (front-matter.mjs) — thong
+// nhat voi writer/staging-signal/coordinator (goc loi run 37318644251: parser
+// rieng khong doc duoc danh sach YAML). Gate giu nguyen do manh.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, basename } from 'node:path';
+import { parseFrontMatter as parseFrontMatterShared } from './front-matter.mjs';
 
 const ROOT = process.cwd();
 const errors = [];
@@ -54,17 +58,23 @@ function walk(dir, out = []) {
   return out;
 }
 
+// Dùng shared parser (thống nhất schema/parser toàn hệ thống); giữ NGUYÊN
+// ngữ nghĩa cũ của gate này: null khi thiếu front matter, bỏ qua parent/
+// children (chỉ dùng cho taxonomy layout), KHÔNG thêm parser issues vào
+// errors (các gate dưới đây quyết định).
 function parseFrontMatter(text) {
   if (!text.startsWith('---')) return null;
   const end = text.indexOf('\n---', 3);
   if (end === -1) return null;
-  const raw = text.slice(3, end).trim();
+  const padded = text.endsWith('\n') ? text : text + '\n';
+  const r = parseFrontMatterShared(padded);
+  if (!r.fm) return null;
   const fm = {};
-  for (const line of raw.split('\n')) {
-    const m = line.match(/^([a-z_]+):\s*\"?(.*?)\"?\s*$/);
-    if (m && m[1] !== 'parent' && m[1] !== 'children') fm[m[1]] = m[2];
+  for (const [k, v] of Object.entries(r.fm)) {
+    if (k === 'parent' || k === 'children') continue;
+    fm[k] = Array.isArray(v) ? v.join(', ') : v;
   }
-  return { fm, raw };
+  return { fm, raw: r.raw };
 }
 
 // Technical documentation is exempt from page-level front matter rules.
@@ -165,8 +175,8 @@ try {
   const seen = new Map();
   let parent = null;
   for (const line of tax.split('\n')) {
-    const p = line.match(/^  - id: \"(P\d+)\"/); if (p) parent = p[1];
-    const c = line.match(/^        slug: \"(.+)\"$/); if (!c) continue;
+    const p = line.match(/^  - id: "(P\d+)"/); if (p) parent = p[1];
+    const c = line.match(/^        slug: "(.+)"$/); if (!c) continue;
     const key = parent + '/' + c[1];
     if (seen.has(key)) errors.push('taxonomy: duplicate child slug ' + key);
     seen.set(key, true);

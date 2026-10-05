@@ -1,65 +1,38 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c110030",
-  "base_sha": "1fe50e62a8e7b16a6bed9ffbd36f2539e16adbb9",
+  "cycle_id": "cyc-c050054",
+  "base_sha": "72cce66db52078cef4c9dff0826858b425329e98",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C11-0030",
-      "C02-0047",
-      "C05-0053",
-      "C08-0031",
-      "C11-0031",
-      "C02-0048"
+      "C05-0054",
+      "C08-0032",
+      "C11-0032",
+      "C02-0049",
+      "C05-0055",
+      "C08-0033"
     ],
     "writer-2": [
-      "C12-0030",
-      "C03-0049",
-      "C06-0031",
-      "C09-0031",
-      "C12-0031",
-      "C03-0050"
+      "C06-0032",
+      "C09-0032",
+      "C12-0032",
+      "C03-0051",
+      "C06-0033",
+      "C09-0033"
     ],
     "writer-3": [
-      "C01-0048",
-      "C04-0047",
-      "C07-0031",
-      "C10-0031",
-      "C01-0049",
-      "C04-0048"
+      "C07-0032",
+      "C10-0032",
+      "C01-0050",
+      "C04-0049",
+      "C07-0033",
+      "C10-0033"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "71e1c681987ecb3f8f17209a7635c043720854c8",
-    "ids": [
-      "bao-hiem-xe-may-tu-nguyen-co-dang-tien-khong",
-      "dem-giao-thua-quanh-ho-guom-duong-cam-xe-cho-nguoi-di",
-      "mua-xe-may-dien-moi-chinh-sach-ho-tro-tu-hang",
-      "ro-ri-nhot-duoi-gam-xe-xu-ly-an-toan",
-      "xe-may-cu-bi-thay-khoang-may-nhan-biet-the-nao",
-      "xe-moped-co-con-phuc-vu-chi-phi-va-kho-khan-giu-xe",
-      "chua-huong-mua-le-hoi-di-xe-may-va-gui-xe",
-      "kiem-tra-dung-luong-pin-xe-dien-cu-truoc-khi-mua",
-      "mua-xe-may-dien-tra-gop-chi-phi-thuc-te-sau-cung",
-      "phu-kien-chong-trom-xe-may-dang-mua-nhat",
-      "sac-xe-dap-dien-bang-sac-sai-loai-rui-ro-gi",
-      "so-sanh-xe-may-dien-hai-pin-va-xe-mot-pin",
-      "dang-di-xe-gap-sam-set-chon-cho-dung-dung",
-      "den-xe-dap-va-phu-kien-an-toan-khi-di-ban-dem",
-      "thue-xe-dap-dien-o-quan-hai-ba-trung-goi-y-dia-diem",
-      "thue-xe-may-qua-app-o-ha-noi-cach-dung-an-toan",
-      "xe-dap-cho-hang-di-cho-chon-kieu-xe-phu-hop",
-      "xe-may-dien-can-dang-ky-gi-truoc-khi-luu-thong"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-05T13:55:22.342Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -713,6 +686,5 @@
       "completed_at": "2026-10-05T13:55:22.342Z"
     }
   ],
-  "created_at": "2026-10-05T13:33:26.285Z",
-  "updated_at": "2026-10-05T13:55:22.342Z"
+  "created_at": "2026-10-05T13:55:28.413Z"
 }

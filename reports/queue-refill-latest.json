@@ -1,16 +1,534 @@
 {
-  "ts": "2026-10-05T13:27:50.047Z",
-  "run_id": "37316956646",
-  "before": 104,
+  "ts": "2026-10-05T13:39:00.318Z",
+  "run_id": "37318417053",
+  "before": 86,
   "threshold": 100,
   "target": 300,
-  "need": 0,
-  "candidates": 0,
-  "rejected_duplicate": 0,
+  "need": 214,
+  "candidates": 360,
+  "rejected_duplicate": 313,
   "rejected_invalid": 0,
   "rejected_budget": 0,
-  "appended": 0,
-  "after": 104,
-  "result": "noop-ok",
-  "rows": []
+  "appended": 47,
+  "after": 133,
+  "result": "partial",
+  "rows": [
+    {
+      "id": "C01-0055",
+      "cluster": "C01",
+      "slug": "hop-dong-thue-xe-may-o-ha-noi-nen-co-nhung-dieu-khoan-nao",
+      "primary_topic": "Hợp đồng thuê xe máy ở Hà Nội nên có những điều khoản nào",
+      "search_intent": "how-to",
+      "entities": [
+        "hợp đồng thuê",
+        "điều khoản"
+      ]
+    },
+    {
+      "id": "C02-0054",
+      "cluster": "C02",
+      "slug": "chon-xe-cho-shipper-chay-nhieu-xang-hay-dien",
+      "primary_topic": "Chọn xe cho shipper chạy nhiều: Xăng hay điện",
+      "search_intent": "comparison",
+      "entities": [
+        "shipper",
+        "chọn xe"
+      ]
+    },
+    {
+      "id": "C03-0056",
+      "cluster": "C03",
+      "slug": "xe-may-dien-cho-phu-huynh-cho-be-di-hoc-an-toan-khong",
+      "primary_topic": "Xe máy điện cho phụ huynh chở bé đi học: An toàn không",
+      "search_intent": "informational",
+      "entities": [
+        "chở bé",
+        "an toàn"
+      ]
+    },
+    {
+      "id": "C04-0054",
+      "cluster": "C04",
+      "slug": "tu-van-xe-dap-cho-nguoi-can-nang-lon",
+      "primary_topic": "Tư vấn xe đạp cho người cân nặng lớn",
+      "search_intent": "how-to",
+      "entities": [
+        "cân nặng lớn",
+        "tư vấn xe"
+      ]
+    },
+    {
+      "id": "C05-0060",
+      "cluster": "C05",
+      "slug": "tieng-on-tu-nhong-truoc-xe-may-do-dung-vi-tri",
+      "primary_topic": "Tiếng ồn từ nhông trước xe máy: Dò đúng vị trí",
+      "search_intent": "informational",
+      "entities": [
+        "nhông trước",
+        "tiếng ồn"
+      ]
+    },
+    {
+      "id": "C06-0038",
+      "cluster": "C06",
+      "slug": "lop-xe-dap-city-chong-puncture-chon-the-nao",
+      "primary_topic": "Lốp xe đạp city chống puncture: Chọn thế nào",
+      "search_intent": "how-to",
+      "entities": [
+        "lốp city",
+        "chống puncture"
+      ]
+    },
+    {
+      "id": "C07-0038",
+      "cluster": "C07",
+      "slug": "quy-trinh-yeu-cau-boi-thuong-cua-bao-hiem-xe-may-sau-tai-nan",
+      "primary_topic": "Quy trình yêu cầu bồi thường của bảo hiểm xe máy sau tai nạn",
+      "search_intent": "how-to",
+      "entities": [
+        "bồi thường",
+        "tai nạn"
+      ]
+    },
+    {
+      "id": "C08-0038",
+      "cluster": "C08",
+      "slug": "vong-xe-dap-truc-bach-chieu-muon-diem-dung-dang-thu",
+      "primary_topic": "Vòng xe đạp Trúc Bạch chiều muộn: Điểm dừng đáng thử",
+      "search_intent": "informational",
+      "entities": [
+        "Trúc Bạch",
+        "xe đạp"
+      ]
+    },
+    {
+      "id": "C09-0038",
+      "cluster": "C09",
+      "slug": "phuot-vung-nui-mua-mua-kich-ban-thoi-tiet-xau",
+      "primary_topic": "Phượt vùng núi mùa mưa: Kịch bản thời tiết xấu",
+      "search_intent": "informational",
+      "entities": [
+        "mùa mưa",
+        "kịch bản"
+      ]
+    },
+    {
+      "id": "C10-0038",
+      "cluster": "C10",
+      "slug": "lai-xe-mua-dong-gia-lanh-mien-bac-giu-am-va-an-toan",
+      "primary_topic": "Lái xe mùa đông giá lạnh miền Bắc: Giữ ấm và an toàn",
+      "search_intent": "informational",
+      "entities": [
+        "mùa đông",
+        "giữ ấm"
+      ]
+    },
+    {
+      "id": "C11-0038",
+      "cluster": "C11",
+      "slug": "mua-xe-tu-dai-ly-va-tu-ho-kinh-doanh-khac-biet",
+      "primary_topic": "Mua xe từ đại lý và từ hộ kinh doanh: Khác biệt",
+      "search_intent": "comparison",
+      "entities": [
+        "đại lý",
+        "hộ kinh doanh"
+      ]
+    },
+    {
+      "id": "C12-0038",
+      "cluster": "C12",
+      "slug": "dien-nang-tai-tao-sac-xe-dien-tai-viet-nam-hien-trang",
+      "primary_topic": "Điện năng tái tạo sạc xe điện tại Việt Nam: Hiện trạng",
+      "search_intent": "informational",
+      "entities": [
+        "điện tái tạo",
+        "Việt Nam"
+      ]
+    },
+    {
+      "id": "C01-0056",
+      "cluster": "C01",
+      "slug": "thue-xe-ba-banh-cho-khach-o-ha-noi-con-pho-bien-khong",
+      "primary_topic": "Thuê xe ba bánh chở khách ở Hà Nội: Còn phổ biến không",
+      "search_intent": "informational",
+      "entities": [
+        "xe ba bánh",
+        "Hà Nội"
+      ]
+    },
+    {
+      "id": "C02-0055",
+      "cluster": "C02",
+      "slug": "do-xe-50cc-len-cong-suat-lon-rui-ro-phap-ly-va-an-toan",
+      "primary_topic": "Độ xe 50cc lên công suất lớn: Rủi ro pháp lý và an toàn",
+      "search_intent": "informational",
+      "entities": [
+        "độ xe",
+        "rủi ro"
+      ]
+    },
+    {
+      "id": "C03-0057",
+      "cluster": "C03",
+      "slug": "lop-xe-may-dien-mon-nhanh-vi-sao-va-xu-ly",
+      "primary_topic": "Lốp xe máy điện mòn nhanh: Vì sao và xử lý",
+      "search_intent": "informational",
+      "entities": [
+        "lốp xe điện",
+        "mòn nhanh"
+      ]
+    },
+    {
+      "id": "C04-0055",
+      "cluster": "C04",
+      "slug": "xe-dap-dien-bon-muoi-lam-km-mot-lan-sac-thuc-te",
+      "primary_topic": "Xe đạp điện bốn mươi lăm km một lần sạc: Thực tế",
+      "search_intent": "informational",
+      "entities": [
+        "bốn mươi lăm km",
+        "một lần sạc"
+      ]
+    },
+    {
+      "id": "C05-0061",
+      "cluster": "C05",
+      "slug": "kiem-tra-he-thong-dien-xe-may-bang-dong-ho-van-nang",
+      "primary_topic": "Kiểm tra hệ thống điện xe máy bằng đồng hồ vạn năng",
+      "search_intent": "how-to",
+      "entities": [
+        "hệ thống điện",
+        "đồng hồ vạn năng"
+      ]
+    },
+    {
+      "id": "C06-0039",
+      "cluster": "C06",
+      "slug": "baga-sau-xe-may-cho-hanh-ly-chon-kich-thuoc",
+      "primary_topic": "Baga sau xe máy chở hành lý: Chọn kích thước",
+      "search_intent": "how-to",
+      "entities": [
+        "baga sau",
+        "chở hành lý"
+      ]
+    },
+    {
+      "id": "C07-0039",
+      "cluster": "C07",
+      "slug": "doi-bang-lai-giay-sang-bang-nhua-huong-dan-thu-tuc",
+      "primary_topic": "Đổi bằng lái giấy sang bằng nhựa: Hướng dẫn thủ tục",
+      "search_intent": "informational",
+      "entities": [
+        "bằng nhựa",
+        "đổi bằng"
+      ]
+    },
+    {
+      "id": "C08-0039",
+      "cluster": "C08",
+      "slug": "cong-vien-hoa-binh-cuoi-tuan-gui-xe-va-hoat-dong",
+      "primary_topic": "Công viên Hòa Bình cuối tuần: Gửi xe và hoạt động",
+      "search_intent": "informational",
+      "entities": [
+        "Công viên Hòa Bình",
+        "hoạt động"
+      ]
+    },
+    {
+      "id": "C09-0039",
+      "cluster": "C09",
+      "slug": "suc-khoe-khi-lai-xe-duong-dai-chuan-bi-the-luc",
+      "primary_topic": "Sức khỏe khi lái xe đường dài: Chuẩn bị thể lực",
+      "search_intent": "informational",
+      "entities": [
+        "thể lực",
+        "đường dài"
+      ]
+    },
+    {
+      "id": "C10-0039",
+      "cluster": "C10",
+      "slug": "tam-che-nang-truoc-xe-anh-huong-tam-nhin",
+      "primary_topic": "Tấm che nắng trước xe: Ảnh hưởng tầm nhìn",
+      "search_intent": "informational",
+      "entities": [
+        "tấm che nắng",
+        "tầm nhìn"
+      ]
+    },
+    {
+      "id": "C11-0039",
+      "cluster": "C11",
+      "slug": "nhan-biet-xe-cu-tung-chay-dich-vu-dau-hieu-can-biet",
+      "primary_topic": "Nhận biết xe cũ từng chạy dịch vụ: Dấu hiệu cần biết",
+      "search_intent": "how-to",
+      "entities": [
+        "xe dịch vụ",
+        "dấu hiệu"
+      ]
+    },
+    {
+      "id": "C12-0039",
+      "cluster": "C12",
+      "slug": "pin-sodium-ion-cho-xe-hai-banh-trien-vong-ung-dung",
+      "primary_topic": "Pin sodium-ion cho xe hai bánh: Triển vọng ứng dụng",
+      "search_intent": "informational",
+      "entities": [
+        "sodium-ion",
+        "triển vọng"
+      ]
+    },
+    {
+      "id": "C01-0057",
+      "cluster": "C01",
+      "slug": "mat-chia-khoa-xe-thue-o-ha-noi-xu-ly-theo-dung-hop-dong",
+      "primary_topic": "Mất chìa khóa xe thuê ở Hà Nội: Xử lý theo đúng hợp đồng",
+      "search_intent": "how-to",
+      "entities": [
+        "mất chìa khóa",
+        "xe thuê"
+      ]
+    },
+    {
+      "id": "C02-0056",
+      "cluster": "C02",
+      "slug": "xe-ga-banh-nho-uu-va-nhuoc-diem-tren-duong-ha-noi",
+      "primary_topic": "Xe ga bánh nhỏ: Ưu và nhược điểm trên đường Hà Nội",
+      "search_intent": "informational",
+      "entities": [
+        "xe ga bánh nhỏ",
+        "đường Hà Nội"
+      ]
+    },
+    {
+      "id": "C03-0058",
+      "cluster": "C03",
+      "slug": "nuoc-vao-than-xe-dien-sau-rua-xe-kiem-tra-cho-nao",
+      "primary_topic": "Nước vào thân xe điện sau rửa xe: Kiểm tra chỗ nào",
+      "search_intent": "how-to",
+      "entities": [
+        "rửa xe",
+        "nước vào thân xe"
+      ]
+    },
+    {
+      "id": "C04-0056",
+      "cluster": "C04",
+      "slug": "ket-hop-xe-dap-voi-giao-thong-cong-cong-khi-di-pho-co",
+      "primary_topic": "Kết hợp xe đạp với giao thông công cộng khi đi phố cổ",
+      "search_intent": "informational",
+      "entities": [
+        "giao thông công cộng",
+        "phố cổ"
+      ]
+    },
+    {
+      "id": "C05-0062",
+      "cluster": "C05",
+      "slug": "xe-dap-keu-luc-cuc-khi-dap-manh-truy-tieng",
+      "primary_topic": "Xe đạp kêu lục cục khi đạp mạnh: Truy tiếng",
+      "search_intent": "informational",
+      "entities": [
+        "xe đạp kêu",
+        "đạp mạnh"
+      ]
+    },
+    {
+      "id": "C06-0040",
+      "cluster": "C06",
+      "slug": "nhong-truoc-xe-may-thay-dinh-ky-bao-nhieu-km",
+      "primary_topic": "Nhông trước xe máy thay định kỳ bao nhiêu km",
+      "search_intent": "informational",
+      "entities": [
+        "nhông trước",
+        "định kỳ thay"
+      ]
+    },
+    {
+      "id": "C07-0040",
+      "cluster": "C07",
+      "slug": "xe-may-do-choi-chay-duong-cong-cong-quy-dinh-cam",
+      "primary_topic": "Xe máy đồ chơi chạy đường công cộng: Quy định cấm",
+      "search_intent": "informational",
+      "entities": [
+        "xe đồ chơi",
+        "cấm đường"
+      ]
+    },
+    {
+      "id": "C08-0040",
+      "cluster": "C08",
+      "slug": "mua-giong-bat-chot-o-ha-noi-noi-tru-xe-may-gan-pho-co",
+      "primary_topic": "Mưa giông bất chợt ở Hà Nội: Nơi trú xe máy gần phố cổ",
+      "search_intent": "how-to",
+      "entities": [
+        "mưa giông",
+        "nơi trú xe"
+      ]
+    },
+    {
+      "id": "C09-0040",
+      "cluster": "C09",
+      "slug": "ha-noi-di-phong-nha-lo-trinh-hai-ngay-hop-ly",
+      "primary_topic": "Hà Nội đi Phong Nha: Lộ trình hai ngày hợp lý",
+      "search_intent": "informational",
+      "entities": [
+        "Phong Nha",
+        "hai ngày"
+      ]
+    },
+    {
+      "id": "C10-0040",
+      "cluster": "C10",
+      "slug": "ong-bay-vao-mat-khi-di-xe-giu-binh-tinh-xu-ly",
+      "primary_topic": "Ong bay vào mặt khi đi xe: Giữ bình tĩnh xử lý",
+      "search_intent": "how-to",
+      "entities": [
+        "ong bay",
+        "bình tĩnh"
+      ]
+    },
+    {
+      "id": "C11-0040",
+      "cluster": "C11",
+      "slug": "ngan-sach-hang-thang-cho-xe-hai-banh-cua-sinh-vien",
+      "primary_topic": "Ngân sách hàng tháng cho xe hai bánh của sinh viên",
+      "search_intent": "informational",
+      "entities": [
+        "sinh viên",
+        "ngân sách"
+      ]
+    },
+    {
+      "id": "C12-0040",
+      "cluster": "C12",
+      "slug": "bo-chuyen-sac-xe-dien-dung-chung-an-toan-khong",
+      "primary_topic": "Bộ chuyển sạc xe điện dùng chung: An toàn không",
+      "search_intent": "informational",
+      "entities": [
+        "bộ chuyển sạc",
+        "an toàn"
+      ]
+    },
+    {
+      "id": "C03-0059",
+      "cluster": "C03",
+      "slug": "xe-may-dien-de-lau-khong-di-bao-quan-pin-the-nao",
+      "primary_topic": "Xe máy điện để lâu không đi: Bảo quản pin thế nào",
+      "search_intent": "how-to",
+      "entities": [
+        "bảo quản pin",
+        "xe để lâu"
+      ]
+    },
+    {
+      "id": "C04-0057",
+      "cluster": "C04",
+      "slug": "giu-xe-dap-o-bai-cong-cong-meo-chong-trom",
+      "primary_topic": "Giữ xe đạp ở bãi công cộng: Mẹo chống trộm",
+      "search_intent": "how-to",
+      "entities": [
+        "bãi gửi xe",
+        "chống trộm"
+      ]
+    },
+    {
+      "id": "C05-0063",
+      "cluster": "C05",
+      "slug": "bao-duong-tong-xe-sau-chuyen-phuot-mua-lon",
+      "primary_topic": "Bảo dưỡng tổng xe sau chuyến phượt mưa lớn",
+      "search_intent": "how-to",
+      "entities": [
+        "bảo dưỡng sau mưa",
+        "chuyến phượt"
+      ]
+    },
+    {
+      "id": "C06-0041",
+      "cluster": "C06",
+      "slug": "sac-lai-ac-quy-xe-may-tai-nha-dung-cach",
+      "primary_topic": "Sạc lại ắc quy xe máy tại nhà đúng cách",
+      "search_intent": "how-to",
+      "entities": [
+        "sạc ắc quy",
+        "tại nhà"
+      ]
+    },
+    {
+      "id": "C07-0041",
+      "cluster": "C07",
+      "slug": "nghia-vu-nop-phat-dung-han-khi-bi-tam-giu-giay-to",
+      "primary_topic": "Nghĩa vụ nộp phạt đúng hạn khi bị tạm giữ giấy tờ",
+      "search_intent": "informational",
+      "entities": [
+        "nộp phạt",
+        "tạm giữ"
+      ]
+    },
+    {
+      "id": "C09-0041",
+      "cluster": "C09",
+      "slug": "ha-noi-di-bien-do-son-chay-xe-may-hai-ngay",
+      "primary_topic": "Hà Nội đi biển Đồ Sơn: Chạy xe máy hai ngày",
+      "search_intent": "informational",
+      "entities": [
+        "Đồ Sơn",
+        "hai ngày"
+      ]
+    },
+    {
+      "id": "C10-0041",
+      "cluster": "C10",
+      "slug": "doi-pha-voi-xe-may-vao-cau-pha-an-toan",
+      "primary_topic": "Đợi phà với xe máy: Vào cầu phà an toàn",
+      "search_intent": "how-to",
+      "entities": [
+        "đợi phà",
+        "cầu phà"
+      ]
+    },
+    {
+      "id": "C12-0041",
+      "cluster": "C12",
+      "slug": "chi-phi-thay-pin-xe-may-dien-sau-khi-het-han-dung",
+      "primary_topic": "Chi phí thay pin xe máy điện sau khi hết hạn dùng",
+      "search_intent": "informational",
+      "entities": [
+        "thay pin",
+        "chi phí"
+      ]
+    },
+    {
+      "id": "C04-0058",
+      "cluster": "C04",
+      "slug": "dung-cu-tu-sua-xe-dap-touring-giua-duong-mang-gi-theo",
+      "primary_topic": "Dụng cụ tự sửa xe đạp touring giữa đường: Mang gì theo",
+      "search_intent": "how-to",
+      "entities": [
+        "dụng cụ sửa xe",
+        "touring"
+      ]
+    },
+    {
+      "id": "C09-0042",
+      "cluster": "C09",
+      "slug": "gui-xe-may-qua-dem-tai-khach-san-vung-cao-an-toan-khong",
+      "primary_topic": "Gửi xe máy qua đêm tại khách sạn vùng cao: An toàn không",
+      "search_intent": "informational",
+      "entities": [
+        "gửi xe qua đêm",
+        "khách sạn vùng cao"
+      ]
+    },
+    {
+      "id": "C10-0042",
+      "cluster": "C10",
+      "slug": "thay-nguoi-nga-xe-ben-canh-ho-tro-ban-dau-dung-cach",
+      "primary_topic": "Thấy người ngã xe bên cạnh: Hỗ trợ ban đầu đúng cách",
+      "search_intent": "how-to",
+      "entities": [
+        "ngã xe",
+        "hỗ trợ"
+      ]
+    }
+  ]
 }

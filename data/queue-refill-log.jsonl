@@ -52,3 +52,4 @@
 {"ts":"2026-10-05T13:00:18.602Z","run_id":"37313478349","before":104,"threshold":100,"target":300,"need":0,"candidates":0,"rejected_duplicate":0,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":104,"result":"noop-ok"}
 {"ts":"2026-10-05T13:20:04.744Z","run_id":"37315957102","before":104,"threshold":100,"target":300,"need":0,"candidates":0,"rejected_duplicate":0,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":104,"result":"noop-ok"}
 {"ts":"2026-10-05T13:27:50.047Z","run_id":"37316956646","before":104,"threshold":100,"target":300,"need":0,"candidates":0,"rejected_duplicate":0,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":104,"result":"noop-ok"}
+{"ts":"2026-10-05T13:39:00.318Z","run_id":"37318417053","before":86,"threshold":100,"target":300,"need":214,"candidates":360,"rejected_duplicate":313,"rejected_invalid":0,"rejected_budget":0,"appended":47,"after":133,"result":"partial"}

@@ -3,7 +3,7 @@
   "phase": "smart-blog-app",
   "content_budget_total": 3000,
   "articles": {
-    "planned": 86,
+    "planned": 133,
     "researching": 0,
     "drafted": 0,
     "qa": 0,
@@ -11,7 +11,7 @@
     "merged": 0,
     "skipped": 0,
     "update_needed": 0,
-    "manifest_rows": 541
+    "manifest_rows": 588
   },
   "planned_by_cluster": {
     "C01": 17,
@@ -280,6 +280,6 @@
     "remaining_in_batch": 0,
     "publish_verification": "sitemap 43 URL (có 22 post + danh mục), assets/search.json 35 entry, homepage hiển thị 22 bài — deploy live đã xác nhận"
   },
-  "manifest_rows": 541,
+  "manifest_rows": 588,
   "posts_on_disk": 455
 }

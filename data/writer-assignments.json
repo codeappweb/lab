@@ -1,62 +1,22 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c050054",
-  "base_sha": "72cce66db52078cef4c9dff0826858b425329e98",
+  "cycle_id": "cyc-c110033",
+  "base_sha": "395b34583803acc110cc43d52e324a39413e8240",
   "rows_total": 18,
   "writers": {
     "writer-1": [
       {
-        "id": "C05-0054",
-        "cluster": "C05",
-        "status": "planned",
-        "primary_topic": "Xe máy điện mất nguồn đột ngột: Truy lỗi từng khối",
-        "search_intent": "how-to",
-        "title": "",
-        "slug": "xe-may-dien-mat-nguon-dot-ngot-truy-loi-tung-khoi",
-        "parent_hub": "/hub/c05/",
-        "entities": [
-          "mất nguồn",
-          "truy lỗi"
-        ],
-        "freshness": "low",
-        "needs_official_source": false,
-        "similarity_group": "C05-core",
-        "source_plan": [],
-        "internal_links": [],
-        "published_url": null
-      },
-      {
-        "id": "C08-0032",
-        "cluster": "C08",
-        "status": "planned",
-        "primary_topic": "Phố thuốc Lãn Ông: Lộ trình mua sắm buổi chiều",
-        "search_intent": "informational",
-        "title": "",
-        "slug": "pho-thuoc-lan-ong-lo-trinh-mua-sam-buoi-chieu",
-        "parent_hub": "/hub/c08/",
-        "entities": [
-          "Lãn Ông",
-          "mua sắm"
-        ],
-        "freshness": "low",
-        "needs_official_source": false,
-        "similarity_group": "C08-core",
-        "source_plan": [],
-        "internal_links": [],
-        "published_url": null
-      },
-      {
-        "id": "C11-0032",
+        "id": "C11-0033",
         "cluster": "C11",
         "status": "planned",
-        "primary_topic": "Thương lượng giá khi mua xe máy mới: Có được không",
+        "primary_topic": "Chi phí nhiên liệu đi lại mỗi ngày hai mươi km",
         "search_intent": "informational",
         "title": "",
-        "slug": "thuong-luong-gia-khi-mua-xe-may-moi-co-duoc-khong",
+        "slug": "chi-phi-nhien-lieu-di-lai-moi-ngay-hai-muoi-km",
         "parent_hub": "/hub/c11/",
         "entities": [
-          "mua xe mới",
-          "thương lượng"
+          "nhiên liệu",
+          "hai mươi km"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -66,17 +26,17 @@
         "published_url": null
       },
       {
-        "id": "C02-0049",
+        "id": "C02-0050",
         "cluster": "C02",
         "status": "planned",
-        "primary_topic": "So sánh xe 110cc của ba hãng lớn tại Việt Nam",
-        "search_intent": "comparison",
+        "primary_topic": "Xe ga có idling stop: Có đáng tiền không",
+        "search_intent": "informational",
         "title": "",
-        "slug": "so-sanh-xe-110cc-cua-ba-hang-lon-tai-viet-nam",
+        "slug": "xe-ga-co-idling-stop-co-dang-tien-khong",
         "parent_hub": "/hub/c02/",
         "entities": [
-          "xe 110cc",
-          "so sánh hãng"
+          "idling stop",
+          "xe ga"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -86,17 +46,17 @@
         "published_url": null
       },
       {
-        "id": "C05-0055",
+        "id": "C05-0056",
         "cluster": "C05",
         "status": "planned",
-        "primary_topic": "Đèn báo pin xe điện chớp liên tục: Hiểu mã lỗi",
+        "primary_topic": "Bọng xéc xe máy bị rò: Chi phí thay thế",
         "search_intent": "informational",
         "title": "",
-        "slug": "den-bao-pin-xe-dien-chop-lien-tuc-hieu-ma-loi",
+        "slug": "bong-xec-xe-may-bi-ro-chi-phi-thay-the",
         "parent_hub": "/hub/c05/",
         "entities": [
-          "đèn báo pin",
-          "mã lỗi"
+          "bọng xéc",
+          "chi phí thay"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -106,17 +66,17 @@
         "published_url": null
       },
       {
-        "id": "C08-0033",
+        "id": "C08-0034",
         "cluster": "C08",
         "status": "planned",
-        "primary_topic": "Bảo tàng Mỹ thuật đi bằng xe điện: Trải nghiệm tham quan",
+        "primary_topic": "Phố sách Hà Nội cuối tuần: Đi lại và chỗ gửi xe",
         "search_intent": "informational",
         "title": "",
-        "slug": "bao-tang-my-thuat-di-bang-xe-dien-trai-nghiem-tham-quan",
+        "slug": "pho-sach-ha-noi-cuoi-tuan-di-lai-va-cho-gui-xe",
         "parent_hub": "/hub/c08/",
         "entities": [
-          "Bảo tàng Mỹ thuật",
-          "xe điện"
+          "phố sách",
+          "cuối tuần"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -124,61 +84,61 @@
         "source_plan": [],
         "internal_links": [],
         "published_url": null
+      },
+      {
+        "id": "C11-0034",
+        "cluster": "C11",
+        "status": "planned",
+        "primary_topic": "Xe 50cc cũ cho học sinh: Mua loại nào bền",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "xe-50cc-cu-cho-hoc-sinh-mua-loai-nao-ben",
+        "parent_hub": "/hub/c11/",
+        "entities": [
+          "xe 50cc cũ",
+          "học sinh"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C11-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C02-0051",
+        "cluster": "C02",
+        "status": "planned",
+        "primary_topic": "Cách chạy rà xe máy xăng mới mua đúng cách",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "cach-chay-ra-xe-may-xang-moi-mua-dung-cach",
+        "parent_hub": "/hub/c02/",
+        "entities": [
+          "chạy rà",
+          "xe mới"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C02-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
       }
     ],
     "writer-2": [
       {
-        "id": "C06-0032",
-        "cluster": "C06",
-        "status": "planned",
-        "primary_topic": "Bình xăng phụ xe máy đường trường: An toàn không",
-        "search_intent": "informational",
-        "title": "",
-        "slug": "binh-xang-phu-xe-may-duong-truong-an-toan-khong",
-        "parent_hub": "/hub/c06/",
-        "entities": [
-          "bình xăng phụ",
-          "đường trường"
-        ],
-        "freshness": "low",
-        "needs_official_source": false,
-        "similarity_group": "C06-core",
-        "source_plan": [],
-        "internal_links": [],
-        "published_url": null
-      },
-      {
-        "id": "C09-0032",
-        "cluster": "C09",
-        "status": "planned",
-        "primary_topic": "Hà Nội đi Sầm Sơn: So sánh phương án di chuyển",
-        "search_intent": "informational",
-        "title": "",
-        "slug": "ha-noi-di-sam-son-so-sanh-phuong-an-di-chuyen",
-        "parent_hub": "/hub/c09/",
-        "entities": [
-          "Sầm Sơn",
-          "phương án"
-        ],
-        "freshness": "low",
-        "needs_official_source": false,
-        "similarity_group": "C09-core",
-        "source_plan": [],
-        "internal_links": [],
-        "published_url": null
-      },
-      {
-        "id": "C12-0032",
+        "id": "C12-0033",
         "cluster": "C12",
         "status": "planned",
-        "primary_topic": "Pin lithium tự cháy khi va chạm: Cơ chế như thế nào",
+        "primary_topic": "Tần suất sạc tốt cho pin LFP hằng ngày",
         "search_intent": "informational",
         "title": "",
-        "slug": "pin-lithium-tu-chay-khi-va-cham-co-che-nhu-the-nao",
+        "slug": "tan-suat-sac-tot-cho-pin-lfp-hang-ngay",
         "parent_hub": "/hub/c12/",
         "entities": [
-          "tự cháy",
-          "va chạm"
+          "tần suất sạc",
+          "pin LFP"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -188,17 +148,17 @@
         "published_url": null
       },
       {
-        "id": "C03-0051",
+        "id": "C03-0052",
         "cluster": "C03",
         "status": "planned",
-        "primary_topic": "Xe máy điện rung khi tăng tốc: Chẩn đoán nhanh",
+        "primary_topic": "Trải nghiệm đi xe máy điện vào mùa hè nóng",
         "search_intent": "informational",
         "title": "",
-        "slug": "xe-may-dien-rung-khi-tang-toc-chan-doan-nhanh",
+        "slug": "trai-nghiem-di-xe-may-dien-vao-mua-he-nong",
         "parent_hub": "/hub/c03/",
         "entities": [
-          "rung khi tăng tốc",
-          "chẩn đoán"
+          "mùa hè nóng",
+          "xe máy điện"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -208,17 +168,17 @@
         "published_url": null
       },
       {
-        "id": "C06-0033",
+        "id": "C06-0034",
         "cluster": "C06",
         "status": "planned",
-        "primary_topic": "Cốp xe máy tăng dung tích: Chọn đúng loại",
-        "search_intent": "how-to",
+        "primary_topic": "Lốp xe máy mòn mép trước hạn: Vì sao xảy ra",
+        "search_intent": "informational",
         "title": "",
-        "slug": "cop-xe-may-tang-dung-tich-chon-dung-loai",
+        "slug": "lop-xe-may-mon-mep-truoc-han-vi-sao-xay-ra",
         "parent_hub": "/hub/c06/",
         "entities": [
-          "cốp xe",
-          "tăng dung tích"
+          "mòn mép",
+          "lốp xe"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -228,17 +188,17 @@
         "published_url": null
       },
       {
-        "id": "C09-0033",
+        "id": "C09-0034",
         "cluster": "C09",
         "status": "planned",
-        "primary_topic": "Cao nguyên đá Đồng Văn mùa sương mù: Chuẩn bị gì",
-        "search_intent": "informational",
+        "primary_topic": "Đi phượt theo nhóm sáu xe: Nguyên tắc di chuyển",
+        "search_intent": "how-to",
         "title": "",
-        "slug": "cao-nguyen-da-dong-van-mua-suong-mu-chuan-bi-gi",
+        "slug": "di-phuot-theo-nhom-sau-xe-nguyen-tac-di-chuyen",
         "parent_hub": "/hub/c09/",
         "entities": [
-          "Đồng Văn",
-          "sương mù"
+          "nhóm sáu xe",
+          "nguyên tắc"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -246,61 +206,61 @@
         "source_plan": [],
         "internal_links": [],
         "published_url": null
+      },
+      {
+        "id": "C12-0034",
+        "cluster": "C12",
+        "status": "planned",
+        "primary_topic": "Tiêu chuẩn an toàn pin xe điện: Nhãn nhận biết",
+        "search_intent": "how-to",
+        "title": "",
+        "slug": "tieu-chuan-an-toan-pin-xe-dien-nhan-nhan-biet",
+        "parent_hub": "/hub/c12/",
+        "entities": [
+          "tiêu chuẩn",
+          "nhãn an toàn"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C12-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C03-0053",
+        "cluster": "C03",
+        "status": "planned",
+        "primary_topic": "Vì sao xe điện phù hợp người mới học lái",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "vi-sao-xe-dien-phu-hop-nguoi-moi-hoc-lai",
+        "parent_hub": "/hub/c03/",
+        "entities": [
+          "người mới học",
+          "xe điện"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C03-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
       }
     ],
     "writer-3": [
       {
-        "id": "C07-0032",
-        "cluster": "C07",
-        "status": "planned",
-        "primary_topic": "Bán xe máy giấy tay không công chứng: Rủi ro pháp lý",
-        "search_intent": "informational",
-        "title": "",
-        "slug": "ban-xe-may-giay-tay-khong-cong-chung-rui-ro-phap-ly",
-        "parent_hub": "/hub/c07/",
-        "entities": [
-          "giấy tay",
-          "công chứng"
-        ],
-        "freshness": "low",
-        "needs_official_source": true,
-        "similarity_group": "C07-core",
-        "source_plan": [],
-        "internal_links": [],
-        "published_url": null
-      },
-      {
-        "id": "C10-0032",
-        "cluster": "C10",
-        "status": "planned",
-        "primary_topic": "Chó rượt khi đi xe thôn quê: Xử lý bình tĩnh",
-        "search_intent": "how-to",
-        "title": "",
-        "slug": "cho-ruot-khi-di-xe-thon-que-xu-ly-binh-tinh",
-        "parent_hub": "/hub/c10/",
-        "entities": [
-          "chó rượt",
-          "thôn quê"
-        ],
-        "freshness": "low",
-        "needs_official_source": false,
-        "similarity_group": "C10-core",
-        "source_plan": [],
-        "internal_links": [],
-        "published_url": null
-      },
-      {
-        "id": "C01-0050",
+        "id": "C01-0051",
         "cluster": "C01",
         "status": "planned",
-        "primary_topic": "Thuê xe máy gần ga Hà Nội: Ưu điểm và rủi ro",
-        "search_intent": "informational",
+        "primary_topic": "So sánh giá thuê xe máy và taxi trong nội thành Hà Nội",
+        "search_intent": "comparison",
         "title": "",
-        "slug": "thue-xe-may-gan-ga-ha-noi-uu-diem-va-rui-ro",
+        "slug": "so-sanh-gia-thue-xe-may-va-taxi-trong-noi-thanh-ha-noi",
         "parent_hub": "/hub/c01/",
         "entities": [
-          "ga Hà Nội",
-          "rủi ro thuê"
+          "thuê xe máy",
+          "taxi"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -310,16 +270,16 @@
         "published_url": null
       },
       {
-        "id": "C04-0049",
+        "id": "C04-0050",
         "cluster": "C04",
         "status": "planned",
-        "primary_topic": "Xe đạp điện cho quãng đường đi học mười km",
+        "primary_topic": "Vì sao xe đạp điện rung khi phanh gấp",
         "search_intent": "informational",
         "title": "",
-        "slug": "xe-dap-dien-cho-quang-duong-di-hoc-muoi-km",
+        "slug": "vi-sao-xe-dap-dien-rung-khi-phanh-gap",
         "parent_hub": "/hub/c04/",
         "entities": [
-          "đi học mười km",
+          "rung khi phanh",
           "xe đạp điện"
         ],
         "freshness": "low",
@@ -330,17 +290,17 @@
         "published_url": null
       },
       {
-        "id": "C07-0033",
+        "id": "C07-0034",
         "cluster": "C07",
         "status": "planned",
-        "primary_topic": "Tra cứu ký hiệu biển số xe theo tỉnh: Cách đọc",
+        "primary_topic": "Giấy phép lái xe quốc tế cho người Việt đi nước ngoài",
         "search_intent": "informational",
         "title": "",
-        "slug": "tra-cuu-ky-hieu-bien-so-xe-theo-tinh-cach-doc",
+        "slug": "giay-phep-lai-xe-quoc-te-cho-nguoi-viet-di-nuoc-ngoai",
         "parent_hub": "/hub/c07/",
         "entities": [
-          "ký hiệu biển",
-          "tra cứu"
+          "GPLX quốc tế",
+          "nước ngoài"
         ],
         "freshness": "low",
         "needs_official_source": true,
@@ -350,17 +310,17 @@
         "published_url": null
       },
       {
-        "id": "C10-0033",
+        "id": "C10-0034",
         "cluster": "C10",
         "status": "planned",
-        "primary_topic": "Vào hầm đường bộ bằng xe máy: Lưu ý an toàn",
-        "search_intent": "how-to",
+        "primary_topic": "Phanh ABS trên xe ga: Hiểu và dùng đúng",
+        "search_intent": "informational",
         "title": "",
-        "slug": "vao-ham-duong-bo-bang-xe-may-luu-y-an-toan",
+        "slug": "phanh-abs-tren-xe-ga-hieu-va-dung-dung",
         "parent_hub": "/hub/c10/",
         "entities": [
-          "hầm đường bộ",
-          "an toàn"
+          "phanh ABS",
+          "xe ga"
         ],
         "freshness": "low",
         "needs_official_source": false,
@@ -368,8 +328,48 @@
         "source_plan": [],
         "internal_links": [],
         "published_url": null
+      },
+      {
+        "id": "C01-0052",
+        "cluster": "C01",
+        "status": "planned",
+        "primary_topic": "Thuê xe máy giao tận khách sạn phố cổ: Tiện hay rủi ro",
+        "search_intent": "informational",
+        "title": "",
+        "slug": "thue-xe-may-giao-tan-khach-san-pho-co-tien-hay-rui-ro",
+        "parent_hub": "/hub/c01/",
+        "entities": [
+          "giao tận nơi",
+          "khách sạn"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C01-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
+      },
+      {
+        "id": "C04-0051",
+        "cluster": "C04",
+        "status": "planned",
+        "primary_topic": "Xe đạp thể thao và xe đạp sinh hoạt: Khác gì nhau",
+        "search_intent": "comparison",
+        "title": "",
+        "slug": "xe-dap-the-thao-va-xe-dap-sinh-hoat-khac-gi-nhau",
+        "parent_hub": "/hub/c04/",
+        "entities": [
+          "xe thể thao",
+          "xe sinh hoạt"
+        ],
+        "freshness": "low",
+        "needs_official_source": false,
+        "similarity_group": "C04-core",
+        "source_plan": [],
+        "internal_links": [],
+        "published_url": null
       }
     ]
   },
-  "created_at": "2026-10-05T13:55:28.413Z"
+  "created_at": "2026-10-05T16:47:03.071Z"
 }

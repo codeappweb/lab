@@ -1,65 +1,38 @@
 {
   "schema_version": 1,
-  "cycle_id": "cyc-c050054",
-  "base_sha": "72cce66db52078cef4c9dff0826858b425329e98",
+  "cycle_id": "cyc-c110033",
+  "base_sha": "395b34583803acc110cc43d52e324a39413e8240",
   "coordinator_run_id": null,
-  "phase": "complete",
+  "phase": "allocated",
   "assignments": {
     "writer-1": [
-      "C05-0054",
-      "C08-0032",
-      "C11-0032",
-      "C02-0049",
-      "C05-0055",
-      "C08-0033"
+      "C11-0033",
+      "C02-0050",
+      "C05-0056",
+      "C08-0034",
+      "C11-0034",
+      "C02-0051"
     ],
     "writer-2": [
-      "C06-0032",
-      "C09-0032",
-      "C12-0032",
-      "C03-0051",
-      "C06-0033",
-      "C09-0033"
+      "C12-0033",
+      "C03-0052",
+      "C06-0034",
+      "C09-0034",
+      "C12-0034",
+      "C03-0053"
     ],
     "writer-3": [
-      "C07-0032",
-      "C10-0032",
-      "C01-0050",
-      "C04-0049",
-      "C07-0033",
-      "C10-0033"
+      "C01-0051",
+      "C04-0050",
+      "C07-0034",
+      "C10-0034",
+      "C01-0052",
+      "C04-0051"
     ]
   },
   "staging_snapshot": {},
-  "publication": {
-    "main_sha": "41896c973b7252e15baf6615d37f452e5a0182fa",
-    "ids": [
-      "bao-tang-my-thuat-di-bang-xe-dien-trai-nghiem-tham-quan",
-      "den-bao-pin-xe-dien-chop-lien-tuc-hieu-ma-loi",
-      "pho-thuoc-lan-ong-lo-trinh-mua-sam-buoi-chieu",
-      "so-sanh-xe-110cc-cua-ba-hang-lon-tai-viet-nam",
-      "thuong-luong-gia-khi-mua-xe-may-moi-co-duoc-khong",
-      "xe-may-dien-mat-nguon-dot-ngot-truy-loi-tung-khoi",
-      "binh-xang-phu-xe-may-duong-truong-an-toan-khong",
-      "cao-nguyen-da-dong-van-mua-suong-mu-chuan-bi-gi",
-      "cop-xe-may-tang-dung-tich-chon-dung-loai",
-      "ha-noi-di-sam-son-so-sanh-phuong-an-di-chuyen",
-      "pin-lithium-tu-chay-khi-va-cham-co-che-nhu-the-nao",
-      "xe-may-dien-rung-khi-tang-toc-chan-doan-nhanh",
-      "ban-xe-may-giay-tay-khong-cong-chung-rui-ro-phap-ly",
-      "cho-ruot-khi-di-xe-thon-que-xu-ly-binh-tinh",
-      "thue-xe-may-gan-ga-ha-noi-uu-diem-va-rui-ro",
-      "tra-cuu-ky-hieu-bien-so-xe-theo-tinh-cach-doc",
-      "vao-ham-duong-bo-bang-xe-may-luu-y-an-toan",
-      "xe-dap-dien-cho-quang-duong-di-hoc-muoi-km"
-    ]
-  },
-  "pages": {
-    "deployment_id": null,
-    "status": "success",
-    "live_verified": true,
-    "verified_at": "2026-10-05T16:46:57.179Z"
-  },
+  "publication": null,
+  "pages": null,
   "history": [
     {
       "cycle_id": "cyc-c120002",
@@ -748,6 +721,5 @@
       "completed_at": "2026-10-05T16:46:57.179Z"
     }
   ],
-  "created_at": "2026-10-05T13:55:28.413Z",
-  "updated_at": "2026-10-05T16:46:57.179Z"
+  "created_at": "2026-10-05T16:47:03.071Z"
 }

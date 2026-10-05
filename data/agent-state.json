@@ -6,8 +6,8 @@
     "finished_at": "2026-10-03T16:53:11.429Z"
   },
   "supervisor": {
-    "status": "resumed",
-    "last_incident_id": "37314308655",
+    "status": "terminal",
+    "last_incident_id": "37314780122",
     "terminal_incidents": [
       "37118189364",
       "37128570543",
@@ -31,7 +31,8 @@
       "37217424875",
       "37306747553",
       "37310513367",
-      "37312871584"
+      "37312871584",
+      "37314780122"
     ],
     "last_action": "verify-green"
   },

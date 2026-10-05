@@ -44,3 +44,4 @@
 {"ts":"2026-10-05T13:15:45.110Z","incident_id":"37315384001","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
 {"ts":"2026-10-05T13:16:02.787Z","incident_id":"37315428520","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}
 {"ts":"2026-10-05T13:20:25.591Z","run_id":"37315957102","signature":"unclassified","outcome":"escalated"}
+{"ts":"2026-10-05T13:20:58.825Z","incident_id":"37316005870","outcome":"supervisor-terminal","reason":"second-line: signature unclassified (class manual) khong co safe action nho nhat — khong doan","attempts":["diagnose:unclassified"]}

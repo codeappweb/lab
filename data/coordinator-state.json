@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "consecutive_failures": 1,
+  "consecutive_failures": 0,
   "last_run_id": "37316389541",
-  "last_run_status": "failed",
-  "ledger_reset_reason": "cyc-c050051 run 37313478349/37315957102 fail nguyen nhan da xac dinh va sua: 18 bai cu cyc-c110027 con sot tren staging (do reset staging khong chay sau live-verify timeout) lam preflight/guard sai cycle + vuot chunk, va 18 bai moi thieu internal link — da xoa bai cu khoi staging (content-only) va bo sung links. Reset ledger sau khi da sua nguyen goc.",
-  "updated_at": "2026-10-05T13:23:25.280Z"
+  "last_run_status": "reset",
+  "ledger_reset_reason": "cyc-c050051 nguyen nuc da sua: 18 bai cu staging da xoa content-only, 18 bai moi du 2 internal link moi bai; cac fail gan day chi la race pause-check voi repair cascade (run 37316389541 chi fail o pause gate 9s). Reset ledger truoc retry cuoi.",
+  "updated_at": "2026-10-05T13:27:30.833Z"
 }

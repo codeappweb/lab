@@ -23,7 +23,7 @@ Chạy rà là giai đoạn đầu sau khi mua xe mới, khi các chi tiết đ�
 
 ## Nguyên tắc trong nghìn km đầu
 
-Trong nghìn km đầu tiên, giữ vòng tua ở mức vừa, tránh vặn ga hết cỡ và duy trì ga đều trong chặng dài. Không chở quá tải và tránh chạy đường dài liên tục ở tốc độ cao; nếu bắt buộc đi xa, nghỉ định kỳ để động cơ nguội. Tránh phanh gấp và tăng ga đột ngột vì các chi tiết truyền động cũng cần thời gian khớp. Không để xe trôiNumturbo tắt máy downhill: với xe số, khi trôi số, nhớt vẫn được bôi trơn.
+Trong nghìn km đầu tiên, giữ vòng tua ở mức vừa, tránh vặn ga hết cỡ và duy trì ga đều trong chặng dài. Không chở quá tải và tránh chạy đường dài liên tục ở tốc độ cao; nếu bắt buộc đi xa, nghỉ định kỳ để động cơ nguội. Tránh phanh gấp và tăng ga đột ngột vì các chi tiết truyền động cũng cần thời gian khớp. Không trôi xe tắt máy xuống dốc dài: với xe số, khi trôi về số, hệ thống bôi trơn vẫn hoạt động.
 
 ## Lần thay nhớt đầu tiên
 
@@ -31,7 +31,8 @@ Lần thay nhớt đầu đến sớm hơn các lần sau, vì nhớt xuất xư
 
 ## Sau nghìn km nên làm gì
 
-Sau nghìn km đầu, mang xe đến hãng kiểm tra căn chỉnh: siết lại xích, chỉnh dây ga, kiểm tra áp suất lốp và chịu tải từng bánh. Đây là lúc nên học thói quen theo dõi đồng hồ và màu khói xả. Xe mới mua cũng cần đăng ký giấy tờ đầy đủ, quy trình hiện hành đã có trong bài <a href="{{ 'dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh/' | relative_url }}">đăng ký xe máy mới mua</a> để chạy rà yên tâm trên đường.
+Sau nghìn km đầu, mang xe đến hãng kiểm tra căn chỉnh: siết lại xích, chỉnh dây ga, kiểm tra áp suất lốp và chịu tải từng bánh. Đây là 
+lúc nên học thói quen theo dõi đồng hồ và màu khói xả. Xe mới mua cũng cần đăng ký giấy tờ đầy đủ, quy trình hiện hành đã có trong bài <a href="{{ 'dang-ky-xe-may-moi-mua-quy-trinh-hien-hanh/' | relative_url }}">đăng ký xe máy mới mua</a> để chạy rà yên tâm trên đường.
 
 ## Thói quen nên giữ sau chạy rà
 

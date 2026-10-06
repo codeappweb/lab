@@ -3,9 +3,9 @@
   "loop": "staged-3-writer-coordinator",
   "writers": 3,
   "writer_chunk_size": 2,
-  "cycle_id": "cyc-c050054",
-  "base_sha": "72cce66db52078cef4c9dff0826858b425329e98",
-  "status": "complete",
+  "cycle_id": "cyc-c110033",
+  "base_sha": "395b34583803acc110cc43d52e324a39413e8240",
+  "status": "failed",
   "staging": {
     "writer-1": {},
     "writer-2": {},
@@ -57,5 +57,5 @@
     "live_verified": false
   },
   "review_queue": [],
-  "updated_at": "2026-10-05T16:46:57.180Z"
+  "updated_at": "2026-10-06T12:53:34.737Z"
 }

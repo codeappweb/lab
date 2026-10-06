@@ -3,7 +3,7 @@
   "cycle_id": "cyc-c110033",
   "base_sha": "395b34583803acc110cc43d52e324a39413e8240",
   "coordinator_run_id": null,
-  "phase": "allocated",
+  "phase": "failed",
   "assignments": {
     "writer-1": [
       "C11-0033",
@@ -721,5 +721,6 @@
       "completed_at": "2026-10-05T16:46:57.179Z"
     }
   ],
-  "created_at": "2026-10-05T16:47:03.071Z"
+  "created_at": "2026-10-05T16:47:03.071Z",
+  "updated_at": "2026-10-06T12:53:34.736Z"
 }

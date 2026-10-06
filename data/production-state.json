@@ -1,14 +1,14 @@
 {
   "paused": true,
-  "paused_at": "2026-10-06T12:54:04.503Z",
+  "paused_at": "2026-10-06T12:54:08.011Z",
   "paused_by": "repair-agent",
   "resumed_at": "2026-10-06T12:49:52.545Z",
   "resumed_by": "supervisor-recovery",
   "run_id": "37466077247",
   "reason": "infra failure run 37466077247",
   "incident_resolved": true,
-  "blocker": null,
-  "escalated": false,
+  "blocker": "unclassified",
+  "escalated": true,
   "incident_id": "37333865645",
   "last_repair": "ci-regression-fixture-missing-front-matter-dep",
   "resolution": "run 37333815953 CI RED: test CI9 (content-index.test.mjs) chua copy front-matter.mjs vao fixture sau khi validate-content-quality.mjs doi sang shared parser. Fix commit 521b86f — regression gate GREEN (run 37342012159, job QA nhẹ success)."

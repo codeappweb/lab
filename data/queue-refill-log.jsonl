@@ -56,3 +56,4 @@
 {"ts":"2026-10-05T13:55:42.521Z","run_id":"37318644251","before":115,"threshold":100,"target":300,"need":0,"candidates":0,"rejected_duplicate":0,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":115,"result":"noop-ok"}
 {"ts":"2026-10-05T16:40:28.520Z","run_id":"37342611248","before":115,"threshold":100,"target":300,"need":0,"candidates":0,"rejected_duplicate":0,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":115,"result":"noop-ok"}
 {"ts":"2026-10-06T12:43:30.653Z","run_id":"37465306878","before":97,"threshold":100,"target":300,"need":203,"candidates":360,"rejected_duplicate":360,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":97,"result":"exhausted"}
+{"ts":"2026-10-06T12:53:48.836Z","run_id":"37466077247","before":97,"threshold":100,"target":300,"need":203,"candidates":360,"rejected_duplicate":360,"rejected_invalid":0,"rejected_budget":0,"appended":0,"after":97,"result":"exhausted"}

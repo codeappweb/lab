@@ -27,11 +27,12 @@ Khi xe dừng hẳn, giữ phanh và sau vài giây hệ thống tắt động c
 
 ## Lợi ích trong điều kiện đô thị
 
-Lợi ích lớn nhất thể hiện ở đô thị kẹt xe, nơi xe phải đứng chờ ở đèn đỏ và điểm tắc kéo dài. Mỗi lần đứng chờ không nổ máy là từng chút xăng được tiết kiệm, cộng dồn theo tuần thành con số đáng kể cho người đi làm quãng đường ngắn, nhiều chặng dừng. Cùng với việc chọn mẫu xe tiết kiệm như những gợi ý trong bài <a href="{{ 'xe-so-110cc-nao-tiet-kiem-xang-nhat-hien-nay/' | relative_url }}">xe số tiết kiệm xàng</a>, người đi đường ngắn có nhiều lựa chọn giảm chi phí nhiên liệu.
+Lợi ích lớn nhất thể hiện ở đô thị kẹt xe, nơi xe phải đứng chờ ở đèn đỏ và điểm tắc kéo dài. Mỗi lần đứng chờ không nổ máy là từng chút xăng được tiết kiệm, cộng dồn theo tuần thành con số đáng kể cho người đi làm quãng đường ngắn, nhiều chặng dừng. Cùng với việc chọn mẫu xe tiết kiệm như những gợi ý trong bài <a href="{{ 'xe-so-110cc-nao-tiet-kiem-xang-nhat-hien-nay/' | relative_url }}">xe số tiết kiệm xang</a>, người đi đường ngắn có nhiều lựa chọn giảm chi phí nhiên liệu.
 
 ## Điểm cần cân nhắc
 
-Ắc quy của xe có idling stop yếu hơn bình thường sẽ khiến đề lại chậm hoặc không nổ được, nên thay ắc quy đúng kỳ. Một số người thấy tiếng động cơ tắt rồi nổ liên tục gây khó chịu lúc đầu, nhưng phần lớn quen sau vài ngày. Chi phí lặp lại không tăng thêm đáng kể nếu bảo dưỡng tốt, tuy nhiên nếu chủ yếu chạy đường trường ít dừng, mức tiết kiệm sẽ nhỏ và khó bù được phần chênh giá mua ban đầu.
+Ắc quy của xe có idling stop yếu hơn bình thường sẽ khiến đề lại chậm hoặc không nổ được, nên thay ắc quy đúng kỳ. Một số người thấy tiếng động cơ tắt rồi nổ liên tục gây khó chịu lúc đầu, nhưng phần lớn quen sa
+u vài ngày. Chi phí lặp lại không tăng thêm đáng kể nếu bảo dưỡng tốt, tuy nhiên nếu chủ yếu chạy đường trường ít dừng, mức tiết kiệm sẽ nhỏ và khó bù được phần chênh giá mua ban đầu.
 
 ## Kết luận nên chọn thế nào
 

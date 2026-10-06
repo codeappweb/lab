@@ -23,7 +23,7 @@ Bọng xéc chứa dầu phanh, nếu bị rò thì hệ thống phanh mất d�
 
 ## Dấu hiệu nhận biết bọng xéc bị rò
 
-Nhìn quanh bình dầu phanh và thân bọng xéc: nếu thấy dầu ướt, vệt dầu chảy dọc theo thân hoặc cáp phanh bị ẩm dầu là dấu hiệu rò. Niveau dầu trong bình giảm nhanh mà không thấy chảy ra ngoài thì khả năng rò ở phanh sau hoặc ở đường ống. Phanh bị mềm, cần bóp nhiều lần mới ăn là hệ quả trực tiếp. Đôi khi phanh kêu lên do thiếu dầu, tình huống đã được mô tả trong bài <a href="{{ 'phanh-xe-may-keu-luc-cuc-xu-ly-dung-cach/' | relative_url }}">phanh kêu lúc cực và cách xử lý</a>.
+Nhìn quanh bình dầu phanh và thân bọng xéc: nếu thấy dầu ướt, vệt dầu chảy dọc theo thân hoặc cáp phanh bị ẩm dầu là dấu hiệu rò. Mức dầu trong bình giảm nhanh mà không thấy chảy ra ngoài thì khả năng rò ở phanh sau hoặc ở đường ống. Phanh bị mềm, cần bóp nhiều lần mới ăn là hệ quả trực tiếp. Đôi khi phanh kêu lên do thiếu dầu, tình huống đã được mô tả trong bài <a href="{{ 'phanh-xe-may-keu-luc-cuc-xu-ly-dung-cach/' | relative_url }}">phanh kêu lúc cực và cách xử lý</a>.
 
 ## Mức độ nguy hiểm nếu để lâu
 
@@ -31,7 +31,8 @@ Dầu phanh rò ra làm mặt phanh và má phanh dính dầu, giảm lực ma s
 
 ## Các hạng mục thường phải thay kèm
 
-Thông thường thợ sẽ khuyên thay cả bộ: bọng xéc mới, dầu phanh mới và xả khí lại toàn bộ hệ thống. Nếu má phanh đã thấm dầu lâu ngày thì má phanh cũng nên thay, bởi má dính dầu không thể rửa sạch hoàn toàn. Với xe dùng phanh đĩa, cần kiểm tra thêm cùm phanh; những khác biệt giữa hai hệ thống đã được giải thích trong bài <a href="{{ 'ma-phanh-dia-va-ma-phanh-trong-khac-biet-thuc-te/' | relative_url }}">ma phanh đĩa và ma phanh tời khác gì nhau</a>.
+Thông thường thợ sẽ khuyên thay cả bộ: bọng xéc mới, dầu phanh mới và xả khí lại toàn bộ hệ thống. Nếu má phanh đã thấm dầu lâu ngày thì má phanh cũng nên thay, bởi má dính dầu không thể rửa sạch hoàn toàn. Với xe dùng 
+phanh đĩa, cần kiểm tra thêm cùm phanh; những khác biệt giữa hai hệ thống đã được giải thích trong bài <a href="{{ 'ma-phanh-dia-va-ma-phanh-trong-khac-biet-thuc-te/' | relative_url }}">ma phanh đĩa và ma phanh tời khác gì nhau</a>.
 
 ## Về chi phí thay thế
 

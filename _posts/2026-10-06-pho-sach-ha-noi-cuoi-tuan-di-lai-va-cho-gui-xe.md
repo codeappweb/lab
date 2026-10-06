@@ -27,12 +27,13 @@ Cuối tuần, từ buổi chiều đông người nhất, đặc biệt các đ
 
 ## Các đoạn đường di chuyển
 
-Từ phía Hồ Gươm, theo các trục phố cổ tiến vào khu vực Phố sách. Các phố nhỏ quanh khu vực thường bị cấm hoặc giới hạn xe máy, nên tính điểm dừng sớm rồi đi bộ vào. Cuối tuần nhiều phố converted thành phố đi bộ, nếu đi taxi hoặc xe công nghệ thì nên xuống ở các ngã lớn rồi bộ tiếp. Ai đi từ xa bằng xe máy có thể tham khảo cách chọn tuyến như bài <a href="{{ 'lich-trinh-mot-ngay-pho-co-ha-noi-bang-xe-may/' | relative_url }}">lịch trình một ngày phố cổ bằng xe máy</a> để ghép các điểm chơi cùng lúc.
+Từ phía Hồ Gươm, theo các trục phố cổ tiến vào khu vực Phố sách. Các phố nhỏ quanh khu vực thường bị cấm hoặc giới hạn xe máy, nên tính điểm dừng sớm rồi đi bộ vào. Cuối tuần nhiều phố bị chặn thành phố đi bộ, nếu đi taxi hoặc xe công nghệ thì nên xuống ở các ngã lớn rồi bộ tiếp. Ai đi từ xa bằng xe máy có thể tham khảo cách chọn tuyến như bài <a href="{{ 'lich-trinh-mot-ngay-pho-co-ha-noi-bang-xe-may/' | relative_url }}">lịch trình một ngày phố cổ bằng xe máy</a> để ghép các điểm chơi cùng lúc.
 
 ## Điểm gửi xe quanh khu vực
 
-Chỗ gửi xe quanh phố cổ cuối tuần thường đầy từ xế chiều. Các bãi gửi ở ngõ lân cận thường rộng hơn và rẻ hơn bãi sát mặt đường. Gửi xe thì nhớ chụp ảnh biển số và vị trí xe, giữ vé cẩn thận vì cuối tuần đông, việc nhầm xe xảy ra thường xuyên hơn ngày thường. Không để đồ đạc trên cốp hoặc móc quá tải, vì bãi gửi đông không ai trông từng xe.
+Chỗ gửi xe quanh phố cổ cuối tuần thường đầy từ xế chiều. Các bãi gửi ở ngõ lân cận thường rộng hơn và 
+rẻ hơn bãi sát mặt đường. Gửi xe thì nhớ chụp ảnh biển số và vị trí xe, giữ vé cẩn thận vì cuối tuần đông, việc nhầm xe xảy ra thường xuyên hơn ngày thường. Không để đồ đạc trên cốp hoặc móc quá tải, vì bãi gửi đông không ai trông từng xe.
 
 ## Trải nghiệm sau khi gửi xe
 
-Sau khi gửi xe, hãy đi bộ chậm, ghé các gian sách ngoài trời và các hiệu sách lâu đời trong ngõ. Cuối buổi, tránh giờ tan chợ và giờ đóng phố đi bộ, lúc xe và người dồn về cùng lúc. Ra về theo ngõ nhỏ dễ kẹt hơn, nên vòng ra các trục lớn. Cuối cùng kiểm tra lại xe trước khi nổ máy, đặc biệt if gửi ở bãi đông, để chắc chắn không nhầm xe hay thiếu đồ.
+Sau khi gửi xe, hãy đi bộ chậm, ghé các gian sách ngoài trời và các hiệu sách lâu đời trong ngõ. Cuối buổi, tránh giờ tan chợ và giờ đóng phố đi bộ, lúc xe và người dồn về cùng lúc. Ra về theo ngõ nhỏ dễ kẹt hơn, nên vòng ra các trục lớn. Cuối cùng kiểm tra lại xe trước khi nổ máy, đặc biệt nếu gửi ở bãi đông, để chắc chắn không nhầm xe hay thiếu đồ.

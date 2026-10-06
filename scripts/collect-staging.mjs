@@ -33,8 +33,7 @@ import { fileURLToPath } from 'node:url';
 import { classifyStrayFiles } from './staging-guard.mjs';
 
 const ROOT = process.env.LAB_ROOT
-  ? resolve(process.env.LA
-B_ROOT)
+  ? resolve(process.env.LAB_ROOT)
   : resolve(join(dirname(fileURLToPath(import.meta.url)), '..'));
 
 function die(msg) {
@@ -89,8 +88,7 @@ function writerHasPosts(name) {
 
 // ---- optional wait for all expected writers ---------------------------------
 if (waitFor !== undefined) {
-  const expecte
-d = waitFor.split(',').map(s => s.trim()).filter(Boolean);
+  const expected = waitFor.split(',').map(s => s.trim()).filter(Boolean);
   const t0 = Date.now();
   let pending = expected.filter(w => !writerHasPosts(w));
   while (pending.length > 0 && (Date.now() - t0) / 1000 < waitTimeoutSec) {
@@ -126,20 +124,19 @@ for (let k = 1; k <= writers; k++) {
         ' phut tuoi — vuot staging_age_warn_minutes=' + ageWarnMin + '; kiem tra writer tre hoac staging chua reset.');
     }
   }
-  // Contamination guard: writer's OWN commits
- (tu merge-base) chi duoc cham _posts/*.md.
+  // Contamination guard: writer's OWN commits (tu merge-base) chi duoc cham _posts/*.md.
   // Ba-cham quan trong: staging o sau main (vd main co commit trigger/state moi)
   // KHONG bi coi la contamination — hai-cham truoc day lam coordinator fail khi
   // main di truoc staging (bug run 37017663482).
   const all = git(['diff', '--name-only', 'origin/main...' + sha]);
   if (all.status !== 0) die('git diff that bai cho ' + name);
   const candidates = (all.stdout || '').split('\n').map(s => s.trim()).filter(Boolean).filter(p => !/^_posts\/[a-z0-9-]+\.md$/.test(p));
-  // Goc loi incident 37466641605 (run 37466077247): ba-cham liet ke moi file
-  // staging TU COMMIT tu merge-base — ke ca khi content DA GIONG HET main
-  // (chi tuc commit reconcile "sync derived state tren staging" dong bo content).
-  // Chi la contamination khi content thuc su khac main: blob sha khac, file
-  // ngoai _posts/*.md moi tren staging, hoac file main bi xoa tren staging.
-  // Fail-closed van giu nguyen cho moi truong hop khac that.
+  // Gốc lỗi incident 37466641605 (run 37466077247): ba-cham liệt kê mọi file
+  // staging TỰ COMMIT từ merge-base — kể cả khi content ĐÃ GIỐNG HẾT main
+  // (chính tức commit reconcile "sync derived state trên staging" đồng bộ content).
+  // Chỉ là contamination khi content thực sự khác main: blob sha khác, file
+  // ngoài _posts/*.md mới trên staging, hoặc file main bị xóa trên staging.
+  // Fail-closed vẫn giụ nguyên cho mọi trưỡng hợp khác thực.
   const stray = classifyStrayFiles(candidates, (p, side) => {
     const rev = side === 'staging' ? sha : 'origin/main';
     const r = git(['rev-parse', rev + ':' + p]);
@@ -169,5 +166,4 @@ writeFileSync('/tmp/reset-staging.sh', sh);
 if (process.env.GITHUB_OUTPUT) {
   appendFileSync(process.env.GITHUB_OUTPUT, 'noop=' + (noop ? 'true' : 'false') + '\n');
 }
-console.
-log('collect-staging: ' + (noop ? 'khong co bai tren staging — noop.' : branches.map(b => b.name + ' +' + b.added.length + ' moi, ~' + b.repaired.length + ' sua, @' + b.sha.slice(0, 8)).join(' | ')));
+console.log('collect-staging: ' + (noop ? 'khong co bai tren staging — noop.' : branches.map(b => b.name + ' +' + b.added.length + ' moi, ~' + b.repaired.length + ' sua, @' + b.sha.slice(0, 8)).join(' | ')));
